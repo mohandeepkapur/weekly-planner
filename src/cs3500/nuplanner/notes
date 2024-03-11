@@ -1,0 +1,57 @@
+/*
+  every event needs unique and immutable identifier
+  user will of course use view to make sense of model-stuff (samegame unplayable without view)
+  issue: how can client refer to an event it wants to remove/modify?
+         client will need to provide a user-name, to access relevant schedule
+         client will need to provide X to access relevant event
+   */
+
+
+   key <-- storing refs to same event obj in multiple schedules
+
+   removeEvent(user, eventID) {
+
+    extract relevant schedule
+    extract event using eventID from rel. schedule (store in temp ref)
+
+    if (owner of event is user) then removeEvent(pass in temp ref)
+
+   }
+
+
+
+   removeEvent(Event temp) {
+    given temp
+    for all events in Events:
+        if temp == you
+            remove you from list
+   }
+
+
+   want to get all of core functionality down --> then add in IAE ISE checks
+   assume all input given into model is perfect
+
+
+
+       // or, invitees added --> whenever new user created, that user's sched is automaticaly populated with events it was invited to
+       // if even one invitee has a schedule conflict, throw an error
+       // can host remove invitee
+
+
+
+   if user wants to create an event with an invitee that does not exist... model does not allow
+   if XML wants to create event with invitee does not exist... model will load that user into the system
+
+
+
+
+
+
+
+
+
+
+
+
+
+
