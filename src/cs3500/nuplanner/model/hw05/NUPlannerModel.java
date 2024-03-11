@@ -1,19 +1,8 @@
 package cs3500.nuplanner.model.hw05;
 
-import org.w3c.dom.Document;
-import org.w3c.dom.NodeList;
-import org.xml.sax.SAXException;
-
-import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
 
 public class NUPlannerModel implements SchedulingSystem {
 
@@ -203,79 +192,19 @@ public class NUPlannerModel implements SchedulingSystem {
   }
 
   @Override
-  public void convertXMLtoSchedule() throws IOException, SAXException, ParserConfigurationException {
+  public void convertXMLtoSchedule() {
 
     // use addUser and addEvent methods above
     // will utilize oper. methods to construct new schedule
     // oper. methods will throw errors if given XML schedule invalid
 
-    // for this user/scheuleID, (check if user exists or assume exists?)
-    // for every event,
-    // addEventInSchedules (String user, List<String> invitees, String eventName,
-    // String location, boolean isOnline, DaysOfTheWeek startDay, int startTime, DaysOfTheWeek endDay, int endTime)
+  }
 
-    DocumentBuilder builder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
-    Document xmlDoc = builder.parse(new File("tutorial.xml"));
-    xmlDoc.getDocumentElement().normalize();
+  @Override
+  public void convertScheduleToXML() {
 
-    //looks for the data in the XML and calls the method to add the event
-    List<Event> listOfAllXMLEvents = new ArrayList<>();
+    // need to be able to get Events from Schedule, and get states from Events
 
-    //gets the list of all events
-    NodeList listOfEvents = xmlDoc.getElementsByTagName("event");
-
-    //runs through all events and gets their child nodes and also creates the schedule
-    for (int i = 0; i < listOfEvents.getLength(); i++) {
-      NodeList currentEventDetails = listOfEvents.item(i).getChildNodes();
-
-      //creating a list of invitees for the method
-      NodeList users = currentEventDetails.item(3).getChildNodes();
-      List<String> invitees = new ArrayList<>();
-      for (int l = 0; l < users.getLength(); l++) {
-        invitees.add(users.item(l).getNodeValue());
-      }
-
-      String name =
-              currentEventDetails.item(0).getAttributes().item(1).getNodeValue();
-      String location =
-              currentEventDetails.item(2).getAttributes().item(1).getNodeValue();
-      boolean isOnline =
-              Boolean.parseBoolean(currentEventDetails.item(2).getAttributes().item(0).getNodeValue());
-      DaysOfTheWeek startDay =
-              currentEventDetails.item(1).getAttributes().item(0).getNodeValue();
-      int startTime =
-              Integer.parseInt(currentEventDetails.item(1).getAttributes().item(1).getNodeValue());
-      DaysOfTheWeek endDay =
-              currentEventDetails.item(1).getAttributes().item(2).getNodeValue();
-      int endTime =
-              Integer.parseInt(currentEventDetails.item(1).getAttributes().item(3).getNodeValue());
-
-      // create schedules for invitees that do not exist in scheduling system
-      addInviteesToSchedulingSystem(invitees);
-
-      //create the event
-      Event event = new NUEvent(invitees, name, location, isOnline, startDay, startTime, endDay,
-              endTime);
-
-      //add the event to the list of events
-      listOfAllXMLEvents.add(event);
-    }
-
-    // checks if every user has open space in their schedule for event
-    for (Event listOfAllXMLEvent : listOfAllXMLEvents) {
-      try {
-        checkForConflictsInviteeSchedules(listOfAllXMLEvent.eventInvitees(),
-                listOfAllXMLEvent);
-      } catch (IllegalArgumentException ex) {
-        throw new IllegalArgumentException(ex.getMessage() + "Invalid XML schedule uploaded");
-      }
-    }
-
-    // add event to all schedules
-    for (Event listOfAllXMLEvent : listOfAllXMLEvents) {
-      addEventToInviteeSchedules(listOfAllXMLEvent.eventInvitees(),
-              listOfAllXMLEvent);
-    }
   }
 
   @Override
