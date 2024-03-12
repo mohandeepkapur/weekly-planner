@@ -5,15 +5,26 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.io.Writer;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
+
+import static cs3500.nuplanner.model.hw05.DaysOfTheWeek.FRIDAY;
+import static cs3500.nuplanner.model.hw05.DaysOfTheWeek.MONDAY;
+import static cs3500.nuplanner.model.hw05.DaysOfTheWeek.SATURDAY;
+import static cs3500.nuplanner.model.hw05.DaysOfTheWeek.SUNDAY;
+import static cs3500.nuplanner.model.hw05.DaysOfTheWeek.THURSDAY;
+import static cs3500.nuplanner.model.hw05.DaysOfTheWeek.TUESDAY;
+import static cs3500.nuplanner.model.hw05.DaysOfTheWeek.WEDNESDAY;
 
 public class NUPlannerModel implements SchedulingSystem {
 
@@ -28,7 +39,7 @@ public class NUPlannerModel implements SchedulingSystem {
   @Override
   public void addUser(String user) {
     // throw IAE if user already exists in hashmap <- no overwriting allowed
-    if(this.userSchedules.containsKey(user)){
+    if (this.userSchedules.containsKey(user)) {
       throw new IllegalArgumentException("User already exists in scheduling system... ");
     }
 
@@ -37,7 +48,7 @@ public class NUPlannerModel implements SchedulingSystem {
 
   @Override
   public void removeUser(String user) {
-    if(!this.userSchedules.containsKey(user)){
+    if (!this.userSchedules.containsKey(user)) {
       throw new IllegalArgumentException("User does not exist in scheduling system... ");
     }
 
@@ -46,7 +57,7 @@ public class NUPlannerModel implements SchedulingSystem {
 
   // questions:
   // can XML schedule overwrite existing user schedule
-            // yes, but
+  // yes, but
   // can add event that has host that does not exist in database? no
   // same question for non-host invitees? yes
 
@@ -60,7 +71,7 @@ public class NUPlannerModel implements SchedulingSystem {
     // if model removes a user --> user schedule events <-- remove all events from schedule <-- then delete user
 
     // BASIC CHECKS
-    if(user == null || invitees == null || eventName == null || location == null ||
+    if (user == null || invitees == null || eventName == null || location == null ||
             startDay == null || endDay == null) {
       throw new IllegalArgumentException("Invalid event parameters... ");
     }
@@ -205,15 +216,6 @@ public class NUPlannerModel implements SchedulingSystem {
   @Override
   public void convertXMLtoSchedule() throws IOException, SAXException, ParserConfigurationException {
 
-    // use addUser and addEvent methods above
-    // will utilize oper. methods to construct new schedule
-    // oper. methods will throw errors if given XML schedule invalid
-
-    // for this user/scheuleID, (check if user exists or assume exists?)
-    // for every event,
-    // addEventInSchedules (String user, List<String> invitees, String eventName,
-    // String location, boolean isOnline, DaysOfTheWeek startDay, int startTime, DaysOfTheWeek endDay, int endTime)
-
     DocumentBuilder builder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
     Document xmlDoc = builder.parse(new File("tutorial.xml"));
     xmlDoc.getDocumentElement().normalize();
@@ -242,13 +244,14 @@ public class NUPlannerModel implements SchedulingSystem {
       boolean isOnline =
               Boolean.parseBoolean(currentEventDetails.item(2).getAttributes().item(0).getNodeValue());
       DaysOfTheWeek startDay =
-              currentEventDetails.item(1).getAttributes().item(0).getNodeValue();
+              createDay(currentEventDetails.item(1).getAttributes().item(0).getNodeValue());
       int startTime =
               Integer.parseInt(currentEventDetails.item(1).getAttributes().item(1).getNodeValue());
       DaysOfTheWeek endDay =
-              currentEventDetails.item(1).getAttributes().item(2).getNodeValue();
+              createDay(currentEventDetails.item(1).getAttributes().item(2).getNodeValue());
       int endTime =
               Integer.parseInt(currentEventDetails.item(1).getAttributes().item(3).getNodeValue());
+
 
       // create schedules for invitees that do not exist in scheduling system
       addInviteesToSchedulingSystem(invitees);
@@ -278,9 +281,90 @@ public class NUPlannerModel implements SchedulingSystem {
     }
   }
 
+  /**
+   * Small factory method that returns the enum representing
+   * the day of the week given a string.
+   *
+   * @param day the day of the week in string format
+   * @return an enum representing the day of the week
+   */
+  private static DaysOfTheWeek createDay(String day) {
+    if (day.equals(SUNDAY.toString())) {
+      return SUNDAY;
+    }
+    if (day.equals(MONDAY.toString())) {
+      return MONDAY;
+    }
+    if (day.equals(TUESDAY.toString())) {
+      return TUESDAY;
+    }
+    if (day.equals(WEDNESDAY.toString())) {
+      return WEDNESDAY;
+    }
+    if (day.equals(THURSDAY.toString())) {
+      return THURSDAY;
+    }
+    if (day.equals(FRIDAY.toString())) {
+      return FRIDAY;
+    }
+    if (day.equals(SATURDAY.toString())) {
+      return SATURDAY;
+    }
+    throw new IllegalArgumentException("Not a day of the week!");
+  }
+
+  @Override
+  public void convertScheduleToXML() {
+
+    List<Event> listOfUsersEvents = new ArrayList<>();
+
+    try {
+      Writer file = new FileWriter("sample-written.xml");
+      file.write("<?xml version=\"1.0\"?>\n");
+      file.write("<schedule id=\"SOMETHINGGOESHEREAGHHHH\">");
+
+      for (int i = 0; i < provideUserSchedule().numberOfEvents(); i++) {
+        listOfUsersEvents.add(provideUserSchedule().provideSingleEvent(i));
+      }
+
+      for (Event listOfUsersEvents : listOfUsersEvents) {
+        file.write("<event>");
+        file.write("<name>" + provideUserSchedule().event.name() + "</name>");
+
+        file.write("<time>");
+        file.write("<start-day>" + provideUserSchedule().event.startDay().toString + "</start-day" +
+                ">");
+        file.write("<start>" + provideUserSchedule().event.startTime() + "</start>");
+        file.write("<end-day>" + provideUserSchedule().event.endDay().toString + "</end-day>");
+        file.write("<end>" + provideUserSchedule().event.endTime() + "</end>");
+        file.write("</time>");
+
+        file.write("<location>");
+        file.write("<online>" + provideUserSchedule().event.isOnline() + "</online>");
+        file.write("<start>" + provideUserSchedule().event.location() + "</start>");
+        file.write("</location>");
+
+        file.write("<users>");
+        for (eventInvitees) {
+          file.write("<uid>" + provideUserSchedule().event.invitees() + "</uid>");
+        }
+        file.write("</users>");
+      }
+
+      file.write("</schedule>");
+      file.close();
+    } catch (IOException ex) {
+      throw new RuntimeException(ex.getMessage());
+    }
+  }
+
   @Override
   public Schedule provideUserSchedule(String user) {
-    return null;
+    if (!this.userSchedules.containsKey(user)) {
+      throw new IllegalArgumentException("User does not exist in scheduling system... ");
+    }
+
+    return this.userSchedules.get(user);
   }
 
 }
