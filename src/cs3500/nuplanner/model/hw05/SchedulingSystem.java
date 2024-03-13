@@ -28,6 +28,8 @@ public interface SchedulingSystem {
    */
   void removeUser(String user);
 
+  List<String> allUsers();
+
   /**
    * Adds a custom Event to the relevant schedules.
    *
@@ -54,7 +56,7 @@ public interface SchedulingSystem {
    *                                    removed invitee
    *
    */
-  void removeEventInSchedules(String user, int eventIndex);
+  void removeEventInSchedules(String user, int eventID);
 
   /**
    * Modifies an event that the user chooses with whatever modification listed.
@@ -64,7 +66,7 @@ public interface SchedulingSystem {
    * @param modification
    */
 
-  void modifyEventInSchedules(String user, int eventIndex, String modification);
+  void modifyEventInSchedules(String user, int eventID, String modification);
 
   /**
    * Converts provided XML file into a Schedule.
@@ -81,13 +83,19 @@ public interface SchedulingSystem {
   // that is impl-specific solution though
   // regardless of how model is storing these schedules and events, view should be able to render user schedule
 
-  /**
-   * Provides Schedule to View --> View will then extract every Event from Schedule,
-   * and then print out Event details.
-   *
-   * @throws IllegalArgumentException     if user does not exist
-   */
-  Schedule provideUserSchedule(String user);
+  //  /**
+  //   * Provides Schedule to View --> View will then extract every Event from Schedule,
+  //   * and then print out Event details.
+  //   *
+  //   * @throws IllegalArgumentException     if user does not exist
+  //   */
+  //  Schedule provideUserSchedule(String user);
+
+  // event ids ordered from earliest event to latest event
+  List<Integer> eventIDsInSchedule(String user);
+
+
+  Event eventAt(String user, int eventID);
 
 
 

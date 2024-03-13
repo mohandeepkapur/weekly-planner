@@ -1,15 +1,15 @@
 package cs3500.nuplanner.model.hw05;
 
+import java.util.ArrayList;
 import java.util.List;
 
-// not getters and setters <- intention not to return field, but state of obj
+/**
+ * Event only works with military time.
+ */
 public class NUEvent implements Event {
 
-  // all an event can check for:
-  // whether time-span is valid when constructing or updating event
-
-  // unit: minutes
-  private int timespan;
+  private static int count = 0;
+  private final int ID;
 
   private String name;
   private String location;
@@ -19,13 +19,11 @@ public class NUEvent implements Event {
   private DaysOfTheWeek endDay;
   private int endTime;
   // first user is OWNER
-  private List<String> invitees;
-  //private String owner;
+  private final List<String> invitees;
 
   /**
    * Constructs an Event.
    */
-  // assuming client will pass in proper military time format
   public NUEvent(List<String> invitees,
                String eventName, String location, boolean isOnline,
                DaysOfTheWeek startDay, int startTime,
@@ -46,7 +44,6 @@ public class NUEvent implements Event {
         throw new IllegalArgumentException("Invalid start or end time given... ");
       }
 
-      //this.owner = user;
       this.invitees = invitees;
       this.name = eventName;
       this.location = location;
@@ -57,12 +54,15 @@ public class NUEvent implements Event {
       this.endTime = endTime;
 
       // throw IAE if time-span invalid
-      initializeTimeSpan(this.startTime, this.endTime, this.startDay, this.endDay);
+      calculateTimeSpan(this.startTime, this.endTime, this.startDay, this.endDay);
+
+      ID = count;
+      count++;
   }
 
   // copy constructor
   public NUEvent(Event other) {
-    this.invitees = other.eventInvitees();
+    this.invitees = new ArrayList<>(other.eventInvitees());
     this.name = other.name();
     this.location = other.location();
     this.isOnline = other.isOnline();
@@ -70,6 +70,16 @@ public class NUEvent implements Event {
     this.startTime = other.startTime();
     this.endDay = other.endDay();
     this.endTime = other.endTime();
+
+    calculateTimeSpan(this.startTime, this.endTime, this.startDay, this.endDay);
+
+    ID = count;
+    count++;
+  }
+
+  @Override
+  public int ID() {
+    return ID;
   }
 
   @Override
@@ -78,7 +88,7 @@ public class NUEvent implements Event {
   }
 
   @Override
-  public void changeName(String name) {
+  public void updateName(String name) {
     this.name = name;
   }
 
@@ -88,7 +98,7 @@ public class NUEvent implements Event {
   }
 
   @Override
-  public void changeLocation(String location) {
+  public void updateLocation(String location) {
     this.location = location;
   }
 
@@ -98,7 +108,7 @@ public class NUEvent implements Event {
   }
 
   @Override
-  public void changeIsOnline(boolean isOnline) {
+  public void updateIsOnline(boolean isOnline) {
     this.isOnline = isOnline;
   }
 
@@ -108,9 +118,9 @@ public class NUEvent implements Event {
   }
 
   @Override
-  public void changeStartDay(DaysOfTheWeek startDay) {
+  public void updateStartDay(DaysOfTheWeek startDay) {
     // throw IAE if time-span invalid
-    initializeTimeSpan(this.startTime, this.endTime, startDay, this.endDay);
+    calculateTimeSpan(this.startTime, this.endTime, startDay, this.endDay);
     this.startDay=startDay;
   }
 
@@ -120,9 +130,9 @@ public class NUEvent implements Event {
   }
 
   @Override
-  public void changeEndDay(DaysOfTheWeek endDay) {
+  public void updateEndDay(DaysOfTheWeek endDay) {
     // throw IAE if time-span invalid
-    initializeTimeSpan(this.startTime, this.endTime, this.startDay, endDay);
+    calculateTimeSpan(this.startTime, this.endTime, this.startDay, endDay);
     this.endDay=endDay;
   }
 
@@ -132,9 +142,9 @@ public class NUEvent implements Event {
   }
 
   @Override
-  public void changeStartTime(int startTime) {
+  public void updateStartTime(int startTime) {
     // throw IAE if time-span invalid
-    initializeTimeSpan(startTime, this.endTime, this.startDay, this.endDay);
+    calculateTimeSpan(startTime, this.endTime, this.startDay, this.endDay);
     this.startTime = startTime;
   }
 
@@ -144,9 +154,9 @@ public class NUEvent implements Event {
   }
 
   @Override
-  public void changeEndTime(int endTime) {
+  public void updateEndTime(int endTime) {
     // throw IAE if time-span invalid
-    initializeTimeSpan(this.startTime, endTime, this.startDay, this.endDay);
+    calculateTimeSpan(this.startTime, endTime, this.startDay, this.endDay);
     this.endTime = endTime;
   }
 
@@ -156,15 +166,13 @@ public class NUEvent implements Event {
     return this.invitees.get(0);
   }
 
-  // assumes that first user in list is OWNER
+  // reiterate, first user in list is OWNER
   public List<String> eventInvitees() {
     // defensive copy?
     return invitees;
   }
 
-  // can event remove its owner? sure, but that is an irrelevant step
-  // SS persp: asked to remove event --> gets event obj --> calls every SC and passes in event obj
-  // SC persp: finds event obj, removes it from list
+
   @Override
   public void removeInvitee(String invitee) {
 
@@ -177,28 +185,34 @@ public class NUEvent implements Event {
 
   }
 
-  private void initializeTimeSpan(int startTime, int endTime, DaysOfTheWeek startDay, DaysOfTheWeek endDay) {
+  // also check to see that events that exceed one week do not exceed timespan!!
+  private void calculateTimeSpan(int startTime, int endTime,
+                                 DaysOfTheWeek startDay, DaysOfTheWeek endDay)
+          throws IllegalArgumentException {
 
     // Wed 1335 to Thur 1456 -> 24 hours, 1 hour, 21 min -> 1521
     // Wed 1456 to Thur 1335 -> 24 hours, -1 hour, -21 min -> 1359
 
-    int dayDiff = convertDayToNum(endDay) - convertDayToNum(startDay);
+    int dayDiff = endDay.val() - startDay.val();
 
-    if (dayDiff < 0 || (dayDiff == 0 && endTime < startTime)) {
+    // if this is an event that extends into the next week
+    if (dayDiff < 0 || (dayDiff == 0 && endTime <= startTime)) {
       dayDiff = dayDiff + 7;
     }
 
     int dayRangeMin = dayDiff * 24 * 60;
 
-    int timeDiff = endTime - startTime;
+    int min1 = (startTime % 100) + (startTime/100) * 60;
+    int min2 = (endTime % 100) + (endTime/100) * 60;
 
-    int timeRangeMin = (timeDiff % 100) + (timeDiff/100) * 60;
+    int timeRangeMin = min2 - min1;
 
     if(dayRangeMin + timeRangeMin > (6*24*60) + (23*60) + 59) {
-      throw new IllegalArgumentException("Time span of event is too long... ");
+      throw new IllegalArgumentException("Event has a time span that is too long... ");
     }
 
-    timespan = dayRangeMin + timeRangeMin;
+    // unit: minutes
+    int timespan = dayRangeMin + timeRangeMin;
   }
 
   private int convertDayToNum(DaysOfTheWeek day) {

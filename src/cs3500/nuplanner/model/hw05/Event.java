@@ -2,10 +2,18 @@ package cs3500.nuplanner.model.hw05;
 
 import java.util.List;
 
+// client ease-of-use considerations? so many state-setters, annoying for client?
+// not getters and setters <- intention not to return field, but state of obj
+
 /**
  * Operations and observations necessary for an Event in a scheduling system.
  */
 public interface Event {
+
+  /**
+   * Unique, Immutable ID of an Event.
+   */
+  int ID();
 
   /**
    * Observes name of Event.
@@ -15,7 +23,7 @@ public interface Event {
   /**
    * Changes name of Event.
    */
-  void changeName(String name);
+  void updateName(String name);
 
   /**
    * Observes Event location.
@@ -25,7 +33,7 @@ public interface Event {
   /**
    * Changes Event location.
    */
-  void changeLocation(String location);
+  void updateLocation(String location);
 
   /**
    * Observes information on whether Event is online or offline.
@@ -35,10 +43,7 @@ public interface Event {
   /**
    * Changes whether Event is online or offline.
    */
-  void changeIsOnline(boolean isOnline);
-
-  // client ease-of-use considerations? so many setters, annoying for client?
-  // every time setter use, series of checks to prevent garbage input will need to be rerun
+  void updateIsOnline(boolean isOnline);
 
   /**
    * Observes the start-day of the Event.
@@ -51,7 +56,7 @@ public interface Event {
    * @param day                          new starting day of Event
    * @throws IllegalArgumentException    if time-span of modified Event exceeds 6-days 23-hrs 59-min
    */
-  void changeStartDay(DaysOfTheWeek day);
+  void updateStartDay(DaysOfTheWeek day);
 
   /**
    * Observes the end-day of the Event.
@@ -64,7 +69,7 @@ public interface Event {
    * @param day                          new end day of Event
    * @throws IllegalArgumentException    if time-span of modified Event exceeds 6-days 23-hrs 59-min
    */
-  void changeEndDay(DaysOfTheWeek day);
+  void updateEndDay(DaysOfTheWeek day);
 
   /**
    * Observes start time of Event.
@@ -79,7 +84,7 @@ public interface Event {
    * @param startTime                    new start time of Event
    * @throws IllegalArgumentException    if time-span of modified Event exceeds 6-days 23-hrs 59-min
    */
-  void changeStartTime(int startTime);
+  void updateStartTime(int startTime);
 
   /**
    * Observes end time of Event.
@@ -94,7 +99,7 @@ public interface Event {
    * @param endTime                      new end time of Event
    * @throws IllegalArgumentException    if time-span of modified Event exceeds 6-days 23-hrs 59-min
    */
-  void changeEndTime(int endTime);
+  void updateEndTime(int endTime);
 
   /**
    * Collection of Users that are part of the Event. The first user is always the owner. The
@@ -115,8 +120,10 @@ public interface Event {
   void removeInvitee(String invitee); //remove user from invited user list
 
   /**
-   * Checks whether the provided user is the host of the event.
+   * Provides host of event.
    */
   String eventHost();
+
+  // void updateInvitees();
 
 }

@@ -2,18 +2,23 @@ package cs3500.nuplanner.model.hw05;
 
 public enum DaysOfTheWeek {
 
-  SUNDAY("SUNDAY"), MONDAY("MONDAY"), TUESDAY("TUESDAY"),
-  WEDNESDAY("WEDNESDAY"), THURSDAY("THURSDAY"), FRIDAY("FRIDAY"),
-  SATURDAY("SATURDAY");
+  SUNDAY(0, "SUNDAY"), MONDAY(1, "MONDAY"), TUESDAY(2, "TUESDAY"),
+  WEDNESDAY(3, "WEDNESDAY"), THURSDAY(4, "THURSDAY"), FRIDAY(5, "FRIDAY"),
+  SATURDAY(6, "SATURDAY");
 
-  private final String day;
+  private final int dayVal;
+  private final String dayString;
 
-  private DaysOfTheWeek(String day) {
-    this.day = day;
+  private DaysOfTheWeek(int dayVal, String dayString) {
+    this.dayVal = dayVal;
+    this.dayString = dayString;
   }
 
-  public String toString() {
-    return day;
+  public int val() {
+    return dayVal;
   }
+
+  @Override
+  public String toString() {return dayString;}
 
 }

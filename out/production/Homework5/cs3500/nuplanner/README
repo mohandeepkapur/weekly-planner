@@ -1,0 +1,21 @@
+
+
+
+design decisions:
+- eventIDs are not fixed <- helps user get their bearings
+
+- same event obj can be contained in multiple schedules
+
+- view will rely on Schedule and Event interfaces (good, bad?) <-- S + E tech part of Model
+
+- assuming users can modify timing of an event (mult schedules or not)
+- invitees that don't have accounts will have accounts made for them
+    (avoiding specific bug)
+- can I say that the timing of an event cannot be modified?
+^ don't need to cover case where modfying event could cause
+  scheduling conflicts that prev did not exist
+- XML question -->
+
+
+
+- a user can be BOTH event owner AND event invitee (only one)

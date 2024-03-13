@@ -1,10 +1,13 @@
 package cs3500.nuplanner.model.hw05;
 
+import java.util.List;
+
 // assumption:
 // no scheduling conflicts in schedule
 public interface Schedule {
 
-  // assumption: assume added event does not conflict with any other events
+  String scheduleOwner();
+
   /**
    * Adds an Event into Schedule.
    *
@@ -15,14 +18,12 @@ public interface Schedule {
   // not constructing event within a schedule obj so same Event can be put into multiple Schedules
   void addEvent(Event newEvent);
 
-  //void modifyEvent();
-
   /**
    * Removes an Event from Schedule. Event to be removed will update its invitee list.
    *
    * @param newEvent                       Event to be removed
    */
-  void removeEvent(Event newEvent);
+  void removeEvent(Event event);
 
   /**
    * Observes number of Events contained within Schedule.
@@ -30,14 +31,17 @@ public interface Schedule {
   int numberOfEvents();
 
   /**
-   * Provides a single Event within Schedule.
-   *
-   * @param eventIndex                    represents Event to be returned
-   * @return                              Event
-   *
-   * @throws IllegalArgumentException     if eventIndex outofbounds
+   * @param eventID           ID of an Event
+   * @return                  Event object
    */
-  Event provideSingleEvent(int eventIndex);
+  Event eventAt(int eventID);
+
+  /**
+   * @return IDs of all Events within Schedule
+   *
+   * eventIDs in order of earliest event to latest event.
+   */
+  List<Integer> eventIDs();
 
   /**
    * Checks whether an Event would conflict with current Schedule. What counts as a conflict is
