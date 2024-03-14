@@ -26,7 +26,7 @@ public class SchedulingSystemXMLView implements SchedulingSystemView {
   public void render(String user) {
     List<ReadableEvent> events = this.model.eventsInSchedule(user);
     try {
-      Writer file = new FileWriter("src/XMLFiles/toWrite/" + user + ".xml");
+      Writer file = new FileWriter("XMLFiles/toWrite/" + user + ".xml");
       file.write("<?xml version=\"1.0\"?>");
       file.write("\n");
       file.write("<schedule id=\"" + user + "\">");
