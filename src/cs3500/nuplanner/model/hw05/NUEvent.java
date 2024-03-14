@@ -2,6 +2,7 @@ package cs3500.nuplanner.model.hw05;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * NUEvent only works with military time.
@@ -40,14 +41,8 @@ public class NUEvent implements Event {
     }
 
     // ensures only proper military time accepted by Event
-    if (startTime / 100 < 0
-            || startTime / 100 > 23
-            || endTime / 100 < 0
-            || endTime / 100 > 23
-            || startTime % 100 > 59
-            || endTime % 100 > 59) {
-      throw new IllegalArgumentException("Event cannot be init. with invalid military time...  ");
-    }
+    ensureProperMilitaryTime(startTime);
+    ensureProperMilitaryTime(endTime);
 
     if (invitees.isEmpty()) {
       throw new IllegalArgumentException("Event cannot be init. with no invitees... ");
@@ -68,6 +63,12 @@ public class NUEvent implements Event {
     //            // assign unique, immutable ID to every event
     //            ID = count;
     //            count++;
+  }
+
+  private void ensureProperMilitaryTime(int time) {
+    if (time / 100 < 0 || time / 100 > 23 || time % 100 > 59) {
+      throw new IllegalArgumentException("Event cannot be init. with invalid military time...  ");
+    }
   }
 
   // copy constructor
@@ -101,6 +102,9 @@ public class NUEvent implements Event {
 
   @Override
   public void updateName(String name) {
+    if (name == null) {
+      throw new IllegalArgumentException("Event cannot be constructed with null... ");
+    }
     this.name = name;
   }
 
@@ -111,6 +115,9 @@ public class NUEvent implements Event {
 
   @Override
   public void updateLocation(String location) {
+    if (location == null) {
+      throw new IllegalArgumentException("Event cannot be constructed with null... ");
+    }
     this.location = location;
   }
 
@@ -131,6 +138,9 @@ public class NUEvent implements Event {
 
   @Override
   public void updateStartDay(DaysOfTheWeek startDay) {
+    if (startDay == null) {
+      throw new IllegalArgumentException("Event cannot be constructed with null... ");
+    }
     ensureValidTimeSpan(this.startTime, this.endTime, startDay, this.endDay);
     this.startDay = startDay;
   }
@@ -142,6 +152,9 @@ public class NUEvent implements Event {
 
   @Override
   public void updateEndDay(DaysOfTheWeek endDay) {
+    if (endDay == null) {
+      throw new IllegalArgumentException("Event cannot be constructed with null... ");
+    }
     ensureValidTimeSpan(this.startTime, this.endTime, this.startDay, endDay);
     this.endDay = endDay;
   }
@@ -153,6 +166,7 @@ public class NUEvent implements Event {
 
   @Override
   public void updateStartTime(int startTime) {
+    ensureProperMilitaryTime(startTime);
     ensureValidTimeSpan(startTime, this.endTime, this.startDay, this.endDay);
     this.startTime = startTime;
   }
@@ -164,6 +178,7 @@ public class NUEvent implements Event {
 
   @Override
   public void updateEndTime(int endTime) {
+    ensureProperMilitaryTime(endTime);
     ensureValidTimeSpan(this.startTime, endTime, this.startDay, this.endDay);
     this.endTime = endTime;
   }
@@ -175,6 +190,9 @@ public class NUEvent implements Event {
   @Override
   public void removeInvitee(String invitee) {
     // if invitee not contained within event
+    if (invitees.isEmpty()) {
+      throw new IllegalArgumentException("Cannot remove invitee from empty invitee list... ");
+    }
     if (!invitees.contains(invitee)) {
       throw new IllegalArgumentException("Event does not contain user to remove... ");
     }

@@ -22,9 +22,9 @@ import static org.junit.Assert.assertThrows;
 import static org.junit.Assert.assertTrue;
 
 /**
- * A test class that checks functionality of the event class.
+ * A test class that checks functionality of the NUEvent
  */
-public class TestEvent {
+public class TestEventNUEventImpl {
 
   @Test
   public void checkEventStatesValidConstruction() {
@@ -83,7 +83,7 @@ public class TestEvent {
   }
 
   @Test
-  public void checkEventInvalidTimeSpanIllegalStartMinutes() {
+  public void checkEventInvalidStartMinutes() {
 
     try {
       Event event1 = new NUEvent(new ArrayList<>(List.of("Mo", "Ko", "Jo")),
@@ -96,7 +96,7 @@ public class TestEvent {
   }
 
   @Test
-  public void checkEventInvalidTimeSpanIllegalEndMinutes() {
+  public void checkEventInvalidEndMinutes() {
     try {
       Event event1 = new NUEvent(new ArrayList<>(List.of("Mo", "Ko", "Jo")),
               "Tennis", "Krentzman Quad", true,
@@ -108,7 +108,7 @@ public class TestEvent {
   }
 
   @Test
-  public void checkEventInvalidTimeSpanIllegalStartHours() {
+  public void checkEventIllegalStartHours() {
     try {
       Event event1 = new NUEvent(new ArrayList<String>(List.of("Mo", "Ko", "Jo")),
               "Tennis", "Krentzman Quad", true,
@@ -120,7 +120,7 @@ public class TestEvent {
   }
 
   @Test
-  public void checkEventInvalidTimeSpanIllegalEndHours() {
+  public void checkEventIllegalEndHours() {
     try {
       Event event1 = new NUEvent(new ArrayList<String>(List.of("Mo", "Ko", "Jo")),
               "Tennis", "Krentzman Quad", true,
@@ -132,7 +132,7 @@ public class TestEvent {
   }
 
   @Test
-  public void checkEventInvalidTimeSpanSameStartAndEndTime() {
+  public void checkEventSameStartAndEndTime() {
     try {
       Event event1 = new NUEvent(new ArrayList<String>(List.of("Mo", "Ko", "Jo")),
               "Tennis", "Krentzman Quad", true,
@@ -289,7 +289,7 @@ public class TestEvent {
             "Soccer", "Carter Field", false,
             MONDAY, 1100, MONDAY, 1200);
     assertEquals(MONDAY, event.startDay());
-    assertThrows(NullPointerException.class, () -> event.updateStartDay(null));
+    assertThrows(IllegalArgumentException.class, () -> event.updateStartDay(null));
   }
 
   @Test
@@ -318,7 +318,7 @@ public class TestEvent {
             "Soccer", "Carter Field", false,
             MONDAY, 1100, MONDAY, 1200);
     assertEquals(MONDAY, event.endDay());
-    assertThrows(NullPointerException.class, () -> event.updateEndDay(null));
+    assertThrows(IllegalArgumentException.class, () -> event.updateEndDay(null));
   }
 
   @Test
@@ -342,18 +342,6 @@ public class TestEvent {
   }
 
   @Test
-  public void testInvalidEventModificationUpdateStartTime() {
-    Event event = new NUEvent(new ArrayList<>(List.of("John", "Ella")),
-            "Soccer", "Carter Field", false,
-            MONDAY, 1100, MONDAY, 1130);
-    assertEquals(1100, event.startTime());
-    event.updateStartTime(1200);
-    assertEquals(1200, event.startTime());
-    assertEquals(1130, event.endTime());
-    assertThrows(IllegalArgumentException.class, () -> event.updateStartTime(1200));
-  }
-
-  @Test
   public void testValidEventModificationUpdateEndTime() {
     Event event = new NUEvent(new ArrayList<>(List.of("John", "Ella")),
             "Soccer", "Carter Field", false,
@@ -364,7 +352,7 @@ public class TestEvent {
   }
 
   @Test
-  public void testInvalidEventModificationUpdateEndTime() {
+  public void testValidEventModificationUpdateEndTimeToNextWeek() {
     Event event = new NUEvent(new ArrayList<>(List.of("John", "Ella")),
             "Soccer", "Carter Field", false,
             MONDAY, 1100, MONDAY, 1130);
@@ -372,7 +360,6 @@ public class TestEvent {
     event.updateEndTime(1000);
     assertEquals(1100, event.startTime());
     assertEquals(1000, event.endTime());
-    assertThrows(IllegalArgumentException.class, () -> event.updateEndTime(1000));
   }
 
   @Test
@@ -440,7 +427,7 @@ public class TestEvent {
     assertEquals(original, event.eventInvitees());
     assertThrows(IllegalArgumentException.class, () -> event.addInvitee("Caesar"));
   }
-  
+
 }
 
 /*
