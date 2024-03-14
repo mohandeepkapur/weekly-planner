@@ -1,140 +1,37 @@
-<?xml version="1.0"?>
-<schedule id="Prof. Lucia">
-    <event>
-    <name>
-        BasketWeaving
-    </name>
-    <time>
-        <start-day>
-            SUNDAY
-        </start-day>
-        <start>
-            900
-        </start>
-        <end-day>
-            SUNDAY
-        </end-day>
-        <end>
-            1000
-        </end>
+<?xml version="1.0"?><schedule id="Prof. Lucia">
+<event>
+<name>BasketWeaving</name>
+<time>
+<start-day>SUNDAY</start-day><start>900</start><end-day>SUNDAY</end-day><end>1000</end>
+</time>
+<location><online>true</online><start>Sea</start></location>
+<users><uid>[Prof. Lucia, Mo]</uid></users>
+</event>
 
-    </time>
-    <location>
-        <online>
-            true
-        </online>
-        <start>
-            Sea
-        </start>
+<event>
+<name>CS3500 Morning Lecture</name>
+<time>
+<start-day>TUESDAY</start-day><start>950</start><end-day>TUESDAY</end-day><end>1130</end>
+</time>
+<location><online>false</online><start>Churchill Hall 101</start></location>
+<users><uid>[Prof. Lucia, Student Anon, Chat]</uid></users>
+</event>
 
-    </location>
-    <users>
-        <uid>
-            [Prof. Lucia, Mo]
-        </uid>
+<event>
+<name>CS3500 Afternoon Lecture</name>
+<time>
+<start-day>TUESDAY</start-day><start>1335</start><end-day>TUESDAY</end-day><end>1515</end>
+</time>
+<location><online>false</online><start>Churchill Hall 101</start></location>
+<users><uid>[Prof. Lucia, Chat]</uid></users>
+</event>
 
-    </users>
-    <event>
-    <name>
-        CS3500 Morning Lecture
-    </name>
-    <time>
-        <start-day>
-            TUESDAY
-        </start-day>
-        <start>
-            950
-        </start>
-        <end-day>
-            TUESDAY
-        </end-day>
-        <end>
-            1130
-        </end>
-
-    </time>
-    <location>
-        <online>
-            false
-        </online>
-        <start>
-            Churchill Hall 101
-        </start>
-
-    </location>
-    <users>
-        <uid>
-            [Prof. Lucia, Student Anon, Chat]
-        </uid>
-
-    </users>
-    <event>
-    <name>
-        CS3500 Afternoon Lecture
-    </name>
-    <time>
-        <start-day>
-            TUESDAY
-        </start-day>
-        <start>
-            1335
-        </start>
-        <end-day>
-            TUESDAY
-        </end-day>
-        <end>
-            1515
-        </end>
-
-    </time>
-    <location>
-        <online>
-            false
-        </online>
-        <start>
-            Churchill Hall 101
-        </start>
-
-    </location>
-    <users>
-        <uid>
-            [Prof. Lucia, Chat]
-        </uid>
-
-    </users>
-    <event>
-    <name>
-        Sleep
-    </name>
-    <time>
-        <start-day>
-            FRIDAY
-        </start-day>
-        <start>
-            1800
-        </start>
-        <end-day>
-            SUNDAY
-        </end-day>
-        <end>
-            1200
-        </end>
-
-    </time>
-    <location>
-        <online>
-            true
-        </online>
-        <start>
-            Home
-        </start>
-
-    </location>
-    <users>
-        <uid>
-            [Prof. Lucia]
-        </uid>
-
-    </users>
-
+<event>
+<name>Sleep</name>
+<time>
+<start-day>FRIDAY</start-day><start>1800</start><end-day>SUNDAY</end-day><end>1200</end>
+</time>
+<location><online>true</online><start>Home</start></location>
+<users><uid>[Prof. Lucia]</uid></users>
+</event>
 </schedule>

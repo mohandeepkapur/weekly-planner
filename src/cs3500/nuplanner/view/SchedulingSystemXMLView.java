@@ -27,37 +27,43 @@ public class SchedulingSystemXMLView implements SchedulingSystemView {
     List<ReadableEvent> events = this.model.eventsInSchedule(user);
     try {
       Writer file = new FileWriter("src/XMLFiles/toWrite/" + user + ".xml");
-      file.write("<?xml version=\"1.0\"?>\n");
-      file.write("<schedule id=\"" + user + "\">\n");
+      file.write("<?xml version=\"1.0\"?>");
+      file.write("<schedule id=\"" + user + "\">");
 
       for (ReadableEvent event : events) {
-        file.write("<event>\n");
-        file.write("<name>\n" + event.name() + "\n</name>\n");
-
-        file.write("<time>\n");
-        file.write("<start-day>\n" + event.startDay().toString() + "\n</start-day" +
-                ">\n");
-        file.write("<start>\n" + event.startTime() + "\n</start>\n");
-        file.write("<end-day>\n" + event.endDay().toString() + "\n</end" +
-                "-day>\n");
-        file.write("<end>\n" + event.endTime() + "\n</end>\n");
-        file.write("\n</time>\n");
-
-        file.write("<location>\n");
-        file.write("<online>\n" + event.isOnline() + "\n</online>\n");
-        file.write("<start>\n" + event.location() + "\n</start>\n");
-        file.write("\n</location>\n");
-
-        file.write("<users>\n");
-        file.write("<uid>\n" + event.eventInvitees() + "\n</uid>\n");
-        file.write("\n</users>\n");
+        file.write("\n");
+        file.write("<event>");
+        file.write("\n");
+        file.write("<name>" + event.name() + "</name>");
+        file.write("\n");
+        file.write("<time>");
+        file.write("\n");
+        file.write("<start-day>" + event.startDay().toString() + "</start-day" +
+                ">");
+        file.write("<start>" + event.startTime() + "</start>");
+        file.write("<end-day>" + event.endDay().toString() + "</end" +
+                "-day>");
+        file.write("<end>" + event.endTime() + "</end>");
+        file.write("\n");
+        file.write("</time>");
+        file.write("\n");
+        file.write("<location>");
+        file.write("<online>" + event.isOnline() + "</online>");
+        file.write("<start>" + event.location() + "</start>");
+        file.write("</location>");
+        file.write("\n");
+        file.write("<users>");
+        file.write("<uid>" + event.eventInvitees() + "</uid>");
+        file.write("</users>");
+        file.write("\n");
+        file.write("</event>");
+        file.write("\n");
       }
 
-      file.write("\n</schedule>\n");
+      file.write("</schedule>");
       file.close();
     } catch (IOException ex) {
       throw new RuntimeException(ex.getMessage());
     }
   }
-
 }
