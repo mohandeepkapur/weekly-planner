@@ -6,6 +6,7 @@
 </time>
 <location><online>true</online><start>Sea</start></location>
 <users><uid>[Prof. Lucia, Mo]</uid></users>
+</event>
 
 <event>
 <name>CS3500 Morning Lecture</name>
@@ -14,6 +15,7 @@
 </time>
 <location><online>false</online><start>Churchill Hall 101</start></location>
 <users><uid>[Prof. Lucia, Student Anon, Chat]</uid></users>
+</event>
 
 <event>
 <name>CS3500 Afternoon Lecture</name>
@@ -22,6 +24,7 @@
 </time>
 <location><online>false</online><start>Churchill Hall 101</start></location>
 <users><uid>[Prof. Lucia, Chat]</uid></users>
+</event>
 
 <event>
 <name>Sleep</name>
@@ -30,4 +33,5 @@
 </time>
 <location><online>true</online><start>Home</start></location>
 <users><uid>[Prof. Lucia]</uid></users>
+</event>
 </schedule>

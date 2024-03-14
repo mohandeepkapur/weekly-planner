@@ -57,7 +57,7 @@ public class TestXMLFunctions {
   @Test
   public void testXMLToScheduleCheckValuesOfFirstEvent() {
 
-    xmlController.useSchedulingSystem("src/XMLFiles/toRead/prof.xml");
+    xmlController.useSchedulingSystem("src/XMLFiles/toRead/Prof. Lucia.xml");
     ReadableEvent first = model.eventAt("Prof. Lucia", TUESDAY, 950);
     assertEquals("CS3500 Morning Lecture", first.name());
     assertEquals(TUESDAY, first.startDay());
@@ -73,7 +73,7 @@ public class TestXMLFunctions {
 
   @Test
   public void testXMLToScheduleCheckValuesOfThirdEvent() {
-    xmlController.useSchedulingSystem("src/XMLFiles/toRead/prof.xml");
+    xmlController.useSchedulingSystem("src/XMLFiles/toRead/Prof. Lucia.xml");
     ReadableEvent event = model.eventAt("Prof. Lucia", FRIDAY, 1800);
 
     assertEquals("Sleep", event.name());
@@ -92,7 +92,7 @@ public class TestXMLFunctions {
 
     assertEquals(0, model.allUsers().size());
 
-    xmlController.useSchedulingSystem("src/XMLFiles/toRead/prof.xml");
+    xmlController.useSchedulingSystem("src/XMLFiles/toRead/Prof. Lucia.xml");
 
     assertEquals(3, model.allUsers().size());
 
@@ -113,7 +113,7 @@ public class TestXMLFunctions {
             "BasketWeaving", "Sea", true, FRIDAY, 1000, SATURDAY, 1000);
 
     try {
-      xmlController.useSchedulingSystem("src/XMLFiles/toRead/prof.xml");
+      xmlController.useSchedulingSystem("src/XMLFiles/toRead/Prof. Lucia.xml");
     } catch (IllegalArgumentException ignore) {
     }
 
@@ -128,7 +128,7 @@ public class TestXMLFunctions {
     model.addEvent("Prof. Lucia", new ArrayList<>(List.of("Prof. Lucia", "Mo")),
             "BasketWeaving", "Sea", true, SUNDAY, 900, SUNDAY, 1000);
 
-    xmlController.useSchedulingSystem("src/XMLFiles/toRead/prof.xml");
+    xmlController.useSchedulingSystem("src/XMLFiles/toRead/Prof. Lucia.xml");
 
     assertEquals(4, model.allUsers().size());
   }
@@ -140,7 +140,7 @@ public class TestXMLFunctions {
     model.addEvent("Prof. Lucia", new ArrayList<>(List.of("Prof. Lucia", "Mo")),
             "BasketWeaving", "Sea", true, SUNDAY, 900, SUNDAY, 1000);
 
-    xmlController.useSchedulingSystem("src/XMLFiles/toRead/prof.xml");
+    xmlController.useSchedulingSystem("src/XMLFiles/toRead/Prof. Lucia.xml");
 
     assertEquals(4, model.allUsers().size());
 
