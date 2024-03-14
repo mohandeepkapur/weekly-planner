@@ -10,12 +10,11 @@ import cs3500.nuplanner.model.hw05.NUPlannerModel;
 import cs3500.nuplanner.model.hw05.SchedulingSystem;
 import cs3500.nuplanner.view.SchedulingSystemTextView;
 import cs3500.nuplanner.view.SchedulingSystemView;
-import cs3500.nuplanner.view.SchedulingSystemXMLView;
 
 import static org.junit.Assert.assertTrue;
 
 //shsss
-public class TestNUPlannerModel {
+public class TestSchedulingSystemNUPlannerImpl {
 
   // basic throws: IAE if specified user doesn't exist (when it should)
   // prevent overwrites since using map

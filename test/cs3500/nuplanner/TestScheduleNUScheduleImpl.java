@@ -1,6 +1,5 @@
 package cs3500.nuplanner;
 
-import org.junit.Assert;
 import org.junit.Test;
 
 import java.util.ArrayList;
@@ -17,7 +16,7 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 
-public class TestSchedule {
+public class TestScheduleNUScheduleImpl {
 
   @Test
   public void bruh() {
