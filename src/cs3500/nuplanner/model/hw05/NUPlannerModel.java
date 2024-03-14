@@ -297,14 +297,6 @@ public class NUPlannerModel implements SchedulingSystem {
 
   }
 
-  //  @Override
-  //  public List<Integer> eventIDsInSchedule(String user) {
-  //
-  //    confirmUserExists(user);
-  //
-  //    return this.userSchedules.get(user).eventIDs();
-  //  }
-
   @Override
   public List<ReadableEvent> eventsInSchedule(String user) {
 
@@ -315,177 +307,20 @@ public class NUPlannerModel implements SchedulingSystem {
 
   }
 
-  //  @Override
-  //  public Event eventAt(String user, int eventID) {
-  //
-  //    confirmUserExists(user);
-  //
-  //    return this.userSchedules.get(user).eventAt(eventID); // HERE DOWNCAST
-  //  }
-
-
   private void confirmUserExists(String user) {
     if (!this.userSchedules.containsKey(user))
       throw new IllegalArgumentException(user + " does not exist in system... ");
   }
 
-  //  // invited users not in planner but mentioned in XML will be forcefully added
-  //  private void addInviteesToSchedulingSystem(List<String> invitees) {
-  //    for (String invitee : invitees) {
-  //      if (!this.userSchedules.containsKey(invitee)) this.addUser(invitee);
-  //    }
-  //  }
-
-
   //-----------------------------------------------------------------------------------------------
   //-----------------------------------------------------------------------------------------------
   //-----------------------------------------------------------------------------------------------
-
-  // if XML has events w/ invitees that do not exist in planner, add them
-  @Override
-  public void convertXMLtoSchedule() { //throws IOException, SAXException, ParserConfigurationException
-
-    //    DocumentBuilder builder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
-    //    Document xmlDoc = builder.parse(new File("tutorial.xml"));
-    //    xmlDoc.getDocumentElement().normalize();
-    //
-    //    //looks for the data in the XML and calls the method to add the event
-    //    List<Event> listOfAllXMLEvents = new ArrayList<>();
-    //
-    //    //gets the list of all events
-    //    NodeList listOfEvents = xmlDoc.getElementsByTagName("event");
-    //
-    //    //runs through all events and gets their child nodes and also creates the schedule
-    //    for (int i = 0; i < listOfEvents.getLength(); i++) {
-    //      NodeList currentEventDetails = listOfEvents.item(i).getChildNodes();
-    //
-    //      //creating a list of invitees for the method
-    //      NodeList users = currentEventDetails.item(3).getChildNodes();
-    //      List<String> invitees = new ArrayList<>();
-    //      for (int l = 0; l < users.getLength(); l++) {
-    //        invitees.add(users.item(l).getNodeValue());
-    //      }
-    //
-    //      String name =
-    //              currentEventDetails.item(0).getAttributes().item(1).getNodeValue();
-    //      String location =
-    //              currentEventDetails.item(2).getAttributes().item(1).getNodeValue();
-    //      boolean isOnline =
-    //              Boolean.parseBoolean(currentEventDetails.item(2).getAttributes().item(0).getNodeValue());
-    //      DaysOfTheWeek startDay =
-    //              createDay(currentEventDetails.item(1).getAttributes().item(0).getNodeValue());
-    //      int startTime =
-    //              Integer.parseInt(currentEventDetails.item(1).getAttributes().item(1).getNodeValue());
-    //      DaysOfTheWeek endDay =
-    //              createDay(currentEventDetails.item(1).getAttributes().item(2).getNodeValue());
-    //      int endTime =
-    //              Integer.parseInt(currentEventDetails.item(1).getAttributes().item(3).getNodeValue());
-    //
-    //
-    //      // create schedules for invitees that do not exist in scheduling system
-    //      addInviteesToSchedulingSystem(invitees);
-    //
-    //      //create the event
-    //      Event event = new NUEvent(invitees, name, location, isOnline, startDay, startTime, endDay,
-    //              endTime);
-    //
-    //      //add the event to the list of events
-    //      listOfAllXMLEvents.add(event);
-    //    }
-    //
-    //    // checks if every user has open space in their schedule for event
-    //    for (Event listOfAllXMLEvent : listOfAllXMLEvents) {
-    //      try {
-    //        checkForConflictsInviteeSchedules(listOfAllXMLEvent.eventInvitees(),
-    //                listOfAllXMLEvent);
-    //      } catch (IllegalArgumentException ex) {
-    //        throw new IllegalArgumentException(ex.getMessage() + "Invalid XML schedule uploaded");
-    //      }
-    //    }
-    //
-    //    // add event to all schedules
-    //    for (Event listOfAllXMLEvent : listOfAllXMLEvents) {
-    //      addEventToInviteeSchedules(listOfAllXMLEvent.eventInvitees(),
-    //              listOfAllXMLEvent);
-    //    }
-  }
 
   @Override
-  public void convertScheduleToXML() {
-
-    //    List<Event> listOfUsersEvents = new ArrayList<>();
-    //
-    //    try {
-    //      Writer file = new FileWriter("sample-written.xml");
-    //      file.write("<?xml version=\"1.0\"?>\n");
-    //      file.write("<schedule id=\"SOMETHINGGOESHEREAGHHHH\">");
-    //
-    //      for (int i = 0; i < provideUserSchedule().numberOfEvents(); i++) {
-    //        listOfUsersEvents.add(provideUserSchedule().provideSingleEvent(i));
-    //      }
-    //
-    //      for (Event listOfUsersEvents : listOfUsersEvents) {
-    //        file.write("<event>");
-    //        file.write("<name>" + provideUserSchedule().event.name() + "</name>");
-    //
-    //        file.write("<time>");
-    //        file.write("<start-day>" + provideUserSchedule().event.startDay().toString + "</start-day" +
-    //                ">");
-    //        file.write("<start>" + provideUserSchedule().event.startTime() + "</start>");
-    //        file.write("<end-day>" + provideUserSchedule().event.endDay().toString + "</end-day>");
-    //        file.write("<end>" + provideUserSchedule().event.endTime() + "</end>");
-    //        file.write("</time>");
-    //
-    //        file.write("<location>");
-    //        file.write("<online>" + provideUserSchedule().event.isOnline() + "</online>");
-    //        file.write("<start>" + provideUserSchedule().event.location() + "</start>");
-    //        file.write("</location>");
-    //
-    //        file.write("<users>");
-    //        for (eventInvitees) {
-    //          file.write("<uid>" + provideUserSchedule().event.invitees() + "</uid>");
-    //        }
-    //        file.write("</users>");
-    //      }
-    //
-    //      file.write("</schedule>");
-    //      file.close();
-    //    } catch (IOException ex) {
-    //      throw new RuntimeException(ex.getMessage());
-    //    }
+  public ReadableEvent eventAt(String user, DaysOfTheWeek startDay, int startTime) {
+    confirmUserExists(user);
+    return this.userSchedules.get(user).eventAt(startDay, startTime);
   }
-
-  //  /**
-  //   * Small factory method that returns the enum representing
-  //   * the day of the week given a string.
-  //   *
-  //   * @param day the day of the week in string format
-  //   * @return an enum representing the day of the week
-  //   */
-  //  private static DaysOfTheWeek createDay(String day) {
-  //    if (day.equals(SUNDAY.toString())) {
-  //      return SUNDAY;
-  //    }
-  //    if (day.equals(MONDAY.toString())) {
-  //      return MONDAY;
-  //    }
-  //    if (day.equals(TUESDAY.toString())) {
-  //      return TUESDAY;
-  //    }
-  //    if (day.equals(WEDNESDAY.toString())) {
-  //      return WEDNESDAY;
-  //    }
-  //    if (day.equals(THURSDAY.toString())) {
-  //      return THURSDAY;
-  //    }
-  //    if (day.equals(FRIDAY.toString())) {
-  //      return FRIDAY;
-  //    }
-  //    if (day.equals(SATURDAY.toString())) {
-  //      return SATURDAY;
-  //    }
-  //    throw new IllegalArgumentException("Not a day of the week!");
-  //  }
 
   // public boolean checkEventCausingConflict() {} <-- so XML-stuff can be separated from model
 

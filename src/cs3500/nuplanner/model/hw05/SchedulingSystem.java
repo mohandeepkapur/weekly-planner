@@ -77,18 +77,9 @@ public interface SchedulingSystem {
 
   void modifyEvent(String user, DaysOfTheWeek startDay, int startTime, String modification);
 
-  /**
-   * Converts provided XML file into a Schedule.
-   */
-  void convertXMLtoSchedule();
-
-  /**
-   * Converts existing Schedule in ScheduleSystem into XML file.
-   */
-  void convertScheduleToXML();
-
   List<ReadableEvent> eventsInSchedule(String user);
 
+  ReadableEvent eventAt(String user, DaysOfTheWeek startDay, int startTime);
 
 
 

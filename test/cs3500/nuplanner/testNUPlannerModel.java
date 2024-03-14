@@ -10,6 +10,7 @@ import cs3500.nuplanner.model.hw05.NUPlannerModel;
 import cs3500.nuplanner.model.hw05.SchedulingSystem;
 import cs3500.nuplanner.view.SchedulingSystemTextView;
 import cs3500.nuplanner.view.SchedulingSystemView;
+import cs3500.nuplanner.view.SchedulingSystemXMLView;
 
 import static org.junit.Assert.assertTrue;
 //shsss
@@ -89,12 +90,15 @@ public class TestNUPlannerModel {
 
     model.removeEvent("Ko", DaysOfTheWeek.THURSDAY, 1030);
 
-    view.render("Jo"); System.out.println();
+    view.render("Jo"); System.out.println("\nKo should have one event\n");
+
+    view.render("Ko");
 
     model.modifyEvent("Jo", DaysOfTheWeek.WEDNESDAY, 1000, "removeinvitee Ko");
 
     view.render("Ko"); System.out.println();
 
   }
+
 
 }

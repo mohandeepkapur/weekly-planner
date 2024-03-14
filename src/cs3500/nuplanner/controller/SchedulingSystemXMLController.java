@@ -1,0 +1,168 @@
+package cs3500.nuplanner.controller;
+
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+import org.xml.sax.SAXException;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+
+import cs3500.nuplanner.model.hw05.DaysOfTheWeek;
+import cs3500.nuplanner.model.hw05.Event;
+import cs3500.nuplanner.model.hw05.NUEvent;
+import cs3500.nuplanner.model.hw05.ReadableEvent;
+import cs3500.nuplanner.model.hw05.SchedulingSystem;
+
+import static cs3500.nuplanner.model.hw05.DaysOfTheWeek.FRIDAY;
+import static cs3500.nuplanner.model.hw05.DaysOfTheWeek.MONDAY;
+import static cs3500.nuplanner.model.hw05.DaysOfTheWeek.SATURDAY;
+import static cs3500.nuplanner.model.hw05.DaysOfTheWeek.SUNDAY;
+import static cs3500.nuplanner.model.hw05.DaysOfTheWeek.THURSDAY;
+import static cs3500.nuplanner.model.hw05.DaysOfTheWeek.TUESDAY;
+import static cs3500.nuplanner.model.hw05.DaysOfTheWeek.WEDNESDAY;
+
+public class SchedulingSystemXMLController implements SchedulingSystemController {
+
+  private final SchedulingSystem model;
+
+  public SchedulingSystemXMLController(SchedulingSystem model) {
+    this.model = model;
+  }
+
+  @Override
+  public void useSchedulingSystem() {
+    throw new IllegalArgumentException("To use XML version of controller, provide XML filename...");
+  }
+
+  @Override
+  public void useSchedulingSystem(String pathname) {
+    try {
+      DocumentBuilder builder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
+      Document xmlDoc = builder.parse(new File(pathname));
+      xmlDoc.getDocumentElement().normalize();
+
+      //looks for the data in the XML and calls the method to add the event
+      List<Event> listOfAllXMLEvents = new ArrayList<>();
+
+      //gets the list of all events
+      NodeList listOfEvents = xmlDoc.getElementsByTagName("event");
+
+      //runs through all events and gets their child nodes and also creates the schedule
+      for (int item = 0; item < listOfEvents.getLength(); item++) {
+        if (listOfEvents.item(item).getNodeType() != Node.ELEMENT_NODE) {
+          throw new IllegalArgumentException("Invalid XML");
+        }
+        Element currentEventDetails = (Element) listOfEvents.item(item);
+
+        String name = currentEventDetails.getElementsByTagName("name").item(0).getTextContent();
+        String location = currentEventDetails.getElementsByTagName("place").item(0).getTextContent();
+        boolean isOnline = Boolean.parseBoolean(currentEventDetails.getElementsByTagName("online").item(0).getTextContent());
+        DaysOfTheWeek startDay = createDay(currentEventDetails.getElementsByTagName("start-day").item(0).getTextContent().toUpperCase());
+        int startTime = Integer.parseInt(currentEventDetails.getElementsByTagName("start").item(0).getTextContent());
+        DaysOfTheWeek endDay = createDay(currentEventDetails.getElementsByTagName("end-day").item(0).getTextContent().toUpperCase());
+        int endTime = Integer.parseInt(currentEventDetails.getElementsByTagName("end").item(0).getTextContent());
+        List<String> invitees = new ArrayList<>();
+
+        //creating a list of invitees for the method
+        NodeList users = currentEventDetails.getElementsByTagName("users").item(0).getChildNodes();
+
+        for (int indivudals = 0; indivudals < users.getLength(); indivudals++) {
+          if (users.item(indivudals).getNodeType() == Node.ELEMENT_NODE) {
+            invitees.add(users.item(indivudals).getTextContent());
+          }
+        }
+
+        // create schedules for invitees that do not exist in scheduling system
+        // addInviteesToSchedulingSystem(invitees);
+
+        //create the event
+        Event event = new NUEvent(invitees, name, location, isOnline, startDay, startTime, endDay, endTime);
+
+        //add the event to the list of events
+        listOfAllXMLEvents.add(event);
+      }
+
+      List<String> currentUsersInSchedSys = this.model.allUsers();
+      List<String> xmlAddedUsersInSchedSys = new ArrayList<>();
+
+      for (Event event : listOfAllXMLEvents) {
+        for (String invitee : event.eventInvitees()) {
+          if (!currentUsersInSchedSys.contains(invitee)) { // current users list does not update w/ this loop info
+            this.model.addUser(invitee);
+            currentUsersInSchedSys.add(invitee);
+            xmlAddedUsersInSchedSys.add(invitee);
+          }
+        }
+      }
+
+      // get list of all users xml wants to add into scheduling system
+      // add them all pre-emptively
+      // if xml upload becomes unsuccessful, remove all those users from the system
+
+      for (Event event : listOfAllXMLEvents) {
+        // if xml can't be uploaded due to one event w/ incompatible time
+        if (this.model.eventConflict(event.host(),
+                event.eventInvitees(), event.name(),
+                event.location(), event.isOnline(),
+                event.startDay(), event.startTime(),
+                event.endDay(), event.endTime())) {
+          // revert sched sys back to previous state
+          for (String user : xmlAddedUsersInSchedSys) {
+            this.model.removeUser(user);
+          }
+          throw new IllegalArgumentException("Invalid XML schedule uploaded");
+        }
+      }
+
+      for (Event event : listOfAllXMLEvents) {
+        this.model.addEvent(event.host(),
+                event.eventInvitees(), event.name(),
+                event.location(), event.isOnline(),
+                event.startDay(), event.startTime(),
+                event.endDay(), event.endTime());
+      }
+
+    } catch (ParserConfigurationException ex) {
+      throw new IllegalStateException("Error in creating the builder");
+    } catch (IOException ioEx) {
+      throw new IllegalStateException("Error in opening the file");
+    } catch (SAXException saxEx) {
+      throw new IllegalStateException("Error in parsing the file");
+    }
+
+  }
+
+  private DaysOfTheWeek createDay(String day) {
+    if (day.equals(SUNDAY.toString())) {
+      return SUNDAY;
+    }
+    if (day.equals(MONDAY.toString())) {
+      return MONDAY;
+    }
+    if (day.equals(TUESDAY.toString())) {
+      return TUESDAY;
+    }
+    if (day.equals(WEDNESDAY.toString())) {
+      return WEDNESDAY;
+    }
+    if (day.equals(THURSDAY.toString())) {
+      return THURSDAY;
+    }
+    if (day.equals(FRIDAY.toString())) {
+      return FRIDAY;
+    }
+    if (day.equals(SATURDAY.toString())) {
+      return SATURDAY;
+    }
+    throw new IllegalArgumentException("Not a day of the week!");
+  }
+
+}
