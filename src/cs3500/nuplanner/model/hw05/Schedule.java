@@ -2,49 +2,76 @@ package cs3500.nuplanner.model.hw05;
 
 import java.util.List;
 
-// assumption:
-// no scheduling conflicts in schedule
+/**
+ * Operations and observations necessary for a Schedule in a Scheduling System. Schedule provides
+ * direct access to Events (aliased), and if relevant, Events passed into operational methods must
+ * be references to the Events contained within Schedule.
+ */
 public interface Schedule {
 
+  /**
+   * Observes the owner of the schedule.
+   *
+   * @return schedule owner
+   */
   String scheduleOwner();
 
   /**
    * Adds an Event into Schedule.
    *
-   * @param newEvent Event to be added
-   * @throws IllegalArgumentException if any Events in Schedule overlap
+   * @param newEvent                        Event to be added
+   * @throws IllegalArgumentException       if Event is null
+   * @throws IllegalArgumentException       if Event to be added conflicts with at least one
+   *                                        Event within schedule
+   * @throws IllegalArgumentException       if Event already exists in Schedule
    */
-  // not constructing event within a schedule obj so same Event can be put into multiple Schedules
   void addEvent(Event newEvent);
 
   /**
-   * Removes an Event from Schedule. Event to be removed will update its invitee list.
+   * Removes an Event from Schedule.
    *
-   * @param newEvent Event to be removed
+   * If an Event is removed from a Schedule, the invitee list of the Event should be updated
+   * to reflect that change.
+   *
+   * @param eventToRemove                   Event to be removed
+   * @throws IllegalArgumentException       if Event is null
+   * @throws IllegalArgumentException       if the given Event does not exist in Schedule
    */
-  void removeEvent(Event event);
+  void removeEvent(Event eventToRemove);
 
   /**
    * Observes number of Events contained within Schedule.
+   *
+   * @return number of Events within Schedule
    */
   int numberOfEvents();
 
   /**
-   * @param eventID ID of an Event
-   * @return Event object
+   * Checks whether given Event would conflict with Events currently within schedule.
+   *
+   * @param outerEvent                     Event that will be checked against Schedule's Events
+   * @throws IllegalArgumentException      if given Event is null
+   *
+   * @return                               boolean that signals whether Event can be added
+   */
+  boolean eventConflict(Event outerEvent);
+
+  /**
+   * Provides direct (aliased) access to an Event contained within the Schedule.
+   *
+   * @throws IllegalArgumentException     if no Event at given start day and time exists
+   *
+   * @return                              an Event within Schedule
    */
   Event eventAt(DaysOfTheWeek startDay, int startTime);
 
   /**
-   * Checks whether an Event would conflict with current Schedule. What counts as a conflict is
-   * implementation detail.
+   * Provides direct (aliased) access to all the Events contained within the Schedule.
    *
-   * @param event Event that will be checked against Schedule's Events
-   * @return boolean that signals whether Event can be added
+   * @return            all Events within Schedule
    */
-  boolean eventConflict(Event event);
-
   List<Event> events();
 
 }
 
+// events and eventAt provide direct access to an Event object within a Schedule <- important

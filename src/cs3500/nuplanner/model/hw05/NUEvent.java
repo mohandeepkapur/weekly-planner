@@ -5,12 +5,16 @@ import java.util.List;
 import java.util.Objects;
 
 /**
- * NUEvent only works with military time.
+ * Implementation of an Event. The smallest unit of time this implementation can handle is MINUTES.
+ * NUEvent represents and requires time in military format. This implementation of an Event can only
+ * span from 1 minute to 6 days, 23 hours, 59 minutes
  */
 public class NUEvent implements Event {
 
-  //  private static int count = 0;
-  //  private final int ID;
+  // first user in invitees is host of event
+  private final List<String> invitees;
+  // host of an event cannot be changed
+  private final String host;
 
   private String name;
   private String location;
@@ -19,13 +23,13 @@ public class NUEvent implements Event {
   private int startTime;
   private DaysOfTheWeek endDay;
   private int endTime;
-  // first user in invitees is host of event
-  private final List<String> invitees;
-  // host of an event cannot be changed
-  private final String host;
 
   /**
    * Constructs an Event.
+   *
+   * @throws IllegalArgumentException  if any input is null
+   * @throws IllegalArgumentException  if times provided are not in military format
+   * @throws IllegalArgumentException  if invitee list is empty (always at least one)
    */
   public NUEvent(List<String> invitees,
                  String eventName, String location, boolean isOnline,
@@ -60,9 +64,6 @@ public class NUEvent implements Event {
 
     ensureValidTimeSpan(this.startTime, this.endTime, this.startDay, this.endDay);
 
-    //            // assign unique, immutable ID to every event
-    //            ID = count;
-    //            count++;
   }
 
   private void ensureProperMilitaryTime(int time) {
@@ -71,7 +72,10 @@ public class NUEvent implements Event {
     }
   }
 
-  // copy constructor
+  /**
+   * Constructs a copy of another Event.
+   * @param other Event to be copied
+   */
   public NUEvent(Event other) {
     this.invitees = new ArrayList<>(other.eventInvitees());
     this.name = other.name();
@@ -85,21 +89,35 @@ public class NUEvent implements Event {
 
     ensureValidTimeSpan(this.startTime, this.endTime, this.startDay, this.endDay);
 
-    //            // assign unique, immutable ID to every event
-    //            ID = count;
-    //            count++;
   }
 
+  /**
+   * Observes host of Event.
+   * Event host is fixed/cannot be updated.
+   *
+   * @return the host of event
+   */
   @Override
   public String host() {
     return this.host;
   }
 
+  /**
+   * Observes name of Event.
+   *
+   * @return the name of event
+   */
   @Override
   public String name() {
     return this.name;
   }
 
+  /**
+   * Updates name of Event.
+   *
+   * @param name                          new name of Event
+   * @throws IllegalArgumentException     if name provided is null
+   */
   @Override
   public void updateName(String name) {
     if (name == null) {
@@ -108,11 +126,22 @@ public class NUEvent implements Event {
     this.name = name;
   }
 
+  /**
+   * Observes location of Event.
+   *
+   * @return the location of event
+   */
   @Override
   public String location() {
     return this.location;
   }
 
+  /**
+   * Updates location of Event.
+   *
+   * @param location                      new location of Event
+   * @throws IllegalArgumentException     if name provided is null
+   */
   @Override
   public void updateLocation(String location) {
     if (location == null) {
@@ -121,21 +150,47 @@ public class NUEvent implements Event {
     this.location = location;
   }
 
+  /**
+   * Observes whether Event is online or offline.
+   *
+   * @return online/offline status
+   */
   @Override
   public boolean isOnline() {
     return this.isOnline;
   }
 
+  /**
+   * Updates Event online or offline status.
+   *
+   * @param isOnline                      new online/offline status of Event
+   */
   @Override
   public void updateIsOnline(boolean isOnline) {
     this.isOnline = isOnline;
   }
 
+  /**
+   * Observes starting day of the Event.
+   *
+   * @return starting day of event
+   */
   @Override
   public DaysOfTheWeek startDay() {
     return this.startDay;
   }
 
+  /**
+   * Updates day the Event starts.
+   * The minimum and maximum time an Event can span is enforced by implementation.
+   *
+   * @param startDay                      new starting day of Event
+   * @throws IllegalArgumentException     if time-span of updated Event is invalid
+   * @throws IllegalArgumentException     if start day provided is null
+   *
+   * @implNote                            Event can only span from 1 minute to 6 days, 23 hours,
+   *                                      59 minutes
+   */
   @Override
   public void updateStartDay(DaysOfTheWeek startDay) {
     if (startDay == null) {
@@ -145,11 +200,27 @@ public class NUEvent implements Event {
     this.startDay = startDay;
   }
 
+  /**
+   * Observes ending day of the Event.
+   *
+   * @return ending day of event
+   */
   @Override
   public DaysOfTheWeek endDay() {
     return this.endDay;
   }
 
+  /**
+   * Updates day the Event ends.
+   * The minimum and maximum time an Event can span is enforced by implementation.
+   *
+   * @param endDay                        new end day of Event
+   * @throws IllegalArgumentException     if time-span of updated Event is invalid
+   * @throws IllegalArgumentException     if end day provided is null
+   *
+   * @implNote                            Event can only span from 1 minute to 6 days, 23 hours,
+   *                                      59 minutes
+   */
   @Override
   public void updateEndDay(DaysOfTheWeek endDay) {
     if (endDay == null) {
@@ -159,11 +230,29 @@ public class NUEvent implements Event {
     this.endDay = endDay;
   }
 
+  /**
+   * Observes starting time of Event.
+   *
+   * @return starting time of event
+   */
   @Override
   public int startTime() {
     return this.startTime;
   }
 
+  /**
+   * Updates time the Event starts.
+   * The minimum and maximum time an Event can span is enforced by implementation.
+   * Desired format of time is enforced by implementation.
+   *
+   * @param startTime                     new start time of Event
+   * @throws IllegalArgumentException     if time-span of updated Event is invalid
+   * @throws IllegalArgumentException     if time provided isn't in implementation's desired format
+   *
+   * @implNote                            Event can only span from 1 minute to 6 days, 23 hours,
+   *                                      59 minutes
+   *                                      time provided must be in military format
+   */
   @Override
   public void updateStartTime(int startTime) {
     ensureProperMilitaryTime(startTime);
@@ -171,11 +260,29 @@ public class NUEvent implements Event {
     this.startTime = startTime;
   }
 
+  /**
+   * Observes ending time of Event.
+   *
+   * @return ending time of event
+   */
   @Override
   public int endTime() {
     return this.endTime;
   }
 
+  /**
+   * Updates time the Event ends.
+   * The minimum and maximum time an Event can span is enforced by implementation.
+   * Desired format of time is enforced by implementation.
+   *
+   * @param endTime                       new end time of Event
+   * @throws IllegalArgumentException     if time-span of updated Event is invalid
+   * @throws IllegalArgumentException     if time provided isn't in implementation's desired format
+   *
+   * @implNote                            Event can only span from 1 minute to 6 days, 23 hours,
+   *                                      59 minutes
+   *                                      time provided must be in military format
+   */
   @Override
   public void updateEndTime(int endTime) {
     ensureProperMilitaryTime(endTime);
@@ -183,10 +290,23 @@ public class NUEvent implements Event {
     this.endTime = endTime;
   }
 
+  /**
+   * Observes all invitees that are part of the Event.
+   * The first invitee MUST be the host of the Event.
+   *
+   * @return list of invitees (first invitee MUST be host)
+   */
   public List<String> eventInvitees() {
     return new ArrayList<>(invitees);
   }
 
+  /**
+   * Removes an invitee from the Event.
+   *
+   * @param invitee                       invitee to remove
+   * @throws IllegalArgumentException     if no invitees left in Event
+   * @throws IllegalArgumentException     if invitee to remove is not part of Event
+   */
   @Override
   public void removeInvitee(String invitee) {
     // if invitee not contained within event
@@ -199,6 +319,13 @@ public class NUEvent implements Event {
     invitees.remove(invitee);
   }
 
+  /**
+   * Adds an invitee to the Event.
+   *
+   * @param invitee                       invitee to add
+   * @throws IllegalArgumentException     if invitee is already part of Event
+   * @throws IllegalArgumentException     if first invitee is not host of Event
+   */
   @Override
   public void addInvitee(String invitee) {
 
@@ -215,7 +342,16 @@ public class NUEvent implements Event {
     invitees.add(invitee);
   }
 
-  // also check to see that events that exceed one week do not exceed timespan!!
+
+  /**
+   * Confirms that the time Event spans is within specified constraints.
+   *
+   * @param startTime                     start time of Event
+   * @param endTime                       end time of Event
+   * @param startDay                      start day of Event
+   * @param endDay                        end day of Event
+   * @throws IllegalArgumentException     if time span is invalid
+   */
   private void ensureValidTimeSpan(int startTime, int endTime,
                                    DaysOfTheWeek startDay, DaysOfTheWeek endDay)
           throws IllegalArgumentException {
@@ -245,6 +381,4 @@ public class NUEvent implements Event {
     int timespan = dayRangeMin + timeRangeMin;
   }
 
-  // in event impl <- can remove/add all invitees of an event <- but first invitee must be host
-  // event will only be added into a schedule if it has invitees <- never when it doesn't
 }

@@ -3,61 +3,75 @@ package cs3500.nuplanner.model.hw05;
 import java.util.List;
 
 /**
- * Readable-only version of an Event.
+ * Readable-only version of an Event. This is so the Scheduling System can dole out Events to
+ * other components while enforcing immutability. Defensive copies are already given out, but
+ * from a design-standpoint, access to operators should be removed as well.
  */
 public interface ReadableEvent {
 
+  /**
+   * Observes host of Event.
+   * Event host is fixed/cannot be updated.
+   *
+   * @return the host of event
+   */
   String host();
 
   /**
    * Observes name of Event.
+   *
+   * @return the name of event
    */
   String name();
 
   /**
-   * Observes Event location.
+   * Observes location of Event.
+   *
+   * @return the location of event
    */
   String location();
 
   /**
-   * Observes information on whether Event is online or offline.
+   * Observes whether Event is online or offline.
+   *
+   * @return online/offline status
    */
   boolean isOnline();
 
   /**
-   * Observes the start-day of the Event.
+   * Observes starting day of the Event.
+   *
+   * @return starting day of event
    */
   DaysOfTheWeek startDay();
 
   /**
-   * Observes the end-day of the Event.
+   * Observes ending day of the Event.
+   *
+   * @return ending day of event
    */
   DaysOfTheWeek endDay();
 
   /**
-   * Observes start time of Event.
+   * Observes starting time of Event.
    *
-   * @implNote military time is used: 13:35 -> 1:35pm
+   * @return starting time of event
    */
   int startTime();
 
   /**
-   * Observes end time of Event.
+   * Observes ending time of Event.
    *
-   * @implNote military time is used: 13:35 -> 1:35pm
+   * @return ending time of event
    */
   int endTime();
 
   /**
-   * Collection of Users that are part of the Event. The first user is always the owner. The
-   * following users are invitees.
-   * <p>
-   * (issue of whether owner exists or not should've been taken care of upstream)
+   * Observes all invitees that are part of the Event.
+   * The first invitee MUST be the host of the Event.
    *
-   * @return
-   * @implNote
+   * @return list of invitees (first invitee MUST be host)
    */
   List<String> eventInvitees();
-
 
 }

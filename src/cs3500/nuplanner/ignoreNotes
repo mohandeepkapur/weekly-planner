@@ -108,3 +108,5 @@ good note:
   // view could've gotten 2D board (impl-specific solution) and then iterated over that
   // regardless of how model is storing these schedules and events,
   // view should be able to render user schedule
+
+

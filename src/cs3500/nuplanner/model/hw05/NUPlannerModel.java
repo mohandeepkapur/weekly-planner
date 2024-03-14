@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- *
+ * Entire system works through aliasing.
  */
 public class NUPlannerModel implements SchedulingSystem {
 
@@ -262,7 +262,11 @@ public class NUPlannerModel implements SchedulingSystem {
         event.updateEndDay(convertStringToDay(tokens[1]));
         break;
       case "addinvitee":
-        confirmUserExists(tokens[1]);
+        try {
+          confirmUserExists(tokens[1]);
+        } catch (IllegalArgumentException caught ) {
+          this.addUser(tokens[1]);
+        }
         event.addInvitee(tokens[1]);
         break;
       default:
@@ -323,15 +327,4 @@ public class NUPlannerModel implements SchedulingSystem {
     return this.userSchedules.get(user).eventAt(startDay, startTime);
   }
 
-  // public boolean checkEventCausingConflict() {} <-- so XML-stuff can be separated from model
-
-  // if XML fails <-- remove newly added users <-- store that information so removal works
-  // wait, how does removing user work
-
 }
-
-//removeEvent(String user, int eventID); // modify events -> constructing new event
-//removeEvent(String user, DaysOfTheWeek day, int startTime);
-
-// <-- moving to user start day start time to access event specifically
-//

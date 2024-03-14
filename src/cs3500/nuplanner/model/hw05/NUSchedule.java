@@ -4,30 +4,47 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
-// assumptions made when dealing with schedule:
-// 1) internal events never conflict,
-// 2) internal events always sorted
+/**
+ * Implementation of a Schedule in a Scheduling System. Adheres to following INVARIANT: all Events
+ * contained within a Schedule will never conflict.
+ *
+ * (Takes responsibility of modifying an Event if it is removed from the Schedule)
+ */
 public class NUSchedule implements Schedule {
-
-  // an event obj can be contained within multiple schedules
-  // can access a specific event in user schedule using event ID
-  // delegating relevant checks to schedule and event <-- keeping model as light as possible
 
   // sorted from earliest to latest event
   private final List<Event> events;
 
   private final String user;
 
+  /**
+   * Constructs a schedule.
+   * @param user scheduleOwner
+   */
   public NUSchedule(String user) {
     this.events = new ArrayList<>();
     this.user = user;
   }
 
+  /**
+   * Observes the owner of the schedule.
+   *
+   * @return schedule owner
+   */
   @Override
   public String scheduleOwner() {
     return user;
   }
 
+  /**
+   * Adds an Event into Schedule.
+   *
+   * @param newEvent                        Event to be added
+   * @throws IllegalArgumentException       if Event is null
+   * @throws IllegalArgumentException       if Event to be added conflicts with at least one
+   *                                        Event within schedule
+   * @throws IllegalArgumentException       if Event already exists in Schedule
+   */
   @Override
   public void addEvent(Event newEvent) {
     // if event is null
@@ -36,7 +53,7 @@ public class NUSchedule implements Schedule {
     // if event-to-add already exists in schedule
     if (events.contains(newEvent)) {
       throw new IllegalArgumentException("Provided event already exists in schedule... ");
-    }
+    } // could remove?
 
     // if event-to-add conflicts with existing events in schedule
     if (eventConflict(newEvent)) {
@@ -51,6 +68,16 @@ public class NUSchedule implements Schedule {
 
   }
 
+  /**
+   * Removes an Event from Schedule.
+   *
+   * If an Event is removed from a Schedule, the invitee list of the Event should be updated
+   * to reflect that change.
+   *
+   * @param eventToRemove                   Event to be removed
+   * @throws IllegalArgumentException       if Event is null
+   * @throws IllegalArgumentException       if the given Event does not exist in Schedule
+   */
   @Override
   public void removeEvent(Event eventToRemove) {
     // if event is null
@@ -72,25 +99,25 @@ public class NUSchedule implements Schedule {
     // update event's invitee list to notify other invitees of attendance change
     eventToRemove.removeInvitee(this.user);
 
-    // no constraint of (if host is removed, then event removed from all invitees) here
-    // ^ model specific
   }
 
+  /**
+   * Observes number of Events contained within Schedule.
+   *
+   * @return number of Events within Schedule
+   */
   @Override
   public int numberOfEvents() {
     return this.events.size();
   }
 
-  //  @Override
-  //  public Event eventAt(int eventID) {
-  //    for (Event event : events) {
-  //      if (event.ID() == eventID) {
-  //        return event;
-  //      }
-  //    }
-  //    throw new IllegalArgumentException("Event of this ID does not exist... ");
-  //  }
-
+  /**
+   * Provides direct (aliased) access to an Event contained within the Schedule.
+   *
+   * @throws IllegalArgumentException     if no Event at given start day and time exists
+   *
+   * @return                              an Event within Schedule
+   */
   @Override
   public Event eventAt(DaysOfTheWeek startDay, int startTime) {
 
@@ -105,30 +132,33 @@ public class NUSchedule implements Schedule {
 
   }
 
-  //  @Override
-  //  public List<Integer> eventIDs() {
-  //    List<Integer> listOfIDs = new ArrayList<>();
-  //    for (Event event : events) {
-  //      listOfIDs.add(event.ID());
-  //    }
-  //    return listOfIDs;
-  //  }
-
+  /**
+   * Provides direct (aliased) access to all the Events contained within the Schedule.
+   *
+   * @return            all Events within Schedule
+   */
   @Override
   public List<Event> events() {
-
-    return events; // Can be a direct getter <-- only downcast to readable event in model?
-
+    return events;
   }
 
   /**
-   * @implNote two Events not considered to overlap/conflict if the
-   * end day+time for one event == start day+time for other
+   * Checks whether given Event would conflict with Events currently within schedule.
+   *
+   * @param outerEvent                     Event that will be checked against Schedule's Events
+   * @throws IllegalArgumentException      if given Event is null
+   *
+   * @return                               boolean that signals whether Event can be added
+   *
+   * @implNote                             two Events not considered to overlap/conflict if the
+   *                                       end day+time for one event == start day+time for other
    */
   @Override
-  public boolean eventConflict(Event outEvent) {
+  public boolean eventConflict(Event outerEvent) {
+    checkIfEventNull(outerEvent);
+
     // 1: assign objective values to every event start time and end time <- EXPLAIN WHAT THEY ARE
-    List<Integer> outEventObjValues = extractObjectiveValues(outEvent);
+    List<Integer> outEventObjValues = extractObjectiveValues(outerEvent);
     int oStartVal = outEventObjValues.get(0);
     int oEndVal = outEventObjValues.get(1);
 
@@ -165,10 +195,12 @@ public class NUSchedule implements Schedule {
 
   /**
    * Extracts an objective value for an Event's start day/time and end day/time
-   * starting from 1st week Sunday 0:00.
+   * using 1st week Sunday 0:00 as reference.
    *
-   * @param event
-   * @return
+   * Objective value is difference in minutes from reference point to current date!
+   *
+   * @param event           Event
+   * @return                minutes away from Sunday 0:00 for both start and end day/time of Event
    */
   private List<Integer> extractObjectiveValues(Event event) {
     int sDv = event.startDay().val();
@@ -194,7 +226,10 @@ public class NUSchedule implements Schedule {
 
   }
 
-  // CRUCIAL: must be performed everytime an Event added
+  /**
+   * Sorts the Events within Schedule from earliest to least time. Performed everytime an Event
+   * is added.
+   */
   private void sortEvents() {
     // all need to do is order start times, since every event within schedule does not conflict
     events.sort(Comparator.comparingInt((Event event) -> event.startDay().val())
@@ -202,6 +237,11 @@ public class NUSchedule implements Schedule {
 
   }
 
+  /**
+   * Checks whether given Event is null.
+   * @param event                        Event
+   * @throws IllegalArgumentException    if Event is null
+   */
   private void checkIfEventNull(Event event) {
     if (event == null) {
       throw new IllegalArgumentException("Provided event cannot be null... ");

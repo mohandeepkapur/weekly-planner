@@ -25,5 +25,9 @@ Other considerations:
 - same thing for user manually creating a new event -> non-existing invitees automatically addeed
 
 
+events and eventAt provide direct access to an Event object within a Schedule <- important
 
-- XML files cannot OVERWRITE a schedule, only ADD to one/multiple
+- XML files cannot OVERWRITE a schedule, only create or ADD to one/multiple
+
+  // an event obj can be contained within multiple schedules
+  // can access a specific event in user schedule using Event's start day and start time
