@@ -262,13 +262,19 @@ public class NUPlannerModel implements SchedulingSystem {
         event.updateEndDay(convertStringToDay(tokens[1]));
         break;
       case "addinvitee":
-        confirmUserExists(tokens[1]);
+        try {
+          confirmUserExists(tokens[1]);
+        } catch (IllegalArgumentException caught) {
+          this.addUser(tokens[1]);
+        }
         event.addInvitee(tokens[1]);
         break;
+//        confirmUserExists(tokens[1]);
+//        event.addInvitee(tokens[1]);
+//        break;
       default:
         throw new IllegalArgumentException("Should not be reached... jk mod request weird ");
     }
-
   }
 
   private void confirmUserDoesNotExist(String user) throws IllegalArgumentException {
