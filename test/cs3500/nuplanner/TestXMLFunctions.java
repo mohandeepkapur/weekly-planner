@@ -74,7 +74,7 @@ public class TestXMLFunctions {
   @Test
   public void testXMLToScheduleCheckValuesOfThirdEvent() {
     xmlController.useSchedulingSystem("src/XMLFiles/toRead/prof.xml");
-    ReadableEvent event = model.eventAt("Prof. Lucia", TUESDAY, 950);
+    ReadableEvent event = model.eventAt("Prof. Lucia", FRIDAY, 1800);
 
     assertEquals("Sleep", event.name());
     assertEquals(FRIDAY, event.startDay());
