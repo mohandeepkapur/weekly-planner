@@ -14,11 +14,11 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 public class TestEvent {
-  
+
   @Test
   public void checkEventStatesValidConstruction() {
 
-    Event event1 = new NUEvent (new ArrayList<String>(List.of("Mo", "Ko", "Jo")),
+    Event event1 = new NUEvent(new ArrayList<String>(List.of("Mo", "Ko", "Jo")),
             "Tennis", "Krentzman Quad", true,
             DaysOfTheWeek.WEDNESDAY, 1000, DaysOfTheWeek.WEDNESDAY, 1100);
 
@@ -126,7 +126,7 @@ public class TestEvent {
   public void testInvalidConstructorInputs() {
 
   }
-  
+
 }
 
 /*

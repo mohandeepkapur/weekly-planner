@@ -62,8 +62,8 @@ public class NUSchedule implements Schedule {
     }
 
     // remove event from schedule
-    for(int i = 0; i < this.numberOfEvents(); i++) {
-      if(this.events.get(i) == eventToRemove) {
+    for (int i = 0; i < this.numberOfEvents(); i++) {
+      if (this.events.get(i) == eventToRemove) {
         this.events.remove(i);
         break;
       }
@@ -122,8 +122,8 @@ public class NUSchedule implements Schedule {
   }
 
   /**
-   * @implNote                              two Events not considered to overlap/conflict if the
-   *                                        end day+time for one event == start day+time for other
+   * @implNote two Events not considered to overlap/conflict if the
+   * end day+time for one event == start day+time for other
    */
   @Override
   public boolean eventConflict(Event outEvent) {
@@ -166,6 +166,7 @@ public class NUSchedule implements Schedule {
   /**
    * Extracts an objective value for an Event's start day/time and end day/time
    * starting from 1st week Sunday 0:00.
+   *
    * @param event
    * @return
    */
@@ -180,14 +181,14 @@ public class NUSchedule implements Schedule {
     int endVal;
 
     // event that extends into next week
-    if (eDv - sDv < 0 || (eDv - sDv == 0 && eT <= sT) ) {
-      endVal = ((eDv + 7) * 60 * 24) + (eT/100 * 60) + (eT%100);
+    if (eDv - sDv < 0 || (eDv - sDv == 0 && eT <= sT)) {
+      endVal = ((eDv + 7) * 60 * 24) + (eT / 100 * 60) + (eT % 100);
     } else {
       // event contained within first week
-      endVal = (eDv * 60 * 24) + (eT/100 * 60) + (eT%100);
+      endVal = (eDv * 60 * 24) + (eT / 100 * 60) + (eT % 100);
     }
     // start day always within first week
-    startVal = (sDv * 60 * 24) + (sT/100 * 60) + (sT%100);
+    startVal = (sDv * 60 * 24) + (sT / 100 * 60) + (sT % 100);
 
     return new ArrayList<Integer>(List.of(startVal, endVal));
 
@@ -202,7 +203,7 @@ public class NUSchedule implements Schedule {
   }
 
   private void checkIfEventNull(Event event) {
-    if(event == null) {
+    if (event == null) {
       throw new IllegalArgumentException("Provided event cannot be null... ");
     }
   }

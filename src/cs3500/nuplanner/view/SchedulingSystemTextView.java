@@ -49,9 +49,9 @@ public class SchedulingSystemTextView implements SchedulingSystemView {
   /**
    * Checks to see if the day of the week matches and then prints all the events for that day.
    *
-   * @param user     the schedule owner
-   * @param events   a list of events
-   * @param day      the day to check
+   * @param user   the schedule owner
+   * @param events a list of events
+   * @param day    the day to check
    */
 
   private void runOverEvents(String user, List<ReadableEvent> events, String day) {
@@ -65,7 +65,7 @@ public class SchedulingSystemTextView implements SchedulingSystemView {
   /**
    * Prints an event in a simple textual view in the console.
    *
-   * @param event     the event whose state will be printed
+   * @param event the event whose state will be printed
    */
 
   private void displayEventDetails(ReadableEvent event) {

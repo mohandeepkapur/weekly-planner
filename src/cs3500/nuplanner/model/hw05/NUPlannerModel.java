@@ -50,7 +50,7 @@ public class NUPlannerModel implements SchedulingSystem {
     confirmUserExists(host);
 
     // if event contains non-hosts that don't exist, invite them into the planning system
-    for (String user: invitees) {
+    for (String user : invitees) {
       try {
         confirmUserExists(user);
       } catch (IllegalArgumentException caught) {
@@ -63,7 +63,8 @@ public class NUPlannerModel implements SchedulingSystem {
       throw new IllegalArgumentException("Unable to add event in sys where adder is not host... ");
     }
 
-    eventConflict(host, invitees, eventName, location, isOnline, startDay, startTime, endDay, endTime);
+    eventConflict(host, invitees, eventName, location, isOnline, startDay, startTime, endDay,
+            endTime);
 
     // create new Event -> Event constructor will inform model whether params valid
     Event event = new NUEvent(invitees, eventName, location, isOnline,
@@ -116,6 +117,7 @@ public class NUPlannerModel implements SchedulingSystem {
 
   /**
    * Recursive.
+   *
    * @param invitees
    * @param eventToRemove
    */
@@ -162,7 +164,8 @@ public class NUPlannerModel implements SchedulingSystem {
     try {
       performOtherModifications(copyOfEvent, modification);
     } catch (IllegalArgumentException | IllegalStateException caught) { // anything throws ISE???
-      throw new IllegalArgumentException("Cannot add this modified version of event in scheduling system... " + caught.getMessage());
+      throw new IllegalArgumentException(
+              "Cannot add this modified version of event in scheduling system... " + caught.getMessage());
     }
 
     // check if modified copy is compatible with scheduling system
@@ -181,14 +184,15 @@ public class NUPlannerModel implements SchedulingSystem {
     }
 
     // otherwise, add a copy of original event back into the schedule, with original invitees
-    // orig invitees valid <-- it is known that this entire event construction below IS VALID
+    // orig invitees valid <-- it is prev. known that this entire event construction below IS VALID
     this.addEvent(origEvent.host(),
             origInvitees, origEvent.name(),
             origEvent.location(), origEvent.isOnline(),
             origEvent.startDay(), origEvent.startTime(),
             origEvent.endDay(), origEvent.endTime());
 
-    throw new IllegalArgumentException("Cannot add this modified version of event in scheduling system... ");
+    throw new IllegalArgumentException(
+            "Cannot add this modified version of event in scheduling system... ");
 
   }
 
@@ -199,9 +203,9 @@ public class NUPlannerModel implements SchedulingSystem {
 
   @Override
   public boolean eventConflict(String host, List<String> invitees,
-                            String eventName, String location, boolean isOnline,
-                            DaysOfTheWeek startDay, int startTime,
-                            DaysOfTheWeek endDay, int endTime) {
+                               String eventName, String location, boolean isOnline,
+                               DaysOfTheWeek startDay, int startTime,
+                               DaysOfTheWeek endDay, int endTime) {
 
     // create new Event -> Event constructor will inform model whether params valid
     Event event = new NUEvent(invitees, eventName, location, isOnline,
@@ -223,7 +227,7 @@ public class NUPlannerModel implements SchedulingSystem {
 
     String[] tokens = modification.split("\\s+", 2);
 
-    switch(tokens[0]) {
+    switch (tokens[0]) {
       case "name":
         event.updateName(tokens[1]);
         break;
@@ -267,8 +271,8 @@ public class NUPlannerModel implements SchedulingSystem {
 
   }
 
-  private void confirmUserDoesNotExist(String user) throws IllegalArgumentException{
-    if(this.userSchedules.containsKey(user)){
+  private void confirmUserDoesNotExist(String user) throws IllegalArgumentException {
+    if (this.userSchedules.containsKey(user)) {
       throw new IllegalArgumentException("User already exists in scheduling system... ");
     }
   }
@@ -308,13 +312,10 @@ public class NUPlannerModel implements SchedulingSystem {
   }
 
   private void confirmUserExists(String user) {
-    if (!this.userSchedules.containsKey(user))
+    if (!this.userSchedules.containsKey(user)) {
       throw new IllegalArgumentException(user + " does not exist in system... ");
+    }
   }
-
-  //-----------------------------------------------------------------------------------------------
-  //-----------------------------------------------------------------------------------------------
-  //-----------------------------------------------------------------------------------------------
 
   @Override
   public ReadableEvent eventAt(String user, DaysOfTheWeek startDay, int startTime) {

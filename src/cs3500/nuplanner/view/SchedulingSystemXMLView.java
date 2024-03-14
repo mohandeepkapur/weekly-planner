@@ -49,9 +49,7 @@ public class SchedulingSystemXMLView implements SchedulingSystemView {
         file.write("\n</location>\n");
 
         file.write("<users>\n");
-//        for (eventInvitees) {
         file.write("<uid>\n" + event.eventInvitees() + "\n</uid>\n");
-//        }
         file.write("\n</users>\n");
       }
 

@@ -27,47 +27,47 @@ public class NUEvent implements Event {
    * Constructs an Event.
    */
   public NUEvent(List<String> invitees,
-               String eventName, String location, boolean isOnline,
-               DaysOfTheWeek startDay, int startTime,
-               DaysOfTheWeek endDay, int endTime) {
+                 String eventName, String location, boolean isOnline,
+                 DaysOfTheWeek startDay, int startTime,
+                 DaysOfTheWeek endDay, int endTime) {
 
-      if (eventName == null
-              || location == null
-              || invitees == null
-              || startDay == null
-              || endDay == null) {
-        throw new IllegalArgumentException("Event cannot be init. with null argument(s)... ");
-      }
+    if (eventName == null
+            || location == null
+            || invitees == null
+            || startDay == null
+            || endDay == null) {
+      throw new IllegalArgumentException("Event cannot be init. with null argument(s)... ");
+    }
 
-      // ensures only proper military time accepted by Event
-      if (startTime/100 < 0
-              || startTime/100 > 23
-              || endTime/100 < 0
-              || endTime/100 > 23
-              || startTime%100 > 59
-              || endTime%100 > 59) {
-        throw new IllegalArgumentException("Event cannot be init. with invalid military time...  ");
-      }
+    // ensures only proper military time accepted by Event
+    if (startTime / 100 < 0
+            || startTime / 100 > 23
+            || endTime / 100 < 0
+            || endTime / 100 > 23
+            || startTime % 100 > 59
+            || endTime % 100 > 59) {
+      throw new IllegalArgumentException("Event cannot be init. with invalid military time...  ");
+    }
 
-      if (invitees.isEmpty()) {
-        throw new IllegalArgumentException("Event cannot be init. with no invitees... ");
-      }
+    if (invitees.isEmpty()) {
+      throw new IllegalArgumentException("Event cannot be init. with no invitees... ");
+    }
 
-      this.invitees = invitees;
-      this.name = eventName;
-      this.location = location;
-      this.isOnline = isOnline;
-      this.startDay = startDay;
-      this.startTime = startTime;
-      this.endDay = endDay;
-      this.endTime = endTime;
-      this.host = invitees.get(0);
+    this.invitees = invitees;
+    this.name = eventName;
+    this.location = location;
+    this.isOnline = isOnline;
+    this.startDay = startDay;
+    this.startTime = startTime;
+    this.endDay = endDay;
+    this.endTime = endTime;
+    this.host = invitees.get(0);
 
-      ensureValidTimeSpan(this.startTime, this.endTime, this.startDay, this.endDay);
+    ensureValidTimeSpan(this.startTime, this.endTime, this.startDay, this.endDay);
 
-      //            // assign unique, immutable ID to every event
-      //            ID = count;
-      //            count++;
+    //            // assign unique, immutable ID to every event
+    //            ID = count;
+    //            count++;
   }
 
   // copy constructor
@@ -132,7 +132,7 @@ public class NUEvent implements Event {
   @Override
   public void updateStartDay(DaysOfTheWeek startDay) {
     ensureValidTimeSpan(this.startTime, this.endTime, startDay, this.endDay);
-    this.startDay=startDay;
+    this.startDay = startDay;
   }
 
   @Override
@@ -143,7 +143,7 @@ public class NUEvent implements Event {
   @Override
   public void updateEndDay(DaysOfTheWeek endDay) {
     ensureValidTimeSpan(this.startTime, this.endTime, this.startDay, endDay);
-    this.endDay=endDay;
+    this.endDay = endDay;
   }
 
   @Override
@@ -184,12 +184,12 @@ public class NUEvent implements Event {
   @Override
   public void addInvitee(String invitee) {
 
-    if(invitees.contains(invitee)) {
+    if (invitees.contains(invitee)) {
       throw new IllegalArgumentException("Invitee already exists in schedule... ");
     }
 
     //harmless, weird, impl-specific check <- BAD, impl-specific for one impl of sched sys
-    if(invitees.isEmpty() && !host.equals(invitee)) {
+    if (invitees.isEmpty() && !host.equals(invitee)) {
       throw new IllegalArgumentException("First invitee of event can only be " + host + " ..");
     }
 
@@ -214,12 +214,12 @@ public class NUEvent implements Event {
 
     int dayRangeMin = dayDiff * 24 * 60;
 
-    int min1 = (startTime % 100) + (startTime/100) * 60;
-    int min2 = (endTime % 100) + (endTime/100) * 60;
+    int min1 = (startTime % 100) + (startTime / 100) * 60;
+    int min2 = (endTime % 100) + (endTime / 100) * 60;
 
     int timeRangeMin = min2 - min1;
 
-    if(dayRangeMin + timeRangeMin > (6*24*60) + (23*60) + 59) {
+    if (dayRangeMin + timeRangeMin > (6 * 24 * 60) + (23 * 60) + 59) {
       throw new IllegalArgumentException("Event cannot exist with invalid time-span... ");
     }
 

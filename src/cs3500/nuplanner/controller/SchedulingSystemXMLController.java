@@ -63,12 +63,20 @@ public class SchedulingSystemXMLController implements SchedulingSystemController
         Element currentEventDetails = (Element) listOfEvents.item(item);
 
         String name = currentEventDetails.getElementsByTagName("name").item(0).getTextContent();
-        String location = currentEventDetails.getElementsByTagName("place").item(0).getTextContent();
-        boolean isOnline = Boolean.parseBoolean(currentEventDetails.getElementsByTagName("online").item(0).getTextContent());
-        DaysOfTheWeek startDay = createDay(currentEventDetails.getElementsByTagName("start-day").item(0).getTextContent().toUpperCase());
-        int startTime = Integer.parseInt(currentEventDetails.getElementsByTagName("start").item(0).getTextContent());
-        DaysOfTheWeek endDay = createDay(currentEventDetails.getElementsByTagName("end-day").item(0).getTextContent().toUpperCase());
-        int endTime = Integer.parseInt(currentEventDetails.getElementsByTagName("end").item(0).getTextContent());
+        String location = currentEventDetails.getElementsByTagName("place").item(0)
+                .getTextContent();
+        boolean isOnline = Boolean.parseBoolean(
+                currentEventDetails.getElementsByTagName("online").item(0).getTextContent());
+        DaysOfTheWeek startDay = createDay(
+                currentEventDetails.getElementsByTagName("start-day").item(0).getTextContent()
+                        .toUpperCase());
+        int startTime = Integer.parseInt(
+                currentEventDetails.getElementsByTagName("start").item(0).getTextContent());
+        DaysOfTheWeek endDay = createDay(
+                currentEventDetails.getElementsByTagName("end-day").item(0).getTextContent()
+                        .toUpperCase());
+        int endTime = Integer.parseInt(
+                currentEventDetails.getElementsByTagName("end").item(0).getTextContent());
         List<String> invitees = new ArrayList<>();
 
         //creating a list of invitees for the method
@@ -84,7 +92,8 @@ public class SchedulingSystemXMLController implements SchedulingSystemController
         // addInviteesToSchedulingSystem(invitees);
 
         //create the event
-        Event event = new NUEvent(invitees, name, location, isOnline, startDay, startTime, endDay, endTime);
+        Event event = new NUEvent(invitees, name, location, isOnline, startDay, startTime, endDay,
+                endTime);
 
         //add the event to the list of events
         listOfAllXMLEvents.add(event);
@@ -95,7 +104,8 @@ public class SchedulingSystemXMLController implements SchedulingSystemController
 
       for (Event event : listOfAllXMLEvents) {
         for (String invitee : event.eventInvitees()) {
-          if (!currentUsersInSchedSys.contains(invitee)) { // current users list does not update w/ this loop info
+          if (!currentUsersInSchedSys.contains(
+                  invitee)) { // current users list does not update w/ this loop info
             this.model.addUser(invitee);
             currentUsersInSchedSys.add(invitee);
             xmlAddedUsersInSchedSys.add(invitee);

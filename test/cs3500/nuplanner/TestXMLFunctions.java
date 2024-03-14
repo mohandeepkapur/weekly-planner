@@ -114,7 +114,8 @@ public class TestXMLFunctions {
 
     try {
       xmlController.useSchedulingSystem("src/XMLFiles/toRead/prof.xml");
-    } catch (IllegalArgumentException ignore) {}
+    } catch (IllegalArgumentException ignore) {
+    }
 
     assertEquals(2, model.allUsers().size());
 

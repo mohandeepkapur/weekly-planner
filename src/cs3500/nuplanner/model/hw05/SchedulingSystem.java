@@ -15,16 +15,16 @@ public interface SchedulingSystem {
   /**
    * Adds a user to the scheduling system.
    *
-   * @param user                          name of new user
-   * @throws IllegalArgumentException     if user already exists in planner-system
+   * @param user name of new user
+   * @throws IllegalArgumentException if user already exists in planner-system
    */
   void addUser(String user);
 
   /**
    * Removes a user from the scheduling system.
    *
-   * @throws IllegalArgumentException if user does not exist in the planner-system
    * @param user name of user
+   * @throws IllegalArgumentException if user does not exist in the planner-system
    */
   void removeUser(String user);
 
@@ -42,10 +42,9 @@ public interface SchedulingSystem {
   /**
    * Adds a custom Event to the relevant schedules.
    *
-   * @throws IllegalArgumentException     if provided user does not exist
-   *                                      (ok if invitee doesn't exist)
-   * @implNote                            owner of event vs invitees important distinction
-   *
+   * @throws IllegalArgumentException if provided user does not exist
+   *                                  (ok if invitee doesn't exist)
+   * @implNote owner of event vs invitees important distinction
    */
   void addEvent(String host, List<String> invitees,
                 String eventName, String location, boolean isOnline,
@@ -54,16 +53,14 @@ public interface SchedulingSystem {
 
   /**
    * Removes an Event from specified user's Schedule.
-   * @param user                        name of user
-   * @param eventIndex                     represents the Event to be removed
    *
-   * @throws IllegalArgumentException   if user does not exist in scheduling system
-   *
-   * @implNote                          if owner is removing event, delete Event from
-   *                                    every schedule
-   *                                    if invitee is removing event, update Event with
-   *                                    removed invitee
-   *
+   * @param user       name of user
+   * @param eventIndex represents the Event to be removed
+   * @throws IllegalArgumentException if user does not exist in scheduling system
+   * @implNote if owner is removing event, delete Event from
+   * every schedule
+   * if invitee is removing event, update Event with
+   * removed invitee
    */
   void removeEvent(String user, DaysOfTheWeek startDay, int startTime);
 

@@ -3,7 +3,7 @@ package cs3500.nuplanner.model.hw05;
 import java.util.List;
 
 /**
- * Readable version of Event interface.
+ * Readable-only version of an Event.
  */
 public interface ReadableEvent {
 
@@ -37,25 +37,25 @@ public interface ReadableEvent {
   /**
    * Observes start time of Event.
    *
-   * @implNote                           military time is used: 13:35 -> 1:35pm
+   * @implNote military time is used: 13:35 -> 1:35pm
    */
   int startTime();
 
   /**
    * Observes end time of Event.
    *
-   * @implNote                           military time is used: 13:35 -> 1:35pm
+   * @implNote military time is used: 13:35 -> 1:35pm
    */
   int endTime();
 
   /**
    * Collection of Users that are part of the Event. The first user is always the owner. The
    * following users are invitees.
-   *
+   * <p>
    * (issue of whether owner exists or not should've been taken care of upstream)
    *
-   * @implNote
    * @return
+   * @implNote
    */
   List<String> eventInvitees();
 

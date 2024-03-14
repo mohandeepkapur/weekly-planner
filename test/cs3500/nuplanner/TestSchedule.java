@@ -22,7 +22,7 @@ public class TestSchedule {
   @Test
   public void bruh() {
 
-    Event event1 = new NUEvent (new ArrayList<String>(List.of("Mo", "Ko", "Jo")),
+    Event event1 = new NUEvent(new ArrayList<String>(List.of("Mo", "Ko", "Jo")),
             "Tennis", "Krentzman Quad", true,
             DaysOfTheWeek.WEDNESDAY, 1000, DaysOfTheWeek.WEDNESDAY, 1100);
 
@@ -51,7 +51,7 @@ public class TestSchedule {
   @Test
   public void bruh2() {
 
-    Event event1 = new NUEvent (new ArrayList<String>(List.of("Mo", "Ko", "Jo")),
+    Event event1 = new NUEvent(new ArrayList<String>(List.of("Mo", "Ko", "Jo")),
             "Tennis", "Krentzman Quad", true,
             DaysOfTheWeek.WEDNESDAY, 1000, DaysOfTheWeek.WEDNESDAY, 1100);
 
@@ -71,7 +71,7 @@ public class TestSchedule {
   @Test
   public void bruh3() { // and am unable to construct event of invalid time span!
 
-    Event event1 = new NUEvent (new ArrayList<String>(List.of("Mo", "Ko", "Jo")),
+    Event event1 = new NUEvent(new ArrayList<String>(List.of("Mo", "Ko", "Jo")),
             "Tennis", "Krentzman Quad", true,
             DaysOfTheWeek.WEDNESDAY, 1000, DaysOfTheWeek.WEDNESDAY, 1100);
 

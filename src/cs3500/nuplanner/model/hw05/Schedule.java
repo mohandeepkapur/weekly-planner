@@ -11,9 +11,8 @@ public interface Schedule {
   /**
    * Adds an Event into Schedule.
    *
-   * @param  newEvent                       Event to be added
-   * @throws IllegalArgumentException       if any Events in Schedule overlap
-   *
+   * @param newEvent Event to be added
+   * @throws IllegalArgumentException if any Events in Schedule overlap
    */
   // not constructing event within a schedule obj so same Event can be put into multiple Schedules
   void addEvent(Event newEvent);
@@ -21,7 +20,7 @@ public interface Schedule {
   /**
    * Removes an Event from Schedule. Event to be removed will update its invitee list.
    *
-   * @param newEvent                       Event to be removed
+   * @param newEvent Event to be removed
    */
   void removeEvent(Event event);
 
@@ -31,8 +30,8 @@ public interface Schedule {
   int numberOfEvents();
 
   /**
-   * @param eventID           ID of an Event
-   * @return                  Event object
+   * @param eventID ID of an Event
+   * @return Event object
    */
   Event eventAt(DaysOfTheWeek startDay, int startTime);
 
@@ -40,8 +39,8 @@ public interface Schedule {
    * Checks whether an Event would conflict with current Schedule. What counts as a conflict is
    * implementation detail.
    *
-   * @param event                       Event that will be checked against Schedule's Events
-   * @return                            boolean that signals whether Event can be added
+   * @param event Event that will be checked against Schedule's Events
+   * @return boolean that signals whether Event can be added
    */
   boolean eventConflict(Event event);
 

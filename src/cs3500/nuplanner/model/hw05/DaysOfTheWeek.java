@@ -3,7 +3,7 @@ package cs3500.nuplanner.model.hw05;
 /**
  * Represents a day of the week.
  *
- * @implNote  integers assigned to each day are used for temporal comparison
+ * @implNote integers assigned to each day are used for temporal comparison
  */
 public enum DaysOfTheWeek {
 
@@ -25,6 +25,8 @@ public enum DaysOfTheWeek {
   }
 
   @Override
-  public String toString() {return dayString;}
+  public String toString() {
+    return dayString;
+  }
 
 }
