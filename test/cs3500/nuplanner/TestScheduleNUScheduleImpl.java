@@ -8,95 +8,117 @@ import java.util.List;
 import cs3500.nuplanner.model.hw05.DaysOfTheWeek;
 import cs3500.nuplanner.model.hw05.Event;
 import cs3500.nuplanner.model.hw05.NUEvent;
+import cs3500.nuplanner.model.hw05.NUPlannerModel;
 import cs3500.nuplanner.model.hw05.NUSchedule;
 import cs3500.nuplanner.model.hw05.Schedule;
+import cs3500.nuplanner.model.hw05.SchedulingSystem;
 
+import static cs3500.nuplanner.model.hw05.DaysOfTheWeek.MONDAY;
+import static cs3500.nuplanner.model.hw05.DaysOfTheWeek.SUNDAY;
+import static cs3500.nuplanner.model.hw05.DaysOfTheWeek.TUESDAY;
+import static cs3500.nuplanner.model.hw05.DaysOfTheWeek.WEDNESDAY;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertThrows;
 import static org.junit.Assert.assertTrue;
+
+/**
+ * A class to test the functionality of the schedule.
+ */
 
 public class TestScheduleNUScheduleImpl {
 
   @Test
-  public void bruh() {
-
-    Event event1 = new NUEvent(new ArrayList<String>(List.of("Mo", "Ko", "Jo")),
-            "Tennis", "Krentzman Quad", true,
-            DaysOfTheWeek.WEDNESDAY, 1000, DaysOfTheWeek.WEDNESDAY, 1100);
-
-    Event event2 = new NUEvent(new ArrayList<String>(List.of("Mo", "Ko", "Jo")),
-            "Basketball", "Krentzman Quad", true,
-            DaysOfTheWeek.TUESDAY, 900, DaysOfTheWeek.TUESDAY, 1000);
-
-    Schedule schedule = new NUSchedule("Mo");
-
-    assertFalse(schedule.eventConflict(event1));
-
-    schedule.addEvent(event1);
-
-    //System.out.print(schedule.eventIDs());
-
-    assertFalse(schedule.eventConflict(event2));
-
-    schedule.addEvent(event2);
-
-    //System.out.print(schedule.eventIDs());
-
-    assertSame(event1, schedule.eventAt(event1.startDay(), event1.startTime()));
-
+  public void testValidAddTwoEventsNoConflict() {
+    Schedule schedule = new NUSchedule("Elaine");
+    Event soccer = new NUEvent(new ArrayList<>(List.of("Elaine", "Mia")),
+            "Soccer Practice", "Carter Field", false,
+            MONDAY, 1400, MONDAY, 1500);
+    Event broomball = new NUEvent(new ArrayList<>(List.of("Elaine", "Mia")),
+            "Broomball Game", "Carter Field", false,
+            MONDAY, 2000, MONDAY, 2100);
+    schedule.addEvent(soccer);
+    assertFalse(schedule.eventConflict(broomball));
+    schedule.addEvent(broomball);
   }
 
   @Test
-  public void bruh2() {
-
-    Event event1 = new NUEvent(new ArrayList<String>(List.of("Mo", "Ko", "Jo")),
-            "Tennis", "Krentzman Quad", true,
-            DaysOfTheWeek.WEDNESDAY, 1000, DaysOfTheWeek.WEDNESDAY, 1100);
-
-    Event event2 = new NUEvent(new ArrayList<String>(List.of("Mo", "Ko", "Jo")),
-            "Basketball", "Krentzman Quad", true,
-            DaysOfTheWeek.TUESDAY, 900, DaysOfTheWeek.FRIDAY, 1000);
-
-    Schedule schedule = new NUSchedule("Mo");
-
-    assertFalse(schedule.eventConflict(event1));
-    schedule.addEvent(event1);
-
-    assertTrue(schedule.eventConflict(event2));
-
+  public void testInvalidAddTwoEventsWithConflict() {
+    Schedule schedule = new NUSchedule("Elaine");
+    Event soccer = new NUEvent(new ArrayList<>(List.of("Elaine", "Mia")),
+            "Soccer Practice", "Carter Field", false,
+            MONDAY, 1400, MONDAY, 1500);
+    Event broomball = new NUEvent(new ArrayList<>(List.of("Elaine", "Mia")),
+            "Broomball Game", "Carter Field", false,
+            MONDAY, 1430, MONDAY, 1530);
+    schedule.addEvent(soccer);
+    assertTrue(schedule.eventConflict(broomball));
+    assertThrows(IllegalArgumentException.class, () -> schedule.addEvent(broomball));
   }
 
   @Test
-  public void bruh3() { // and am unable to construct event of invalid time span!
-
-    Event event1 = new NUEvent(new ArrayList<String>(List.of("Mo", "Ko", "Jo")),
-            "Tennis", "Krentzman Quad", true,
-            DaysOfTheWeek.WEDNESDAY, 1000, DaysOfTheWeek.WEDNESDAY, 1100);
-
-    Event event2 = new NUEvent(new ArrayList<String>(List.of("Mo", "Ko", "Jo")),
-            "Sleep", "Krentzman Quad", true,
-            DaysOfTheWeek.WEDNESDAY, 1100, DaysOfTheWeek.FRIDAY, 1000);
-
-    Event event3 = new NUEvent(new ArrayList<String>(List.of("Mo", "Ko", "Jo")),
-            "Baseball", "Krentzman Quad", true,
-            DaysOfTheWeek.FRIDAY, 1030, DaysOfTheWeek.FRIDAY, 1230);
-
-    Schedule schedule = new NUSchedule("Mo");
-
-    schedule.addEvent(event2);
-    schedule.addEvent(event3);
-    schedule.addEvent(event1);
-    //System.out.println(schedule.eventIDs()); // earliest to latest event
-
-    Event incompatibleEvent = new NUEvent(new ArrayList<String>(List.of("Mo", "Ko", "Jo")),
-            "Party", "Krentzman Quad", true,
-            DaysOfTheWeek.THURSDAY, 2200, DaysOfTheWeek.FRIDAY, 0);
-
-    System.out.print(schedule.eventConflict(incompatibleEvent));
-    schedule.addEvent(incompatibleEvent);
-
+  public void testValidRemoveOneEvent() {
+    Schedule schedule = new NUSchedule("Elaine");
+    Event soccer = new NUEvent(new ArrayList<>(List.of("Elaine", "Mia")),
+            "Soccer Practice", "Carter Field", false,
+            MONDAY, 1400, MONDAY, 1500);
+    schedule.addEvent(soccer);
+    assertEquals(1, schedule.numberOfEvents());
+    schedule.removeEvent(soccer);
+    assertEquals(0, schedule.numberOfEvents());
   }
 
+  @Test
+  public void testInvalidRemoveEventWhenThereAreNone() {
+    Schedule schedule = new NUSchedule("Elaine");
+    Event soccer = new NUEvent(new ArrayList<>(List.of("Elaine", "Mia")),
+            "Soccer Practice", "Carter Field", false,
+            MONDAY, 1400, MONDAY, 1500);
+    assertEquals(0, schedule.numberOfEvents());
+    assertThrows(IllegalArgumentException.class, () -> schedule.removeEvent(soccer));
+  }
 
+  @Test
+  public void testValidEventAt() {
+    Schedule schedule = new NUSchedule("Elaine");
+    Event soccer = new NUEvent(new ArrayList<>(List.of("Elaine", "Mia")),
+            "Soccer Practice", "Carter Field", false,
+            MONDAY, 1400, MONDAY, 1500);
+    schedule.addEvent(soccer);
+    assertEquals(soccer, schedule.eventAt(MONDAY, 1400));
+  }
+
+  @Test
+  public void testInvalidEventAt() {
+    Schedule schedule = new NUSchedule("Elaine");
+    Event soccer = new NUEvent(new ArrayList<>(List.of("Elaine", "Mia")),
+            "Soccer Practice", "Carter Field", false,
+            MONDAY, 1400, MONDAY, 1500);
+    schedule.addEvent(soccer);
+    assertThrows(IllegalArgumentException.class, () ->
+            assertEquals(soccer, schedule.eventAt(TUESDAY, 1900)));
+  }
+
+  @Test
+  public void testValidEventListTwoEvents() {
+    Schedule schedule = new NUSchedule("Elaine");
+    Event soccer = new NUEvent(new ArrayList<>(List.of("Elaine", "Mia")),
+            "Soccer Practice", "Carter Field", false,
+            MONDAY, 1400, MONDAY, 1500);
+    Event broomball = new NUEvent(new ArrayList<>(List.of("Elaine", "Mia")),
+            "Broomball Game", "Carter Field", false,
+            MONDAY, 2000, MONDAY, 2100);
+    schedule.addEvent(soccer);
+    schedule.addEvent(broomball);
+    List<Event> events = new ArrayList<>(List.of(soccer, broomball));
+    assertEquals(events, schedule.events());
+  }
+
+  @Test
+  public void testValidEventListNoEvents() {
+    Schedule schedule = new NUSchedule("Elaine");
+    List<Event> events = new ArrayList<>();
+    assertEquals(events, schedule.events());
+  }
 }
