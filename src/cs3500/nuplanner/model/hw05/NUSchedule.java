@@ -4,15 +4,16 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
-// assumptions made when dealing with schedule: internal events never conflict, events always sorted, events
-// every event in schedule does not conflict -> add events one at a time, and check for conflicts when adding each one
+// assumptions made when dealing with schedule:
+// 1) internal events never conflict,
+// 2) internal events always sorted
 public class NUSchedule implements Schedule {
 
-  // event obj can be contained within multiple schedules
-  // access a specific event in user schedule using event ID
-  // delegating bunch of checks to schedule and event <-- keeping model as light as possible
+  // an event obj can be contained within multiple schedules
+  // can access a specific event in user schedule using event ID
+  // delegating relevant checks to schedule and event <-- keeping model as light as possible
 
-  // sorted all times
+  // sorted from earliest to latest event
   private final List<Event> events;
 
   private final String user;
@@ -27,34 +28,52 @@ public class NUSchedule implements Schedule {
     return user;
   }
 
-  // runs event conflict check automatically
   @Override
   public void addEvent(Event newEvent) {
+    // if event is null
+    checkIfEventNull(newEvent);
 
-    if(newEvent == null) throw new IllegalArgumentException();
+    // if event-to-add already exists in schedule
+    if (events.contains(newEvent)) {
+      throw new IllegalArgumentException("Provided event already exists in schedule... ");
+    }
 
-    // redundant, event conflict would've been run in model before this method called
-    if (eventConflict(newEvent)) throw new IllegalArgumentException("Event conflict... ");
+    // if event-to-add conflicts with existing events in schedule
+    if (eventConflict(newEvent)) {
+      throw new IllegalArgumentException("Provided event conflicts with " + user + "'s schedule");
+    }
 
+    // add event to schedule
     this.events.add(newEvent);
 
-    sortListOfEvents();
+    // sort events
+    sortEvents();
+
   }
 
   @Override
   public void removeEvent(Event eventToRemove) {
+    // if event is null
+    checkIfEventNull(eventToRemove);
 
-    //simply removes an event <-- higher-level checks done above
-    if(eventToRemove == null) throw new IllegalArgumentException();
+    // if event-to-remove does not exist in schedule
+    if (!events.contains(eventToRemove)) {
+      throw new IllegalArgumentException("Provided event does not exist in schedule... ");
+    }
 
-    eventToRemove.removeInvitee(this.user);
-
+    // remove event from schedule
     for(int i = 0; i < this.numberOfEvents(); i++) {
       if(this.events.get(i) == eventToRemove) {
         this.events.remove(i);
         break;
       }
     }
+
+    // update event's invitee list to notify other invitees of attendance change
+    eventToRemove.removeInvitee(this.user);
+
+    // no constraint of (if host is removed, then event removed from all invitees) here
+    // ^ model specific
   }
 
   @Override
@@ -62,31 +81,45 @@ public class NUSchedule implements Schedule {
     return this.events.size();
   }
 
+  //  @Override
+  //  public Event eventAt(int eventID) {
+  //    for (Event event : events) {
+  //      if (event.ID() == eventID) {
+  //        return event;
+  //      }
+  //    }
+  //    throw new IllegalArgumentException("Event of this ID does not exist... ");
+  //  }
+
   @Override
-  public Event eventAt(int eventID) {
+  public Event eventAt(DaysOfTheWeek startDay, int startTime) {
 
     for (Event event : events) {
-      if (event.ID() == eventID) {
-        return event;
+      if (event.startDay() == startDay && event.startTime() == startTime) {
+        return event; // Can be a direct getter <-- only downcast to readable event in model?
       }
     }
 
-    throw new IllegalArgumentException("Event of this ID does not exist... ");
-  }
+    throw new IllegalArgumentException("Event with specified start day and time "
+            + "does not exist in " + user + "'s schedule");
 
-  @Override
-  public List<Integer> eventIDs() {
-    List<Integer> listOfIDs = new ArrayList<>();
-    for (Event event : events) {
-      listOfIDs.add(event.ID());
-    }
-    return listOfIDs;
   }
 
   //  @Override
-  //  public Event provideSingleEvent(int eventIndex) {
-  //    return this.events.get(eventIndex);
+  //  public List<Integer> eventIDs() {
+  //    List<Integer> listOfIDs = new ArrayList<>();
+  //    for (Event event : events) {
+  //      listOfIDs.add(event.ID());
+  //    }
+  //    return listOfIDs;
   //  }
+
+  @Override
+  public List<Event> events() {
+
+    return events; // Can be a direct getter <-- only downcast to readable event in model?
+
+  }
 
   /**
    * @implNote                              two Events not considered to overlap/conflict if the
@@ -94,9 +127,7 @@ public class NUSchedule implements Schedule {
    */
   @Override
   public boolean eventConflict(Event outEvent) {
-
-
-    // 1: assign objective values to every event start time and end time
+    // 1: assign objective values to every event start time and end time <- EXPLAIN WHAT THEY ARE
     List<Integer> outEventObjValues = extractObjectiveValues(outEvent);
     int oStartVal = outEventObjValues.get(0);
     int oEndVal = outEventObjValues.get(1);
@@ -129,6 +160,7 @@ public class NUSchedule implements Schedule {
     }
 
     return false;
+
   }
 
   /**
@@ -138,7 +170,6 @@ public class NUSchedule implements Schedule {
    * @return
    */
   private List<Integer> extractObjectiveValues(Event event) {
-
     int sDv = event.startDay().val();
     int sT = event.startTime();
 
@@ -163,12 +194,17 @@ public class NUSchedule implements Schedule {
   }
 
   // CRUCIAL: must be performed everytime an Event added
-  private void sortListOfEvents() {
-
-    // after event accepted, all need to do is order start times
+  private void sortEvents() {
+    // all need to do is order start times, since every event within schedule does not conflict
     events.sort(Comparator.comparingInt((Event event) -> event.startDay().val())
             .thenComparingInt(Event::startTime));
-    
+
+  }
+
+  private void checkIfEventNull(Event event) {
+    if(event == null) {
+      throw new IllegalArgumentException("Provided event cannot be null... ");
+    }
   }
 
 }

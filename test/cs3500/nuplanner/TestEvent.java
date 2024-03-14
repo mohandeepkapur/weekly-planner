@@ -31,7 +31,6 @@ public class TestEvent {
     assertEquals(1000, event1.startTime());
     assertEquals(DaysOfTheWeek.WEDNESDAY, event1.endDay());
     assertEquals(1100, event1.endTime());
-    assertEquals(0, event1.ID());
 
   }
 
@@ -96,7 +95,7 @@ public class TestEvent {
   }
 
   @Test
-  public void testMultipleEventIDs() {
+  public void testMultipleEvents() {
 
     Event event1 = new NUEvent(new ArrayList<String>(List.of("Mo", "Ko", "Jo")),
             "Tennis", "Krentzman Quad", true,
@@ -109,10 +108,6 @@ public class TestEvent {
     Event event3 = new NUEvent(new ArrayList<String>(List.of("Mo", "Ko", "Jo")),
             "Baseball", "Krentzman Quad", true,
             DaysOfTheWeek.WEDNESDAY, 1200, DaysOfTheWeek.WEDNESDAY, 1300);
-
-    assertEquals(0, event1.ID());
-    assertEquals(1, event2.ID());
-    assertEquals(2, event3.ID());
 
   }
 

@@ -1,129 +1,77 @@
 package cs3500.nuplanner.model.hw05;
 
-import java.util.List;
-
-// client ease-of-use considerations? so many state-setters, annoying for client?
-// not getters and setters <- intention not to return field, but state of obj
-
 /**
- * Operations and observations necessary for an Event in a scheduling system.
+ * Operations and observations necessary for an Event in a Scheduling System.
  */
-public interface Event {
+public interface Event extends ReadableEvent {
 
   /**
-   * Unique, Immutable ID of an Event.
-   */
-  int ID();
-
-  /**
-   * Observes name of Event.
-   */
-  String name();
-
-  /**
-   * Changes name of Event.
+   * Updates name of Event.
    */
   void updateName(String name);
 
-  /**
-   * Observes Event location.
-   */
-  String location();
 
   /**
-   * Changes Event location.
+   * Updates location of Event.
    */
   void updateLocation(String location);
 
-  /**
-   * Observes information on whether Event is online or offline.
-   */
-  boolean isOnline();
 
   /**
-   * Changes whether Event is online or offline.
+   * Updates Event online or offline status.
    */
   void updateIsOnline(boolean isOnline);
 
-  /**
-   * Observes the start-day of the Event.
-   */
-  DaysOfTheWeek startDay();
 
   /**
-   * Changes starting day of Event.
+   * Updates day the Event starts.
    *
    * @param day                          new starting day of Event
-   * @throws IllegalArgumentException    if time-span of modified Event exceeds 6-days 23-hrs 59-min
+   * @throws IllegalArgumentException    if the time the Event spans is too large
    */
   void updateStartDay(DaysOfTheWeek day);
 
-  /**
-   * Observes the end-day of the Event.
-   */
-  DaysOfTheWeek endDay();
 
   /**
-   * Changes end day of Event.
+   * Updates day the Event ends.
    *
    * @param day                          new end day of Event
    * @throws IllegalArgumentException    if time-span of modified Event exceeds 6-days 23-hrs 59-min
    */
   void updateEndDay(DaysOfTheWeek day);
 
-  /**
-   * Observes start time of Event.
-   *
-   * @implNote                           military time is used: 13:35 -> 1:35pm
-   */
-  int startTime();
 
   /**
-   * Changes start time of Event.
+   * Updates time the Event starts.
    *
    * @param startTime                    new start time of Event
    * @throws IllegalArgumentException    if time-span of modified Event exceeds 6-days 23-hrs 59-min
    */
   void updateStartTime(int startTime);
 
-  /**
-   * Observes end time of Event.
-   *
-   * @implNote                           military time is used: 13:35 -> 1:35pm
-   */
-  int endTime();
 
   /**
-   * Changes start time of Event.
+   * Updates time the Event ends.
    *
    * @param endTime                      new end time of Event
    * @throws IllegalArgumentException    if time-span of modified Event exceeds 6-days 23-hrs 59-min
    */
   void updateEndTime(int endTime);
 
-  /**
-   * Collection of Users that are part of the Event. The first user is always the owner. The
-   * following users are invitees.
-   *
-   * (issue of whether owner exists or not should've been taken care of upstream)
-   *
-   * @implNote
-   * @return
-   */
-  List<String> eventInvitees();
+  // bottom two events make sense to use only inside knowledgeable sched sys
 
   /**
-   * Removes invitee.
+   * Removes an invitee from the Event.
    *
    * @implNote              will only be used on an invitee <--
    */
   void removeInvitee(String invitee); //remove user from invited user list
 
   /**
-   * Provides host of event.
+   * Add an invitee from the Event.
+   *
+   * @param invitee
    */
-  String eventHost();
-
-  // void updateInvitees();
+  void addInvitee(String invitee);
 
 }

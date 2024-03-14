@@ -36,15 +36,15 @@ public class TestSchedule {
 
     schedule.addEvent(event1);
 
-    System.out.print(schedule.eventIDs());
+    //System.out.print(schedule.eventIDs());
 
     assertFalse(schedule.eventConflict(event2));
 
     schedule.addEvent(event2);
 
-    System.out.print(schedule.eventIDs());
+    //System.out.print(schedule.eventIDs());
 
-    assertSame(event1, schedule.eventAt(0));
+    assertSame(event1, schedule.eventAt(event1.startDay(), event1.startTime()));
 
   }
 
@@ -88,7 +88,7 @@ public class TestSchedule {
     schedule.addEvent(event2);
     schedule.addEvent(event3);
     schedule.addEvent(event1);
-    System.out.println(schedule.eventIDs()); // earliest to latest event
+    //System.out.println(schedule.eventIDs()); // earliest to latest event
 
     Event incompatibleEvent = new NUEvent(new ArrayList<String>(List.of("Mo", "Ko", "Jo")),
             "Party", "Krentzman Quad", true,

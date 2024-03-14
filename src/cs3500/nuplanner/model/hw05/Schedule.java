@@ -34,14 +34,7 @@ public interface Schedule {
    * @param eventID           ID of an Event
    * @return                  Event object
    */
-  Event eventAt(int eventID);
-
-  /**
-   * @return IDs of all Events within Schedule
-   *
-   * eventIDs in order of earliest event to latest event.
-   */
-  List<Integer> eventIDs();
+  Event eventAt(DaysOfTheWeek startDay, int startTime);
 
   /**
    * Checks whether an Event would conflict with current Schedule. What counts as a conflict is
@@ -51,6 +44,8 @@ public interface Schedule {
    * @return                            boolean that signals whether Event can be added
    */
   boolean eventConflict(Event event);
+
+  List<Event> events();
 
 }
 

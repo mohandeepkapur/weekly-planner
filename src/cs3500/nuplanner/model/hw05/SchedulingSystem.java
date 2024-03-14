@@ -31,6 +31,15 @@ public interface SchedulingSystem {
   List<String> allUsers();
 
   /**
+   * Checks whether an Event can be added into Model given current model-state.
+   * Checks whether Event can be added into scheduling system given sched. sys state.
+   */
+  boolean eventConflict(String host, List<String> invitees,
+                        String eventName, String location, boolean isOnline,
+                        DaysOfTheWeek startDay, int startTime,
+                        DaysOfTheWeek endDay, int endTime);
+
+  /**
    * Adds a custom Event to the relevant schedules.
    *
    * @throws IllegalArgumentException     if provided user does not exist
@@ -38,10 +47,10 @@ public interface SchedulingSystem {
    * @implNote                            owner of event vs invitees important distinction
    *
    */
-  void addEventInSchedules(String user, List<String> invitees,
-                           String eventName, String location, boolean isOnline,
-                           DaysOfTheWeek startDay, int startTime,
-                           DaysOfTheWeek endDay, int endTime);
+  void addEvent(String host, List<String> invitees,
+                String eventName, String location, boolean isOnline,
+                DaysOfTheWeek startDay, int startTime,
+                DaysOfTheWeek endDay, int endTime);
 
   /**
    * Removes an Event from specified user's Schedule.
@@ -56,7 +65,7 @@ public interface SchedulingSystem {
    *                                    removed invitee
    *
    */
-  void removeEventInSchedules(String user, int eventID);
+  void removeEvent(String user, DaysOfTheWeek startDay, int startTime);
 
   /**
    * Modifies an event that the user chooses with whatever modification listed.
@@ -66,7 +75,7 @@ public interface SchedulingSystem {
    * @param modification
    */
 
-  void modifyEventInSchedules(String user, int eventID, String modification);
+  void modifyEvent(String user, DaysOfTheWeek startDay, int startTime, String modification);
 
   /**
    * Converts provided XML file into a Schedule.
@@ -78,25 +87,47 @@ public interface SchedulingSystem {
    */
   void convertScheduleToXML();
 
-  // view for SameGame only used model observation methods to display game
-  // view could've just asked for 2D board (specific to FPSG impl) and then iterated over that
-  // that is impl-specific solution though
-  // regardless of how model is storing these schedules and events, view should be able to render user schedule
-
-  //  /**
-  //   * Provides Schedule to View --> View will then extract every Event from Schedule,
-  //   * and then print out Event details.
-  //   *
-  //   * @throws IllegalArgumentException     if user does not exist
-  //   */
-  //  Schedule provideUserSchedule(String user);
-
-  // event ids ordered from earliest event to latest event
-  List<Integer> eventIDsInSchedule(String user);
+  List<ReadableEvent> eventsInSchedule(String user);
 
 
-  Event eventAt(String user, int eventID);
 
 
+  /*
+  Sys:
+  <- remove eventAt
+  <- remove eventIDsInSchedule
+
+  List<ReadableEvent> eventsInSchedule(String user); // events in order <-- given to view
+
+  void removeEvent(String user, DaysOfTheWeek startDay, int startTime);
+
+  void modifyEvent(String user, DaysOfTheWeek startDay, int startTime, String modification);
+
+  Schedule:
+  Event eventAt(int eventID); --> Event eventAt(DaysOfTheWeek startDay, int startTime);
+  List<Integer> eventIDs(); --> List<Event> events(); <-- all events within schedule
+
+  Event:
+  remove eventID() from interface
+
+  Then:
+  change tests a bit
+
+  Example:
+  Event eventToRemove = userSchedules.get(user).eventAt(eventID); --> .eventAt(startDay, startTime) --> eventAt throws error if sD, sT !found
+
+
+  Why moving away from ID system: <-- using startDay and startTime accomp same thing without weird side effects
+  ID system <-- weird thing where modifying event would create new ID
+            <-- anyone using event interface would need to use an ID system
+
+  Then:
+  finish modify event <-- clear path to victory
+
+   */
+
+  /*
+  functionality of
+   */
 
 }
