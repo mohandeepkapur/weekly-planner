@@ -4,7 +4,9 @@ The same Event object can be contained in multiple Schedules. Aliasing is what a
 to be shared between different users.
 
 Two Event objects can be compared with equality if they share the same state. This is how the
-Scheduling System can 
+Scheduling System accesses a specific Event within a Schedule.
+
+
 
 A user can identify a unique Event in a schedule through its start day and time.
 This is due to the following INVARIANT: every Event contained WITHIN a Schedule NEVER CONFLICTS.
@@ -12,10 +14,7 @@ What constitutes time conflict was defined by Nunez.
 
 A Scheduling System is a collection of Schedules. If the above is enforced for a single Schedule,
 the Scheduling System as a whole enforces that an Event WITHIN the Scheduling System NEVER CONFLICTS
-with any Schedule the Event is related to (through its invitee list).
-
-
-
+with ANY Schedule the Event is related to (through its invitee list).
 
 Since creating an XML file of a user's schedule can be interpreted as the View's job
 (producing XML is essentially rendering the current state of the model aka scheduling system),
@@ -34,9 +33,6 @@ Other considerations:
   create accounts for them ONLY IF entire XML File upload succeeds
 - same thing for user manually creating a new event -> non-existing invitees automatically addeed
 
-events and eventAt provide direct access to an Event object within a Schedule <- important
+
 
 - XML files cannot OVERWRITE a schedule, only create or ADD to one/multiple
-
-  // an event obj can be contained within multiple schedules
-  // can access a specific event in user schedule using Event's start day and start time

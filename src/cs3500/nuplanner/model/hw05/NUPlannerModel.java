@@ -100,12 +100,6 @@ public class NUPlannerModel implements SchedulingSystem {
     // extract copy of Event from relevant schedule
     Event copyEventToRemove = userSchedules.get(user).eventAt(startDay, startTime); // lets imagine this is not alias
 
-    // remove within-schedule event from all schedules
-
-
-    // add event back in but with modified property <- basically take modify approach w/ everything now <-- no more aliasing!!!!!!!
-
-
     // if user removing event from their schedule is host of the event
     if (copyEventToRemove.eventInvitees().get(0).equals(user)) {
 
@@ -127,6 +121,11 @@ public class NUPlannerModel implements SchedulingSystem {
    */
   private void removeEventFromEverySchedule(List<String> invitees, Event copyEventToRemove) {
 
+    // directly manipulate Event object contained within Schedule (that Scheduling System
+    // cannot access bc observer method aliasing bad) by using a copy of the contained Event object
+    // to access and modify original
+    // updates copy while original modified to preserve equality and thus access to original Event
+    
     if (!invitees.isEmpty()) {
 
       Schedule inviteeSchedule = this.userSchedules.get(invitees.get(0));
