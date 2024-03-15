@@ -27,10 +27,10 @@ public interface Schedule {
 
   /**
    * Removes an Event from Schedule.
-   * <p>
+   *
    * If an Event is removed from a Schedule, the invitee list of the Event should be updated
    * to reflect that change.
-   * <p>
+   *
    * (No consideration about an event conflict, because only Events within Schedule is dealt with.
    * And if Event exists within Schedule, it cannot conflict.)
    *

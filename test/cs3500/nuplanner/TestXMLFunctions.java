@@ -105,7 +105,8 @@ public class TestXMLFunctions {
     } catch (IllegalArgumentException ignored) {
     }
 
-    assertEquals(2, model.allUsers().size());  }
+    assertEquals(2, model.allUsers().size());
+  }
 
   @Test
   public void testXMLToScheduleHostHasTimeConflictXMLUploadFails() {

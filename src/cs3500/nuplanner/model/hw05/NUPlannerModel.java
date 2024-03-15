@@ -8,7 +8,7 @@ import java.util.Map;
 /**
  * Implementation of Scheduling System. Relies on hashmap to relate users and schedules,
  * since users can only contain one Schedule and all users unique.
- * <p>
+ *
  * Permissions are very trusting, as mentioned by assignment. every invitee is client and can remove
  * and add anyone. If non-host invitee of an Event is not in system, will be added automatically.
  */

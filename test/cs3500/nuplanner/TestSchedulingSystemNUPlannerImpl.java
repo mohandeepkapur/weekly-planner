@@ -442,8 +442,8 @@ public class TestSchedulingSystemNUPlannerImpl {
     assertEquals("Carter Field", model.eventsInSchedule("Elaine").get(0).location());
     assertEquals(TUESDAY, model.eventsInSchedule("Elaine").get(0).startDay());
     assertEquals(800, model.eventsInSchedule("Elaine").get(0).startTime());
-    assertThrows(IndexOutOfBoundsException.class,
-            () -> model.eventsInSchedule("Elaine").get(1));
+    assertThrows(IndexOutOfBoundsException.class, () ->
+            model.eventsInSchedule("Elaine").get(1));
   }
 
   @Test
