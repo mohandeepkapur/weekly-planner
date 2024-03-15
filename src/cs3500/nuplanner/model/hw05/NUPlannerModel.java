@@ -6,14 +6,18 @@ import java.util.List;
 import java.util.Map;
 
 /**
+ * Implementation of Scheduling System. Relies on hashmap to relate users and schedules,
+ * since users can only contain one Schedule and all users unique.
  *
+ * Permissions are very trusting, as mentioned by assignment. every invitee is client and can remove
+ * and add anyone. If non-host invitee of an Event is not in system, will be added automatically.
  */
 public class NUPlannerModel implements SchedulingSystem {
 
   private final Map<String, Schedule> userSchedules;
 
   /**
-   *
+   * Constructs a Planner.
    */
   public NUPlannerModel() {
     userSchedules = new HashMap<>();
@@ -60,6 +64,16 @@ public class NUPlannerModel implements SchedulingSystem {
 
   /**
    * Creates and adds a new Event to the relevant schedules.
+   *
+   * @param host                        host of Event
+   * @param invitees                    users added to Event (includes host)
+   * @param eventName                   name of Event
+   * @param location                    location of Event
+   * @param isOnline                    online/offline status of Event
+   * @param startDay                    start day of event
+   * @param startTime                   start time of Event
+   * @param endDay                      end day of Event
+   * @param endTime                     end time of Event
    *
    * @throws IllegalArgumentException   if provided host does not exist in scheduling system
    * @throws IllegalArgumentException   if Event cannot be constructed due to invalid information
@@ -118,6 +132,22 @@ public class NUPlannerModel implements SchedulingSystem {
     }
   }
 
+
+  /**
+   * Removes an Event from specified user's Schedule. Event state is updated accordingly.
+   * Assumption that no Event in a Schedule shares the same start day and time.
+   *
+   *
+   * @param user                        name of user whose schedule holds the Event
+   * @param startDay                    start day of Event
+   * @param startTime                   start time of Event
+   * @throws IllegalArgumentException   if Event with above properties does not exist in Schedule
+   *
+   * @implNote                          if the host of the Event request to removeEvent, remove
+   *                                    event from all schedules and update Event accordingly.
+   *                                    if a non-host, then remove Event just from their own
+   *                                    schedule and update Event accordingly
+   */
   @Override
   public void removeEvent(String user, DaysOfTheWeek startDay, int startTime) {
     confirmUserExists(user);
@@ -139,42 +169,49 @@ public class NUPlannerModel implements SchedulingSystem {
   }
 
   /**
-   * Recursive.
+   * Recursive method that updates every user schedule when host is removed from an Event.
    *
-   * @param invitees
-   * @param copyEventToRemove
+   * @param invitees                        current invitees in event (decreases recursively)
+   * @param copyEventToRemove               copy of Event to remove (updates recursively too)
    */
   private void removeEventFromEverySchedule(List<String> invitees, Event copyEventToRemove) {
-
     // directly manipulate Event object contained within Schedule (that Scheduling System
     // cannot access bc observer method aliasing bad) by using a copy of the contained Event object
     // to access and modify original
     // updates copy while original modified to preserve equality and thus access to original Event
-
     if (!invitees.isEmpty()) {
-
       Schedule inviteeSchedule = this.userSchedules.get(invitees.get(0));
-
       inviteeSchedule.removeEvent(copyEventToRemove); // method updates event's invitee list
-
       copyEventToRemove.removeInvitee(invitees.get(0));
-
       removeEventFromEverySchedule(copyEventToRemove.eventInvitees(), copyEventToRemove);
-
     }
 
   }
 
+  /**
+   * Removes an Event from a single schedule.
+   *
+   * @param user                        invitee who is removing Event
+   * @param eventToRemove               Event to remove
+   */
   private void removeEventFromSingleSchedule(String user, Event eventToRemove) {
-
     Schedule inviteeSchedule = this.userSchedules.get(user);
-
     inviteeSchedule.removeEvent(eventToRemove); // method updates event's invitee list
   }
 
 
+  /**
+   * Modifies an Event within Scheduling System.
+   *
+   * @param user                        name of user whose schedule holds the Event
+   * @param startDay                    start day of Event
+   * @param startTime                   start time of Event
+   * @param modification                modification to be made
+   *
+   * @throws IllegalArgumentException   if modification creates conflict with other Schedules
+   */
   @Override
-  public void modifyEvent(String user, DaysOfTheWeek startDay, int startTime, String modification) { // this method doesn't require aliasing in the first place
+  public void modifyEvent(String user, DaysOfTheWeek startDay, int startTime, String modification) {
 
     // extract event-to-modify from user's schedule in scheduling system
     Event origEvent = userSchedules.get(user).eventAt(startDay, startTime);
@@ -237,6 +274,23 @@ public class NUPlannerModel implements SchedulingSystem {
   }
 
 
+  /**
+   * Checks whether an Event can be added into Scheduling System given its current state.
+   *
+   * @param host                        host of Event
+   * @param invitees                    users added to Event (includes host)
+   * @param eventName                   name of Event
+   * @param location                    location of Event
+   * @param isOnline                    online/offline status of Event
+   * @param startDay                    start day of event
+   * @param startTime                   start time of Event
+   * @param endDay                      end day of Event
+   * @param endTime                     end time of Event
+   *
+   * @return                            whether event can exist within scheduling system or not
+   *
+   * @throws IllegalArgumentException   if Event cannot be constructed due to invalid information
+   */
   @Override
   public boolean eventConflict(String host, List<String> invitees,
                                String eventName, String location, boolean isOnline,

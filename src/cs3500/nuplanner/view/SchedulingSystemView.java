@@ -9,6 +9,8 @@ public interface SchedulingSystemView {
 
   /**
    * Renders view of a user's schedule.
+   *
+   * @throws IOException     if unable to render view
    */
   void render(String user) throws IOException;
 

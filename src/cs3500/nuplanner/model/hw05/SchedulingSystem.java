@@ -7,8 +7,6 @@ import java.util.List;
  */
 public interface SchedulingSystem {
 
-  // ADD THROWS FOR ILLEGAL EVENT CONSTRUCTION
-
   /**
    * Adds a user to the scheduling system.
    *
@@ -26,14 +24,24 @@ public interface SchedulingSystem {
   void removeUser(String user);
 
   /**
-   * Observes all users existing within the scheduling system
+   * Observes all users existing within the scheduling system.
    *
    * @return all users in scheduling system
    */
   List<String> allUsers();
 
   /**
-   * Creates and adds a new Event to the relevant schedules.
+   * Creates and adds a new Event to the relevant Schedules.
+   *
+   * @param host                        host of Event
+   * @param invitees                    users added to Event (includes host)
+   * @param eventName                   name of Event
+   * @param location                    location of Event
+   * @param isOnline                    online/offline status of Event
+   * @param startDay                    start day of event
+   * @param startTime                   start time of Event
+   * @param endDay                      end day of Event
+   * @param endTime                     end time of Event
    *
    * @throws IllegalArgumentException   if provided host does not exist in scheduling system
    * @throws IllegalArgumentException   if Event cannot be constructed due to invalid information
@@ -47,37 +55,45 @@ public interface SchedulingSystem {
                 DaysOfTheWeek endDay, int endTime);
 
   /**
-   * Removes an Event from specified user's Schedule.
+   * Removes an Event from specified user's Schedule. Event state is updated accordingly.
+   * Assumption that no Event in a Schedule shares the same start day and time.
    *
-   * @param user                    name of user whose schedule holds the Event
-   * @param startDay
-   * @param startTime
+   *
+   * @param user                        name of user whose schedule holds the Event
+   * @param startDay                    start day of Event
+   * @param startTime                   start time of Event
+   * @throws IllegalArgumentException   if Event with above properties does not exist in Schedule
    */
   void removeEvent(String user, DaysOfTheWeek startDay, int startTime);
 
   /**
-   * Modifies an event that the user chooses with whatever modification listed.
+   * Modifies an Event within Scheduling System.
    *
-   * @param user
-   * @param eventIndex
-   * @param modification
+   * @param user                        name of user whose schedule holds the Event
+   * @param startDay                    start day of Event
+   * @param startTime                   start time of Event
+   * @param modification                modification to be made
+   *
+   * @throws IllegalArgumentException   if modification creates conflict with other Schedules
    */
-
   void modifyEvent(String user, DaysOfTheWeek startDay, int startTime, String modification);
 
   /**
-   * Checks whether an Event can be added into Scheduling System given its current state.
+   * Checks whether an Event conflicts with relevant Schedules in Scheduling System
    *
-   * @param host
-   * @param invitees
-   * @param eventName
-   * @param location
-   * @param isOnline
-   * @param startDay
-   * @param startTime
-   * @param endDay
-   * @param endTime
-   * @return
+   * @param host                        host of Event
+   * @param invitees                    users added to Event (includes host)
+   * @param eventName                   name of Event
+   * @param location                    location of Event
+   * @param isOnline                    online/offline status of Event
+   * @param startDay                    start day of event
+   * @param startTime                   start time of Event
+   * @param endDay                      end day of Event
+   * @param endTime                     end time of Event
+   *
+   * @return                            whether event can exist within scheduling system or not
+   *
+   * @throws IllegalArgumentException   if Event cannot be constructed due to invalid information
    */
   boolean eventConflict(String host, List<String> invitees,
                         String eventName, String location, boolean isOnline,
@@ -94,7 +110,7 @@ public interface SchedulingSystem {
   List<ReadableEvent> eventsInSchedule(String user);
 
   /**
-   * Observes a unique Event contained within a user's schedule
+   * Observes a unique Event contained within a user's schedule.
    *
    * @param user                        name of user whose Event to return
    * @return                            Event belonging to that user

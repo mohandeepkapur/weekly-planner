@@ -29,19 +29,35 @@ import static cs3500.nuplanner.model.hw05.DaysOfTheWeek.THURSDAY;
 import static cs3500.nuplanner.model.hw05.DaysOfTheWeek.TUESDAY;
 import static cs3500.nuplanner.model.hw05.DaysOfTheWeek.WEDNESDAY;
 
+/**
+ * Controller that takes in XML input and manipulates model(sched. sys)-state.
+ */
 public class SchedulingSystemXMLController implements SchedulingSystemController {
 
   private final SchedulingSystem model;
 
+  /**
+   * Constructs a XML Controller
+   * @param model         Scheduling System
+   */
   public SchedulingSystemXMLController(SchedulingSystem model) {
     this.model = model;
   }
 
+  /**
+   * Runs scheduling system using user input.
+   */
   @Override
   public void useSchedulingSystem() {
-    throw new IllegalArgumentException("To use XML version of controller, provide XML filename...");
+    throw new IllegalArgumentException("XML Controller does not run on user input... ");
   }
 
+  /**
+   * Runs scheduling system using XML file.
+   *
+   * @param pathname                     path to XML file
+   * @throws IllegalStateException       if unable to open or parse XML file
+   */
   @Override
   public void useSchedulingSystem(String pathname) {
     try {
@@ -150,6 +166,13 @@ public class SchedulingSystemXMLController implements SchedulingSystemController
 
   }
 
+  /**
+   * Converts provided string into a day of the week, if possible.
+   *
+   * @param day                           string to convert into day
+   * @throws IllegalArgumentException     if string cannot be converted into a day
+   * @return                              DaysOfTheWeek enum constant
+   */
   private DaysOfTheWeek createDay(String day) {
     if (day.equals(SUNDAY.toString())) {
       return SUNDAY;

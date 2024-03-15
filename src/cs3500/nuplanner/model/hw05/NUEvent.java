@@ -383,8 +383,9 @@ public class NUEvent implements Event {
 
   /**
    * Two different Event objects are considered the same if both have exactly the same state.
-   * @param other
-   * @return
+   *
+   * @param other           other Event
+   * @return                whether two different Events are equal
    */
   @Override
   public boolean equals(Object other) {
@@ -403,6 +404,11 @@ public class NUEvent implements Event {
             && this.endDay == obj.endDay();
   }
 
+  /**
+   * Overriden due to equals override. Produces unique hash of Event based on its state.
+   *
+   * @return hash of Event
+   */
   @Override
   public int hashCode() {
     return Objects.hash(name, location, invitees, isOnline, startTime, startDay, endTime, endDay);

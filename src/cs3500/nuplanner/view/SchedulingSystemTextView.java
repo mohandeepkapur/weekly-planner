@@ -9,7 +9,6 @@ import cs3500.nuplanner.model.hw05.SchedulingSystem;
 /**
  * A class that creates and prints a simple textual view of a user's schedule in the console.
  */
-
 public class SchedulingSystemTextView implements SchedulingSystemView {
 
   private final SchedulingSystem model;
@@ -30,11 +29,22 @@ public class SchedulingSystemTextView implements SchedulingSystemView {
     this.out = log;
   }
 
+  /**
+   * Renders view of a user's schedule.
+   *
+   * @throws IOException     if unable to render view
+   */
   @Override
   public void render(String user) throws IOException {
     out.append(toStringUserSchedule(user));
   }
 
+  /**
+   * Accumulating information about user schedule.
+   *
+   * @param user      name of user
+   * @return          string that contains user's schedule
+   */
   private String toStringUserSchedule (String user) {
     List<ReadableEvent> events = this.model.eventsInSchedule(user);
     StringBuilder sched = new StringBuilder();
@@ -65,7 +75,7 @@ public class SchedulingSystemTextView implements SchedulingSystemView {
    *
    * @param events a list of events
    * @param day    the day to check
-   * @param aUs
+   * @param sched  string
    */
   private void runOverEvents(List<ReadableEvent> events, String day, StringBuilder sched) {
     for (ReadableEvent event : events) {

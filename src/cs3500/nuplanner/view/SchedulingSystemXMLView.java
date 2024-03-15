@@ -12,7 +12,6 @@ import cs3500.nuplanner.model.hw05.SchedulingSystem;
  * A class that creates and prints a XML view of a user's
  * schedule into a file.
  */
-
 public class SchedulingSystemXMLView implements SchedulingSystemView {
 
   private final SchedulingSystem model;
@@ -22,11 +21,15 @@ public class SchedulingSystemXMLView implements SchedulingSystemView {
    *
    * @param model the model used to create the view
    */
-
   public SchedulingSystemXMLView(SchedulingSystem model) {
     this.model = model;
   }
 
+  /**
+   * Renders view of a user's schedule.
+   *
+   * @throws IOException     if unable to render view
+   */
   @Override
   public void render(String user) throws IOException {
     List<ReadableEvent> events = this.model.eventsInSchedule(user);
