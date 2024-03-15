@@ -43,15 +43,32 @@ long because of my codebase design,
 but this refactor is being prevented due to the numerous tests written with the current
 addEvent + eventConflict method signature and time constraint.)
 
+Key components:
+Explain the highest-level components in your system, and what they do.
+It is trite and useless to merely say “The model represents the data in my system.
+The view represents the rendering of my system. ...”
+This is a waste of your time and the reader’s time.
+Describe which components “drive” the control-flow of your system, and which ones “are driven”.
+
+Key subcomponents:
+Within each component, give an overview of the main nouns in your system,
+and why they exist and what they are used for.
 
 Quick Start:
 Key Components (mentioned in overview, so this section kept brief):
-Scheduling System stores user Schedules, and user Schedules store Events. The SSView interacts
-with the Scheduling System to render a user's Schedule using Events, in either XML or text format.
+Scheduling System stores user Schedules, and user Schedules store Events. Scheduling System is the
+model, which runs on Schedules, which runs on Events.
+
+The SSView interacts with the Scheduling System to render a user's Schedule using Events,
+in either XML or text format.
+
 The SSController is to manipulate the Scheduling System right now with only XML.
 
+Smaller Components:
+DaysOfTheWeek is an enum used to keep track of the days for a 2-week span planner.
+
 Source organization:
-All components in src contained within cs3500.nuplanner package.
+All components in src and test are contained within cs3500.nuplanner package.
 
 
 

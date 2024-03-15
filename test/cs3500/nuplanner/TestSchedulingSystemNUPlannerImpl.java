@@ -312,7 +312,7 @@ public class TestSchedulingSystemNUPlannerImpl {
     model.addEvent("Elaine", new ArrayList<>(List.of("Elaine", "Mia")), "Tennis",
             "Carter Field", true,
             TUESDAY, 800, TUESDAY, 1000);
-    model.modifyEvent("Elaine", TUESDAY, 800, "startday monday");
+    model.modifyEvent("Elaine", TUESDAY, 800, "startday MONDAY");
     assertEquals(MONDAY, model.eventAt("Elaine", MONDAY, 800).startDay());
   }
 
@@ -345,7 +345,7 @@ public class TestSchedulingSystemNUPlannerImpl {
     model.addEvent("Elaine", new ArrayList<>(List.of("Elaine", "Mia")), "Tennis",
             "Carter Field", true,
             TUESDAY, 800, TUESDAY, 1000);
-    model.modifyEvent("Elaine", TUESDAY, 800, "endday wednesday");
+    model.modifyEvent("Elaine", TUESDAY, 800, "endday WEDNESDAY");
     assertEquals(WEDNESDAY, model.eventAt("Elaine", TUESDAY, 800).endDay());
   }
 
