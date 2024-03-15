@@ -70,7 +70,7 @@ public class NUSchedule implements Schedule {
 
   /**
    * Removes an Event from Schedule.
-   *
+   * <p>
    * If an Event is removed from a Schedule, the invitee list of the Event should be updated
    * to reflect that change.
    *
@@ -194,7 +194,7 @@ public class NUSchedule implements Schedule {
   /**
    * Extracts an objective value for an Event's start day/time and end day/time
    * using 1st week Sunday 0:00 as reference.
-   *
+   * <p>
    * Objective value is difference in minutes from reference point to current date!
    *
    * @param event           Event

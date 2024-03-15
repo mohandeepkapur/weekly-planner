@@ -5,18 +5,13 @@ import org.junit.Test;
 import java.util.ArrayList;
 import java.util.List;
 
-import cs3500.nuplanner.model.hw05.DaysOfTheWeek;
 import cs3500.nuplanner.model.hw05.Event;
 import cs3500.nuplanner.model.hw05.NUEvent;
-import cs3500.nuplanner.model.hw05.NUPlannerModel;
 import cs3500.nuplanner.model.hw05.NUSchedule;
 import cs3500.nuplanner.model.hw05.Schedule;
-import cs3500.nuplanner.model.hw05.SchedulingSystem;
 
 import static cs3500.nuplanner.model.hw05.DaysOfTheWeek.MONDAY;
-import static cs3500.nuplanner.model.hw05.DaysOfTheWeek.SUNDAY;
 import static cs3500.nuplanner.model.hw05.DaysOfTheWeek.TUESDAY;
-import static cs3500.nuplanner.model.hw05.DaysOfTheWeek.WEDNESDAY;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertSame;

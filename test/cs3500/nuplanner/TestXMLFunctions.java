@@ -2,28 +2,22 @@ package cs3500.nuplanner;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.xml.sax.SAXException;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import javax.xml.parsers.ParserConfigurationException;
-
 import cs3500.nuplanner.controller.SchedulingSystemController;
 import cs3500.nuplanner.controller.SchedulingSystemXMLController;
 import cs3500.nuplanner.model.hw05.DaysOfTheWeek;
-import cs3500.nuplanner.model.hw05.Event;
 import cs3500.nuplanner.model.hw05.NUPlannerModel;
 import cs3500.nuplanner.model.hw05.ReadableEvent;
-import cs3500.nuplanner.model.hw05.Schedule;
 import cs3500.nuplanner.model.hw05.SchedulingSystem;
 import cs3500.nuplanner.view.SchedulingSystemView;
 import cs3500.nuplanner.view.SchedulingSystemXMLView;
 
 import static cs3500.nuplanner.model.hw05.DaysOfTheWeek.FRIDAY;
-import static cs3500.nuplanner.model.hw05.DaysOfTheWeek.MONDAY;
 import static cs3500.nuplanner.model.hw05.DaysOfTheWeek.SATURDAY;
 import static cs3500.nuplanner.model.hw05.DaysOfTheWeek.SUNDAY;
 import static cs3500.nuplanner.model.hw05.DaysOfTheWeek.TUESDAY;
@@ -99,6 +93,19 @@ public class TestXMLFunctions {
     assertEquals(3, model.eventsInSchedule("Prof. Lucia").size());
   }
 
+  @Test
+  public void testAllPreEmptivelyAddedUsersRemovedFromSchedulingSystemOnceXMLUploadFails() {
+    model.addUser("Prof. Lucia");
+
+    model.addEvent("Prof. Lucia", new ArrayList<>(List.of("Prof. Lucia", "Mo")),
+            "BasketWeaving", "Sea", true, FRIDAY, 1000, SATURDAY, 1000);
+
+    try {
+      xmlController.useSchedulingSystem("XMLFiles/toRead/Prof. Lucia.xml");
+    } catch (IllegalArgumentException ignored) {
+    }
+
+    assertEquals(2, model.allUsers().size());  }
 
   @Test
   public void testXMLToScheduleHostHasTimeConflictXMLUploadFails() {
@@ -110,7 +117,7 @@ public class TestXMLFunctions {
 
     try {
       xmlController.useSchedulingSystem("XMLFiles/toRead/Prof. Lucia.xml");
-    } catch (IllegalArgumentException ignore) {
+    } catch (IllegalArgumentException ignored) {
     }
 
     assertEquals(2, model.allUsers().size());
@@ -146,6 +153,9 @@ public class TestXMLFunctions {
     }
   }
 
+  // Testing that XML view produces a correct file by first saving down and then loading and
+  // ensuring that the events in both models are exactly the same
+  // This test presents the original values and saves down the XML for the next test
   @Test
   public void testCanWriteToXMLMiaFile() {
     SchedulingSystem model = new NUPlannerModel();
@@ -173,6 +183,9 @@ public class TestXMLFunctions {
     }
   }
 
+  // Testing that XML view produces a correct file by first saving down and then loading and
+  // ensuring that the events in both models are exactly the same
+  // This test checks that the values are the same as the previous test after reading from the XML
   @Test
   public void testCanReadFromXMLMiaFile() {
     xmlController.useSchedulingSystem("XMLFiles/toWrite/Mia.xml");
@@ -214,11 +227,6 @@ public class TestXMLFunctions {
   }
 
   @Test
-  public void testAllPreEmptivelyAddedUsersRemovedFromSchedulingSystemOnceXMLUploadFails() {
-    // implicitly tested above
-  }
-
-  @Test
   public void renderExistingUserScheduleInXML() {
     SchedulingSystem model = new NUPlannerModel();
 
@@ -237,6 +245,8 @@ public class TestXMLFunctions {
             DaysOfTheWeek.THURSDAY, 1030, DaysOfTheWeek.THURSDAY, 1130);
 
     SchedulingSystemView xmlView = new SchedulingSystemXMLView(model);
+
+    assertEquals(3,model.allUsers().size());
 
     try {
       xmlView.render("Mo");

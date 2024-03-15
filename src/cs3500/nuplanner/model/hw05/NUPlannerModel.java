@@ -8,7 +8,7 @@ import java.util.Map;
 /**
  * Implementation of Scheduling System. Relies on hashmap to relate users and schedules,
  * since users can only contain one Schedule and all users unique.
- *
+ * <p>
  * Permissions are very trusting, as mentioned by assignment. every invitee is client and can remove
  * and add anyone. If non-host invitee of an Event is not in system, will be added automatically.
  */
@@ -49,7 +49,7 @@ public class NUPlannerModel implements SchedulingSystem {
   }
 
   /**
-   * Observes all users existing within the scheduling system
+   * Observes all users existing within the scheduling system.
    *
    * @return all users in scheduling system
    */
@@ -107,7 +107,8 @@ public class NUPlannerModel implements SchedulingSystem {
     // TODO: Check
     if (eventConflict(host, invitees, eventName, location, isOnline, startDay, startTime, endDay,
             endTime)) {
-      throw new IllegalArgumentException("Cannot add event, conflicts with an invitee schedule... ");
+      throw new IllegalArgumentException(
+              "Cannot add event, conflicts with an invitee schedule... ");
     }
 
     // create new Event -> Event constructor will inform model whether params valid
@@ -153,7 +154,8 @@ public class NUPlannerModel implements SchedulingSystem {
     confirmUserExists(user);
 
     // extract copy of Event from relevant schedule
-    Event copyEventToRemove = userSchedules.get(user).eventAt(startDay, startTime); // lets imagine this is not alias
+    Event copyEventToRemove =
+            userSchedules.get(user).eventAt(startDay, startTime);
 
     // if user removing event from their schedule is host of the event
     if (copyEventToRemove.eventInvitees().get(0).equals(user)) {
@@ -240,9 +242,10 @@ public class NUPlannerModel implements SchedulingSystem {
     // modify copy of event-to-remove
     try {
       performOtherModifications(copyOfEvent, tokens[0], tokens[1]);
-    } catch (IllegalArgumentException | IllegalStateException caught) { // anything throws ISE???
+    } catch (IllegalArgumentException | IllegalStateException caught) {
       throw new IllegalArgumentException(
-              "Cannot add this modified version of event in scheduling system... " + caught.getMessage());
+              "Cannot add this modified version of event in scheduling system... " +
+                      caught.getMessage());
     }
 
     // check if modified copy is compatible with scheduling system
@@ -321,8 +324,8 @@ public class NUPlannerModel implements SchedulingSystem {
     for (String invitee : event.eventInvitees()) {
       Schedule inviteeSchedule = this.userSchedules.get(invitee);
       if (inviteeSchedule.eventConflict(event)) {
-        throw new IllegalStateException("Event cannot be added into scheduling system... " +
-                "scheduling conflict with at least one invitee's schedule... ");
+        throw new IllegalStateException("Event cannot be added into scheduling system... "
+               + "scheduling conflict with at least one invitee's schedule... ");
       }
     }
   }
@@ -401,7 +404,7 @@ public class NUPlannerModel implements SchedulingSystem {
   }
 
   /**
-   * Observes a unique Event contained within a user's schedule
+   * Observes a unique Event contained within a user's schedule.
    *
    * @param user                        name of user whose Event to return
    * @throws IllegalArgumentException   if user does not exist in scheduling system
@@ -443,8 +446,8 @@ public class NUPlannerModel implements SchedulingSystem {
    * Converts provided string into a day of the week, if possible.
    *
    * @param string                        string to convert into day
-   * @throws IllegalArgumentException     if string cannot be converted into a day
    * @return                              DaysOfTheWeek enum constant
+   * @throws IllegalArgumentException     if string cannot be converted into a day
    */
   private DaysOfTheWeek convertStringToDay(String string) {
 

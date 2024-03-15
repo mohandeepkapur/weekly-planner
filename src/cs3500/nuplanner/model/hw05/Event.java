@@ -79,7 +79,6 @@ public interface Event extends ReadableEvent {
 
   /**
    * Removes an invitee from the Event.
-   *
    * If an Event is removed from a Schedule, the invitee list of the Event should be updated
    * to reflect that change.
    *

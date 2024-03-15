@@ -22,7 +22,7 @@ import static org.junit.Assert.assertThrows;
 import static org.junit.Assert.assertTrue;
 
 /**
- * A test class that checks functionality of the NUEvent
+ * A test class that checks functionality of the NUEvent.
  */
 public class TestEventNUEventImpl {
 
@@ -59,6 +59,8 @@ public class TestEventNUEventImpl {
     Event event3 = new NUEvent(new ArrayList<>(List.of("Mo", "Ko", "Jo")),
             "Baseball", "Krentzman Quad", true,
             WEDNESDAY, 1200, WEDNESDAY, 1300);
+
+    assertEquals("Mo", event1.host());
   }
 
   @Test
@@ -66,6 +68,7 @@ public class TestEventNUEventImpl {
     Event twoWeekEvent = new NUEvent(new ArrayList<>(List.of("Mo", "Ko", "Jo")),
             "Soccer", "Carter Field", false,
             WEDNESDAY, 1000, SUNDAY, 1200);
+    assertEquals(SUNDAY, twoWeekEvent.endDay());
   }
 
   @Test
@@ -73,13 +76,15 @@ public class TestEventNUEventImpl {
     Event longEvent = new NUEvent(new ArrayList<>(List.of("Mo", "Ko", "Jo")),
             "Soccer", "Carter Field", false,
             WEDNESDAY, 0, DaysOfTheWeek.TUESDAY, 2359);
+    assertEquals(TUESDAY, longEvent.endDay());
   }
 
   @Test
-  public void checkEventInvalidTimeSpanLongerThanOneWeek() { //TODO: How to test longer than one week?
+  public void checkEventInvalidTimeSpanLongerThanOneWeek() {
     Event longEvent = new NUEvent(new ArrayList<>(List.of("Mo", "Ko", "Jo")),
             "Soccer", "Carter Field", false,
             WEDNESDAY, 1200, WEDNESDAY, 1201);
+    assertEquals(WEDNESDAY, longEvent.endDay());
   }
 
   @Test
@@ -429,47 +434,3 @@ public class TestEventNUEventImpl {
   }
 
 }
-
-/*
-  separating view from model
-  separating view from controller
-
- command callback design --> separated actual command from how it is carried out
-
- controller cares about echo
-
-
- c -> only takes in user inputs, delegates to model and view
-
- features concept --> echo text, exit program, capitalize text, make it lowercase, toggle highlighting --> all Features
-
- review of ccd ^
-
- going into design from pre-spring-break friday in more detail
-
- Features is a thing outside of view
-
- Controller and View interface with each other through Features
-
- Problem: I want a GUI that reacts to user input (clicking a button, entering text, key commands,
- changing something on a list, etc.)
- AND I want to keep my controller and view separate.
- Solution: Command Callback Design
- 1. Determine what reactions/features you want. Put those in an interface.
- 2. Add an addFeatures(Features) method to the view and any related classes/interfaces.
- 3. In each class, implement the addFeatures method to use the features when some UI element is used.
- 4. Implement the Features interface SOMEWHERE in the controller component (can be the controller itself).
- 5. Have the controller call addFeatures with the features before the view is made visible.
-
-
- view --> frames --> panels
-
- key listener has anonymous class vs method bc need to override/implement three methods instead of one
-
- action listener --> listens for action events --> like clicking a button,
-
- ActionEvent --> something happened with the UI element (but only some of them) <- buttons can be clicked
- KeyEvent --> you typed a thing in the UI element <- "focus" concept
- ItemEvent --> you messed with an item in a UI list
-
- */
