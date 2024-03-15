@@ -110,3 +110,40 @@ good note:
   // view should be able to render user schedule
 
 
+  /*
+  Sys:
+  <- remove eventAt
+  <- remove eventIDsInSchedule
+
+  List<ReadableEvent> eventsInSchedule(String user); // events in order <-- given to view
+
+  void removeEvent(String user, DaysOfTheWeek startDay, int startTime);
+
+  void modifyEvent(String user, DaysOfTheWeek startDay, int startTime, String modification);
+
+  Schedule:
+  Event eventAt(int eventID); --> Event eventAt(DaysOfTheWeek startDay, int startTime);
+  List<Integer> eventIDs(); --> List<Event> events(); <-- all events within schedule
+
+  Event:
+  remove eventID() from interface
+
+  Then:
+  change tests a bit
+
+  Example:
+  Event eventToRemove = userSchedules.get(user).eventAt(eventID); --> .eventAt(startDay, startTime) --> eventAt throws error if sD, sT !found
+
+
+  Why moving away from ID system: <-- using startDay and startTime accomp same thing without weird side effects
+  ID system <-- weird thing where modifying event would create new ID
+            <-- anyone using event interface would need to use an ID system
+
+  Then:
+  finish modify event <-- clear path to victory
+
+   */
+
+  /*
+  functionality of
+   */

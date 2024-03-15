@@ -4,7 +4,7 @@ import java.util.List;
 
 /**
  * Readable-only version of an Event. This is so the Scheduling System can dole out Events to
- * other components while enforcing immutability. Defensive copies are already given out, but
+ * non-model components while enforcing immutability. Defensive copies are already given out, but
  * from a design-standpoint, access to operators should be removed as well.
  */
 public interface ReadableEvent {
@@ -68,7 +68,7 @@ public interface ReadableEvent {
 
   /**
    * Observes all invitees that are part of the Event.
-   * The first invitee MUST be the host of the Event.
+   * The first invitee MUST be the host of the Event. Order MATTERS.
    *
    * @return list of invitees (first invitee MUST be host)
    */

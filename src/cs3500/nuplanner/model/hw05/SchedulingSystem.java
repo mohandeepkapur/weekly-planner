@@ -7,44 +7,39 @@ import java.util.List;
  */
 public interface SchedulingSystem {
 
-  // eventIndexs are essentially index of whatever is storing events in schedule
-  // eventIndexs change as in, whatever stores events in schedule will sort itself
-  // but that is ok --> all that matters is extracting reference of relevant
-  //      Event in model
+  // ADD THROWS FOR ILLEGAL EVENT CONSTRUCTION
 
   /**
    * Adds a user to the scheduling system.
    *
-   * @param user name of new user
-   * @throws IllegalArgumentException if user already exists in planner-system
+   * @param user                             name of new user
+   * @throws IllegalArgumentException        if user already exists in scheduling-system
    */
   void addUser(String user);
 
   /**
    * Removes a user from the scheduling system.
    *
-   * @param user name of user
-   * @throws IllegalArgumentException if user does not exist in the planner-system
+   * @param user                                name of user
+   * @throws IllegalArgumentException           if user does not exist in the scheduling-system
    */
   void removeUser(String user);
 
+  /**
+   * Observes all users existing within the scheduling system
+   *
+   * @return all users in scheduling system
+   */
   List<String> allUsers();
 
   /**
-   * Checks whether an Event can be added into Model given current model-state.
-   * Checks whether Event can be added into scheduling system given sched. sys state.
-   */
-  boolean eventConflict(String host, List<String> invitees,
-                        String eventName, String location, boolean isOnline,
-                        DaysOfTheWeek startDay, int startTime,
-                        DaysOfTheWeek endDay, int endTime);
-
-  /**
-   * Adds a custom Event to the relevant schedules.
+   * Creates and adds a new Event to the relevant schedules.
    *
-   * @throws IllegalArgumentException if provided user does not exist
-   *                                  (ok if invitee doesn't exist)
-   * @implNote owner of event vs invitees important distinction
+   * @throws IllegalArgumentException   if provided host does not exist in scheduling system
+   * @throws IllegalArgumentException   if Event cannot be constructed due to invalid information
+   * @throws IllegalArgumentException   if the Event's host is not first in its invitees list
+   * @throws IllegalArgumentException   if Event conflicts with any Schedule within the Scheduling
+   *                                    System
    */
   void addEvent(String host, List<String> invitees,
                 String eventName, String location, boolean isOnline,
@@ -54,13 +49,9 @@ public interface SchedulingSystem {
   /**
    * Removes an Event from specified user's Schedule.
    *
-   * @param user       name of user
-   * @param eventIndex represents the Event to be removed
-   * @throws IllegalArgumentException if user does not exist in scheduling system
-   * @implNote if owner is removing event, delete Event from
-   * every schedule
-   * if invitee is removing event, update Event with
-   * removed invitee
+   * @param user                    name of user whose schedule holds the Event
+   * @param startDay
+   * @param startTime
    */
   void removeEvent(String user, DaysOfTheWeek startDay, int startTime);
 
@@ -74,48 +65,44 @@ public interface SchedulingSystem {
 
   void modifyEvent(String user, DaysOfTheWeek startDay, int startTime, String modification);
 
+  /**
+   * Checks whether an Event can be added into Scheduling System given its current state.
+   *
+   * @param host
+   * @param invitees
+   * @param eventName
+   * @param location
+   * @param isOnline
+   * @param startDay
+   * @param startTime
+   * @param endDay
+   * @param endTime
+   * @return
+   */
+  boolean eventConflict(String host, List<String> invitees,
+                        String eventName, String location, boolean isOnline,
+                        DaysOfTheWeek startDay, int startTime,
+                        DaysOfTheWeek endDay, int endTime);
+
+  /**
+   * Observes all the Events contained within a user's Schedule.
+   *
+   * @param user                        name of user whose Schedule to return
+   * @return                            Schedule belonging to that user
+   * @throws IllegalArgumentException   if user does not exist in scheduling system
+   */
   List<ReadableEvent> eventsInSchedule(String user);
 
+  /**
+   * Observes a unique Event contained within a user's schedule
+   *
+   * @param user                        name of user whose Event to return
+   * @return                            Event belonging to that user
+   * @throws IllegalArgumentException   if user does not exist in scheduling system
+   */
   ReadableEvent eventAt(String user, DaysOfTheWeek startDay, int startTime);
 
 
 
-  /*
-  Sys:
-  <- remove eventAt
-  <- remove eventIDsInSchedule
-
-  List<ReadableEvent> eventsInSchedule(String user); // events in order <-- given to view
-
-  void removeEvent(String user, DaysOfTheWeek startDay, int startTime);
-
-  void modifyEvent(String user, DaysOfTheWeek startDay, int startTime, String modification);
-
-  Schedule:
-  Event eventAt(int eventID); --> Event eventAt(DaysOfTheWeek startDay, int startTime);
-  List<Integer> eventIDs(); --> List<Event> events(); <-- all events within schedule
-
-  Event:
-  remove eventID() from interface
-
-  Then:
-  change tests a bit
-
-  Example:
-  Event eventToRemove = userSchedules.get(user).eventAt(eventID); --> .eventAt(startDay, startTime) --> eventAt throws error if sD, sT !found
-
-
-  Why moving away from ID system: <-- using startDay and startTime accomp same thing without weird side effects
-  ID system <-- weird thing where modifying event would create new ID
-            <-- anyone using event interface would need to use an ID system
-
-  Then:
-  finish modify event <-- clear path to victory
-
-   */
-
-  /*
-  functionality of
-   */
 
 }

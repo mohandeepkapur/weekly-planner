@@ -1,7 +1,7 @@
 package cs3500.nuplanner.model.hw05;
 
 /**
- * Operations and observations necessary for an Event in a Scheduling System. Observations
+ * Operations necessary for an Event in a Scheduling System. Observations
  * described within the ReadableEvent interface.
  */
 public interface Event extends ReadableEvent {

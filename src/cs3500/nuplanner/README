@@ -1,16 +1,14 @@
 Design Decisions/Codebase Introduction:
 
-The same Event object can be contained in multiple Schedules. Aliasing is what allows for Events
-to be shared between different users.
+In Scheduling System. the same Event object can be contained in multiple Schedules.
+Aliasing is what allows for Events to be shared between different users.
 
 Two Event objects can be compared with equality if they share the same state. This is how the
 Scheduling System accesses a specific Event within a Schedule.
 
-
-
-A user can identify a unique Event in a schedule through its start day and time.
+A user of the System can identify a unique Event in a schedule through its start day and time.
 This is due to the following INVARIANT: every Event contained WITHIN a Schedule NEVER CONFLICTS.
-What constitutes time conflict was defined by Nunez.
+What constitutes a conflicting event was defined by Nunez.
 
 A Scheduling System is a collection of Schedules. If the above is enforced for a single Schedule,
 the Scheduling System as a whole enforces that an Event WITHIN the Scheduling System NEVER CONFLICTS
@@ -27,6 +25,9 @@ schedule has been delegated to the Controller.
 View accesses (Readable-only) Events through the Model. This allows for a one-way flow of info.
 Observations on an Event have been put into a Readable-only Event interface, with the complete
 Event interface (operations included) extending ReadableEvent.
+        The View can anyways only access copies of the Events contained within the Scheduling System
+        but the inclusion of the Readable interface prevents any developer working on the View
+        to even attempt to manipulate an event and thus affect model-state.
 
 Other considerations:
 - if an XML file mentions "non-existing" (not present in scheduling system) users, add them into

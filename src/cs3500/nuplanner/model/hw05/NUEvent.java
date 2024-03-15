@@ -292,7 +292,7 @@ public class NUEvent implements Event {
 
   /**
    * Observes all invitees that are part of the Event.
-   * The first invitee MUST be the host of the Event.
+   * The first invitee MUST be the host of the Event. Order MATTERS.
    *
    * @return list of invitees (first invitee MUST be host)
    */

@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Entire system works through aliasing.
+ *
  */
 public class NUPlannerModel implements SchedulingSystem {
 
@@ -19,18 +19,36 @@ public class NUPlannerModel implements SchedulingSystem {
     userSchedules = new HashMap<>();
   }
 
+
+  /**
+   * Adds a user to the scheduling system.
+   *
+   * @param user                             name of new user
+   * @throws IllegalArgumentException        if user already exists in scheduling-system
+   */
   @Override
   public void addUser(String user) {
     confirmUserDoesNotExist(user);
     userSchedules.put(user, new NUSchedule(user));
   }
 
+  /**
+   * Removes a user from the scheduling system.
+   *
+   * @param user                                name of user
+   * @throws IllegalArgumentException           if user does not exist in the scheduling-system
+   */
   @Override
   public void removeUser(String user) {
     confirmUserExists(user);
     userSchedules.remove(user);
   }
 
+  /**
+   * Observes all users existing within the scheduling system
+   *
+   * @return all users in scheduling system
+   */
   @Override
   public List<String> allUsers() {
     List<String> allUsers = new ArrayList<>();
@@ -40,6 +58,15 @@ public class NUPlannerModel implements SchedulingSystem {
     return allUsers;
   }
 
+  /**
+   * Creates and adds a new Event to the relevant schedules.
+   *
+   * @throws IllegalArgumentException   if provided host does not exist in scheduling system
+   * @throws IllegalArgumentException   if Event cannot be constructed due to invalid information
+   * @throws IllegalArgumentException   if the Event's host is not first in its invitees list
+   * @throws IllegalArgumentException   if Event conflicts with any Schedule within the Scheduling
+   *                                    System
+   */
   @Override
   public void addEvent(String host, List<String> invitees,
                        String eventName, String location, boolean isOnline,
@@ -63,29 +90,27 @@ public class NUPlannerModel implements SchedulingSystem {
       throw new IllegalArgumentException("Unable to add event in sys where adder is not host... ");
     }
 
-    eventConflict(host, invitees, eventName, location, isOnline, startDay, startTime, endDay,
-            endTime);
+    // TODO: Check
+    if (eventConflict(host, invitees, eventName, location, isOnline, startDay, startTime, endDay,
+            endTime)) {
+      throw new IllegalArgumentException("Cannot add event, conflicts with an invitee schedule... ");
+    }
 
     // create new Event -> Event constructor will inform model whether params valid
     Event event = new NUEvent(invitees, eventName, location, isOnline,
             startDay, startTime,
             endDay, endTime);
 
-
     placeEventRelevantSchedules(event);
   }
 
-  private void checkOpenSpaceRelevantSchedules(Event event) {
-    // for every invitee (including host)
-    for (String invitee : event.eventInvitees()) {
-      Schedule inviteeSchedule = this.userSchedules.get(invitee);
-      if (inviteeSchedule.eventConflict(event)) {
-        throw new IllegalStateException("Event cannot be added into scheduling system... " +
-                "scheduling conflict with at least one invitee's schedule... ");
-      }
-    }
-  }
-
+  /**
+   * Adds Event into its invitees' Schedules.
+   *
+   * @param event                        Event to be added
+   * @throws IllegalArgumentException    if the Event conflicts with Events within
+   *                                     at least one invitee's Schedule
+   */
   private void placeEventRelevantSchedules(Event event) {
     for (String invitee : event.eventInvitees()) {
       Schedule inviteeSchedule = this.userSchedules.get(invitee);
@@ -125,7 +150,7 @@ public class NUPlannerModel implements SchedulingSystem {
     // cannot access bc observer method aliasing bad) by using a copy of the contained Event object
     // to access and modify original
     // updates copy while original modified to preserve equality and thus access to original Event
-    
+
     if (!invitees.isEmpty()) {
 
       Schedule inviteeSchedule = this.userSchedules.get(invitees.get(0));
@@ -146,6 +171,7 @@ public class NUPlannerModel implements SchedulingSystem {
 
     inviteeSchedule.removeEvent(eventToRemove); // method updates event's invitee list
   }
+
 
   @Override
   public void modifyEvent(String user, DaysOfTheWeek startDay, int startTime, String modification) { // this method doesn't require aliasing in the first place
@@ -176,7 +202,7 @@ public class NUPlannerModel implements SchedulingSystem {
 
     // modify copy of event-to-remove
     try {
-      performOtherModifications(copyOfEvent, modification);
+      performOtherModifications(copyOfEvent, tokens[0], tokens[1]);
     } catch (IllegalArgumentException | IllegalStateException caught) { // anything throws ISE???
       throw new IllegalArgumentException(
               "Cannot add this modified version of event in scheduling system... " + caught.getMessage());
@@ -210,10 +236,6 @@ public class NUPlannerModel implements SchedulingSystem {
 
   }
 
-  /*
-  private method in schedule --> if checking same event, then ignore that event
-  if event objs are all same --> no way for me to
-   */
 
   @Override
   public boolean eventConflict(String host, List<String> invitees,
@@ -225,118 +247,177 @@ public class NUPlannerModel implements SchedulingSystem {
     Event event = new NUEvent(invitees, eventName, location, isOnline,
             startDay, startTime,
             endDay, endTime);
+
     try {
       checkOpenSpaceRelevantSchedules(event);
       return false;
     } catch (IllegalStateException caught) {
       return true;
     }
-
   }
 
-  private void performOtherModifications(Event event, String modification) {
+  /**
+   * Checks whether Event can be added into its invitees' Schedules.
+   *
+   * @param event                     Event to be added
+   * @throws IllegalStateException    if the Event conflicts with Events within Schedule
+   */
+  private void checkOpenSpaceRelevantSchedules(Event event) {
+    // for every invitee (including host)
+    for (String invitee : event.eventInvitees()) {
+      Schedule inviteeSchedule = this.userSchedules.get(invitee);
+      if (inviteeSchedule.eventConflict(event)) {
+        throw new IllegalStateException("Event cannot be added into scheduling system... " +
+                "scheduling conflict with at least one invitee's schedule... ");
+      }
+    }
+  }
 
-    // assumption: modification string will look like
-    // "name Sleep" "location Trueblue" "startday TUESDAY" "endtime 1200"
-
-    String[] tokens = modification.split("\\s+", 2);
-
-    switch (tokens[0]) {
+  /**
+   * Updates the given Event object's state.
+   *
+   * @param event                         event to be modified
+   * @param stateToUpdate                 single-state of Event that will be updated
+   * @param update                        new version of that state
+   * @throws IllegalArgumentException     if single-state to update is not part of Event
+   * @implNote                            modification to be performed must be given in the form
+   *                                      "single-state-of-Event updated-single-state"
+   */
+  private void performOtherModifications(Event event, String stateToUpdate, String update) {
+    switch (stateToUpdate) {
       case "name":
-        event.updateName(tokens[1]);
+        event.updateName(update);
         break;
       case "location":
-        event.updateLocation(tokens[1]);
+        event.updateLocation(update);
         break;
       case "online":
-        if (!Boolean.parseBoolean(tokens[1]) && !tokens[1].equals("false")) {
+        if (!Boolean.parseBoolean(update) && !update.equals("false")) {
           throw new IllegalArgumentException("Invalid modification for event online status...  ");
         }
-        event.updateIsOnline(Boolean.parseBoolean(tokens[1]));
+        event.updateIsOnline(Boolean.parseBoolean(update));
         break;
       case "starttime":
         try {
-          event.updateStartTime(Integer.parseInt(tokens[1]));
+          event.updateStartTime(Integer.parseInt(update));
           break;
         } catch (NumberFormatException caught) {
           throw new IllegalArgumentException("Invalid modification for event start time...  ");
         }
       case "endtime":
         try {
-          event.updateEndTime(Integer.parseInt(tokens[1]));
+          event.updateEndTime(Integer.parseInt(update));
           break;
         } catch (NumberFormatException caught) {
           throw new IllegalArgumentException("Invalid modification for event online status...  ");
         }
       case "startday":
-        event.updateStartDay(convertStringToDay(tokens[1]));
+        event.updateStartDay(convertStringToDay(update));
         break;
       case "endday":
-        event.updateEndDay(convertStringToDay(tokens[1]));
+        event.updateEndDay(convertStringToDay(update));
         break;
       case "addinvitee":
         try {
-          confirmUserExists(tokens[1]);
+          confirmUserExists(update);
         } catch (IllegalArgumentException caught) {
-          this.addUser(tokens[1]);
+          this.addUser(update);
         }
-        event.addInvitee(tokens[1]);
+        event.addInvitee(update);
         break;
       default:
-        throw new IllegalArgumentException("Should not be reached... jk mod request weird ");
+        throw new IllegalArgumentException("Param to update event with DNE for an event...  ");
     }
   }
 
-  private void confirmUserDoesNotExist(String user) throws IllegalArgumentException {
-    if (this.userSchedules.containsKey(user)) {
-      throw new IllegalArgumentException("User already exists in scheduling system... ");
-    }
-  }
-
-  private DaysOfTheWeek convertStringToDay(String string) {
-
-    switch (string.toUpperCase()) {
-      case "SUNDAY":
-        return DaysOfTheWeek.SUNDAY;
-      case "MONDAY":
-        return DaysOfTheWeek.MONDAY;
-      case "TUESDAY":
-        return DaysOfTheWeek.TUESDAY;
-      case "WEDNESDAY":
-        return DaysOfTheWeek.WEDNESDAY;
-      case "THURSDAY":
-        return DaysOfTheWeek.THURSDAY;
-      case "FRIDAY":
-        return DaysOfTheWeek.FRIDAY;
-      case "SATURDAY":
-        return DaysOfTheWeek.SATURDAY;
-      default:
-        throw new IllegalArgumentException("Invalid modification request... ");
-
-    }
-
-  }
-
+  /**
+   * Observes all the Events contained within a user's Schedule.
+   *
+   * @param user                        name of user whose Schedule to return
+   * @throws IllegalArgumentException   if user does not exist in scheduling system
+   *
+   * @return                            Schedule belonging to that user
+   */
   @Override
   public List<ReadableEvent> eventsInSchedule(String user) {
-
     confirmUserExists(user);
 
     // defensive copy and only readable version of events
     return new ArrayList<>(this.userSchedules.get(user).events());
+  }
+
+  /**
+   * Observes a unique Event contained within a user's schedule
+   *
+   * @param user                        name of user whose Event to return
+   * @throws IllegalArgumentException   if user does not exist in scheduling system
+   *
+   * @return                            Event belonging to that user
+   */
+  @Override
+  public ReadableEvent eventAt(String user, DaysOfTheWeek startDay, int startTime) {
+    confirmUserExists(user);
+    return this.userSchedules.get(user).eventAt(startDay, startTime);
 
   }
 
+  /**
+   * Confirms that a user exists in the Scheduling System.
+   *
+   * @param user                       user name
+   * @throws IllegalArgumentException  if user DNE in SS
+   */
   private void confirmUserExists(String user) {
     if (!this.userSchedules.containsKey(user)) {
       throw new IllegalArgumentException(user + " does not exist in system... ");
     }
   }
 
-  @Override
-  public ReadableEvent eventAt(String user, DaysOfTheWeek startDay, int startTime) {
-    confirmUserExists(user);
-    return this.userSchedules.get(user).eventAt(startDay, startTime);
+  /**
+   * Confirms that a user does not exist within the Scheduling System.
+   *
+   * @param user                              name of user
+   * @throws IllegalArgumentException         if user exists within the Scheduling System
+   */
+  private void confirmUserDoesNotExist(String user) throws IllegalArgumentException {
+    if (this.userSchedules.containsKey(user)) {
+      throw new IllegalArgumentException("User already exists in scheduling system... ");
+    }
+  }
+
+  /**
+   * Converts provided string into a day of the week, if possible.
+   *
+   * @param string                        string to convert into day
+   * @throws IllegalArgumentException     if string cannot be converted into a day
+   * @return                              DaysOfTheWeek enum constant
+   */
+  private DaysOfTheWeek convertStringToDay(String string) {
+
+    if (DaysOfTheWeek.SUNDAY.toString().equals(string)) {
+      return DaysOfTheWeek.SUNDAY;
+    }
+    if (DaysOfTheWeek.MONDAY.toString().equals(string)) {
+      return DaysOfTheWeek.MONDAY;
+    }
+    if (DaysOfTheWeek.TUESDAY.toString().equals(string)) {
+      return DaysOfTheWeek.TUESDAY;
+    }
+    if (DaysOfTheWeek.WEDNESDAY.toString().equals(string)) {
+      return DaysOfTheWeek.WEDNESDAY;
+    }
+    if (DaysOfTheWeek.THURSDAY.toString().equals(string)) {
+      return DaysOfTheWeek.THURSDAY;
+    }
+    if (DaysOfTheWeek.FRIDAY.toString().equals(string)) {
+      return DaysOfTheWeek.FRIDAY;
+    }
+    if (DaysOfTheWeek.SATURDAY.toString().equals(string)) {
+      return DaysOfTheWeek.SATURDAY;
+    }
+
+    throw new IllegalArgumentException("Invalid modification request... ");
+
   }
 
 }
