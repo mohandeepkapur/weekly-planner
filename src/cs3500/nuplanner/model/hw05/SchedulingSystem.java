@@ -61,8 +61,11 @@ public interface SchedulingSystem {
   /**
    * Removes an Event from specified user's Schedule. Event state is updated accordingly.
    * Assumption that no Event in a Schedule shares the same start day and time.
-   *
-   *
+   * <p>
+   * If the host of the Event request to removeEvent, remove event from all schedules and update
+   * Event accordingly. If a non-host, then remove Event just from their own
+   * schedule and update Event accordingly.
+   * </p>
    * @param user                        name of user whose schedule holds the Event
    * @param startDay                    start day of Event
    * @param startTime                   start time of Event
