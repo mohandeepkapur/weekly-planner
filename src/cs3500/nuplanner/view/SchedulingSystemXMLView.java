@@ -8,6 +8,11 @@ import java.util.List;
 import cs3500.nuplanner.model.hw05.ReadableEvent;
 import cs3500.nuplanner.model.hw05.SchedulingSystem;
 
+/**
+ * A class that creates and prints a XML view of a user's
+ * schedule into a file.
+ */
+
 public class SchedulingSystemXMLView implements SchedulingSystemView {
 
   private final SchedulingSystem model;
