@@ -77,6 +77,11 @@ public class NUSchedule implements Schedule {
    * @param eventToRemove                   Event to be removed
    * @throws IllegalArgumentException       if Event is null
    * @throws IllegalArgumentException       if the given Event does not exist in Schedule
+   *
+   * @implNote                              (No consideration about an event conflict,
+   *                                        because only Events within Schedule is dealt with.
+   *                                        And if Event exists within Schedule,
+   *                                        it cannot conflict.)
    */
   @Override
   public void removeEvent(Event eventToRemove) {
