@@ -1,7 +1,8 @@
 package cs3500.nuplanner.view;
 
-import java.io.IOException;
-
+/**
+ * Operations necessary for a Schedule to be viewed by users.
+ */
 public interface SchedulingSystemView {
 
   /**
