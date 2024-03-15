@@ -1,21 +1,33 @@
+Design Decisions/Codebase Introduction:
+
+The same Event object can be contained in multiple Schedules. Aliasing is how
+information-propagation is achieved through multiple Schedules. <--- ****: ALIASING IS HOW EVENT-SHARING ACHIEVED, BUT NOT NECESSARILY INFORMATION PROPAGATION
+
+A user can identify a unique Event in a schedule through its start day and time.
+This is due to the following INVARIANT: every Event contained WITHIN a Schedule NEVER CONFLICTS.
+What constitutes time conflict was defined by Nunez.
+
+View accesses (Readable-only) Events through the Model. This allows for a one-way flow of info.
+Observations on an Event have been put into a Readable-only Event interface, with the complete
+Event interface (operations included) extends ReadableEvent.
+
+Since creating an XML file of a user's schedule can be interpreted as the View's job
+(producing XML is essentially rendering the current state of the model aka scheduling system),
+the conversion of an existing schedule to XML has been delegated to the View.
+
+Since reading in an XML file to manipulate the state of the model according to "user" input (XML
+itself) can be interpreted as the controller's job, creating or adding to user
+schedule has been delegated to the Controller.
+
+Other considerations:
+- if an XML file mentions "non-existing" (not present in scheduling system) users, add them into
+  create accounts for them ONLY IF entire XML File upload succeeds
+- same thing for user manually creating a new event -> non-existing invitees automatically addeed
 
 
+events and eventAt provide direct access to an Event object within a Schedule <- important
 
-design decisions:
-- eventIDs are not fixed <- helps user get their bearings
+- XML files cannot OVERWRITE a schedule, only create or ADD to one/multiple
 
-- same event obj can be contained in multiple schedules
-
-- view will rely on Schedule and Event interfaces (good, bad?) <-- S + E tech part of Model
-
-- assuming users can modify timing of an event (mult schedules or not)
-- invitees that don't have accounts will have accounts made for them
-    (avoiding specific bug)
-- can I say that the timing of an event cannot be modified?
-^ don't need to cover case where modfying event could cause
-  scheduling conflicts that prev did not exist
-- XML question -->
-
-
-
-- a user can be BOTH event owner AND event invitee (only one)
+  // an event obj can be contained within multiple schedules
+  // can access a specific event in user schedule using Event's start day and start time

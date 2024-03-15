@@ -19,7 +19,6 @@ public class SchedulingSystemTextView implements SchedulingSystemView {
    *
    * @param model the model used to create the view
    */
-
   public SchedulingSystemTextView(SchedulingSystem model) {
     this.model = model;
   }
@@ -53,7 +52,6 @@ public class SchedulingSystemTextView implements SchedulingSystemView {
    * @param events a list of events
    * @param day    the day to check
    */
-
   private void runOverEvents(String user, List<ReadableEvent> events, String day) {
     for (ReadableEvent event : events) {
       if (event.startDay().toString().equals(day)) {
@@ -67,7 +65,6 @@ public class SchedulingSystemTextView implements SchedulingSystemView {
    *
    * @param event the event whose state will be printed
    */
-
   private void displayEventDetails(ReadableEvent event) {
 
     String indent = "       ";

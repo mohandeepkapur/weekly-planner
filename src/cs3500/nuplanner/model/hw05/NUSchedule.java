@@ -8,7 +8,7 @@ import java.util.List;
  * Implementation of a Schedule in a Scheduling System. Adheres to following INVARIANT: all Events
  * contained within a Schedule will never conflict.
  *
- * (Takes responsibility of modifying an Event if it is removed from the Schedule)
+ *
  */
 public class NUSchedule implements Schedule {
 
@@ -83,22 +83,21 @@ public class NUSchedule implements Schedule {
     // if event is null
     checkIfEventNull(eventToRemove);
 
-    // if event-to-remove does not exist in schedule
-    if (!events.contains(eventToRemove)) {
-      throw new IllegalArgumentException("Provided event does not exist in schedule... ");
+    if (events.isEmpty()) {
+      throw new IllegalArgumentException("Schedule is empty... no more events to remove... ");
     }
 
     // remove event from schedule
     for (int i = 0; i < this.numberOfEvents(); i++) {
-      if (this.events.get(i) == eventToRemove) {
+      if (this.events.get(i).equals(eventToRemove)) {
+        // update event's invitee list to notify other invitees of attendance change
+        this.events.get(i).removeInvitee(this.user);
         this.events.remove(i);
-        break;
+        return;
       }
     }
 
-    // update event's invitee list to notify other invitees of attendance change
-    eventToRemove.removeInvitee(this.user);
-
+    throw new IllegalArgumentException("Event given does not exist in schedule... ");
   }
 
   /**
@@ -112,7 +111,7 @@ public class NUSchedule implements Schedule {
   }
 
   /**
-   * Provides direct (aliased) access to an Event contained within the Schedule.
+   * Observes an Event contained within the Schedule.
    *
    * @throws IllegalArgumentException     if no Event at given start day and time exists
    *
@@ -120,26 +119,26 @@ public class NUSchedule implements Schedule {
    */
   @Override
   public Event eventAt(DaysOfTheWeek startDay, int startTime) {
-
     for (Event event : events) {
       if (event.startDay() == startDay && event.startTime() == startTime) {
-        return event; // Can be a direct getter <-- only downcast to readable event in model?
+        // returns defensive copy of the event
+        return new NUEvent(event);
       }
     }
-
     throw new IllegalArgumentException("Event with specified start day and time "
             + "does not exist in " + user + "'s schedule");
 
   }
 
   /**
-   * Provides direct (aliased) access to all the Events contained within the Schedule.
+   * Observes all the Events contained within the Schedule.
    *
-   * @return            all Events within Schedule
+   * @return                             all Events within Schedule
    */
   @Override
   public List<Event> events() {
-    return events;
+    // returns defensive copy of the events
+    return new ArrayList<>(events);
   }
 
   /**
@@ -157,7 +156,7 @@ public class NUSchedule implements Schedule {
   public boolean eventConflict(Event outerEvent) {
     checkIfEventNull(outerEvent);
 
-    // 1: assign objective values to every event start time and end time <- EXPLAIN WHAT THEY ARE
+    // 1: assign objective values to every event start day, time and end day, time
     List<Integer> outEventObjValues = extractObjectiveValues(outerEvent);
     int oStartVal = outEventObjValues.get(0);
     int oEndVal = outEventObjValues.get(1);
@@ -169,8 +168,7 @@ public class NUSchedule implements Schedule {
       int iEndVal = insideEventObjValues.get(1);
 
       // 2: compare overlaps using those objective values (super easy)
-
-      // only ways two events can conflict (using objective time good strategy)
+      // only four ways two events can conflict
       if (oStartVal >= iStartVal && oEndVal <= iEndVal) {
         return true;
       }

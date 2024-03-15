@@ -97,19 +97,23 @@ public class NUPlannerModel implements SchedulingSystem {
   public void removeEvent(String user, DaysOfTheWeek startDay, int startTime) {
     confirmUserExists(user);
 
-    // extract Event from relevant schedule
-    Event eventToRemove = userSchedules.get(user).eventAt(startDay, startTime);
+    // extract copy of Event from relevant schedule
+    Event copyEventToRemove = userSchedules.get(user).eventAt(startDay, startTime); // lets imagine this is not alias
 
-    List<String> invitees = eventToRemove.eventInvitees();
+    // remove within-schedule event from all schedules
+
+
+    // add event back in but with modified property <- basically take modify approach w/ everything now <-- no more aliasing!!!!!!!
+
 
     // if user removing event from their schedule is host of the event
-    if (invitees.get(0).equals(user)) {
+    if (copyEventToRemove.eventInvitees().get(0).equals(user)) {
 
-      removeEventFromEverySchedule(invitees, eventToRemove);
+      removeEventFromEverySchedule(copyEventToRemove.eventInvitees(), copyEventToRemove);
 
     } else {
 
-      removeEventFromSingleSchedule(user, eventToRemove);
+      removeEventFromSingleSchedule(user, copyEventToRemove);
 
     }
 
@@ -119,26 +123,37 @@ public class NUPlannerModel implements SchedulingSystem {
    * Recursive.
    *
    * @param invitees
-   * @param eventToRemove
+   * @param copyEventToRemove
    */
-  private void removeEventFromEverySchedule(List<String> invitees, Event eventToRemove) {
+  private void removeEventFromEverySchedule(List<String> invitees, Event copyEventToRemove) {
+
     if (!invitees.isEmpty()) {
+
       Schedule inviteeSchedule = this.userSchedules.get(invitees.get(0));
-      inviteeSchedule.removeEvent(eventToRemove); // method updates event's invitee list
-      removeEventFromEverySchedule(eventToRemove.eventInvitees(), eventToRemove);
+
+      inviteeSchedule.removeEvent(copyEventToRemove); // method updates event's invitee list
+
+      copyEventToRemove.removeInvitee(invitees.get(0));
+
+      removeEventFromEverySchedule(copyEventToRemove.eventInvitees(), copyEventToRemove);
+
     }
+
   }
 
   private void removeEventFromSingleSchedule(String user, Event eventToRemove) {
+
     Schedule inviteeSchedule = this.userSchedules.get(user);
+
     inviteeSchedule.removeEvent(eventToRemove); // method updates event's invitee list
   }
 
   @Override
-  public void modifyEvent(String user, DaysOfTheWeek startDay, int startTime, String modification) {
+  public void modifyEvent(String user, DaysOfTheWeek startDay, int startTime, String modification) { // this method doesn't require aliasing in the first place
 
     // extract event-to-modify from user's schedule in scheduling system
     Event origEvent = userSchedules.get(user).eventAt(startDay, startTime);
+
     List<String> origInvitees = origEvent.eventInvitees();
 
     // create copy of event-to-modify to modify
@@ -235,12 +250,11 @@ public class NUPlannerModel implements SchedulingSystem {
         event.updateLocation(tokens[1]);
         break;
       case "online":
-        try {
-          event.updateIsOnline(Boolean.parseBoolean(tokens[1]));
-          break;
-        } catch (NumberFormatException caught) {
+        if (!Boolean.parseBoolean(tokens[1]) && !tokens[1].equals("false")) {
           throw new IllegalArgumentException("Invalid modification for event online status...  ");
         }
+        event.updateIsOnline(Boolean.parseBoolean(tokens[1]));
+        break;
       case "starttime":
         try {
           event.updateStartTime(Integer.parseInt(tokens[1]));

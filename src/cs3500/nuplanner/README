@@ -1,15 +1,21 @@
 Design Decisions/Codebase Introduction:
 
-The same Event object can be contained in multiple Schedules. Aliasing is how
-information-propagation is achieved through multiple Schedules.
+The same Event object can be contained in multiple Schedules. Aliasing is what allows for Events
+to be shared between different users.
+
+Two Event objects can be compared with equality if they share the same state. This is how the
+Scheduling System can 
 
 A user can identify a unique Event in a schedule through its start day and time.
 This is due to the following INVARIANT: every Event contained WITHIN a Schedule NEVER CONFLICTS.
 What constitutes time conflict was defined by Nunez.
 
-View accesses (Readable-only) Events through the Model. This allows for a one-way flow of info.
-Observations on an Event have been put into a Readable-only Event interface, with the complete
-Event interface (operations included) extends ReadableEvent.
+A Scheduling System is a collection of Schedules. If the above is enforced for a single Schedule,
+the Scheduling System as a whole enforces that an Event WITHIN the Scheduling System NEVER CONFLICTS
+with any Schedule the Event is related to (through its invitee list).
+
+
+
 
 Since creating an XML file of a user's schedule can be interpreted as the View's job
 (producing XML is essentially rendering the current state of the model aka scheduling system),
@@ -19,11 +25,14 @@ Since reading in an XML file to manipulate the state of the model according to "
 itself) can be interpreted as the controller's job, creating or adding to user
 schedule has been delegated to the Controller.
 
+View accesses (Readable-only) Events through the Model. This allows for a one-way flow of info.
+Observations on an Event have been put into a Readable-only Event interface, with the complete
+Event interface (operations included) extending ReadableEvent.
+
 Other considerations:
 - if an XML file mentions "non-existing" (not present in scheduling system) users, add them into
   create accounts for them ONLY IF entire XML File upload succeeds
 - same thing for user manually creating a new event -> non-existing invitees automatically addeed
-
 
 events and eventAt provide direct access to an Event object within a Schedule <- important
 

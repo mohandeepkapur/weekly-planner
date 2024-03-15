@@ -381,4 +381,31 @@ public class NUEvent implements Event {
     int timespan = dayRangeMin + timeRangeMin;
   }
 
+  /**
+   * Two different Event objects are considered the same if both have exactly the same state.
+   * @param other
+   * @return
+   */
+  @Override
+  public boolean equals(Object other) {
+
+    if (!(other instanceof Event)) throw new IllegalArgumentException("Event can only be compared with another Event... ");
+
+    Event obj = (Event) other;
+
+    return this.name.equals(obj.name())
+            && this.location.equals(obj.location())
+            && this.invitees.equals(obj.eventInvitees())
+            && this.isOnline == obj.isOnline()
+            && this.startTime == obj.startTime()
+            && this.endTime == obj.endTime()
+            && this.startDay == obj.startDay()
+            && this.endDay == obj.endDay();
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(name, location, invitees, isOnline, startTime, startDay, endTime, endDay);
+  }
+
 }

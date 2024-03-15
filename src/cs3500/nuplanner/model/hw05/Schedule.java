@@ -3,9 +3,7 @@ package cs3500.nuplanner.model.hw05;
 import java.util.List;
 
 /**
- * Operations and observations necessary for a Schedule in a Scheduling System. Schedule provides
- * direct access to Events (aliased), and if relevant, Events passed into operational methods must
- * be references to the Events contained within Schedule.
+ * Operations and observations necessary for a Schedule in a Scheduling System.
  */
 public interface Schedule {
 
@@ -57,7 +55,7 @@ public interface Schedule {
   boolean eventConflict(Event outerEvent);
 
   /**
-   * Provides direct (aliased) access to an Event contained within the Schedule.
+   * Observes an Event contained within the Schedule.
    *
    * @throws IllegalArgumentException     if no Event at given start day and time exists
    *
@@ -66,12 +64,10 @@ public interface Schedule {
   Event eventAt(DaysOfTheWeek startDay, int startTime);
 
   /**
-   * Provides direct (aliased) access to all the Events contained within the Schedule.
+   * Observes all the Events contained within the Schedule.
    *
-   * @return            all Events within Schedule
+   * @return                             all Events within Schedule
    */
   List<Event> events();
 
 }
-
-// events and eventAt provide direct access to an Event object within a Schedule <- important
