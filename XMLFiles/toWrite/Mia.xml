@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<schedule id="Mia">
+<event>
+<name>FINA 4412</name>
+<time>
+<start-day>WEDNESDAY</start-day><start>1000</start><end-day>WEDNESDAY</end-day><end>1100</end>
+</time>
+<location><online>true</online><place>Forsyth</place></location>
+<users>
+<uid>Mia</uid>
+<uid>Christina</uid>
+</users>
+</event>
+</schedule>

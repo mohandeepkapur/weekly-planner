@@ -165,6 +165,7 @@ public class TestXMLFunctions {
   @Test
   public void testScheduleToXMLReadsFromMiaFile() {
     xmlController.useSchedulingSystem("XMLFiles/toWrite/Mia.xml");
+    System.out.print(model.allUsers());
     ReadableEvent event = model.eventAt("Mia", WEDNESDAY, 1000);
 
     assertEquals("FINA 4412", event.name());
