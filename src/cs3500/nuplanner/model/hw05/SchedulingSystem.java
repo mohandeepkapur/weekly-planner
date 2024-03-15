@@ -4,6 +4,10 @@ import java.util.List;
 
 /**
  * All the operations and observations that can be performed on a Scheduling System.
+ * <p>
+ * Permissions are very trusting, as mentioned by assignment. every invitee is client and can remove
+ * and add anyone. If non-host invitee of an Event is not in system, will be added automatically.
+ * </p>
  */
 public interface SchedulingSystem {
 
