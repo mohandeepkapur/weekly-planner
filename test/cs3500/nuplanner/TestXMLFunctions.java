@@ -134,7 +134,7 @@ public class TestXMLFunctions {
   }
 
   @Test
-  public void testScheduleToXML() { //TODO: DONE!
+  public void testScheduleToXML() {
     model.addUser("Prof. Lucia");
 
     model.addEvent("Prof. Lucia", new ArrayList<>(List.of("Prof. Lucia", "Mo")),
@@ -149,12 +149,34 @@ public class TestXMLFunctions {
   }
 
   @Test
+  public void testScheduleToXMLWritesToMiaFile() {
+    SchedulingSystem model = new NUPlannerModel();
+    model.addUser("Mia");
+    model.addEvent("Mia", new ArrayList<String>(List.of("Mia", "Christina")),
+            "FINA 4412", "Forsyth", true,
+            DaysOfTheWeek.WEDNESDAY, 1000, DaysOfTheWeek.WEDNESDAY, 1100);
+
+    assertEquals("FINA 4412", model.eventAt("Mia", WEDNESDAY, 1000).name());
+
+    SchedulingSystemView xmlView = new SchedulingSystemXMLView(model);
+    xmlView.render("Mia");
+  }
+
+  @Test
+  public void testScheduleToXMLReadsFromMiaFile() {
+    xmlController.useSchedulingSystem("XMLFiles/toWrite/Mia.xml");
+    ReadableEvent event = model.eventAt("Mia", WEDNESDAY, 1000);
+
+    assertEquals("FINA 4412", event.name());
+  }
+
+  @Test
   public void testAllPreEmptivelyAddedUsersRemovedFromSchedulingSystemOnceXMLUploadFails() {
     // implicitly tested above
   }
 
   @Test
-  public void renderExistingUserScheduleInXML(){
+  public void renderExistingUserScheduleInXML() {
     SchedulingSystem model = new NUPlannerModel();
 
     model.addUser("Mo");
