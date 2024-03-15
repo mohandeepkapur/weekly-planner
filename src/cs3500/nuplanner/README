@@ -1,4 +1,4 @@
-Design Decisions/Codebase Introduction:
+Design Decisions/Codebase Overview:
 
 Within Scheduling System. the same Event object can be contained in multiple Schedules.
 Internal aliasing is what allows for Events (and thus information)
@@ -35,12 +35,42 @@ Event interface (operations included) extending ReadableEvent.
 Every component gives out a DEFENSIVE COPY of whatever it provides,
 removing weird external aliasing dependencies.
 
-FUTURE NOTE, PLEASE READ TAS:
+(FUTURE NOTE, PLEASE READ TAS:
 - Will be refactoring Scheduling System addEvent and eventConflict method to only accept an Event
 rather than parameters than construct an Event, because it feels like data representation of an
-Event is being rigidly defined/leaked. This change would not take long because of my codebase design,
+Event is being rigidly defined/leaked in Scheduling System interface. This change would not take
+long because of my codebase design,
 but this refactor is being prevented due to the numerous tests written with the current
-addEvent method signature and time constraint.
+addEvent + eventConflict method signature and time constraint.)
+
+
+Quick Start:
+Key Components (mentioned in overview, so this section kept brief):
+Scheduling System stores user Schedules, and user Schedules store Events. The SSView interacts
+with the Scheduling System to render a user's Schedule using Events, in either XML or text format.
+The SSController is to manipulate the Scheduling System right now with only XML.
+
+Source organization:
+All components in src contained within cs3500.nuplanner package.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 Other considerations:
 - if an XML file mentions "non-existing" (not present in scheduling system) users, add them into
