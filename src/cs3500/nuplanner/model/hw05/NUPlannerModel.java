@@ -140,7 +140,6 @@ public class NUPlannerModel implements SchedulingSystem {
    * @param startDay                    start day of Event
    * @param startTime                   start time of Event
    * @throws IllegalArgumentException   if Event with above properties does not exist in Schedule
-   *
    */
   @Override
   public void removeEvent(String user, DaysOfTheWeek startDay, int startTime) {
