@@ -1,8 +1,8 @@
 package cs3500.nuplanner.view;
 
+import java.io.IOException;
 import java.util.List;
 
-import cs3500.nuplanner.model.hw05.Event;
 import cs3500.nuplanner.model.hw05.ReadableEvent;
 import cs3500.nuplanner.model.hw05.SchedulingSystem;
 
@@ -13,49 +13,64 @@ import cs3500.nuplanner.model.hw05.SchedulingSystem;
 public class SchedulingSystemTextView implements SchedulingSystemView {
 
   private final SchedulingSystem model;
+  private final Appendable out;
 
+  public SchedulingSystemTextView(SchedulingSystem model) {
+    this.model = model;
+    out = System.out;
+  }
+  
   /**
    * Creates the view using information from the model.
    *
    * @param model the model used to create the view
    */
-  public SchedulingSystemTextView(SchedulingSystem model) {
+  public SchedulingSystemTextView(SchedulingSystem model, Appendable log) {
     this.model = model;
+    this.out = log;
   }
 
   @Override
-  public void render(String user) {
+  public void render(String user) throws IOException {
+    out.append(toStringUserSchedule(user));
+  }
 
+  private String toStringUserSchedule (String user) {
     List<ReadableEvent> events = this.model.eventsInSchedule(user);
+    StringBuilder sched = new StringBuilder();
 
-    System.out.print("User: " + user + "\n");
-    System.out.print("Sunday: \n");
-    runOverEvents(user, events, "SUNDAY");
-    System.out.print("Monday: \n");
-    runOverEvents(user, events, "MONDAY");
-    System.out.print("Tuesday: \n");
-    runOverEvents(user, events, "TUESDAY");
-    System.out.print("Wednesday: \n");
-    runOverEvents(user, events, "WEDNESDAY");
-    System.out.print("Thursday: \n");
-    runOverEvents(user, events, "THURSDAY");
-    System.out.print("Friday: \n");
-    runOverEvents(user, events, "FRIDAY");
-    System.out.print("Saturday: \n");
-    runOverEvents(user, events, "SATURDAY");
+    sched.append("User: " + user + "\n");
+    sched.append("Sunday: \n");
+    runOverEvents(events, "SUNDAY", sched);
+    sched.append("Monday: \n");
+    runOverEvents(events, "MONDAY", sched);
+    sched.append("Tuesday: \n");
+    runOverEvents(events, "TUESDAY", sched);
+    sched.append("Wednesday: \n");
+    runOverEvents(events, "WEDNESDAY", sched);
+    sched.append("Thursday: \n");
+    runOverEvents(events, "THURSDAY", sched);
+    sched.append("Friday: \n");
+    runOverEvents(events, "FRIDAY", sched);
+    sched.append("Saturday: \n");
+    runOverEvents(events, "SATURDAY", sched);
+
+    sched = new StringBuilder(sched.substring(0, sched.length()-1));
+
+    return sched.toString();
   }
 
   /**
    * Checks to see if the day of the week matches and then prints all the events for that day.
    *
-   * @param user   the schedule owner
    * @param events a list of events
    * @param day    the day to check
+   * @param aUs
    */
-  private void runOverEvents(String user, List<ReadableEvent> events, String day) {
+  private void runOverEvents(List<ReadableEvent> events, String day, StringBuilder sched) {
     for (ReadableEvent event : events) {
       if (event.startDay().toString().equals(day)) {
-        displayEventDetails(event);
+        eventDetails(event, sched);
       }
     }
   }
@@ -65,15 +80,21 @@ public class SchedulingSystemTextView implements SchedulingSystemView {
    *
    * @param event the event whose state will be printed
    */
-  private void displayEventDetails(ReadableEvent event) {
-
+  private void eventDetails(ReadableEvent event, StringBuilder sched) {
     String indent = "       ";
-    System.out.print(indent + "name: " + event.name() + "\n");
+    sched.append(indent + "name: " + event.name() + "\n");
     String start = event.startDay() + ": " + event.startTime();
     String end = event.endDay() + ": " + event.endTime();
-    System.out.print(indent + "time: " + start + " -> " + end + "\n");
-    System.out.print(indent + "location: " + event.location() + "\n");
-    System.out.print(indent + "online: " + event.isOnline() + "\n");
-    System.out.print(indent + "invitees: " + event.eventInvitees() + "\n");
+    sched.append(indent + "time: " + start + " -> " + end + "\n");
+    sched.append(indent + "location: " + event.location() + "\n");
+    sched.append(indent + "online: " + event.isOnline() + "\n");
+    sched.append(indent + "invitees: " );
+
+    for (String invitee : event.eventInvitees()) {
+      sched.append("\n" + indent + indent + invitee);
+    }
+
+    sched.append("\n");
   }
+  
 }

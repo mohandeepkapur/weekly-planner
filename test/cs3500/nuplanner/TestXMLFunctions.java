@@ -159,6 +159,7 @@ public class TestXMLFunctions {
     assertEquals("FINA 4412", model.eventAt("Mia", WEDNESDAY, 1000).name());
 
     SchedulingSystemView xmlView = new SchedulingSystemXMLView(model);
+
     xmlView.render("Mia");
   }
 
