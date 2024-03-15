@@ -47,11 +47,9 @@ public class TestXMLFunctions {
 
   @Before
   public void setFields() {
-
     model = new NUPlannerModel();
     xmlController = new SchedulingSystemXMLController(model);
     xmlView = new SchedulingSystemXMLView(model);
-
   }
 
   @Test
@@ -89,23 +87,21 @@ public class TestXMLFunctions {
 
   @Test
   public void testXMLToScheduleAddedCorrectNumberOfUsers() {
-
     assertEquals(0, model.allUsers().size());
-
     xmlController.useSchedulingSystem("XMLFiles/toRead/Prof. Lucia.xml");
-
     assertEquals(3, model.allUsers().size());
-
   }
 
   @Test
   public void testXMLToScheduleAddedCorrectNumberOfEvents() {
-
+    assertThrows(IllegalArgumentException.class, () -> model.eventsInSchedule("Prof. Lucia"));
+    xmlController.useSchedulingSystem("XMLFiles/toRead/Prof. Lucia.xml");
+    assertEquals(3, model.eventsInSchedule("Prof. Lucia").size());
   }
 
 
   @Test
-  public void testXMLToScheduleHostHasTimeConflict() {
+  public void testXMLToScheduleHostHasTimeConflictXMLUploadFails() {
 
     model.addUser("Prof. Lucia");
 
@@ -122,7 +118,7 @@ public class TestXMLFunctions {
   }
 
   @Test
-  public void testXMLToScheduleHostHasNoTimeConflict() {
+  public void testXMLToScheduleHostHasNoTimeConflictXMLUploadSucceeds() {
     model.addUser("Prof. Lucia");
 
     model.addEvent("Prof. Lucia", new ArrayList<>(List.of("Prof. Lucia", "Mo")),
@@ -134,7 +130,7 @@ public class TestXMLFunctions {
   }
 
   @Test
-  public void testScheduleToXML() {
+  public void testScheduleToXMLSavesDown() {
     model.addUser("Prof. Lucia");
 
     model.addEvent("Prof. Lucia", new ArrayList<>(List.of("Prof. Lucia", "Mo")),
@@ -144,32 +140,77 @@ public class TestXMLFunctions {
 
     assertEquals(4, model.allUsers().size());
 
-    xmlView.render("Prof. Lucia");
-
+    try {
+      xmlView.render("Prof. Lucia");
+    } catch (IOException ignored) {
+    }
   }
 
   @Test
-  public void testScheduleToXMLWritesToMiaFile() {
+  public void testCanWriteToXMLMiaFile() {
     SchedulingSystem model = new NUPlannerModel();
     model.addUser("Mia");
-    model.addEvent("Mia", new ArrayList<String>(List.of("Mia", "Christina")),
+    model.addEvent("Mia", new ArrayList<>(List.of("Mia", "Christina")),
             "FINA 4412", "Forsyth", true,
             DaysOfTheWeek.WEDNESDAY, 1000, DaysOfTheWeek.WEDNESDAY, 1100);
 
-    assertEquals("FINA 4412", model.eventAt("Mia", WEDNESDAY, 1000).name());
-
-    SchedulingSystemView xmlView = new SchedulingSystemXMLView(model);
-
-    xmlView.render("Mia");
-  }
-
-  @Test
-  public void testScheduleToXMLReadsFromMiaFile() {
-    xmlController.useSchedulingSystem("XMLFiles/toWrite/Mia.xml");
-    System.out.print(model.allUsers());
     ReadableEvent event = model.eventAt("Mia", WEDNESDAY, 1000);
 
     assertEquals("FINA 4412", event.name());
+    assertEquals(WEDNESDAY, event.startDay());
+    assertEquals(1000, event.startTime());
+    assertEquals(WEDNESDAY, event.endDay());
+    assertEquals(1100, event.endTime());
+    assertTrue(event.isOnline());
+    assertEquals("Forsyth", event.location());
+    List<String> invitees = List.of("Mia", "Christina");
+    assertEquals(invitees, event.eventInvitees());
+
+    SchedulingSystemView xmlView = new SchedulingSystemXMLView(model);
+    try {
+      xmlView.render("Mia");
+    } catch (IOException ignored) {
+    }
+  }
+
+  @Test
+  public void testCanReadFromXMLMiaFile() {
+    xmlController.useSchedulingSystem("XMLFiles/toWrite/Mia.xml");
+    ReadableEvent event = model.eventAt("Mia", WEDNESDAY, 1000);
+
+    assertEquals("FINA 4412", event.name());
+    assertEquals(WEDNESDAY, event.startDay());
+    assertEquals(1000, event.startTime());
+    assertEquals(WEDNESDAY, event.endDay());
+    assertEquals(1100, event.endTime());
+    assertTrue(event.isOnline());
+    assertEquals("Forsyth", event.location());
+    List<String> invitees = List.of("Mia", "Christina");
+    assertEquals(invitees, event.eventInvitees());
+  }
+
+  @Test
+  public void testInvalidFileDoesntExist() {
+    assertThrows(IllegalStateException.class, () ->
+            xmlController.useSchedulingSystem("XMLFiles/toWrite/George.xml"));
+  }
+
+  @Test
+  public void testInvalidNoFileProvided() {
+    assertThrows(IllegalArgumentException.class, () ->
+            xmlController.useSchedulingSystem());
+  }
+
+  @Test
+  public void testInvalidProvidedNull() {
+    assertThrows(NullPointerException.class, () ->
+            xmlController.useSchedulingSystem(null));
+  }
+
+  @Test
+  public void testInvalidProvidedBadXMLFile() {
+    assertThrows(IllegalStateException.class, () ->
+            xmlController.useSchedulingSystem("XMLFiles/toWrite/BrokenXML.xml"));
   }
 
   @Test
@@ -197,7 +238,10 @@ public class TestXMLFunctions {
 
     SchedulingSystemView xmlView = new SchedulingSystemXMLView(model);
 
-    xmlView.render("Mo");
+    try {
+      xmlView.render("Mo");
+    } catch (IOException ignored) {
+    }
   }
 
 }
