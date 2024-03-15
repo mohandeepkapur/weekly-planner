@@ -22,7 +22,7 @@ import static org.junit.Assert.assertThrows;
 import static org.junit.Assert.assertTrue;
 
 /**
- * A test class that checks functionality of the NUEvent
+ * A test class that checks functionality of the NUEvent.
  */
 public class TestEventNUEventImpl {
 
@@ -59,6 +59,8 @@ public class TestEventNUEventImpl {
     Event event3 = new NUEvent(new ArrayList<>(List.of("Mo", "Ko", "Jo")),
             "Baseball", "Krentzman Quad", true,
             WEDNESDAY, 1200, WEDNESDAY, 1300);
+
+    assertEquals("Mo", event1.host());
   }
 
   @Test
@@ -66,6 +68,7 @@ public class TestEventNUEventImpl {
     Event twoWeekEvent = new NUEvent(new ArrayList<>(List.of("Mo", "Ko", "Jo")),
             "Soccer", "Carter Field", false,
             WEDNESDAY, 1000, SUNDAY, 1200);
+    assertEquals(SUNDAY, twoWeekEvent.endDay());
   }
 
   @Test
@@ -73,13 +76,15 @@ public class TestEventNUEventImpl {
     Event longEvent = new NUEvent(new ArrayList<>(List.of("Mo", "Ko", "Jo")),
             "Soccer", "Carter Field", false,
             WEDNESDAY, 0, DaysOfTheWeek.TUESDAY, 2359);
+    assertEquals(TUESDAY, longEvent.endDay());
   }
 
   @Test
-  public void checkEventInvalidTimeSpanLongerThanOneWeek() { //TODO: How to test longer than one week?
+  public void checkEventInvalidTimeSpanLongerThanOneWeek() {
     Event longEvent = new NUEvent(new ArrayList<>(List.of("Mo", "Ko", "Jo")),
             "Soccer", "Carter Field", false,
             WEDNESDAY, 1200, WEDNESDAY, 1201);
+    assertEquals(WEDNESDAY, longEvent.endDay());
   }
 
   @Test
@@ -427,5 +432,4 @@ public class TestEventNUEventImpl {
     assertEquals(original, event.eventInvitees());
     assertThrows(IllegalArgumentException.class, () -> event.addInvitee("Caesar"));
   }
-
 }

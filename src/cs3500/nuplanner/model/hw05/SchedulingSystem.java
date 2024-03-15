@@ -79,7 +79,7 @@ public interface SchedulingSystem {
   void modifyEvent(String user, DaysOfTheWeek startDay, int startTime, String modification);
 
   /**
-   * Checks whether an Event conflicts with relevant Schedules in Scheduling System
+   * Checks whether an Event conflicts with relevant Schedules in Scheduling System.
    *
    * @param host                        host of Event
    * @param invitees                    users added to Event (includes host)

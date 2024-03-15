@@ -244,7 +244,7 @@ public class TestView {
 
     assertEquals(original, out.toString());
 
-    model.removeEvent("Elaine",SATURDAY,800);
+    model.removeEvent("Elaine", SATURDAY, 800);
 
     try {
       view.render("Elaine");
@@ -276,6 +276,7 @@ public class TestView {
 
     assertEquals(updated, out.toString());
   }
+
   @Test
   public void testValidTextualViewModifyEvent() {
     SchedulingSystem model = new NUPlannerModel();
@@ -311,7 +312,7 @@ public class TestView {
 
     assertEquals(original, out.toString());
 
-    model.modifyEvent("Elaine",SATURDAY, 800, "starttime 700");
+    model.modifyEvent("Elaine", SATURDAY, 800, "starttime 700");
 
     try {
       view.render("Elaine");

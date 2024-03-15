@@ -28,7 +28,7 @@ public class SchedulingSystemXMLView implements SchedulingSystemView {
   /**
    * Renders view of a user's schedule.
    *
-   * @throws IOException     if unable to render view
+   * @throws IOException if unable to render view
    */
   @Override
   public void render(String user) throws IOException {
@@ -46,11 +46,9 @@ public class SchedulingSystemXMLView implements SchedulingSystemView {
       file.write("\n");
       file.write("<time>");
       file.write("\n");
-      file.write("<start-day>" + event.startDay().toString() + "</start-day" +
-              ">");
+      file.write("<start-day>" + event.startDay().toString() + "</start-day>");
       file.write("<start>" + event.startTime() + "</start>");
-      file.write("<end-day>" + event.endDay().toString() + "</end" +
-              "-day>");
+      file.write("<end-day>" + event.endDay().toString() + "</end-day>");
       file.write("<end>" + event.endTime() + "</end>");
       file.write("\n");
       file.write("</time>");

@@ -18,7 +18,7 @@ public class SchedulingSystemTextView implements SchedulingSystemView {
     this.model = model;
     out = System.out;
   }
-  
+
   /**
    * Creates the view using information from the model.
    *
@@ -32,7 +32,7 @@ public class SchedulingSystemTextView implements SchedulingSystemView {
   /**
    * Renders view of a user's schedule.
    *
-   * @throws IOException     if unable to render view
+   * @throws IOException if unable to render view
    */
   @Override
   public void render(String user) throws IOException {
@@ -42,10 +42,10 @@ public class SchedulingSystemTextView implements SchedulingSystemView {
   /**
    * Accumulating information about user schedule.
    *
-   * @param user      name of user
-   * @return          string that contains user's schedule
+   * @param user name of user
+   * @return string that contains user's schedule
    */
-  private String toStringUserSchedule (String user) {
+  private String toStringUserSchedule(String user) {
     List<ReadableEvent> events = this.model.eventsInSchedule(user);
     StringBuilder sched = new StringBuilder();
 
@@ -65,7 +65,7 @@ public class SchedulingSystemTextView implements SchedulingSystemView {
     sched.append("Saturday: \n");
     runOverEvents(events, "SATURDAY", sched);
 
-    sched = new StringBuilder(sched.substring(0, sched.length()-1));
+    sched = new StringBuilder(sched.substring(0, sched.length() - 1));
 
     return sched.toString();
   }
@@ -98,7 +98,7 @@ public class SchedulingSystemTextView implements SchedulingSystemView {
     sched.append(indent + "time: " + start + " -> " + end + "\n");
     sched.append(indent + "location: " + event.location() + "\n");
     sched.append(indent + "online: " + event.isOnline() + "\n");
-    sched.append(indent + "invitees: " );
+    sched.append(indent + "invitees: ");
 
     for (String invitee : event.eventInvitees()) {
       sched.append("\n" + indent + indent + invitee);
@@ -106,5 +106,5 @@ public class SchedulingSystemTextView implements SchedulingSystemView {
 
     sched.append("\n");
   }
-  
+
 }

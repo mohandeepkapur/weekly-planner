@@ -390,7 +390,9 @@ public class NUEvent implements Event {
   @Override
   public boolean equals(Object other) {
 
-    if (!(other instanceof Event)) throw new IllegalArgumentException("Event can only be compared with another Event... ");
+    if (!(other instanceof Event)) {
+      throw new IllegalArgumentException("Event can only be compared with another Event... ");
+    }
 
     Event obj = (Event) other;
 

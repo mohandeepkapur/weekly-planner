@@ -18,7 +18,6 @@ import javax.xml.parsers.ParserConfigurationException;
 import cs3500.nuplanner.model.hw05.DaysOfTheWeek;
 import cs3500.nuplanner.model.hw05.Event;
 import cs3500.nuplanner.model.hw05.NUEvent;
-import cs3500.nuplanner.model.hw05.ReadableEvent;
 import cs3500.nuplanner.model.hw05.SchedulingSystem;
 
 import static cs3500.nuplanner.model.hw05.DaysOfTheWeek.FRIDAY;
@@ -37,7 +36,7 @@ public class SchedulingSystemXMLController implements SchedulingSystemController
   private final SchedulingSystem model;
 
   /**
-   * Constructs a XML Controller
+   * Constructs an XML Controller.
    * @param model         Scheduling System
    */
   public SchedulingSystemXMLController(SchedulingSystem model) {
@@ -170,8 +169,8 @@ public class SchedulingSystemXMLController implements SchedulingSystemController
    * Converts provided string into a day of the week, if possible.
    *
    * @param day                           string to convert into day
-   * @throws IllegalArgumentException     if string cannot be converted into a day
    * @return                              DaysOfTheWeek enum constant
+   * @throws IllegalArgumentException     if string cannot be converted into a day
    */
   private DaysOfTheWeek createDay(String day) {
     if (day.equals(SUNDAY.toString())) {

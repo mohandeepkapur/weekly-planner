@@ -27,10 +27,10 @@ public interface Schedule {
 
   /**
    * Removes an Event from Schedule.
-   *
+   * <p>
    * If an Event is removed from a Schedule, the invitee list of the Event should be updated
    * to reflect that change.
-   *
+   * <p>
    * (No consideration about an event conflict, because only Events within Schedule is dealt with.
    * And if Event exists within Schedule, it cannot conflict.)
    *
@@ -51,18 +51,16 @@ public interface Schedule {
    * Checks whether given Event would conflict with Events currently within schedule.
    *
    * @param outerEvent                     Event that will be checked against Schedule's Events
-   * @throws IllegalArgumentException      if given Event is null
-   *
    * @return                               boolean that signals whether Event can be added
+   * @throws IllegalArgumentException      if given Event is null
    */
   boolean eventConflict(Event outerEvent);
 
   /**
    * Observes an Event contained within the Schedule.
    *
-   * @throws IllegalArgumentException     if no Event at given start day and time exists
-   *
    * @return                              an Event within Schedule
+   * @throws IllegalArgumentException     if no Event at given start day and time exists
    */
   Event eventAt(DaysOfTheWeek startDay, int startTime);
 

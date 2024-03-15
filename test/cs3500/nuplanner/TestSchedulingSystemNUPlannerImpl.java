@@ -450,8 +450,8 @@ public class TestSchedulingSystemNUPlannerImpl {
   public void testValidEventsInScheduleNoEvents() {
     SchedulingSystem model = new NUPlannerModel();
     model.addUser("Elaine");
-    assertThrows(IndexOutOfBoundsException.class,
-            () -> model.eventsInSchedule("Elaine").get(0));
+    assertThrows(IndexOutOfBoundsException.class, () ->
+            model.eventsInSchedule("Elaine").get(0));
   }
 
   @Test
@@ -467,8 +467,8 @@ public class TestSchedulingSystemNUPlannerImpl {
     assertEquals(800, model.eventsInSchedule("Elaine").get(0).startTime());
     assertEquals("Badminton", model.eventsInSchedule("Elaine").get(1).name());
     assertEquals(1000, model.eventsInSchedule("Elaine").get(1).startTime());
-    assertThrows(IndexOutOfBoundsException.class,
-            () -> model.eventsInSchedule("Elaine").get(2));
+    assertThrows(IndexOutOfBoundsException.class, () ->
+            model.eventsInSchedule("Elaine").get(2));
   }
 
   @Test
