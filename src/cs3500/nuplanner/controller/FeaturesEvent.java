@@ -1,13 +1,16 @@
 package cs3500.nuplanner.controller;
 
+// do not understand as well i would like, ugh... just need to read lecture notes seriously...
 public interface FeaturesEvent {
 
-  // existence of JFrame events (through ActionEvents and stuff) no longer revealed to Controller
-  // instead of controller being listener for view --> now features is listener, and then requests
-  // high-level methods from controller
+  // existence of JFrame stuff (ActionEvents, KeyEvents)  no longer revealed to Controller
+  // View is better encapsulated --> JFrame stuff leaking into controller --> bad encapsulation
+  //    Controller should not be aware of View implementation details
 
-  // application specific events <-- not swing-specific events, like ActionEvent, BlahBlah
-  // higher level callbacks for Controller --> low-level stuff kept in View < jank
+  // Controller is no longer listener for JFrame component events --> instead, listener is a lambda
+  // that executes a high-level callback -->
+
+
 
   // creates an Event given information currently contained on View
   void createEvent();
