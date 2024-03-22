@@ -1,9 +1,16 @@
 package cs3500.nuplanner.controller;
 
-public class SchedulingSystemGUIController implements FeaturesEvent, FeaturesSchedulingSystem {
+import cs3500.nuplanner.model.hw05.SchedulingSystem;
+import cs3500.nuplanner.view.EventView;
+import cs3500.nuplanner.view.SchedulingSystemView;
 
-  @Override
-  public void createEvent() {
+public class SchedulingSystemGUIController implements SchedulingSystemController, FeaturesEvent, FeaturesSchedulingSystem {
+
+  private SchedulingSystem model;
+  private EventView eventView;
+  private SchedulingSystemView sysView;
+
+  public SchedulingSystemGUIController() {
 
   }
 
@@ -21,4 +28,22 @@ public class SchedulingSystemGUIController implements FeaturesEvent, FeaturesSch
   public void exitFrame() {
 
   }
+
+
+  @Override
+  public void useSchedulingSystem() {
+
+  }
+
+  @Override
+  public void useSchedulingSystem(String pathname) {
+
+  }
 }
+
+/*
+SchedSysView:
+void refresh()? <- whenever model-state changed
+void makeVisible()
+ */
+

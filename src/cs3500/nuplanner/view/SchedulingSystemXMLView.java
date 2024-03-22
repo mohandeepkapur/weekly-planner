@@ -32,6 +32,7 @@ public class SchedulingSystemXMLView implements SchedulingSystemView {
    */
   @Override
   public void render(String user) throws IOException {
+
     List<ReadableEvent> events = this.model.eventsInSchedule(user);
     Writer file = new FileWriter("XMLFiles/toWrite/" + user + ".xml");
     file.write("<?xml version=\"1.0\"?>");
