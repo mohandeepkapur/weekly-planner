@@ -1,7 +1,8 @@
 package cs3500.nuplanner.controller;
 
 /**
- * User Requests made through GUI.
+ * User Requests made through GUI. Typically involves manip. model, view, or both, which is
+ * controller's job.
  */
 public interface Features {
 
@@ -19,9 +20,14 @@ public interface Features {
   void displayNewSchedule(String user); // should be view operational method
 
   /**
-   * User request to create an event given information they provide.
+   *
    */
   void requestCreateEvent();
+
+  /**
+   *
+   */
+  void requestAddEvent();
 
   /**
    * Request for an XML file to be uploaded.

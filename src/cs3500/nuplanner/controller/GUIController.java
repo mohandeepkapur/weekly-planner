@@ -1,17 +1,19 @@
 package cs3500.nuplanner.controller;
 
-import cs3500.nuplanner.model.hw05.ReadableSchedulingSystem;
 import cs3500.nuplanner.model.hw05.SchedulingSystem;
-import cs3500.nuplanner.view.GUI.SSFrame;
-import cs3500.nuplanner.view.GUI.SSGUI;
+import cs3500.nuplanner.view.GUI.EventGUIView;
+import cs3500.nuplanner.view.GUI.IGUIView;
+import cs3500.nuplanner.view.GUI.SSGUIView;
 
 public class GUIController implements SchedulingSystemController, Features {
 
-  private SSGUI view;
   private SchedulingSystem model;
+  private SSGUIView ssView;
+  private EventGUIView eventView;
 
-  public GUIController() {
-
+  public GUIController(IGUIView view) {
+    this.ssView = view.accessSSPortion();
+    this.eventView = view.accessEventPortion();
   }
 
   @Override
@@ -21,22 +23,35 @@ public class GUIController implements SchedulingSystemController, Features {
 
   @Override
   public void displayNewSchedule(String user) {
-    view.displayNewSchedule(user);
+    ssView.displayNewSchedule(user);
   }
 
   @Override
   public void requestCreateEvent() {
     System.out.println("Should open blank event frame now...");
+    ssView.displayEventGUIView();
+  }
+
+  @Override
+  public void requestAddEvent() {
+    // check that user has put down options for everything
+    // check that certain things can be parsed as desired types
+
+
+    // if so, print out contents, if not, do not do anything (will not check if event conflicts rn)
+
+    System.out.print("boop");
+
   }
 
   @Override
   public void requestScheduleUpload(String pathname) {
-
+    System.out.println(pathname);
   }
 
   @Override
   public void requestScheduleDownload(String pathname) {
-
+    System.out.println(pathname);
   }
 
   @Override
@@ -62,14 +77,17 @@ public class GUIController implements SchedulingSystemController, Features {
   @Override
   public void useSchedulingSystem(SchedulingSystem model) {
     this.model = model;
-    this.view = new SSFrame(this.model); // BAD. NEVER DO. BEING FIN LAZY RN
-    view.addFeatures(this);
+    ssView.makeVisible();
+    ssView.addFeatures(this);
+    eventView.addFeatures(this);
   }
 
   @Override
   public void useSchedulingSystem(String pathname) {
 
   }
+
+
 
 }
 

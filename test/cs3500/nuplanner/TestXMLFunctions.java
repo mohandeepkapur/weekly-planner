@@ -14,8 +14,8 @@ import cs3500.nuplanner.model.hw05.DaysOfTheWeek;
 import cs3500.nuplanner.model.hw05.NUPlannerModel;
 import cs3500.nuplanner.model.hw05.ReadableEvent;
 import cs3500.nuplanner.model.hw05.SchedulingSystem;
-import cs3500.nuplanner.view.NonGUI.SchedulingSystemView;
-import cs3500.nuplanner.view.NonGUI.SchedulingSystemXMLView;
+import cs3500.nuplanner.view.SchedulingSystemView;
+import cs3500.nuplanner.view.SchedulingSystemXMLView;
 
 import static cs3500.nuplanner.model.hw05.DaysOfTheWeek.FRIDAY;
 import static cs3500.nuplanner.model.hw05.DaysOfTheWeek.SATURDAY;
