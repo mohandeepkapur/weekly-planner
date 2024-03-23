@@ -1,11 +1,8 @@
-package cs3500.nuplanner.view;
+package cs3500.nuplanner.view.GUI;
 
-import java.awt.event.KeyListener;
 import java.util.List;
 
-import cs3500.nuplanner.model.hw05.DaysOfTheWeek;
-
-public interface EventView {
+public interface EventGUI {
 
   // observations and operations of View
 

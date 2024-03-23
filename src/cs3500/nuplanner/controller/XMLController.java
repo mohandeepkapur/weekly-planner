@@ -47,7 +47,7 @@ public class XMLController implements SchedulingSystemController {
    * Runs scheduling system using user input.
    */
   @Override
-  public void useSchedulingSystem() {
+  public void useSchedulingSystem(SchedulingSystem model) {
     throw new IllegalArgumentException("XML Controller does not run on user input... ");
   }
 

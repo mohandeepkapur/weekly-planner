@@ -9,7 +9,7 @@ import java.util.List;
  * and add anyone. If non-host invitee of an Event is not in system, will be added automatically.
  * </p>
  */
-public interface SchedulingSystem {
+public interface SchedulingSystem extends ReadableSchedulingSystem {
 
   /**
    * Adds a user to the scheduling system.
@@ -27,12 +27,6 @@ public interface SchedulingSystem {
    */
   void removeUser(String user);
 
-  /**
-   * Observes all users existing within the scheduling system.
-   *
-   * @return all users in scheduling system
-   */
-  List<String> allUsers();
 
   /**
    * Creates and adds a new Event to the relevant Schedules.
@@ -106,26 +100,6 @@ public interface SchedulingSystem {
                         String eventName, String location, boolean isOnline,
                         DaysOfTheWeek startDay, int startTime,
                         DaysOfTheWeek endDay, int endTime);
-
-  /**
-   * Observes all the Events contained within a user's Schedule.
-   *
-   * @param user                        name of user whose Schedule to return
-   * @return                            Schedule belonging to that user
-   * @throws IllegalArgumentException   if user does not exist in scheduling system
-   */
-  List<ReadableEvent> eventsInSchedule(String user);
-
-  /**
-   * Observes a unique Event contained within a user's schedule.
-   *
-   * @param user                        name of user whose Event to return
-   * @return                            Event belonging to that user
-   * @throws IllegalArgumentException   if user does not exist in scheduling system
-   */
-  ReadableEvent eventAt(String user, DaysOfTheWeek startDay, int startTime);
-
-
 
 
 }

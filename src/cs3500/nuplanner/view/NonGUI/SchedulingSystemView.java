@@ -1,4 +1,4 @@
-package cs3500.nuplanner.view;
+package cs3500.nuplanner.view.NonGUI;
 
 import java.io.IOException;
 
