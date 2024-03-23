@@ -44,7 +44,6 @@ public interface EventView {
 
   void exitFrame();
 
-
   //  will override from JFrame class
   //  void makeVisible();
   //  void refresh();

@@ -31,7 +31,7 @@ import static cs3500.nuplanner.model.hw05.DaysOfTheWeek.WEDNESDAY;
 /**
  * Controller that takes in XML input and manipulates model(sched. sys)-state.
  */
-public class SchedulingSystemXMLController implements SchedulingSystemController {
+public class XMLController implements SchedulingSystemController {
 
   private final SchedulingSystem model;
 
@@ -39,7 +39,7 @@ public class SchedulingSystemXMLController implements SchedulingSystemController
    * Constructs an XML Controller.
    * @param model         Scheduling System
    */
-  public SchedulingSystemXMLController(SchedulingSystem model) {
+  public XMLController(SchedulingSystem model) {
     this.model = model;
   }
 

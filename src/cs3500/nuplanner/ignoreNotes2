@@ -1,0 +1,23 @@
+
+
+
+
+ISchedulingSystemView impl by SchedulingSystem Frame
+
+Clicking certain button on SchedulingSystem Frame --> will instantiate EventFrame
+
+
+View is SS Frame, and instantiate/dispose of EventFrames within it
+
+
+
+View has a read-only model
+
+
+If View does not need to change model-state, does not need to go through Features!!!! No point
+No need to request something that doesn't change model-state
+
+
+
+
+Event Frame
