@@ -34,7 +34,6 @@ public class GUIController implements SchedulingSystemController, Features {
     view.displayBlankEventWindow();
   }
 
-
   @Override
   public void requestAddEvent(String name, String location, String isOnline, String startDay,
                               String endDay, String startTime, String endTime, String host,

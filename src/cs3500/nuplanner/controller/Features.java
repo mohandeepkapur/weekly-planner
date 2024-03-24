@@ -22,7 +22,7 @@ public interface Features {
   void displayNewSchedule(String user); // should be view operational method
 
   /**
-   *
+   * User request to open up blank new Event window.
    */
   void displayBlankEventWindow();
 
