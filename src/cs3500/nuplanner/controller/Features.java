@@ -24,7 +24,8 @@ public interface Features {
   /**
    *
    */
-  void displayCreateEventWindow();
+  void displayBlankEventWindow();
+
 
   /**
    *

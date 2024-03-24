@@ -17,9 +17,10 @@ public class GUIController implements SchedulingSystemController, Features {
   @Override
   public void displayEventDetails(int day, int time) {
 
-    // wishlisting?
-    view.displayEventWindowWithCorrectDetails();
-    view.
+    System.out.print(day + ", " + time);
+    // check if an event that conflicts with this time exists, for specific user
+    // if so, displayEventWindowWithCorrectDetails()
+
   }
 
   @Override
@@ -28,10 +29,11 @@ public class GUIController implements SchedulingSystemController, Features {
   }
 
   @Override
-  public void displayCreateEventWindow() {
+  public void displayBlankEventWindow() {
     System.out.println("Should open blank event frame now...");
     view.displayBlankEventWindow();
   }
+
 
   @Override
   public void requestAddEvent(String name, String location, String isOnline, String startDay,
