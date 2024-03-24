@@ -1,6 +1,8 @@
 package cs3500.nuplanner.view.GUI;
 
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.*;
 
@@ -29,9 +31,7 @@ public class EventFrame extends JFrame implements EventGUIView {
   private JButton modifyEventButton;
   private JButton removeEventButton;
 
-
-
-  public EventFrame(ReadableSchedulingSystem model) {
+  public EventFrame(ReadableSchedulingSystem model, String user) {
     super();
 
     setSize(500, 400);
@@ -138,7 +138,6 @@ public class EventFrame extends JFrame implements EventGUIView {
     this.add(panel);
   }
 
-
   @Override
   public String nameInput() {
     return eventNameTextField.getText();
@@ -228,8 +227,14 @@ public class EventFrame extends JFrame implements EventGUIView {
 
   @Override
   public void addFeatures(Features features) {
+    // not connecting this frame to Features yet (not necessary for current assignment)
 
-    createEventButton.addActionListener(evt -> features.requestAddEvent());
+    createEventButton.addActionListener(new ActionListener() {
+      @Override
+      public void actionPerformed(ActionEvent actionEvent) {
+
+      }
+    });
 
   }
 
@@ -237,5 +242,6 @@ public class EventFrame extends JFrame implements EventGUIView {
   public void makeVisible() {
     setVisible(true);
   }
+
 }
 

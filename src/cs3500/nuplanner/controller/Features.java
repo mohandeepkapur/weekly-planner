@@ -1,5 +1,7 @@
 package cs3500.nuplanner.controller;
 
+import java.util.List;
+
 /**
  * User Requests made through GUI. Typically involves manip. model, view, or both, which is
  * controller's job.
@@ -11,7 +13,7 @@ public interface Features {
    * @param day
    * @param time
    */
-  void provideEventDetails(int day, int time);
+  void displayEventDetails(int day, int time);
 
   /**
    * Request for a new schedule to be shown.
@@ -22,12 +24,14 @@ public interface Features {
   /**
    *
    */
-  void requestCreateEvent();
+  void displayCreateEventWindow();
 
   /**
    *
    */
-  void requestAddEvent();
+  void requestAddEvent(String name, String location, String isOnline, String startDay,
+                       String endDay, String startTime, String endTime, String host,
+                       List<String> invitees);
 
   /**
    * Request for an XML file to be uploaded.

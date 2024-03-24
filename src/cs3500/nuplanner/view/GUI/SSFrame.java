@@ -16,6 +16,8 @@ public class SSFrame extends JFrame implements SSGUIView {
 
   private SSPanel panel;
 
+  private Features features; // means both frames must share same Features obj
+
   // all components that exist within frame
   private JButton createEventButton;
   private JButton scheduleEventButton;
@@ -23,6 +25,8 @@ public class SSFrame extends JFrame implements SSGUIView {
   private JMenuItem uploadXML;
   private JMenuItem downloadXMLs;
   private JButton fileChooserButton;
+
+  private String currentUserDisplayed;
 
   public SSFrame(ReadableSchedulingSystem model) {
     super();
@@ -68,9 +72,11 @@ public class SSFrame extends JFrame implements SSGUIView {
 
   @Override
   public void addFeatures(Features features) {
-    // callbacks for components are program-relevant commands (no JFrame dependence)
+    this.features = features;
+
+    // callbacks are now program-relevant commands (no JFrame dependence externally)
     // rather than callback being a class that needs to interpret JFrame specific code
-    createEventButton.addActionListener(evt -> features.requestCreateEvent());
+    createEventButton.addActionListener(evt -> features.displayCreateEventWindow());
     userDropdown.addActionListener(evt -> features
             .displayNewSchedule((String) userDropdown.getSelectedItem()));
     uploadXML.addActionListener(new ActionListener() {
@@ -85,13 +91,14 @@ public class SSFrame extends JFrame implements SSGUIView {
     downloadXMLs.addActionListener(new ActionListener() {
       public void actionPerformed(ActionEvent e) {
         JFileChooser fileChooser = new JFileChooser();
+        fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
         if (fileChooser.showOpenDialog(SSFrame.this) == JFileChooser.APPROVE_OPTION) {
           File selectedFile = fileChooser.getSelectedFile();
           features.requestScheduleDownload(selectedFile.getAbsolutePath());
         }
       }
     });
-
+    // callback to display specific event details --> request from controller --> controller calls displayFilledEvent
 
   }
 
@@ -99,6 +106,7 @@ public class SSFrame extends JFrame implements SSGUIView {
   public void displayNewSchedule(String user) {
     System.out.println("Displaying new schedule... " + user);
     panel.displayNewSchedule(user);
+    this.currentUserDisplayed = user;
   }
 
   @Override
@@ -106,10 +114,16 @@ public class SSFrame extends JFrame implements SSGUIView {
     setVisible(true);
   }
 
-  @Override
-  public void displayEventGUIView() {
-    EventGUIView eventView = new EventFrame(model);
+  @Override // oh mannnn, adding public methods to suit my implementation.... bad. never let the how influence the what
+  public void displayBlankEventWindow() {
+    if (currentUserDisplayed == null) throw new IllegalArgumentException("must select user first");
+    EventGUIView eventView = new EventFrame(model, currentUserDisplayed);
+    eventView.addFeatures(features);
     eventView.makeVisible();
+  }
+
+  public void displayFilledEventWindow() {
+    
   }
 
 }

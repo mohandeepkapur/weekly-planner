@@ -1,47 +1,48 @@
 package cs3500.nuplanner.controller;
 
+import java.util.List;
+
 import cs3500.nuplanner.model.hw05.SchedulingSystem;
-import cs3500.nuplanner.view.GUI.EventGUIView;
-import cs3500.nuplanner.view.GUI.IGUIView;
 import cs3500.nuplanner.view.GUI.SSGUIView;
 
 public class GUIController implements SchedulingSystemController, Features {
 
   private SchedulingSystem model;
-  private SSGUIView ssView;
-  private EventGUIView eventView;
+  private SSGUIView view;
 
-  public GUIController(IGUIView view) {
-    this.ssView = view.accessSSPortion();
-    this.eventView = view.accessEventPortion();
+  public GUIController(SSGUIView ssView) {
+    this.view = ssView;
   }
 
   @Override
-  public void provideEventDetails(int day, int time) {
+  public void displayEventDetails(int day, int time) {
 
+    // wishlisting?
+    view.displayEventWindowWithCorrectDetails();
+    view.
   }
 
   @Override
   public void displayNewSchedule(String user) {
-    ssView.displayNewSchedule(user);
+    view.displayNewSchedule(user);
   }
 
   @Override
-  public void requestCreateEvent() {
+  public void displayCreateEventWindow() {
     System.out.println("Should open blank event frame now...");
-    ssView.displayEventGUIView();
+    view.displayBlankEventWindow();
   }
 
   @Override
-  public void requestAddEvent() {
+  public void requestAddEvent(String name, String location, String isOnline, String startDay,
+                              String endDay, String startTime, String endTime, String host,
+                              List<String> invitees) {
+    // controller ensuring valid inputs in limited manner:
     // check that user has put down options for everything
     // check that certain things can be parsed as desired types
-
-
     // if so, print out contents, if not, do not do anything (will not check if event conflicts rn)
 
     System.out.print("boop");
-
   }
 
   @Override
@@ -77,9 +78,8 @@ public class GUIController implements SchedulingSystemController, Features {
   @Override
   public void useSchedulingSystem(SchedulingSystem model) {
     this.model = model;
-    ssView.makeVisible();
-    ssView.addFeatures(this);
-    eventView.addFeatures(this);
+    view.makeVisible();
+    view.addFeatures(this);
   }
 
   @Override

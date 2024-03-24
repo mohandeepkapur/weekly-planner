@@ -11,7 +11,7 @@ public interface SSGUIView {
   void displayNewSchedule(String user);
 
   // creates instance of Event GUI
-  void displayEventGUIView();
+  void displayBlankEventWindow();
 
   // how user is able to change model/view state through components in GUI
   void addFeatures(Features features);
