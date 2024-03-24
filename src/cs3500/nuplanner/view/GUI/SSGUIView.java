@@ -1,6 +1,7 @@
 package cs3500.nuplanner.view.GUI;
 
 import cs3500.nuplanner.controller.Features;
+import cs3500.nuplanner.model.hw05.ReadableEvent;
 
 // how to design GUI interface
 // how to think of Features properly
@@ -13,7 +14,7 @@ public interface SSGUIView {
   // creates instance of Event GUI
   void displayBlankEvent();
 
-  void displayFilledEventWindow();
+  void displayFilledEvent();
 
   // how user is able to change model/view state through components in GUI
   void addFeatures(Features features);

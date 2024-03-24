@@ -2,6 +2,7 @@ package cs3500.nuplanner.controller;
 
 import java.util.List;
 
+import cs3500.nuplanner.model.hw05.DaysOfTheWeek;
 import cs3500.nuplanner.model.hw05.SchedulingSystem;
 import cs3500.nuplanner.view.GUI.SSGUIView;
 
@@ -15,23 +16,21 @@ public class GUIController implements SchedulingSystemController, Features {
   }
 
   @Override
-  public void displayFilledEventWindow(int day, int time) {
-
-    System.out.print(day + ", " + time);
-    // check if an event that conflicts with this time exists, for specific user
-    // if so, displayEventWindowWithCorrectDetails()
-
-  }
-
-  @Override
   public void displayNewSchedule(String user) {
     view.displayNewSchedule(user);
   }
 
   @Override
-  public void displayBlankEvent() {
+  public void requestCreateEvent() {
     System.out.println("Should open blank event frame now...");
     view.displayBlankEvent();
+  }
+
+  @Override
+  public void requestExistingEvent(String user, DaysOfTheWeek day, int time) {
+    System.out.print(day + ", " + time);
+    // check if an event that conflicts with this time exists, for specific user
+    // if so, displayEventWindowWithCorrectDetails()
   }
 
   @Override

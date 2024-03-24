@@ -76,7 +76,7 @@ public class SSFrame extends JFrame implements SSGUIView {
 
     // callbacks are now program-relevant commands (no JFrame dependence externally)
     // rather than callback being a class that needs to interpret JFrame specific code
-    createEventButton.addActionListener(evt -> features.displayBlankEvent());
+    createEventButton.addActionListener(evt -> features.requestCreateEvent());
     userDropdown.addActionListener(evt -> features
             .displayNewSchedule((String) userDropdown.getSelectedItem()));
     uploadXML.addActionListener(new ActionListener() {
@@ -127,7 +127,7 @@ public class SSFrame extends JFrame implements SSGUIView {
   }
 
   @Override
-  public void displayFilledEventWindow() { //event details
+  public void displayFilledEvent() { //event details
     // make event frame
     // set all event details
     // addFeatures

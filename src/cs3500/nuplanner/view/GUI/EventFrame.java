@@ -232,7 +232,7 @@ public class EventFrame extends JFrame implements EventGUIView {
     createEventButton.addActionListener(new ActionListener() {
       @Override
       public void actionPerformed(ActionEvent actionEvent) {
-
+        System.out.print("Boop");
       }
     });
 

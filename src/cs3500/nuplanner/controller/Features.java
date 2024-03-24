@@ -10,7 +10,6 @@ import cs3500.nuplanner.model.hw05.DaysOfTheWeek;
  */
 public interface Features {
 
-
   /**
    * Request for a new schedule to be shown.
    * @param user
@@ -20,14 +19,14 @@ public interface Features {
   /**
    * User request to open up blank new Event window.
    */
-  void displayBlankEvent(); // rename?
+  void requestCreateEvent(); // rename?
 
   /**
    * User request for an Event's details to be shown if selected on SSView.
    * @param day
    * @param time
    */
-  void displayFilledEvent(String user, DaysOfTheWeek day, int time);
+  void requestExistingEvent(String user, DaysOfTheWeek day, int time);
 
   /**
    *
