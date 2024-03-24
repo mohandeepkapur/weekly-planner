@@ -28,7 +28,13 @@ public class GUIController implements SchedulingSystemController, Features {
 
   @Override
   public void requestExistingEvent(String user, DaysOfTheWeek day, int time) {
-    System.out.print(day + ", " + time);
+    int hours = time / 6;
+    int minutes = time % 6 * 10;
+    if (minutes == 0) {
+      System.out.println(day + ", Military Time: " + (hours * 100));
+    } else {
+      System.out.println(day + ", Military Time: " + hours + minutes);
+    }
     // check if an event that conflicts with this time exists, for specific user
     // if so, displayEventWindowWithCorrectDetails()
   }
