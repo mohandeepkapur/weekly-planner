@@ -11,7 +11,7 @@ public interface SSGUIView {
   void displayNewSchedule(String user);
 
   // creates instance of Event GUI
-  void displayBlankEventWindow();
+  void displayBlankEvent();
 
   void displayFilledEventWindow();
 

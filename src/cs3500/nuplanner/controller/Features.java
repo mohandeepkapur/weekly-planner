@@ -2,18 +2,14 @@ package cs3500.nuplanner.controller;
 
 import java.util.List;
 
+import cs3500.nuplanner.model.hw05.DaysOfTheWeek;
+
 /**
  * User Requests made through GUI. Typically involves manip. model, view, or both, which is
  * controller's job.
  */
 public interface Features {
 
-  /**
-   * Request an Event's details to be shown if selected on SSView.
-   * @param day
-   * @param time
-   */
-  void displayEventDetails(int day, int time);
 
   /**
    * Request for a new schedule to be shown.
@@ -24,8 +20,14 @@ public interface Features {
   /**
    * User request to open up blank new Event window.
    */
-  void displayBlankEventWindow();
+  void displayBlankEvent(); // rename?
 
+  /**
+   * User request for an Event's details to be shown if selected on SSView.
+   * @param day
+   * @param time
+   */
+  void displayFilledEvent(String user, DaysOfTheWeek day, int time);
 
   /**
    *

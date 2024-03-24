@@ -76,7 +76,7 @@ public class SSFrame extends JFrame implements SSGUIView {
 
     // callbacks are now program-relevant commands (no JFrame dependence externally)
     // rather than callback being a class that needs to interpret JFrame specific code
-    createEventButton.addActionListener(evt -> features.displayBlankEventWindow());
+    createEventButton.addActionListener(evt -> features.displayBlankEvent());
     userDropdown.addActionListener(evt -> features
             .displayNewSchedule((String) userDropdown.getSelectedItem()));
     uploadXML.addActionListener(new ActionListener() {
@@ -99,7 +99,11 @@ public class SSFrame extends JFrame implements SSGUIView {
       }
     });
     // callback to display specific event details --> request from controller --> controller calls displayFilledEvent
-
+    /*
+    if panel touched
+    read touch, send day and time and user to features
+    if event valid, features will open up filled event window
+     */
   }
 
   @Override
@@ -115,7 +119,7 @@ public class SSFrame extends JFrame implements SSGUIView {
   }
 
   @Override // oh mannnn, adding public methods to suit my implementation.... bad. never let the how influence the what
-  public void displayBlankEventWindow() {
+  public void displayBlankEvent() {
     if (currentUserDisplayed == null) throw new IllegalArgumentException("must select user first");
     EventGUIView eventView = new EventFrame(model, currentUserDisplayed);
     eventView.addFeatures(features);
@@ -123,8 +127,11 @@ public class SSFrame extends JFrame implements SSGUIView {
   }
 
   @Override
-  public void displayFilledEventWindow() {
-
+  public void displayFilledEventWindow() { //event details
+    // make event frame
+    // set all event details
+    // addFeatures
+    // make event frame visible
   }
 
 }

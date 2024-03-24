@@ -15,7 +15,7 @@ public class GUIController implements SchedulingSystemController, Features {
   }
 
   @Override
-  public void displayEventDetails(int day, int time) {
+  public void displayFilledEventWindow(int day, int time) {
 
     System.out.print(day + ", " + time);
     // check if an event that conflicts with this time exists, for specific user
@@ -29,9 +29,9 @@ public class GUIController implements SchedulingSystemController, Features {
   }
 
   @Override
-  public void displayBlankEventWindow() {
+  public void displayBlankEvent() {
     System.out.println("Should open blank event frame now...");
-    view.displayBlankEventWindow();
+    view.displayBlankEvent();
   }
 
   @Override
