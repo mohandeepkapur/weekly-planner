@@ -23,6 +23,10 @@ import static cs3500.nuplanner.model.hw05.DaysOfTheWeek.THURSDAY;
 import static cs3500.nuplanner.model.hw05.DaysOfTheWeek.TUESDAY;
 import static cs3500.nuplanner.model.hw05.DaysOfTheWeek.WEDNESDAY;
 
+/**
+ * A frame that shows the schedule of a user and implements all the features to function.
+ */
+
 public class SSFrame extends JFrame implements SSGUIView {
 
   private ReadableSchedulingSystem model;
@@ -38,6 +42,12 @@ public class SSFrame extends JFrame implements SSGUIView {
   private JButton fileChooserButton;
 
   private String currentUserDisplayed;
+
+  /**
+   * Creates the schedule with the proper days, time blocks, buttons, and menus.
+   *
+   * @param model the model used in the GUI
+   */
 
   public SSFrame(ReadableSchedulingSystem model) {
     super();
@@ -129,8 +139,8 @@ public class SSFrame extends JFrame implements SSGUIView {
         int hours = col / 6;
         int minutes = col % 6 * 10;
         int militarytime;
-        if (minutes == 0) militarytime = hours*100;
-        else militarytime = (hours*100)+minutes;
+        if (minutes == 0) militarytime = hours * 100;
+        else militarytime = (hours * 100) + minutes;
 
         System.out.println("current user displayed " + currentUserDisplayed + " col " + col);
         features.requestExistingEventDetails(day, militarytime);
@@ -164,7 +174,7 @@ public class SSFrame extends JFrame implements SSGUIView {
    *
    * @param day integer to convert into day
    * @return DaysOfTheWeek enum constant
-   * @throws IllegalArgumentException if string cannot be converted into a day
+   * @throws IllegalArgumentException if integer cannot be converted into a day
    */
   private DaysOfTheWeek createDay(int day) {
     if (day == SUNDAY.val()) {
@@ -227,6 +237,11 @@ public class SSFrame extends JFrame implements SSGUIView {
 
   }
 
+  /**
+   * Displays an event to the user with all the relevant details.
+   *
+   * @param event the event that the user has clicked on
+   */
   private void openEventWindowWithFilledDetails(ReadableEvent event) {
     EventGUIView eventView = new EventFrame(model, currentUserDisplayed);
     eventView.addFeatures(features);
