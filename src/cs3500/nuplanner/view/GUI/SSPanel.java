@@ -27,7 +27,8 @@ public class SSPanel extends JPanel {
   }
 
   protected void paintComponent(Graphics g) {
-    Graphics2D g2d = (Graphics2D) g;
+    super.paintComponent(g);
+    Graphics2D g2d = (Graphics2D) g.create();
 
     int alpha = 127; // 50% transparent
     Color transparentRed = new Color(217, 110, 110, alpha);
