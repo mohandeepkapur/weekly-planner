@@ -6,6 +6,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.io.File;
+import java.util.List;
 
 import javax.swing.*;
 
@@ -86,7 +87,7 @@ public class SSFrame extends JFrame implements SSGUIView {
 
     // callbacks are now program-relevant commands (no JFrame dependence externally)
     // rather than callback being a class that needs to interpret JFrame specific code
-    createEventButton.addActionListener(evt -> features.requestCreateNewEvent());
+    createEventButton.addActionListener(evt -> features.displayBlankEvent());
     userDropdown.addActionListener(new ActionListener() {
       @Override
       public void actionPerformed(ActionEvent actionEvent) {
@@ -131,7 +132,7 @@ public class SSFrame extends JFrame implements SSGUIView {
         else militarytime = (hours*100)+minutes;
 
         System.out.println("current user displayed " + currentUserDisplayed + " col " + col);
-        features.requestExistingEventDetails(currentUserDisplayed, day, militarytime);
+        features.requestExistingEventDetails(day, militarytime);
       }
 
       @Override
@@ -210,7 +211,22 @@ public class SSFrame extends JFrame implements SSGUIView {
   }
 
   @Override
-  public void displayFilledEvent(ReadableEvent event) { // event exist within scheduling system <- no need to check if null <- why?
+  public void displayExistingEvent(DaysOfTheWeek day, int time) { // event exist within scheduling system <- no need to check if null <- why?
+    // extract relevant user schedule
+    List<ReadableEvent> userEvents = model.eventsInSchedule(currentUserDisplayed);
+
+    // if clicked day/time did land on a user's event, display those event details
+    for (ReadableEvent event : userEvents) {
+      System.out.println("ran");
+      if (event.containsTime(day, time)) {
+        System.out.println("success");
+        openEventWindowWithFilledDetails(event); // think about this...
+      }
+    }
+
+  }
+
+  private void openEventWindowWithFilledDetails(ReadableEvent event) {
     EventGUIView eventView = new EventFrame(model, currentUserDisplayed);
     eventView.addFeatures(features);
     eventView.displayName(event.name());

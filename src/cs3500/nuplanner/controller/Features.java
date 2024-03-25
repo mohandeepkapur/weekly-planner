@@ -17,28 +17,31 @@ public interface Features {
   /**
    * Request to create a new Event.
    */
-  void requestCreateNewEvent();
-
-  /**
-   * Request for an Event's details to be shown. Event must belong in user's schedule.
-   * @param day             day an event in user's schedule may contain
-   * @param time            time an event in user's schedule may contain
-   */
-  void requestExistingEventDetails(String user, DaysOfTheWeek day, int time);
+  void displayBlankEvent();
 
   /**
    * Request to add an Event into requester's schedule.
    */
-  void requestAddEvent();
+  void requestCreateEvent();
+
+  /**
+   * Request for an Event's details to be shown. Event must belong in displayed user's schedule.
+   *
+   * @param day  day an event in user's schedule may contain
+   * @param time time an event in user's schedule may contain
+   */
+  void requestExistingEventDetails(DaysOfTheWeek day, int time);
 
   /**
    * Request for an XML file to be uploaded.
+   *
    * @param pathname
    */
   void requestXMLScheduleUpload(String pathname);
 
   /**
    * Request for model state to be saved into multiple XML schedules.
+   *
    * @param pathname
    */
   void requestAllSchedulesDownload(String pathname);
@@ -51,16 +54,16 @@ public interface Features {
   /**
    * User request to remove an event they've selected from scheduling system.
    */
-  void removeEvent();
+  void requestRemoveEvent();
 
   /**
    * User request to modify an existing event based on how its manipulated event in GUI.
    */
-  void modifyEvent();
+  void requestModifyEvent();
 
   /**
    * User request to exit program.
    */
-  void exitProgram();
+  void requestExitProgram();
 
 }
