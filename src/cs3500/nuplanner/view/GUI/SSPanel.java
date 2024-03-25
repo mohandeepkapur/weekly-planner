@@ -1,5 +1,6 @@
 package cs3500.nuplanner.view.GUI;
 
+import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 import java.util.List;
 import java.awt.*;
@@ -28,6 +29,21 @@ public class SSPanel extends JPanel {
   protected void paintComponent(Graphics g) {
     Graphics2D g2d = (Graphics2D) g;
 
+    int alpha = 127; // 50% transparent
+    Color transparentRed = new Color(217, 110, 110, alpha);
+    g2d.setColor(transparentRed);
+
+    // painting every event in user's schedule
+    for (ReadableEvent event : currUserSched) {
+      // objective values important
+      List<Integer> objValues = extractObjectiveValues(event);
+      drawEventBlock(g2d, objValues.get(0), objValues.get(1));
+    }
+
+    int alpha2 = 127; // 50% transparent
+    Color transparentRed2 = new Color(0, 0, 0, alpha2);
+    g2d.setColor(transparentRed2);
+
     // painting scheduling system grid (partitioned 7 days horizontally, 24 hours vertically)
     // vertical lines: each day in week
     for (int i = 0; i < 7; i++) {
@@ -46,17 +62,6 @@ public class SSPanel extends JPanel {
         g2d.drawLine(0, this.getHeight() / 24 * i,
                 this.getWidth(), this.getHeight() / 24 * i);
       }
-    }
-
-    int alpha = 127; // 50% transparent
-    Color transparentRed = new Color(255, 0, 221, alpha);
-    g2d.setColor(transparentRed);
-
-    // painting every event in user's schedule
-    for (ReadableEvent event : currUserSched) {
-      // objective values important
-      List<Integer> objValues = extractObjectiveValues(event);
-      drawEventBlock(g2d, objValues.get(0), objValues.get(1));
     }
 
   }
@@ -86,10 +91,13 @@ public class SSPanel extends JPanel {
 
     //System.out.println("schedule has event that includes time: "+startTime+" to " + startTime+1);
 
-    g2d.fillRect( (this.getWidth() / 7) * startDay,
-            (int) (((double) this.getHeight() / (24 * 60)) * minFromDayStart),
-            (this.getWidth() / 7),
-            3); // change
+    Rectangle2D rect = new Rectangle2D.Double(
+            (int) ((double) this.getWidth() / 7) * startDay,
+            ((double) this.getHeight() / (24 * 60)) * minFromDayStart,
+            (int) ((double) this.getWidth() / 7),
+            (double) this.getHeight() / (24 * 60)); // change
+
+    g2d.fill(rect);
 
   }
 

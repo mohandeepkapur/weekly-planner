@@ -74,4 +74,6 @@ public interface ReadableEvent {
    */
   List<String> eventInvitees();
 
+  boolean containsTime(DaysOfTheWeek day, int time);
+
 }

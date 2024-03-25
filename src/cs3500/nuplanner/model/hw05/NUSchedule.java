@@ -226,7 +226,6 @@ public class NUSchedule implements Schedule {
     startVal = (sDv * 60 * 24) + (sT / 100 * 60) + (sT % 100);
 
     return new ArrayList<Integer>(List.of(startVal, endVal));
-
   }
 
   /**

@@ -14,7 +14,7 @@ public interface SSGUIView {
   // creates instance of Event GUI
   void displayBlankEvent();
 
-  void displayFilledEvent();
+  void displayFilledEvent(ReadableEvent event);
 
   // how user is able to change model/view state through components in GUI
   void addFeatures(Features features);

@@ -36,15 +36,11 @@ public interface EventGUIView {
 
   void displayEndTime(String endTime);
 
-  void clearTextFields();
-
   void addFeatures(Features features);
 
   void makeVisible();
 
-  //  void refresh();
-
-  // schedule frame would need to pass knowledge of current user selected to event frame
-  // so event frame can display first invitee as user
+  // event frame needs to know which user invoked it (to create event)
+  // so event-frame can auto-fill host of new event
 
 }

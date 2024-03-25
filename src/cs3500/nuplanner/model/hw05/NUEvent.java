@@ -355,30 +355,9 @@ public class NUEvent implements Event {
   private void ensureValidTimeSpan(int startTime, int endTime,
                                    DaysOfTheWeek startDay, DaysOfTheWeek endDay)
           throws IllegalArgumentException {
-
-    // Wed 1335 to Thur 1456 -> 24 hours, 1 hour, 21 min -> 1521
-    // Wed 1456 to Thur 1335 -> 24 hours, -1 hour, -21 min -> 1359
-
-    int dayDiff = endDay.val() - startDay.val();
-
-    // if this is an event that extends into the next week
-    if (dayDiff < 0 || (dayDiff == 0 && endTime <= startTime)) {
-      dayDiff = dayDiff + 7;
-    }
-
-    int dayRangeMin = dayDiff * 24 * 60;
-
-    int min1 = (startTime % 100) + (startTime / 100) * 60;
-    int min2 = (endTime % 100) + (endTime / 100) * 60;
-
-    int timeRangeMin = min2 - min1;
-
-    if (dayRangeMin + timeRangeMin > (6 * 24 * 60) + (23 * 60) + 59) {
+    if (startTime == endTime && startDay == endDay) {
       throw new IllegalArgumentException("Event cannot exist with invalid time-span... ");
     }
-
-    // unit: minutes
-    int timespan = dayRangeMin + timeRangeMin;
   }
 
   /**
@@ -414,6 +393,44 @@ public class NUEvent implements Event {
   @Override
   public int hashCode() {
     return Objects.hash(name, location, invitees, isOnline, startTime, startDay, endTime, endDay);
+  }
+
+  @Override
+  public boolean containsTime(DaysOfTheWeek day, int time) {
+    List<Integer> objValues = extractObjectiveValues();
+    int providedDayTime = (day.val() * 60 * 24) + (time / 100 * 60) + (time % 100);
+
+    System.out.println(objValues.get(0));
+    System.out.println(providedDayTime);
+    System.out.println(objValues.get(1));
+    if(providedDayTime <= objValues.get(1) && providedDayTime >= objValues.get(0)) {
+      return true;
+    }
+
+    return false;
+  }
+
+  private List<Integer> extractObjectiveValues() {
+    int sDv = this.startDay().val();
+    int sT = this.startTime();
+
+    int eDv = this.endDay().val();
+    int eT = this.endTime();
+
+    int startVal;
+    int endVal;
+
+    // event that extends into next week
+    if (eDv - sDv < 0 || (eDv - sDv == 0 && eT <= sT)) {
+      endVal = ((eDv + 7) * 60 * 24) + (eT / 100 * 60) + (eT % 100);
+    } else {
+      // event contained within first week
+      endVal = (eDv * 60 * 24) + (eT / 100 * 60) + (eT % 100);
+    }
+    // start day always within first week
+    startVal = (sDv * 60 * 24) + (sT / 100 * 60) + (sT % 100);
+
+    return new ArrayList<Integer>(List.of(startVal, endVal));
   }
 
 }

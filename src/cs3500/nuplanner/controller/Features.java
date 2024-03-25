@@ -1,56 +1,52 @@
 package cs3500.nuplanner.controller;
 
-import java.util.List;
-
 import cs3500.nuplanner.model.hw05.DaysOfTheWeek;
 
 /**
- * User Requests made through GUI. Typically involves manip. model, view, or both, which is
- * controller's job.
+ * User Requests made through GUI. Typically involves manip. model, view, or both (which is
+ * controller's job).
  */
 public interface Features {
 
   /**
-   * Request for a new schedule to be shown.
+   * Request for a new user's schedule to be shown.
    * @param user
    */
   void displayNewSchedule(String user); // should be view operational method
 
   /**
-   * User request to open up blank new Event window.
+   * Request to create a new Event.
    */
-  void requestCreateEvent(); // rename?
+  void requestCreateNewEvent();
 
   /**
-   * User request for an Event's details to be shown if selected on SSView.
-   * @param day
-   * @param time
+   * Request for an Event's details to be shown. Event must belong in user's schedule.
+   * @param day             day an event in user's schedule may contain
+   * @param time            time an event in user's schedule may contain
    */
-  void requestExistingEvent(String user, DaysOfTheWeek day, int time);
+  void requestExistingEventDetails(String user, DaysOfTheWeek day, int time);
 
   /**
-   *
+   * Request to add an Event into requester's schedule.
    */
-  void requestAddEvent(String name, String location, String isOnline, String startDay,
-                       String endDay, String startTime, String endTime, String host,
-                       List<String> invitees);
+  void requestAddEvent();
 
   /**
    * Request for an XML file to be uploaded.
    * @param pathname
    */
-  void requestScheduleUpload(String pathname);
+  void requestXMLScheduleUpload(String pathname);
 
   /**
    * Request for model state to be saved into multiple XML schedules.
    * @param pathname
    */
-  void requestScheduleDownload(String pathname);
+  void requestAllSchedulesDownload(String pathname);
 
   /**
    * Request to "schedule an event".
    */
-  void requestScheduleEvent(); // do nothing
+  void requestScheduleEvent();
 
   /**
    * User request to remove an event they've selected from scheduling system.

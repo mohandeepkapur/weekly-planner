@@ -1,6 +1,5 @@
 package cs3500.nuplanner.controller;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import cs3500.nuplanner.model.hw05.DaysOfTheWeek;
@@ -23,33 +22,35 @@ public class GUIController implements SchedulingSystemController, Features {
   }
 
   @Override
-  public void requestCreateEvent() {
+  public void requestCreateNewEvent() {
     System.out.println("Should open blank event frame now...");
     view.displayBlankEvent();
   }
 
   @Override
-  public void requestExistingEvent(String user, DaysOfTheWeek day, int time) {
-    int hours = time / 6;
-    int minutes = time % 6 * 10;
-    if (minutes == 0) {
-      System.out.println(day + ", Military Time: " + (hours * 100));
-    } else {
-      System.out.println(day + ", Military Time: " + hours + minutes);
-    }
+  public void requestExistingEventDetails(String user, DaysOfTheWeek day, int time) {
+    System.out.println(day + ", Military Time: " + time);
 
-    // check if an event that conflicts with this time exists, for specific user
-    // if so, displayEventWindowWithCorrectDetails()
-    //    // for every event in user schedule
-    //    for(ReadableEvent event : userEvents) {
-    //      if ()
-    //    }
+    // extract relevant user schedule
+    List<ReadableEvent> userEvents = model.eventsInSchedule(user);
+
+    // if clicked day/time did land on a user's event, display those event details
+    for (ReadableEvent event : userEvents) {
+      System.out.println("ran");
+      if (event.containsTime(day, time)) {
+        System.out.println("success");
+        view.displayFilledEvent(event); // think about this...
+      }
+    }
   }
 
+  /*
+      Schedule sched = new NUSchedule("mo");
+    sched.eventConflict();
+  */
+
   @Override
-  public void requestAddEvent(String name, String location, String isOnline, String startDay,
-                              String endDay, String startTime, String endTime, String host,
-                              List<String> invitees) {
+  public void requestAddEvent() {
     // controller ensuring valid inputs in limited manner:
     // check that user has put down options for everything
     // check that certain things can be parsed as desired types
@@ -59,12 +60,12 @@ public class GUIController implements SchedulingSystemController, Features {
   }
 
   @Override
-  public void requestScheduleUpload(String pathname) {
+  public void requestXMLScheduleUpload(String pathname) {
     System.out.println(pathname);
   }
 
   @Override
-  public void requestScheduleDownload(String pathname) {
+  public void requestAllSchedulesDownload(String pathname) {
     System.out.println(pathname);
   }
 

@@ -11,6 +11,7 @@ import javax.swing.*;
 
 import cs3500.nuplanner.controller.Features;
 import cs3500.nuplanner.model.hw05.DaysOfTheWeek;
+import cs3500.nuplanner.model.hw05.ReadableEvent;
 import cs3500.nuplanner.model.hw05.ReadableSchedulingSystem;
 
 import static cs3500.nuplanner.model.hw05.DaysOfTheWeek.FRIDAY;
@@ -24,9 +25,7 @@ import static cs3500.nuplanner.model.hw05.DaysOfTheWeek.WEDNESDAY;
 public class SSFrame extends JFrame implements SSGUIView {
 
   private ReadableSchedulingSystem model;
-
   private SSPanel panel;
-
   private Features features; // means both frames must share same Features obj
 
   // all components that exist within frame
@@ -87,15 +86,20 @@ public class SSFrame extends JFrame implements SSGUIView {
 
     // callbacks are now program-relevant commands (no JFrame dependence externally)
     // rather than callback being a class that needs to interpret JFrame specific code
-    createEventButton.addActionListener(evt -> features.requestCreateEvent());
-    userDropdown.addActionListener(evt -> features
-            .displayNewSchedule((String) userDropdown.getSelectedItem()));
+    createEventButton.addActionListener(evt -> features.requestCreateNewEvent());
+    userDropdown.addActionListener(new ActionListener() {
+      @Override
+      public void actionPerformed(ActionEvent actionEvent) {
+        currentUserDisplayed = (String) userDropdown.getSelectedItem();
+        features.displayNewSchedule(currentUserDisplayed);
+      }
+    });
     uploadXML.addActionListener(new ActionListener() {
       public void actionPerformed(ActionEvent e) {
         JFileChooser fileChooser = new JFileChooser();
         if (fileChooser.showOpenDialog(SSFrame.this) == JFileChooser.APPROVE_OPTION) {
           File selectedFile = fileChooser.getSelectedFile();
-          features.requestScheduleUpload(selectedFile.getAbsolutePath());
+          features.requestXMLScheduleUpload(selectedFile.getAbsolutePath());
         }
       }
     });
@@ -105,11 +109,10 @@ public class SSFrame extends JFrame implements SSGUIView {
         fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
         if (fileChooser.showOpenDialog(SSFrame.this) == JFileChooser.APPROVE_OPTION) {
           File selectedFile = fileChooser.getSelectedFile();
-          features.requestScheduleDownload(selectedFile.getAbsolutePath());
+          features.requestAllSchedulesDownload(selectedFile.getAbsolutePath());
         }
       }
     });
-
     panel.addMouseListener(new MouseListener() {
       @Override
       public void mouseClicked(MouseEvent e) {
@@ -119,38 +122,39 @@ public class SSFrame extends JFrame implements SSGUIView {
         int row = e.getX() / (panel.getWidth() / 7);
         DaysOfTheWeek day = createDay(row);
 
-        int col = e.getY() / (panel.getHeight() / 24 / 6);
-        String user = "Bob"; //TODO: THIS IS HARD CODED
+        int col = e.getY() / (panel.getHeight() / 24 / 6); // 10 minute increments
 
-        features.requestExistingEvent(user, day, col);
+        int hours = col / 6;
+        int minutes = col % 6 * 10;
+        int militarytime;
+        if (minutes == 0) militarytime = hours*100;
+        else militarytime = (hours*100)+minutes;
+
+        System.out.println("current user displayed " + currentUserDisplayed + " col " + col);
+        features.requestExistingEventDetails(currentUserDisplayed, day, militarytime);
       }
 
       @Override
       public void mousePressed(MouseEvent e) {
-
+        // not considered as relevant event
       }
 
       @Override
       public void mouseReleased(MouseEvent e) {
-
+        // not considered as relevant event
       }
 
       @Override
       public void mouseEntered(MouseEvent e) {
-
+        // not considered as relevant event
       }
 
       @Override
       public void mouseExited(MouseEvent e) {
-
+        // not considered as relevant event
       }
     });
-    // callback to display specific event details --> request from controller --> controller calls displayFilledEvent
-    /*
-    if panel touched
-    read touch, send day and time and user to features
-    if event valid, features will open up filled event window
-     */
+
   }
 
   /**
@@ -198,7 +202,6 @@ public class SSFrame extends JFrame implements SSGUIView {
   }
 
   @Override
-  // oh mannnn, adding public methods to suit my implementation.... bad. never let the how influence the what
   public void displayBlankEvent() {
     if (currentUserDisplayed == null) throw new IllegalArgumentException("must select user first");
     EventGUIView eventView = new EventFrame(model, currentUserDisplayed);
@@ -207,11 +210,17 @@ public class SSFrame extends JFrame implements SSGUIView {
   }
 
   @Override
-  public void displayFilledEvent() { //event details
-    // make event frame
-    // set all event details
-    // addFeatures
-    // make event frame visible
+  public void displayFilledEvent(ReadableEvent event) { // event exist within scheduling system <- no need to check if null <- why?
+    EventGUIView eventView = new EventFrame(model, currentUserDisplayed);
+    eventView.addFeatures(features);
+    eventView.displayName(event.name());
+    eventView.displayLocation(event.location());
+    eventView.displayIsOnline(String.valueOf(event.isOnline()));
+    eventView.displayStartDay(event.startDay().toString());
+    eventView.displayStartTime(String.valueOf(event.startTime()));
+    eventView.displayEndDay(event.endDay().toString());
+    eventView.displayEndTime(String.valueOf(event.endTime()));
+    eventView.makeVisible();
   }
 
 }

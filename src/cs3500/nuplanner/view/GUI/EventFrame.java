@@ -167,9 +167,6 @@ public class EventFrame extends JFrame implements EventGUIView {
 
   @Override
   public void displayIsOnline(String isOnline) {
-    if (isOnline.equals(String.valueOf(true)) || isOnline.equals(String.valueOf(false))) {
-      throw new IllegalArgumentException("from event frame, invalid online-state given");
-    }
     this.isOnline.setSelectedItem(isOnline);
   }
 
@@ -218,21 +215,19 @@ public class EventFrame extends JFrame implements EventGUIView {
   }
 
   @Override
-  public void clearTextFields() { // maybe, setDefault? <- reset JComboBox stuff too
-    endingTimeTextField.setText("");
-    startingTimeTextField.setText("");
-    locationTextField.setText("");
-    eventNameTextField.setText("");
-  }
-
-  @Override
+  // not connecting this frame to Features yet properly (not necessary for current assignment)
   public void addFeatures(Features features) {
-    // not connecting this frame to Features yet (not necessary for current assignment)
-
     createEventButton.addActionListener(new ActionListener() {
       @Override
       public void actionPerformed(ActionEvent actionEvent) {
         System.out.print("Boop");
+      }
+    });
+
+    removeEventButton.addActionListener(new ActionListener() {
+      @Override
+      public void actionPerformed(ActionEvent actionEvent) {
+
       }
     });
 
