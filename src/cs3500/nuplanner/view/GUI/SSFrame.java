@@ -78,13 +78,14 @@ public class SSFrame extends JFrame implements SSGUIView {
 
     this.add(menuBar, BorderLayout.PAGE_START);
 
-    this.makeVisible();
+    // as soon as View obj is "set-up", display a user's schedule before making View visible
+    this.displayUserSchedule(model.allUsers().get(0));
   }
 
   @Override
   public void addFeatures(Features features) {
     this.features = features;
-
+    // callback details handled internally within View
     // callbacks are now program-relevant commands (no JFrame dependence externally)
     // rather than callback being a class that needs to interpret JFrame specific code
     createEventButton.addActionListener(evt -> features.displayBlankEvent());
@@ -191,7 +192,7 @@ public class SSFrame extends JFrame implements SSGUIView {
   }
 
   @Override
-  public void displayNewSchedule(String user) {
+  public void displayUserSchedule(String user) {
     System.out.println("Displaying new schedule... " + user);
     panel.displayNewSchedule(user);
     this.currentUserDisplayed = user;
@@ -203,7 +204,7 @@ public class SSFrame extends JFrame implements SSGUIView {
   }
 
   @Override
-  public void displayBlankEvent() {
+  public void displayEmptyEventWindow() {
     if (currentUserDisplayed == null) throw new IllegalArgumentException("must select user first");
     EventGUIView eventView = new EventFrame(model, currentUserDisplayed);
     eventView.addFeatures(features);
@@ -211,7 +212,7 @@ public class SSFrame extends JFrame implements SSGUIView {
   }
 
   @Override
-  public void displayExistingEvent(DaysOfTheWeek day, int time) { // event exist within scheduling system <- no need to check if null <- why?
+  public void displayFilledEventWindow(DaysOfTheWeek day, int time) { // event exist within scheduling system <- no need to check if null <- why?
     // extract relevant user schedule
     List<ReadableEvent> userEvents = model.eventsInSchedule(currentUserDisplayed);
 

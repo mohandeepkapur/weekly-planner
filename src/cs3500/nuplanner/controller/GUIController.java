@@ -26,7 +26,7 @@ public class GUIController implements SchedulingSystemController, Features {
    */
   @Override
   public void displayNewSchedule(String user) {
-    view.displayNewSchedule(user);
+    view.displayUserSchedule(user);
   }
 
   /**
@@ -35,7 +35,7 @@ public class GUIController implements SchedulingSystemController, Features {
   @Override
   public void displayBlankEvent() {
     System.out.println("Should open blank event frame now...");
-    view.displayBlankEvent();
+    view.displayEmptyEventWindow();
   }
 
   /**
@@ -45,7 +45,7 @@ public class GUIController implements SchedulingSystemController, Features {
   @Override
   public void requestExistingEventDetails(DaysOfTheWeek day, int time) {
 
-    view.displayExistingEvent(day, time);
+    view.displayFilledEventWindow(day, time);
 
   }
 
@@ -119,8 +119,8 @@ public class GUIController implements SchedulingSystemController, Features {
   @Override
   public void useSchedulingSystem(SchedulingSystem model) {
     this.model = model;
-    view.makeVisible();
     view.addFeatures(this);
+    view.makeVisible();
   }
 
   /**
