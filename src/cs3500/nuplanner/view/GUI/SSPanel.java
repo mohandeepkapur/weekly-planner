@@ -13,19 +13,20 @@ import cs3500.nuplanner.model.hw05.ReadableSchedulingSystem;
 public class SSPanel extends JPanel {
 
   private final ReadableSchedulingSystem model;
-  private List<ReadableEvent> currUserSched; //what if extracted entire schedule instead
+  private List<ReadableEvent> userEvents; //what if extracted entire schedule instead
 
   public SSPanel(ReadableSchedulingSystem model) {
     super();
     this.model = model;
-    this.currUserSched = new ArrayList<>();
+    this.userEvents = new ArrayList<>();
   }
 
   public void displayNewSchedule(String user) {
-    this.currUserSched = this.model.eventsInSchedule(user);
+    this.userEvents = this.model.eventsInSchedule(user);
     this.repaint();
   }
 
+  @Override
   protected void paintComponent(Graphics g) {
     super.paintComponent(g);
     Graphics2D g2d = (Graphics2D) g.create();
@@ -35,7 +36,7 @@ public class SSPanel extends JPanel {
     g2d.setColor(transparentRed);
 
     // painting every event in user's schedule
-    for (ReadableEvent event : currUserSched) {
+    for (ReadableEvent event : userEvents) {
       // objective values important
       List<Integer> objValues = extractObjectiveValues(event);
       drawEventBlock(g2d, objValues.get(0), objValues.get(1));
@@ -94,7 +95,7 @@ public class SSPanel extends JPanel {
 
     Rectangle2D rect = new Rectangle2D.Double(
             (int) ((double) this.getWidth() / 7) * startDay,
-            ((double) this.getHeight() / (24 * 60)) * minFromDayStart,
+            (((double) this.getHeight() / (24 * 60)) * minFromDayStart) - 3.4, //hardcoded adj.
             (int) ((double) this.getWidth() / 7),
             (double) this.getHeight() / (24 * 60)); // change
 

@@ -123,7 +123,6 @@ public class SSFrame extends JFrame implements SSGUIView {
         //figuring out what hours or minutes this click is at
         int row = e.getX() / (panel.getWidth() / 7);
         DaysOfTheWeek day = createDay(row);
-
         int col = e.getY() / (panel.getHeight() / 24 / 6); // 10 minute increments
 
         int hours = col / 6;
@@ -166,31 +165,6 @@ public class SSFrame extends JFrame implements SSGUIView {
    * @return DaysOfTheWeek enum constant
    * @throws IllegalArgumentException if string cannot be converted into a day
    */
-  private DaysOfTheWeek createDay(int day) {
-    if (day == SUNDAY.val()) {
-      return SUNDAY;
-    }
-    if (day == MONDAY.val()) {
-      return MONDAY;
-    }
-    if (day == TUESDAY.val()) {
-      return TUESDAY;
-    }
-    if (day == WEDNESDAY.val()) {
-      return WEDNESDAY;
-    }
-    if (day == THURSDAY.val()) {
-      return THURSDAY;
-    }
-    if (day == FRIDAY.val()) {
-      return FRIDAY;
-    }
-    if (day == SATURDAY.val()) {
-      return SATURDAY;
-    }
-    throw new IllegalArgumentException("Not a day of the week!");
-  }
-
   @Override
   public void displayUserSchedule(String user) {
     System.out.println("Displaying new schedule... " + user);
@@ -238,6 +212,31 @@ public class SSFrame extends JFrame implements SSGUIView {
     eventView.displayEndDay(event.endDay().toString());
     eventView.displayEndTime(String.valueOf(event.endTime()));
     eventView.makeVisible();
+  }
+
+  private DaysOfTheWeek createDay(int day) {
+    if (day == SUNDAY.val()) {
+      return SUNDAY;
+    }
+    if (day == MONDAY.val()) {
+      return MONDAY;
+    }
+    if (day == TUESDAY.val()) {
+      return TUESDAY;
+    }
+    if (day == WEDNESDAY.val()) {
+      return WEDNESDAY;
+    }
+    if (day == THURSDAY.val()) {
+      return THURSDAY;
+    }
+    if (day == FRIDAY.val()) {
+      return FRIDAY;
+    }
+    if (day == SATURDAY.val()) {
+      return SATURDAY;
+    }
+    throw new IllegalArgumentException("Not a day of the week!");
   }
 
 }
