@@ -1,8 +1,10 @@
 package cs3500.nuplanner.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import cs3500.nuplanner.model.hw05.DaysOfTheWeek;
+import cs3500.nuplanner.model.hw05.ReadableEvent;
 import cs3500.nuplanner.model.hw05.SchedulingSystem;
 import cs3500.nuplanner.view.GUI.SSGUIView;
 
@@ -29,6 +31,13 @@ public class GUIController implements SchedulingSystemController, Features {
   @Override
   public void requestExistingEvent(String user, DaysOfTheWeek day, int time) {
     System.out.print(day + ", " + time);
+    List<ReadableEvent> userEvents = model.eventsInSchedule(user);
+
+//    // for every event in user schedule
+//    for(ReadableEvent event : userEvents) {
+//      if ()
+//    }
+
     // check if an event that conflicts with this time exists, for specific user
     // if so, displayEventWindowWithCorrectDetails()
   }
