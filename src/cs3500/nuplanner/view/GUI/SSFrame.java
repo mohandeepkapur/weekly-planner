@@ -3,12 +3,23 @@ package cs3500.nuplanner.view.GUI;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.io.File;
 
 import javax.swing.*;
 
 import cs3500.nuplanner.controller.Features;
+import cs3500.nuplanner.model.hw05.DaysOfTheWeek;
 import cs3500.nuplanner.model.hw05.ReadableSchedulingSystem;
+
+import static cs3500.nuplanner.model.hw05.DaysOfTheWeek.FRIDAY;
+import static cs3500.nuplanner.model.hw05.DaysOfTheWeek.MONDAY;
+import static cs3500.nuplanner.model.hw05.DaysOfTheWeek.SATURDAY;
+import static cs3500.nuplanner.model.hw05.DaysOfTheWeek.SUNDAY;
+import static cs3500.nuplanner.model.hw05.DaysOfTheWeek.THURSDAY;
+import static cs3500.nuplanner.model.hw05.DaysOfTheWeek.TUESDAY;
+import static cs3500.nuplanner.model.hw05.DaysOfTheWeek.WEDNESDAY;
 
 public class SSFrame extends JFrame implements SSGUIView {
 
@@ -98,12 +109,80 @@ public class SSFrame extends JFrame implements SSGUIView {
         }
       }
     });
+
+    panel.addMouseListener(new MouseListener() {
+      @Override
+      public void mouseClicked(MouseEvent e) {
+        System.out.println(e.getX() + ", " + e.getY());
+
+        //figuring out what hours or minutes this click is at
+        int row = e.getX() / (panel.getWidth() / 7);
+        DaysOfTheWeek day = createDay(row);
+
+        int col = e.getY() / (panel.getHeight() / 24 / 6);
+        String user = "Bob"; //TODO: THIS IS HARD CODED
+
+        features.requestExistingEvent(user, day, col);
+      }
+
+      @Override
+      public void mousePressed(MouseEvent e) {
+
+      }
+
+      @Override
+      public void mouseReleased(MouseEvent e) {
+
+      }
+
+      @Override
+      public void mouseEntered(MouseEvent e) {
+
+      }
+
+      @Override
+      public void mouseExited(MouseEvent e) {
+
+      }
+    });
     // callback to display specific event details --> request from controller --> controller calls displayFilledEvent
     /*
     if panel touched
     read touch, send day and time and user to features
     if event valid, features will open up filled event window
      */
+  }
+
+  /**
+   * Converts provided an integer into a day of the week, if possible.
+   *
+   * @param day integer to convert into day
+   * @return DaysOfTheWeek enum constant
+   * @throws IllegalArgumentException if string cannot be converted into a day
+   */
+  private DaysOfTheWeek createDay(int day) {
+    if (day == SUNDAY.val()) {
+      return SUNDAY;
+    }
+    if (day == MONDAY.val()) {
+      return MONDAY;
+    }
+    if (day == TUESDAY.val()) {
+      return TUESDAY;
+    }
+    if (day == WEDNESDAY.val()) {
+      return WEDNESDAY;
+    }
+    if (day == THURSDAY.val()) {
+      return THURSDAY;
+    }
+    if (day == FRIDAY.val()) {
+      return FRIDAY;
+    }
+    if (day == SATURDAY.val()) {
+      return SATURDAY;
+    }
+    throw new IllegalArgumentException("Not a day of the week!");
   }
 
   @Override
@@ -118,7 +197,8 @@ public class SSFrame extends JFrame implements SSGUIView {
     setVisible(true);
   }
 
-  @Override // oh mannnn, adding public methods to suit my implementation.... bad. never let the how influence the what
+  @Override
+  // oh mannnn, adding public methods to suit my implementation.... bad. never let the how influence the what
   public void displayBlankEvent() {
     if (currentUserDisplayed == null) throw new IllegalArgumentException("must select user first");
     EventGUIView eventView = new EventFrame(model, currentUserDisplayed);
