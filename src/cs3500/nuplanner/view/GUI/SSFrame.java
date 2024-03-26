@@ -225,6 +225,12 @@ public class SSFrame extends JFrame implements SSGUIView {
     eventView.displayStartTime(String.valueOf(event.startTime()));
     eventView.displayEndDay(event.endDay().toString());
     eventView.displayEndTime(String.valueOf(event.endTime()));
+
+    //TODO:
+    // will need to add displayHost() and displayInvitees() operation methods to EventViewInterface <- oper. because invoking it changes state of EventView
+    // display host --> impl will highlight host of event in blue
+    // display invitees --> impl will highlight non-hosts of event in green
+
     eventView.makeVisible();
   }
 
