@@ -17,6 +17,11 @@ import static cs3500.nuplanner.model.hw05.DaysOfTheWeek.THURSDAY;
 import static cs3500.nuplanner.model.hw05.DaysOfTheWeek.TUESDAY;
 import static cs3500.nuplanner.model.hw05.DaysOfTheWeek.WEDNESDAY;
 
+/**
+ * Represents an event frame with all the associated text boxes and fields to collect data from
+ * the user to be used in the model.
+ */
+
 public class EventFrame extends JFrame implements EventGUIView {
 
   private EventPanel panel;
@@ -31,6 +36,13 @@ public class EventFrame extends JFrame implements EventGUIView {
   private JButton modifyEventButton;
   private JButton removeEventButton;
 
+  /**
+   * Creates an EventFrame for a user with a default size and all the associated fields.
+   *
+   * @param model the model to be used
+   * @param user  the user populating the EventFrame
+   */
+
   public EventFrame(ReadableSchedulingSystem model, String user) {
     super();
 
@@ -43,7 +55,7 @@ public class EventFrame extends JFrame implements EventGUIView {
     eventName.setText("Event Name:");
     eventName.setAlignmentX(Component.LEFT_ALIGNMENT);
 
-    panel.add(eventName,BorderLayout.CENTER);
+    panel.add(eventName, BorderLayout.CENTER);
 
     eventNameTextField = new JTextField();
     eventNameTextField.setPreferredSize(new Dimension(100, 20));
@@ -227,10 +239,8 @@ public class EventFrame extends JFrame implements EventGUIView {
     removeEventButton.addActionListener(new ActionListener() {
       @Override
       public void actionPerformed(ActionEvent actionEvent) {
-
       }
     });
-
   }
 
   @Override

@@ -10,22 +10,42 @@ import javax.swing.*;
 import cs3500.nuplanner.model.hw05.ReadableEvent;
 import cs3500.nuplanner.model.hw05.ReadableSchedulingSystem;
 
+/**
+ * A panel class to represent the schedule itself and events on the schedule, with all the drawn
+ * lines in a row for hour time blocks and columns to represent days of the week.
+ */
+
 public class SSPanel extends JPanel {
 
   private final ReadableSchedulingSystem model;
   private List<ReadableEvent> userEvents; //what if extracted entire schedule instead
 
+  /**
+   * Creates an initial schedule panel with no user displayed, therefore no events represented.
+   *
+   * @param model the model to be used
+   */
   public SSPanel(ReadableSchedulingSystem model) {
     super();
     this.model = model;
     this.userEvents = new ArrayList<>();
   }
 
+  /**
+   * Displays a new schedule panel for a user after selecting one from the list.
+   *
+   * @param user the user schedule  to view
+   */
   public void displayNewSchedule(String user) {
     this.userEvents = this.model.eventsInSchedule(user);
     this.repaint();
   }
 
+  /**
+   * Paints the board and also represents scheduled events in red.
+   *
+   * @param g the <code>Graphics</code> object to protect
+   */
   @Override
   protected void paintComponent(Graphics g) {
     super.paintComponent(g);
@@ -68,19 +88,34 @@ public class SSPanel extends JPanel {
 
   }
 
+  /**
+   * For every smallest time-block, ask whether it belongs within event, if so, paint it.
+   * Do for every smallest-even partition in grid.
+   *
+   * @param g2d      the graphics passed in
+   * @param startVal the starting time of the event
+   * @param endVal   the ending time of the event
+   */
   private void drawEventBlock(Graphics2D g2d, int startVal, int endVal) {
 
     // for every smallest time-block, ask whether it belongs within event
     // if so, paint it!
     // do for every smallest-even partition in grid
 
-    for(int i = 0; i < 7*24*60; i++) {
-      if ( i >= startVal && i+1 <= endVal ) {
-        drawSmallestEventUnit(g2d, i, i+1);
+    for (int i = 0; i < 7 * 24 * 60; i++) {
+      if (i >= startVal && i + 1 <= endVal) {
+        drawSmallestEventUnit(g2d, i, i + 1);
       }
     }
   }
 
+  /**
+   * Draws an event in a block representing when it is occurring.
+   *
+   * @param g2d      the graphics passed in
+   * @param startVal the starting time of the event
+   * @param endVal   the ending time of the event
+   */
   private void drawSmallestEventUnit(Graphics2D g2d, int startVal, int endVal) {
 
     //convert two objective values back into days
@@ -103,6 +138,12 @@ public class SSPanel extends JPanel {
 
   }
 
+  /**
+   * Extracts when events are occurring.
+   *
+   * @param event the event
+   * @return when the start and end times are
+   */
   // duplicate code
   private List<Integer> extractObjectiveValues(ReadableEvent event) {
     int sDv = event.startDay().val();
