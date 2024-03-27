@@ -193,7 +193,6 @@ public class NUPlannerModel implements SchedulingSystem {
     inviteeSchedule.removeEvent(eventToRemove); // method updates event's invitee list
   }
 
-
   /**
    * Modifies an Event within Scheduling System.
    *
@@ -211,7 +210,8 @@ public class NUPlannerModel implements SchedulingSystem {
     // many issues, if user wants to modify multiple event attributes as once (as they should)
     // if multiple modifications applied, and last mod fails,
     // no way to revert Event back to original state
-    // in controller, extracting differences between new and old event would be very annoying
+    // in controller, extracting differences between new and old event to produce series of
+    // modification strings would be very annoying
 
     // extract event-to-modify from user's schedule in scheduling system
     Event origEvent = userSchedules.get(user).eventAt(startDay, startTime);

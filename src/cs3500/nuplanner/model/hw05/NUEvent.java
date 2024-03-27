@@ -400,9 +400,9 @@ public class NUEvent implements Event {
     List<Integer> objValues = extractObjectiveValues();
     int providedDayTime = (day.val() * 60 * 24) + (time / 100 * 60) + (time % 100);
 
-    System.out.println(objValues.get(0));
-    System.out.println(providedDayTime);
-    System.out.println(objValues.get(1));
+    //    System.out.println(objValues.get(0));
+    //    System.out.println(providedDayTime);
+    //    System.out.println(objValues.get(1));
     if(providedDayTime <= objValues.get(1) && providedDayTime >= objValues.get(0)) {
       return true;
     }

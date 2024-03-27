@@ -21,3 +21,56 @@ No need to request something that doesn't change model-state
 
 
 Event Frame
+
+
+IMPORTANT
+modifyEventButton.addActionListener(new ActionListener() {
+      @Override
+      public void actionPerformed(ActionEvent actionEvent) {
+        // print out modify-event details
+        // System.out.print(availableUsersList.getSelectedValue()); //null if nothing selected
+        if (areInputsBlank()) {
+
+        } else {
+          System.out.println("MODIFYING EVENT...");
+          System.out.println("Modifier of event: " + eventFrameOpenerUser);
+          // need to be able to detect modified invitee list when printing out contents
+          // if user selected, and user is invitee of event
+          // remove invitee from copyEvent list (if host, remove all invitees)
+          // view shouldn't be creating/modifying events <- request from features with all user inputs
+              // then features produces copy, updates copy, and then calls modify on og
+              // and copy event
+          printEventDetails();
+        }
+
+        // copy og event // perform modifications
+        // send to modifyEvent(new, old) -> swap out old for new event
+        // performing modifications means just pulling from user input
+
+        // copyOfCreateEvent();
+
+        // if selected user is invitee of event, remove invitee
+        // if selected user is not invitee, add invitee
+        // if no user has been selected, do nothing
+        // if name has been changed
+
+        // create new Event, and send it to model (via f)
+        // modifyEvent(old Event, new Event)
+      }
+    });
+
+
+        removeEventButton.addActionListener(actionEvent -> {
+          //areInputsBlank(); //view check before calling features method
+
+          // print out remove-event details // doesn't listen to JList selections
+          if (areInputsBlank()) {
+
+          } else {
+            System.out.println("REMOVING EVENT...");
+            System.out.println("Remover of event: " + eventFrameOpenerUser);
+            printEventDetails();
+          }
+          //features.requestRemoveEvent(); //provide start day, start time, user of event-to-remove
+                                           //event-frame needs to be aware of who opened frame?
+        });

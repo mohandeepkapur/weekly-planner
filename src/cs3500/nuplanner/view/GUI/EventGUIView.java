@@ -121,12 +121,12 @@ public interface EventGUIView {
   void makeVisible();
 
   /**
-   * Displays Invitees of Event
+   * Displays Invitees of Event.
    */
   void displayInvitees(List<String> invitees);
 
   /**
-   * Displays all Event details to user
+   * Displays all Event details to user.
    * @param event       event to be displayed
    */
   void displayEvent(ReadableEvent event);

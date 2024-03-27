@@ -130,7 +130,7 @@ public class SSFrame extends JFrame implements SSGUIView {
     panel.addMouseListener(new MouseListener() {
       @Override
       public void mouseClicked(MouseEvent e) {
-        System.out.println(e.getX() + ", " + e.getY());
+        //System.out.println(e.getX() + ", " + e.getY());
 
         //figuring out what hours or minutes this click is at
         int row = e.getX() / (panel.getWidth() / 7);
@@ -143,7 +143,7 @@ public class SSFrame extends JFrame implements SSGUIView {
         if (minutes == 0) militarytime = hours * 100;
         else militarytime = (hours * 100) + minutes;
 
-        System.out.println("current user displayed " + currentUserDisplayed + " col " + col);
+        //System.out.println("current user displayed " + currentUserDisplayed + " col " + col);
         features.requestExistingEventDetails(day, militarytime);
       }
 
@@ -198,9 +198,7 @@ public class SSFrame extends JFrame implements SSGUIView {
 
     // if clicked day/time did land on a user's event, display those event details
     for (ReadableEvent event : userEvents) {
-      System.out.println("ran");
       if (event.containsTime(day, time)) {
-        System.out.println("success");
         openEventWindowWithFilledDetails(event); // think about this...
       }
     }

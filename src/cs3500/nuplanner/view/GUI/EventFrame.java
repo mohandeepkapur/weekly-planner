@@ -60,35 +60,57 @@ public class EventFrame extends JFrame implements EventGUIView {
     panel = new EventPanel(model);
     panel.setLayout(new BoxLayout(panel, BoxLayout.PAGE_AXIS));
 
-    JLabel eventName = new JLabel();
-    eventName.setText("Event Name:");
-    eventName.setAlignmentX(Component.LEFT_ALIGNMENT);
+    addEventNameBox();
 
-    panel.add(eventName, BorderLayout.CENTER);
+    // not very one method one purpose-y
+    addIsOnlineAndLocationBoxSamePane();
 
-    eventNameTextField = new JTextField();
-    eventNameTextField.setPreferredSize(new Dimension(100, 20));
-    JPanel eventPane = new JPanel();
-    eventPane.setLayout(new BoxLayout(eventPane, BoxLayout.LINE_AXIS));
-    eventPane.add(eventNameTextField);
-    panel.add(eventPane, BorderLayout.CENTER);
+    addEventStartAndEndInformation();
 
-    JLabel location = new JLabel();
-    location.setText("Location:");
-    panel.add(location, BorderLayout.CENTER);
+    addAvailableUsersBox(model);
 
-    String[] trueOrFalse = {String.valueOf(true), String.valueOf(false)};
-    isOnline = new JComboBox<>(trueOrFalse);
+    addButtonsToPanel();
 
-    locationTextField = new JTextField();
-    locationTextField.setPreferredSize(new Dimension(100, 20));
+    // program won't end if frame closed
+    this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+    this.add(panel);
+  }
 
-    JPanel onlinePane = new JPanel();
-    onlinePane.setLayout(new BoxLayout(onlinePane, BoxLayout.LINE_AXIS));
-    onlinePane.add(isOnline);
-    onlinePane.add(locationTextField);
-    panel.add(onlinePane, BorderLayout.CENTER);
+  /**
+   * Adds create, modify, remove event buttons to panel.
+   */
+  private void addButtonsToPanel() {
+    createEventButton = new JButton("Create Event");
+    modifyEventButton = new JButton("Modify Event");
+    removeEventButton = new JButton("Remove Event");
 
+    JPanel eventButtons = new JPanel(new FlowLayout());
+    eventButtons.add("createEvent", createEventButton);
+    eventButtons.add("modifyEvent", modifyEventButton);
+    eventButtons.add("removeEvent", removeEventButton);
+    panel.add(eventButtons, BorderLayout.SOUTH);
+  }
+
+  /**
+   * Adds available users to panel.
+   * @param model       used to extract available users in sched sys
+   */
+  private void addAvailableUsersBox(ReadableSchedulingSystem model) {
+    JLabel availableUsers = new JLabel();
+    availableUsers.setText("Available Users:");
+    panel.add(availableUsers, BorderLayout.CENTER);
+
+    String[] users = model.allUsers().toArray(new String[0]);
+    availableUsersList = new JList<>(users);
+    //availableUsersList.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
+    availableUsersList.setPreferredSize(new Dimension(400, 100));
+    panel.add(availableUsersList, BorderLayout.CENTER);
+  }
+
+  /**
+   * Adds start and end day and time to panel.
+   */
+  private void addEventStartAndEndInformation() {
     JLabel startingDay = new JLabel();
     startingDay.setText("Starting Day: ");
     String[] daysOfTheWeek = {SUNDAY.toString(), MONDAY.toString(), TUESDAY.toString(),
@@ -135,100 +157,187 @@ public class EventFrame extends JFrame implements EventGUIView {
     endTimePane.add(endingTime);
     endTimePane.add(endingTimeTextField);
     panel.add(endTimePane, BorderLayout.CENTER);
-
-    JLabel availableUsers = new JLabel();
-    availableUsers.setText("Available Users:");
-    panel.add(availableUsers, BorderLayout.CENTER);
-
-    String[] users = model.allUsers().toArray(new String[0]);
-    availableUsersList = new JList<>(users);
-    availableUsersList.setPreferredSize(new Dimension(400, 100));
-    panel.add(availableUsersList, BorderLayout.CENTER);
-
-    createEventButton = new JButton("Create Event");
-    modifyEventButton = new JButton("Modify Event");
-    removeEventButton = new JButton("Remove Event");
-
-    JPanel eventButtons = new JPanel(new FlowLayout());
-    eventButtons.add("createEvent", createEventButton);
-    eventButtons.add("modifyEvent", modifyEventButton);
-    eventButtons.add("removeEvent", removeEventButton);
-    panel.add(eventButtons, BorderLayout.SOUTH);
-
-    this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE); // program won't end if frame closed
-    this.add(panel);
   }
 
+  /**
+   * Add IsOnline and Location information to one pane, bl.
+   */
+  private void addIsOnlineAndLocationBoxSamePane() {
+    JLabel location = new JLabel();
+    location.setText("Location:");
+    panel.add(location, BorderLayout.CENTER);
+
+    String[] trueOrFalse = {String.valueOf(true), String.valueOf(false)};
+    isOnline = new JComboBox<>(trueOrFalse);
+
+    locationTextField = new JTextField();
+    locationTextField.setPreferredSize(new Dimension(100, 20));
+
+    JPanel onlinePane = new JPanel();
+    onlinePane.setLayout(new BoxLayout(onlinePane, BoxLayout.LINE_AXIS));
+    onlinePane.add(isOnline);
+    onlinePane.add(locationTextField);
+    panel.add(onlinePane, BorderLayout.CENTER);
+  }
+
+  /**
+   * Add Event name to Event panel.
+   */
+  private void addEventNameBox() {
+    JLabel eventName = new JLabel();
+    eventName.setText("Event Name:");
+    eventName.setAlignmentX(Component.LEFT_ALIGNMENT);
+
+    panel.add(eventName, BorderLayout.CENTER);
+
+    eventNameTextField = new JTextField();
+    eventNameTextField.setPreferredSize(new Dimension(100, 20));
+    JPanel eventPane = new JPanel();
+    eventPane.setLayout(new BoxLayout(eventPane, BoxLayout.LINE_AXIS));
+    eventPane.add(eventNameTextField);
+    panel.add(eventPane, BorderLayout.CENTER);
+  }
+
+  /**
+   * Returns the name of the event.
+   *
+   * @return the name of the event
+   */
   @Override
   public String nameInput() {
     return eventNameTextField.getText();
   }
 
+  /**
+   * Sets the name of the event.
+   *
+   * @param name the name of the event
+   */
   @Override
   public void displayName(String name) {
     eventNameTextField.setText(""); // redundant?
     eventNameTextField.setText(name);
   }
 
+  /**
+   * Returns the location of an event.
+   *
+   * @return the location of an event
+   */
   @Override
   public String locationInput() {
     return locationTextField.getText();
   }
 
+  /**
+   * Sets the location of an event.
+   *
+   * @param location the location of an event
+   */
   @Override
   public void displayLocation(String location) {
     locationTextField.setText(""); // redundant?
     locationTextField.setText(location);
   }
 
+  /**
+   * Returns whether an event is online or not.
+   *
+   * @return true if online, false if not
+   */
   @Override
   public String isOnlineInput() {
     return (String) isOnline.getSelectedItem();
   }
 
+  /**
+   * Sets whether an event is online or not.
+   *
+   * @param isOnline true if online, false if not
+   */
   @Override
   public void displayIsOnline(String isOnline) {
     this.isOnline.setSelectedItem(isOnline);
   }
 
+  /**
+   * Returns the start day of an event.
+   *
+   * @return the start day of an event
+   */
   @Override
   public String startDayInput() {
     return (String) startingDay.getSelectedItem();
   }
 
+  /**
+   * Sets the start date of an event.
+   *
+   * @param startDay the start day of event
+   */
   @Override
   public void displayStartDay(String startDay) {
     // check if string provided is actually a day
     this.startingDay.setSelectedItem(startDay);
   }
 
+  /**
+   * Returns the start time of an event.
+   *
+   * @return the start time of an event
+   */
   @Override
   public String startTimeInput() {
     return startingTimeTextField.getText();
   }
 
+  /**
+   * Sets the start time of an event.
+   *
+   * @param startTime the start time of an event
+   */
   @Override
   public void displayStartTime(String startTime) {
     startingTimeTextField.setText(""); // redundant?
     startingTimeTextField.setText(startTime);
   }
 
+  /**
+   * Returns the end day of an event.
+   *
+   * @return the end day of an event
+   */
   @Override
   public String endDayInput() {
     return (String) endingDay.getSelectedItem();
   }
 
+  /**
+   * Sets the end day of an event.
+   *
+   * @param endDay the end day of an event
+   */
   @Override
   public void displayEndDay(String endDay) {
     // check if string provided is actually a day
     this.endingDay.setSelectedItem(endDay);
   }
 
+  /**
+   * Returns the end time of an event.
+   *
+   * @return the end time of an event
+   */
   @Override
   public String endTimeInput() {
     return endingTimeTextField.getText();
   }
 
+  /**
+   * Sets the end time of an event.
+   *
+   * @param endTime the end time of an event
+   */
   @Override
   public void displayEndTime(String endTime) {
     endingTimeTextField.setText(""); // redundant?
@@ -237,6 +346,7 @@ public class EventFrame extends JFrame implements EventGUIView {
 
   /**
    * Will be removed once Features properly linked to controls in this View.
+   * Really jank scaffolding around printing stuff out/not how I would organize permanent code.
    */
   private void printEventDetails() {
     System.out.println(this.nameInput());
@@ -246,70 +356,103 @@ public class EventFrame extends JFrame implements EventGUIView {
     System.out.println(this.startTimeInput());
     System.out.println(this.endDayInput());
     System.out.println(this.endTimeInput());
-    System.out.println(this.event.eventInvitees());
-    System.out.print("\n");
   }
 
+  /**
+   * Represents the different features that are applicable to an EventFrame.
+   *
+   * @param features the feature to use
+   */
   // not connecting this frame to Features yet properly (not necessary for current assignment)
   @Override
   public void addFeatures(Features features) {
     // instead of linking existing class to control,
     // creating anon. class whose callback will be executed once relevant event happens
 
-    createEventButton.addActionListener(new ActionListener() {
-      @Override
-      public void actionPerformed(ActionEvent actionEvent) {
-        //areInputsBlank(); //view check before calling features method
-        // print out create-event details
-        if (areInputsBlank()) {
+    createEventButton.addActionListener(actionEvent -> {
+      // areInputsBlank(); <- view check before calling features method
 
-        } else {
-          System.out.println("CREATING EVENT...");
-          System.out.println("Creator of event: " + eventFrameOpenerUser);
-          printEventDetails();
-        }
+      // print out create-event details
+      if (areInputsBlank()) {
+        printErrorMessage();
+      } else {
+        System.out.println("CREATING EVENT...");
+        System.out.println("Creator/Host of event: " + eventFrameOpenerUser);
+        printEventDetails();
+        // print JList selections as invitees
+        System.out.println(eventFrameOpenerUser + " " + availableUsersList.getSelectedValuesList());
       }
     });
 
-    removeEventButton.addActionListener(new ActionListener() {
-      @Override
-      public void actionPerformed(ActionEvent actionEvent) {
-        //areInputsBlank(); //view check before calling features method
-        // print out remove-event details
-        if (areInputsBlank()) {
+    removeEventButton.addActionListener(actionEvent -> {
+      // areInputsBlank(); <- view check before calling features method
 
-        } else {
-          System.out.println("REMOVING EVENT...");
-          System.out.println("Remover of event: " + eventFrameOpenerUser);
-          printEventDetails();
-        }
-        //features.requestRemoveEvent(); //provide start day, start time, user of event-to-remove
-                                         //event-frame needs to be aware of who opened frame?
+      // print out remove-event details
+      // remove-event doesn't care about JList selections
+      if (areInputsBlank()) {
+        printErrorMessage();
+      } else {
+        System.out.println("REMOVING EVENT...");
+        System.out.println("Remover of event: " + eventFrameOpenerUser);
+        System.out.println("Original Event details... ");
+        printEventDetails();
+        System.out.println(this.event.eventInvitees());
       }
     });
 
-    modifyEventButton.addActionListener(new ActionListener() {
-      @Override
-      public void actionPerformed(ActionEvent actionEvent) {
-        // print out modify-event details
-        // System.out.print(availableUsersList.getSelectedValue()); //null if nothing selected
-        if (areInputsBlank()) {
+    modifyEventButton.addActionListener(actionEvent -> {
+      // if user selects a non-invitee on the screen, add that into mod event's invitee list
 
-        } else {
-          System.out.println("MODIFYING EVENT...");
-          System.out.println("Modifier of event: " + eventFrameOpenerUser);
-          printEventDetails();
+      // any work to do with processing GUI results... not view problem
+      if (areInputsBlank()) {
+        printErrorMessage();
+      } else {
+        // print out modified event details <-- new event
+        System.out.println("MODIFYING EVENT...");
+        System.out.println("Modifier of event: " + eventFrameOpenerUser);
+        printEventDetails();
+
+        List<String> modInviteeList = this.event.eventInvitees();
+        for (String user: availableUsersList.getSelectedValuesList()) {
+          // if event invitee list contains selected user
+          if(!this.event.eventInvitees().contains(user)) {
+            // if user selects a non-invitee on the screen, add that into mod event's invitee list
+            modInviteeList.add(user);
+          } else {
+            // if user selects a non-invitee on the screen, remove from mod event's invitee list
+            modInviteeList.remove(user);
+          }
         }
-
+        System.out.println(modInviteeList);
       }
+
     });
   }
 
+  /**
+   *
+   */
+  private void printErrorMessage() {
+    System.out.print("Cannot execute button based on user input... ");
+  }
+
+  /**
+   *
+   * @return
+   */
   private boolean areInputsBlank() {
-    // if any inputs on GUI blank return true
+    if(this.nameInput().isEmpty() || this.locationInput().isEmpty() || this.isOnlineInput().isEmpty()
+    || this.startDayInput().isEmpty() || this.startTimeInput().isEmpty() || this.endDayInput().isEmpty()
+    || this.endTimeInput().isEmpty()) {
+      return true;
+    }
     return false;
   }
 
+  /**
+   * Displays all Event details to user.
+   * @param event       event to be displayed
+   */
   @Override
   public void displayEvent(ReadableEvent event) {
     this.event = event;
@@ -329,6 +472,9 @@ public class EventFrame extends JFrame implements EventGUIView {
     setVisible(true);
   }
 
+  /**
+   * Displays Invitees of Event.
+   */
   @Override
   public void displayInvitees(List<String> invitees) {
     // event extracted from within model, thus invitees provided are subset of available users
@@ -347,15 +493,32 @@ public class EventFrame extends JFrame implements EventGUIView {
 
   }
 
+  /**
+   *
+   */
   private class ListCellRenderer extends DefaultListCellRenderer {
     private List<String> inviteesToColor;
     private String hostToColor;
 
-    public ListCellRenderer(List<String> inviteesToColor, String hostToColor) {
+    /**
+     *
+     * @param inviteesToColor
+     * @param hostToColor
+     */
+    private ListCellRenderer(List<String> inviteesToColor, String hostToColor) {
       this.inviteesToColor = inviteesToColor;
       this.hostToColor = hostToColor;
     }
 
+    /**
+     *
+     * @param list
+     * @param value
+     * @param index
+     * @param isSelected
+     * @param cellHasFocus
+     * @return
+     */
     @Override
     public Component getListCellRendererComponent(JList<?> list, Object value, int index,
                                                   boolean isSelected, boolean cellHasFocus) {

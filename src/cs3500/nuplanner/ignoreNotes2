@@ -58,3 +58,19 @@ modifyEventButton.addActionListener(new ActionListener() {
         // modifyEvent(old Event, new Event)
       }
     });
+
+
+        removeEventButton.addActionListener(actionEvent -> {
+          //areInputsBlank(); //view check before calling features method
+
+          // print out remove-event details // doesn't listen to JList selections
+          if (areInputsBlank()) {
+
+          } else {
+            System.out.println("REMOVING EVENT...");
+            System.out.println("Remover of event: " + eventFrameOpenerUser);
+            printEventDetails();
+          }
+          //features.requestRemoveEvent(); //provide start day, start time, user of event-to-remove
+                                           //event-frame needs to be aware of who opened frame?
+        });

@@ -35,56 +35,78 @@ Event interface (operations included) extending ReadableEvent.
 Every component gives out a DEFENSIVE COPY of whatever it provides,
 removing weird external aliasing dependencies.
 
-(FUTURE NOTE, PLEASE READ TAS:
+GUI requests high level FEATURES from whatever implements features, in order to completely contain
+View's implementation details. The essence of what Features does is permit the View to change its
+state, and to manipulate model state. Changing model and view state is equivalent to the controller
+job, thus controller implements the Features interface.
+
+The SSGUIView is the Main View that takes in a Readable model and is given to Controller, and allows
+the user to view multiple schedules, interact with existing events, upload and download schedules,
+and create new events.
+
+An EventView is created and destroyed within the overarching SSGUIView Interface, and allows the
+user to modify and remove existing events, as well as create new events.
+
+In the EventView, the user must place information into the given text boxes and then request
+their desired action. To add multiple users to a new event, the user must select multiple users
+in the Available Users box. To remove attending users from an existing event, the user must select
+the multiple attending users in the same box (and press modify).
+
+In the EventView, the host of an existing event user clicks on is highlighted green,
+while the non-host members arehighlighted blue.
+
+
+Key Components (mentioned in overview, so this section kept brief):
+
+The SSView interacts with the Scheduling System to render a user's Schedule using Events,
+in either XML or text format.
+
+The SSController is to manipulate the Scheduling System with GUI input discussed above, or XMl
+input.
+
+
+Smaller Components:
+
+DaysOfTheWeek is an enum used to keep track of the days for a 2-week span planner.
+
+
+Source organization:
+
+All components in src and test are contained within cs3500.nuplanner package.
+All components relevant to GUI are in the cs3500.nuplanner.view.GUI package.
+
+
+CHANGES FOR HW 6:
+
+Added observation method to ReadableEvent to check whether a given time is contained within an
+Event's range. Observes state of Event.
+
+Planning to change modifyEvent method signature of model interface to
+modifyEvent(new Event1, new Event2) due to perceived limitations in current model design.
+This is to allow a User to change multiple aspects of an Event at once.
+
+Created Features interface and bare-bones controller. Brief reasoning given in Intro to Codebase.
+
+REASONING FOR NOT IMPLEMENTING TIME CLASS AFTER TA FEEDBACK: Will be doing so after Exam 2.
+However as justification for no time class, an Event itself ensures that the time used to construct
+it is in military time. Once an Event is instantiated, it can only represent time in military time.
+Any start-time provided by user that IS NOT MILITARY TIME will cause the relevant Event to throw an
+IllegalArgException.
+
+
+
+
+
+
+
+
+
+
+
+
 - Will be refactoring Scheduling System addEvent and eventConflict method to only accept an Event
 rather than parameters than construct an Event, because it feels like data representation of an
 Event is being rigidly defined/leaked in Scheduling System interface. This change would not take
 long because of my codebase design,
 but this refactor is being prevented due to the numerous tests written with the current
 addEvent + eventConflict method signature and time constraint.)
-
-Key components:
-Explain the highest-level components in your system, and what they do.
-It is trite and useless to merely say “The model represents the data in my system.
-The view represents the rendering of my system. ...”
-This is a waste of your time and the reader’s time.
-Describe which components “drive” the control-flow of your system, and which ones “are driven”.
-
-Key subcomponents:
-Within each component, give an overview of the main nouns in your system,
-and why they exist and what they are used for.
-
-Quick Start:
-Key Components (mentioned in overview, so this section kept brief):
-Scheduling System stores user Schedules, and user Schedules store Events. Scheduling System is the
-model, which runs on Schedules, which runs on Events.
-
-The SSView interacts with the Scheduling System to render a user's Schedule using Events,
-in either XML or text format.
-
-The SSController is to manipulate the Scheduling System right now with only XML.
-
-Smaller Components:
-DaysOfTheWeek is an enum used to keep track of the days for a 2-week span planner.
-
-Source organization:
-All components in src and test are contained within cs3500.nuplanner package.
-
-
-
-Added observation method to ReadableEvent
-Planning to change modifyEvent method of model to modifyEvent(new Event1, new Event2);
-Created Features interface and bare-bones controller
-Features interface prone to change/not properly linked to EventFrame yet
-
-
-
-
-
-
-Other considerations:
-- if an XML file mentions "non-existing" (not present in scheduling system) users, add them into
-  create accounts for them ONLY IF entire XML File upload succeeds
-- same thing for user manually creating a new event -> non-existing invitees automatically addeed
-
-- XML files cannot OVERWRITE a schedule, only create or ADD to one/multiple
