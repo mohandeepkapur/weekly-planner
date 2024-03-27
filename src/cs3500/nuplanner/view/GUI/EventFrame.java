@@ -430,15 +430,14 @@ public class EventFrame extends JFrame implements EventGUIView {
   }
 
   /**
-   *
+   * Error message for User if don't fill Event Frame completely.
    */
   private void printErrorMessage() {
     System.out.print("Cannot execute button based on user input... ");
   }
 
   /**
-   *
-   * @return
+   * Checks for User if don't fill Event Frame completely.
    */
   private boolean areInputsBlank() {
     if(this.nameInput().isEmpty() || this.locationInput().isEmpty() || this.isOnlineInput().isEmpty()
@@ -467,6 +466,9 @@ public class EventFrame extends JFrame implements EventGUIView {
     this.displayInvitees(event.eventInvitees());
   }
 
+  /**
+   * Makes the frame visible to the user.
+   */
   @Override
   public void makeVisible() {
     setVisible(true);
@@ -494,16 +496,14 @@ public class EventFrame extends JFrame implements EventGUIView {
   }
 
   /**
-   *
+   * Private class that highlights relevant elements in JList given criteria.
    */
   private class ListCellRenderer extends DefaultListCellRenderer {
     private List<String> inviteesToColor;
     private String hostToColor;
 
     /**
-     *
-     * @param inviteesToColor
-     * @param hostToColor
+     * Constructs ListCellRenderer object.
      */
     private ListCellRenderer(List<String> inviteesToColor, String hostToColor) {
       this.inviteesToColor = inviteesToColor;
@@ -511,13 +511,7 @@ public class EventFrame extends JFrame implements EventGUIView {
     }
 
     /**
-     *
-     * @param list
-     * @param value
-     * @param index
-     * @param isSelected
-     * @param cellHasFocus
-     * @return
+     * Highlights relevant elements in JList given criteria defined in method.
      */
     @Override
     public Component getListCellRendererComponent(JList<?> list, Object value, int index,

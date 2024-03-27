@@ -246,6 +246,20 @@ public class NUPlannerModel implements SchedulingSystem {
                       caught.getMessage());
     }
 
+    tryToAddModCopyToSchedulingSystem(copyOfEvent, origEvent, origInvitees);
+
+  }
+
+  /**
+   * Tries to add modified copy of Event into Scheduling System. If not possible, add back
+   * original event to scheduling system and inform client of failure.
+   *
+   * @param copyOfEvent             modified copy of event-to-modify
+   * @param origEvent               event-to-modify removed from scheduling system
+   * @param origInvitees            invitees of event-to-modify
+   */
+  private void tryToAddModCopyToSchedulingSystem(Event copyOfEvent, Event origEvent,
+                                                 List<String> origInvitees) {
     // check if modified copy is compatible with scheduling system
     if (!this.eventConflict(copyOfEvent.host(),
             copyOfEvent.eventInvitees(), copyOfEvent.name(),
@@ -271,7 +285,6 @@ public class NUPlannerModel implements SchedulingSystem {
 
     throw new IllegalArgumentException(
             "Cannot add this modified version of event in scheduling system... ");
-
   }
 
 

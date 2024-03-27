@@ -47,7 +47,7 @@ public class SSPanel extends JPanel {
    */
   @Override
   protected void paintComponent(Graphics g) {
-    super.paintComponent(g);
+    super.paintComponent(g); // wipe panel
     Graphics2D g2d = (Graphics2D) g.create();
 
     int alpha = 127; // 50% transparent
