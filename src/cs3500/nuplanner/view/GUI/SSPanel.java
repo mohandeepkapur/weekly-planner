@@ -14,7 +14,6 @@ import cs3500.nuplanner.model.hw05.ReadableSchedulingSystem;
  * A panel class to represent the schedule itself and events on the schedule, with all the drawn
  * lines in a row for hour time blocks and columns to represent days of the week.
  */
-
 public class SSPanel extends JPanel {
 
   private final ReadableSchedulingSystem model;
@@ -144,7 +143,6 @@ public class SSPanel extends JPanel {
    * @param event the event
    * @return when the start and end times are
    */
-  // duplicate code
   private List<Integer> extractObjectiveValues(ReadableEvent event) {
     int sDv = event.startDay().val();
     int sT = event.startTime();

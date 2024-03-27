@@ -206,6 +206,12 @@ public class NUPlannerModel implements SchedulingSystem {
    */
   @Override
   public void modifyEvent(String user, DaysOfTheWeek startDay, int startTime, String modification) {
+    //TODO:
+    // kind of leaning away from this approach to modify event
+    // many issues, if user wants to modify multiple event attributes as once (as they should)
+    // if multiple modifications applied, and last mod fails,
+    // no way to revert Event back to original state
+    // in controller, extracting differences between new and old event would be very annoying
 
     // extract event-to-modify from user's schedule in scheduling system
     Event origEvent = userSchedules.get(user).eventAt(startDay, startTime);
@@ -418,7 +424,7 @@ public class NUPlannerModel implements SchedulingSystem {
    */
   private void confirmUserExists(String user) {
     if (user == null)
-      throw new IllegalArgumentException("Invalid input, please provide a user name... ");
+      throw new IllegalArgumentException("Invalid input, user cannot be null...");
     if (!this.userSchedules.containsKey(user)) {
       throw new IllegalArgumentException(user + " does not exist in system... ");
     }

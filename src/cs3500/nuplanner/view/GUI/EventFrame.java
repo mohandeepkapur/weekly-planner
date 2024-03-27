@@ -3,10 +3,13 @@ package cs3500.nuplanner.view.GUI;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.*;
 
 import cs3500.nuplanner.controller.Features;
+import cs3500.nuplanner.model.hw05.ReadableEvent;
 import cs3500.nuplanner.model.hw05.ReadableSchedulingSystem;
 
 import static cs3500.nuplanner.model.hw05.DaysOfTheWeek.FRIDAY;
@@ -21,7 +24,6 @@ import static cs3500.nuplanner.model.hw05.DaysOfTheWeek.WEDNESDAY;
  * Represents an event frame with all the associated text boxes and fields to collect data from
  * the user to be used in the model.
  */
-
 public class EventFrame extends JFrame implements EventGUIView {
 
   private EventPanel panel;
@@ -35,6 +37,11 @@ public class EventFrame extends JFrame implements EventGUIView {
   private JButton createEventButton;
   private JButton modifyEventButton;
   private JButton removeEventButton;
+  private JList<String> availableUsersList;
+
+  private final ReadableSchedulingSystem model;
+  private ReadableEvent event;
+  private String eventFrameOpenerUser;
 
   /**
    * Creates an EventFrame for a user with a default size and all the associated fields.
@@ -42,9 +49,11 @@ public class EventFrame extends JFrame implements EventGUIView {
    * @param model the model to be used
    * @param user  the user populating the EventFrame
    */
-
   public EventFrame(ReadableSchedulingSystem model, String user) {
     super();
+
+    this.model = model;
+    this.eventFrameOpenerUser = user;
 
     setSize(500, 400);
     setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -132,7 +141,7 @@ public class EventFrame extends JFrame implements EventGUIView {
     panel.add(availableUsers, BorderLayout.CENTER);
 
     String[] users = model.allUsers().toArray(new String[0]);
-    JList<String> availableUsersList = new JList<>(users);
+    availableUsersList = new JList<>(users);
     availableUsersList.setPreferredSize(new Dimension(400, 100));
     panel.add(availableUsersList, BorderLayout.CENTER);
 
@@ -226,21 +235,93 @@ public class EventFrame extends JFrame implements EventGUIView {
     endingTimeTextField.setText(endTime);
   }
 
-  @Override
+  /**
+   * Will be removed once Features properly linked to controls in this View.
+   */
+  private void printEventDetails() {
+    System.out.println(this.nameInput());
+    System.out.println(this.locationInput());
+    System.out.println(this.isOnlineInput());
+    System.out.println(this.startDayInput());
+    System.out.println(this.startTimeInput());
+    System.out.println(this.endDayInput());
+    System.out.println(this.endTimeInput());
+    System.out.println(this.event.eventInvitees());
+    System.out.print("\n");
+  }
+
   // not connecting this frame to Features yet properly (not necessary for current assignment)
+  @Override
   public void addFeatures(Features features) {
+    // instead of linking existing class to control,
+    // creating anon. class whose callback will be executed once relevant event happens
+
     createEventButton.addActionListener(new ActionListener() {
       @Override
       public void actionPerformed(ActionEvent actionEvent) {
-        System.out.print("Boop");
+        //areInputsBlank(); //view check before calling features method
+        // print out create-event details
+        if (areInputsBlank()) {
+
+        } else {
+          System.out.println("CREATING EVENT...");
+          System.out.println("Creator of event: " + eventFrameOpenerUser);
+          printEventDetails();
+        }
       }
     });
 
     removeEventButton.addActionListener(new ActionListener() {
       @Override
       public void actionPerformed(ActionEvent actionEvent) {
+        //areInputsBlank(); //view check before calling features method
+        // print out remove-event details
+        if (areInputsBlank()) {
+
+        } else {
+          System.out.println("REMOVING EVENT...");
+          System.out.println("Remover of event: " + eventFrameOpenerUser);
+          printEventDetails();
+        }
+        //features.requestRemoveEvent(); //provide start day, start time, user of event-to-remove
+                                         //event-frame needs to be aware of who opened frame?
       }
     });
+
+    modifyEventButton.addActionListener(new ActionListener() {
+      @Override
+      public void actionPerformed(ActionEvent actionEvent) {
+        // print out modify-event details
+        // System.out.print(availableUsersList.getSelectedValue()); //null if nothing selected
+        if (areInputsBlank()) {
+
+        } else {
+          System.out.println("MODIFYING EVENT...");
+          System.out.println("Modifier of event: " + eventFrameOpenerUser);
+          printEventDetails();
+        }
+
+      }
+    });
+  }
+
+  private boolean areInputsBlank() {
+    // if any inputs on GUI blank return true
+    return false;
+  }
+
+  @Override
+  public void displayEvent(ReadableEvent event) {
+    this.event = event;
+
+    this.displayName(event.name());
+    this.displayLocation(event.location());
+    this.displayIsOnline(String.valueOf(event.isOnline()));
+    this.displayStartDay(event.startDay().toString());
+    this.displayStartTime(String.valueOf(event.startTime()));
+    this.displayEndDay(event.endDay().toString());
+    this.displayEndTime(String.valueOf(event.endTime()));
+    this.displayInvitees(event.eventInvitees());
   }
 
   @Override
@@ -248,5 +329,52 @@ public class EventFrame extends JFrame implements EventGUIView {
     setVisible(true);
   }
 
-}
+  @Override
+  public void displayInvitees(List<String> invitees) {
+    // event extracted from within model, thus invitees provided are subset of available users
+    List<String> inviteesToColor = new ArrayList<>();
+    String hostToColor = invitees.get(0); // again, guaranteed to exist in available users
 
+    // for all users in scheduling system
+    for(String user: model.allUsers()) {
+      // if user is an invitee of event being displayed
+      if (invitees.contains(user)) {
+        inviteesToColor.add(user);
+      }
+    }
+
+    availableUsersList.setCellRenderer(new ListCellRenderer(inviteesToColor, hostToColor));
+
+  }
+
+  private class ListCellRenderer extends DefaultListCellRenderer {
+    private List<String> inviteesToColor;
+    private String hostToColor;
+
+    public ListCellRenderer(List<String> inviteesToColor, String hostToColor) {
+      this.inviteesToColor = inviteesToColor;
+      this.hostToColor = hostToColor;
+    }
+
+    @Override
+    public Component getListCellRendererComponent(JList<?> list, Object value, int index,
+                                                  boolean isSelected, boolean cellHasFocus) {
+      Component renderer = super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+
+      // check if value in JList is contained in usersToHighlight
+      if (value != null && inviteesToColor.contains(value.toString())) {
+        renderer.setForeground(Color.BLUE);
+      } else {
+        renderer.setForeground(list.getForeground());
+      }
+
+      if (value != null && hostToColor.equals(value.toString())) {
+        renderer.setForeground(Color.GREEN);
+      }
+
+      return renderer;
+    }
+
+  }
+
+}

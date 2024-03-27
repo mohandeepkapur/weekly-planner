@@ -49,9 +49,6 @@ public class GUIController implements SchedulingSystemController, Features {
 
   }
 
-  /**
-   *
-   */
   @Override
   public void requestCreateEvent() {
     // controller ensuring valid inputs in limited manner:
@@ -62,19 +59,11 @@ public class GUIController implements SchedulingSystemController, Features {
     System.out.print("boop");
   }
 
-  /**
-   *
-   * @param pathname
-   */
   @Override
   public void requestXMLScheduleUpload(String pathname) {
     System.out.println(pathname);
   }
 
-  /**
-   *
-   * @param pathname
-   */
   @Override
   public void requestAllSchedulesDownload(String pathname) {
     System.out.println(pathname);
@@ -88,9 +77,6 @@ public class GUIController implements SchedulingSystemController, Features {
 
   }
 
-  /**
-   *
-   */
   @Override
   public void requestRemoveEvent() {
 
@@ -112,10 +98,6 @@ public class GUIController implements SchedulingSystemController, Features {
 
   }
 
-  /**
-   *
-   * @param model
-   */
   @Override
   public void useSchedulingSystem(SchedulingSystem model) {
     this.model = model;
@@ -123,10 +105,6 @@ public class GUIController implements SchedulingSystemController, Features {
     view.makeVisible();
   }
 
-  /**
-   *
-   * @param pathname                     path to XML file
-   */
   @Override
   public void useSchedulingSystem(String pathname) {
 

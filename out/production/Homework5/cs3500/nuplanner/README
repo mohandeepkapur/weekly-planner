@@ -72,17 +72,10 @@ All components in src and test are contained within cs3500.nuplanner package.
 
 
 
-Add observation method to ReadableEvent
-
-
-
-
-
-
-
-
-
-
+Added observation method to ReadableEvent
+Planning to change modifyEvent method of model to modifyEvent(new Event1, new Event2);
+Created Features interface and bare-bones controller
+Features interface prone to change/not properly linked to EventFrame yet
 
 
 

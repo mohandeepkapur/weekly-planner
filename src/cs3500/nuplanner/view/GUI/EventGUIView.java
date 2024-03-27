@@ -1,6 +1,9 @@
 package cs3500.nuplanner.view.GUI;
 
+import java.util.List;
+
 import cs3500.nuplanner.controller.Features;
+import cs3500.nuplanner.model.hw05.ReadableEvent;
 
 /**
  * Represents the actions and observations desired from the EventGUI.
@@ -117,10 +120,15 @@ public interface EventGUIView {
    */
   void makeVisible();
 
-  // event frame needs to know which user invoked it (to create event)
-  // so event-frame can auto-fill host of new event
+  /**
+   * Displays Invitees of Event
+   */
+  void displayInvitees(List<String> invitees);
 
-  // model's job to verify data
-  // but controller job can prevent clearly bad data from being passed to model
+  /**
+   * Displays all Event details to user
+   * @param event       event to be displayed
+   */
+  void displayEvent(ReadableEvent event);
 
 }

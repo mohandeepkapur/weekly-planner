@@ -30,7 +30,7 @@ public class SSFrame extends JFrame implements SSGUIView {
 
   private ReadableSchedulingSystem model;
   private SSPanel panel;
-  private Features features; // means both frames must share same Features obj
+  private Features features; //allows both Event and SS Views to be linked to the same Features
 
   // all components that exist within frame
   private JButton createEventButton;
@@ -39,7 +39,6 @@ public class SSFrame extends JFrame implements SSGUIView {
   private JMenuItem uploadXML;
   private JMenuItem downloadXMLs;
   private JButton fileChooserButton;
-
   private String currentUserDisplayed;
 
   /**
@@ -47,7 +46,6 @@ public class SSFrame extends JFrame implements SSGUIView {
    *
    * @param model the model used in the GUI
    */
-
   public SSFrame(ReadableSchedulingSystem model) {
     super();
 
@@ -88,7 +86,12 @@ public class SSFrame extends JFrame implements SSGUIView {
     this.add(menuBar, BorderLayout.PAGE_START);
 
     // as soon as View obj is "set-up", display a user's schedule before making View visible
-    this.displayUserSchedule(model.allUsers().get(0));
+    try {
+      this.displayUserSchedule(model.allUsers().get(0));
+      // if no users exist in scheduling system
+    } catch (IndexOutOfBoundsException ignore) {
+      // do nothing
+    }
   }
 
   @Override
@@ -167,13 +170,6 @@ public class SSFrame extends JFrame implements SSGUIView {
 
   }
 
-  /**
-   * Converts provided an integer into a day of the week, if possible.
-   *
-   * @param day integer to convert into day
-   * @return DaysOfTheWeek enum constant
-   * @throws IllegalArgumentException if integer cannot be converted into a day
-   */
   @Override
   public void displayUserSchedule(String user) {
     System.out.println("Displaying new schedule... " + user);
@@ -188,7 +184,8 @@ public class SSFrame extends JFrame implements SSGUIView {
 
   @Override
   public void displayEmptyEventWindow() {
-    if (currentUserDisplayed == null) throw new IllegalArgumentException("must select user first");
+    if (currentUserDisplayed == null)
+      throw new IllegalArgumentException("Must select user first...");
     EventGUIView eventView = new EventFrame(model, currentUserDisplayed);
     eventView.addFeatures(features);
     eventView.makeVisible();
@@ -218,26 +215,37 @@ public class SSFrame extends JFrame implements SSGUIView {
   private void openEventWindowWithFilledDetails(ReadableEvent event) {
     EventGUIView eventView = new EventFrame(model, currentUserDisplayed);
     eventView.addFeatures(features);
-    eventView.displayName(event.name());
-    eventView.displayLocation(event.location());
-    eventView.displayIsOnline(String.valueOf(event.isOnline()));
-    eventView.displayStartDay(event.startDay().toString());
-    eventView.displayStartTime(String.valueOf(event.startTime()));
-    eventView.displayEndDay(event.endDay().toString());
-    eventView.displayEndTime(String.valueOf(event.endTime()));
+
+    // consolidate into display event details? Then EventFrame also has ability to extract
+    // info from displayed event
+
+
+    eventView.displayEvent(event); // feel like this is better solution
+                                  // all views so far have a model/some obj they render themselves
+    // what info is given to eventView?
+    // the event obj to be displayed. the user who chose to display it. the model (needs to know all users)
+    // event obj info includes (host of event, non-hosts, all else)
+    //
+    // ask for createEvent --> view will try to create event through features, could be rejected
+    // ask for removeEvent --> view will try to remove event through features, alr knows who to remove + startday + start-time of event (all model needs)
+    // ask for modifyEvent --> view will try to modify event through features,
 
     //TODO:
     // will need to add displayHost() and displayInvitees() operation methods to EventViewInterface <- oper. because invoking it changes state of EventView
     // display host --> impl will highlight host of event in blue
     // display invitees --> impl will highlight non-hosts of event in green
+    // remove displayX methods from EventView -> if ever going to display Event, it'll be entire
+    // thing, no...
 
     eventView.makeVisible();
   }
 
   /**
+   * Converts provided an integer into a day of the week, if possible.
    *
-   * @param day
-   * @return
+   * @param day integer to convert into day
+   * @return DaysOfTheWeek enum constant
+   * @throws IllegalArgumentException if integer cannot be converted into a day
    */
   private DaysOfTheWeek createDay(int day) {
     if (day == SUNDAY.val()) {
