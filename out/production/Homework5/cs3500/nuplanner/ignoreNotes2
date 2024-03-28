@@ -74,3 +74,32 @@ modifyEventButton.addActionListener(new ActionListener() {
           //features.requestRemoveEvent(); //provide start day, start time, user of event-to-remove
                                            //event-frame needs to be aware of who opened frame?
         });
+
+
+
+
+
+
+  /**
+   * Displays an event to the user with all the relevant details.
+   *
+   * @param event the event that the user has clicked on
+   */
+  private void openEventWindowWithFilledDetails(ReadableEvent event) {
+    EventGUIView eventView = new EventFrame(model, currentUserDisplayed);
+    eventView.addFeatures(features);
+
+    // consolidate into display event details? Then EventFrame also has ability to extract
+    // info from displayed event
+
+
+    eventView.displayEvent(event); // feel like this is better solution
+                                  // all views so far have a model/some obj they render themselves
+    // what info is given to eventView?
+    // the event obj to be displayed. the user who chose to display it. the model (needs to know all users)
+    // event obj info includes (host of event, non-hosts, all else)
+    //
+    // ask for createEvent --> view will try to create event through features, could be rejected
+    // ask for removeEvent --> view will try to remove event through features, alr knows who to
+    // remove + startday + start-time of event (all model needs)
+    // ask for modifyEvent --> view will try to modify event through features,

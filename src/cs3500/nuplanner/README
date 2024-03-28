@@ -73,7 +73,7 @@ DaysOfTheWeek is an enum used to keep track of the days for a 2-week span planne
 Source organization:
 
 All components in src and test are contained within cs3500.nuplanner package.
-All components relevant to GUI are in the cs3500.nuplanner.view.GUI package.
+All components relevant to GUI are in the cs3500.nuplanner.view.gui package.
 
 
 CHANGES FOR HW 6:
@@ -91,7 +91,10 @@ REASONING FOR NOT IMPLEMENTING TIME CLASS AFTER TA FEEDBACK: Will be doing so af
 However as justification for no time class, an Event itself ensures that the time used to construct
 it is in military time. Once an Event is instantiated, it can only represent time in military time.
 Any start-time provided by user that IS NOT MILITARY TIME will cause the relevant Event to throw an
-IllegalArgException.
+IllegalArgException. Any times passed between components will be extracted from existing Events
+that have proper military time, or rejected by an Event due to improper military time.
+Summary:
+The Event implementation ITSELF ENFORCES MILITARY TIME.
 
 
 

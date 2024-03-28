@@ -1,4 +1,4 @@
-package cs3500.nuplanner.view.GUI;
+package cs3500.nuplanner.view.gui;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -38,7 +38,6 @@ public class SSFrame extends JFrame implements SSGUIView {
   private JComboBox<String> userDropdown;
   private JMenuItem uploadXML;
   private JMenuItem downloadXMLs;
-  private JButton fileChooserButton;
   private String currentUserDisplayed;
 
   /**
@@ -75,7 +74,7 @@ public class SSFrame extends JFrame implements SSGUIView {
     menu.add(this.downloadXMLs);
     menuBar.add(menu);
 
-    this.fileChooserButton = new JButton("Open File");
+    JButton fileChooserButton = new JButton("Open File");
 
     JPanel buttonLayout = new JPanel(new FlowLayout());
     buttonLayout.add("createEvent", createEventButton);
@@ -94,6 +93,12 @@ public class SSFrame extends JFrame implements SSGUIView {
     }
   }
 
+  /**
+   * Connects low-level events created by controls in GUI to high-level actions that affect rest
+   * of codebase.
+   *
+   * @param features              program-specific events in response to low-level events
+   */
   @Override
   public void addFeatures(Features features) {
     this.features = features;
@@ -101,6 +106,7 @@ public class SSFrame extends JFrame implements SSGUIView {
     // callbacks are now program-relevant commands (no JFrame dependence externally)
     // rather than callback being a class that needs to interpret JFrame specific code
     createEventButton.addActionListener(evt -> features.displayBlankEvent());
+    scheduleEventButton.addActionListener(evt -> features.displayBlankEvent());
     userDropdown.addActionListener(new ActionListener() {
       @Override
       public void actionPerformed(ActionEvent actionEvent) {
@@ -140,8 +146,11 @@ public class SSFrame extends JFrame implements SSGUIView {
         int hours = col / 6;
         int minutes = col % 6 * 10;
         int militarytime;
-        if (minutes == 0) militarytime = hours * 100;
-        else militarytime = (hours * 100) + minutes;
+        if (minutes == 0) {
+          militarytime = hours * 100;
+        } else {
+          militarytime = (hours * 100) + minutes;
+        }
 
         //System.out.println("current user displayed " + currentUserDisplayed + " col " + col);
         features.requestExistingEventDetails(day, militarytime);
@@ -170,6 +179,12 @@ public class SSFrame extends JFrame implements SSGUIView {
 
   }
 
+  /**
+   * Displays the Schedule of an existing user in the Scheduling System.
+   * Schedule displayed is considered current user of system.
+   *
+   * @param user              user in Scheduling System
+   */
   @Override
   public void displayUserSchedule(String user) {
     System.out.println("Displaying new schedule... " + user);
@@ -177,22 +192,38 @@ public class SSFrame extends JFrame implements SSGUIView {
     this.currentUserDisplayed = user;
   }
 
+  /**
+   * Makes GUI visible.
+   */
   @Override
   public void makeVisible() {
     setVisible(true);
   }
 
+  /**
+   * Displays an empty Event-creation window for a user to interact with.
+   */
   @Override
   public void displayEmptyEventWindow() {
-    if (currentUserDisplayed == null)
+    if (currentUserDisplayed == null) {
       throw new IllegalArgumentException("Must select user first...");
+    }
     EventGUIView eventView = new EventFrame(model, currentUserDisplayed);
     eventView.addFeatures(features);
     eventView.makeVisible();
   }
 
+  /**
+   * Displays the details of the displayed Event that current user has selected.
+   * (Events available within their schedule.)
+   *
+   * @param day           day on SSView user has clicked on
+   * @param time          time on SSView user has clicked on
+   *
+   * @throws IllegalArgumentException         if no user has been selected/ no schedule displayed
+   */
   @Override
-  public void displayFilledEventWindow(DaysOfTheWeek day, int time) { // event exist within scheduling system <- no need to check if null <- why?
+  public void displayFilledEventWindow(DaysOfTheWeek day, int time) {
     // extract relevant user schedule
     List<ReadableEvent> userEvents = model.eventsInSchedule(currentUserDisplayed);
 
@@ -214,22 +245,11 @@ public class SSFrame extends JFrame implements SSGUIView {
     EventGUIView eventView = new EventFrame(model, currentUserDisplayed);
     eventView.addFeatures(features);
 
-    // consolidate into display event details? Then EventFrame also has ability to extract
-    // info from displayed event
-
-
-    eventView.displayEvent(event); // feel like this is better solution
-                                  // all views so far have a model/some obj they render themselves
-    // what info is given to eventView?
-    // the event obj to be displayed. the user who chose to display it. the model (needs to know all users)
-    // event obj info includes (host of event, non-hosts, all else)
-    //
-    // ask for createEvent --> view will try to create event through features, could be rejected
-    // ask for removeEvent --> view will try to remove event through features, alr knows who to remove + startday + start-time of event (all model needs)
-    // ask for modifyEvent --> view will try to modify event through features,
+    eventView.displayEvent(event);
 
     //TODO:
-    // will need to add displayHost() and displayInvitees() operation methods to EventViewInterface <- oper. because invoking it changes state of EventView
+    // will need to add displayHost() and displayInvitees() operation methods to EventViewInterface
+    // <- oper. because invoking it changes state of EventView
     // display host --> impl will highlight host of event in blue
     // display invitees --> impl will highlight non-hosts of event in green
     // remove displayX methods from EventView -> if ever going to display Event, it'll be entire

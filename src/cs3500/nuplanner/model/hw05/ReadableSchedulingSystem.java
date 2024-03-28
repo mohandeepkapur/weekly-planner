@@ -2,6 +2,10 @@ package cs3500.nuplanner.model.hw05;
 
 import java.util.List;
 
+/**
+ * Readable-only Scheduling System. All observations on a Scheduling System have been
+ * isolated in this interface.
+ */
 public interface ReadableSchedulingSystem {
 
   /**

@@ -403,11 +403,7 @@ public class NUEvent implements Event {
     //    System.out.println(objValues.get(0));
     //    System.out.println(providedDayTime);
     //    System.out.println(objValues.get(1));
-    if(providedDayTime <= objValues.get(1) && providedDayTime >= objValues.get(0)) {
-      return true;
-    }
-
-    return false;
+    return providedDayTime <= objValues.get(1) && providedDayTime >= objValues.get(0);
   }
 
   private List<Integer> extractObjectiveValues() {

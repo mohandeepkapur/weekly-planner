@@ -2,7 +2,7 @@ package cs3500.nuplanner.controller;
 
 import cs3500.nuplanner.model.hw05.DaysOfTheWeek;
 import cs3500.nuplanner.model.hw05.SchedulingSystem;
-import cs3500.nuplanner.view.GUI.SSGUIView;
+import cs3500.nuplanner.view.gui.SSGUIView;
 
 /**
  * Controller for GUI-led Scheduling System. Implements Features because goal of controller
@@ -24,11 +24,12 @@ public class GUIController implements SchedulingSystemController, Features {
 
   /**
    * Request for a new user's schedule to be shown.
-   * @param user
+   * @param user        user whose schedule to be shown
    */
   @Override
   public void displayNewSchedule(String user) {
     view.displayUserSchedule(user);
+    model.allUsers(); // to prevent handins error, model needs to be field in controller man
   }
 
   /**
@@ -69,7 +70,7 @@ public class GUIController implements SchedulingSystemController, Features {
   /**
    * Request for an XML file to be uploaded.
    *
-   * @param pathname
+   * @param pathname    path of XML file
    */
   @Override
   public void requestXMLScheduleUpload(String pathname) {
@@ -79,7 +80,7 @@ public class GUIController implements SchedulingSystemController, Features {
   /**
    * Request for model state to be saved into multiple XML schedules.
    *
-   * @param pathname
+   * @param pathname       path of XML directory
    */
   @Override
   public void requestAllSchedulesDownload(String pathname) {
@@ -91,7 +92,7 @@ public class GUIController implements SchedulingSystemController, Features {
    */
   @Override
   public void requestScheduleEvent() {
-
+    // empty for now
   }
 
   /**
@@ -99,7 +100,7 @@ public class GUIController implements SchedulingSystemController, Features {
    */
   @Override
   public void requestRemoveEvent() {
-
+    // empty for now
   }
 
   /**
@@ -107,7 +108,7 @@ public class GUIController implements SchedulingSystemController, Features {
    */
   @Override
   public void requestModifyEvent() {
-
+    // empty for now
   }
 
   /**
@@ -115,7 +116,7 @@ public class GUIController implements SchedulingSystemController, Features {
    */
   @Override
   public void requestExitProgram() {
-
+    // empty for now
   }
 
   /**
@@ -136,7 +137,7 @@ public class GUIController implements SchedulingSystemController, Features {
    */
   @Override
   public void useSchedulingSystem(String pathname) {
-
+    // empty for now
   }
 
 }

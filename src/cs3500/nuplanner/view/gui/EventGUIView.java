@@ -1,4 +1,4 @@
-package cs3500.nuplanner.view.GUI;
+package cs3500.nuplanner.view.gui;
 
 import java.util.List;
 

@@ -436,8 +436,9 @@ public class NUPlannerModel implements SchedulingSystem {
    * @throws IllegalArgumentException  if user DNE in SS
    */
   private void confirmUserExists(String user) {
-    if (user == null)
+    if (user == null) {
       throw new IllegalArgumentException("Invalid input, user cannot be null...");
+    }
     if (!this.userSchedules.containsKey(user)) {
       throw new IllegalArgumentException(user + " does not exist in system... ");
     }
@@ -450,8 +451,9 @@ public class NUPlannerModel implements SchedulingSystem {
    * @throws IllegalArgumentException         if user exists within the Scheduling System
    */
   private void confirmUserDoesNotExist(String user) throws IllegalArgumentException {
-    if (user == null)
+    if (user == null) {
       throw new IllegalArgumentException("Invalid input, please provide a user name... ");
+    }
     if (this.userSchedules.containsKey(user)) {
       throw new IllegalArgumentException("User already exists in scheduling system... ");
     }

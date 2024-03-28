@@ -1,8 +1,7 @@
-package cs3500.nuplanner.view.GUI;
+package cs3500.nuplanner.view.gui;
+
 
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -413,9 +412,9 @@ public class EventFrame extends JFrame implements EventGUIView {
         printEventDetails();
 
         List<String> modInviteeList = this.event.eventInvitees();
-        for (String user: availableUsersList.getSelectedValuesList()) {
+        for (String user : availableUsersList.getSelectedValuesList()) {
           // if event invitee list contains selected user
-          if(!this.event.eventInvitees().contains(user)) {
+          if (!this.event.eventInvitees().contains(user)) {
             // if user selects a non-invitee on the screen, add that into mod event's invitee list
             modInviteeList.add(user);
           } else {
@@ -440,12 +439,11 @@ public class EventFrame extends JFrame implements EventGUIView {
    * Checks for User if don't fill Event Frame completely.
    */
   private boolean areInputsBlank() {
-    if(this.nameInput().isEmpty() || this.locationInput().isEmpty() || this.isOnlineInput().isEmpty()
-    || this.startDayInput().isEmpty() || this.startTimeInput().isEmpty() || this.endDayInput().isEmpty()
-    || this.endTimeInput().isEmpty()) {
-      return true;
-    }
-    return false;
+    return this.nameInput().isEmpty() || this.locationInput().isEmpty() || this.isOnlineInput()
+            .isEmpty()
+            || this.startDayInput().isEmpty() || this.startTimeInput()
+            .isEmpty() || this.endDayInput().isEmpty()
+            || this.endTimeInput().isEmpty();
   }
 
   /**
@@ -484,7 +482,7 @@ public class EventFrame extends JFrame implements EventGUIView {
     String hostToColor = invitees.get(0); // again, guaranteed to exist in available users
 
     // for all users in scheduling system
-    for(String user: model.allUsers()) {
+    for (String user : model.allUsers()) {
       // if user is an invitee of event being displayed
       if (invitees.contains(user)) {
         inviteesToColor.add(user);
@@ -516,7 +514,8 @@ public class EventFrame extends JFrame implements EventGUIView {
     @Override
     public Component getListCellRendererComponent(JList<?> list, Object value, int index,
                                                   boolean isSelected, boolean cellHasFocus) {
-      Component renderer = super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+      Component renderer = super.getListCellRendererComponent(list, value,
+              index, isSelected, cellHasFocus);
 
       // check if value in JList is contained in usersToHighlight
       if (value != null && inviteesToColor.contains(value.toString())) {

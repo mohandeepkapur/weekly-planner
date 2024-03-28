@@ -209,17 +209,17 @@ public class TestXMLFunctions {
             xmlController.useSchedulingSystem("XMLFiles/toWrite/George.xml"));
   }
 
-//  @Test
-//  public void testInvalidNoFileProvided() {
-//    assertThrows(IllegalArgumentException.class, () ->
-//            xmlController.useSchedulingSystem());
-//  }
-//
-//  @Test
-//  public void testInvalidProvidedNull() {
-//    assertThrows(NullPointerException.class, () ->
-//            xmlController.useSchedulingSystem(null));
-//  }
+  //  @Test
+  //  public void testInvalidNoFileProvided() {
+  //    assertThrows(IllegalArgumentException.class, () ->
+  //            xmlController.useSchedulingSystem());
+  //  }
+  //
+  //  @Test
+  //  public void testInvalidProvidedNull() {
+  //    assertThrows(NullPointerException.class, () ->
+  //            xmlController.useSchedulingSystem(null));
+  //  }
 
   @Test
   public void testInvalidProvidedBadXMLFile() {

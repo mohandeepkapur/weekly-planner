@@ -10,7 +10,7 @@ public interface Features {
 
   /**
    * Request for a new user's schedule to be shown.
-   * @param user
+   * @param user        user whose schedule to be shown
    */
   void displayNewSchedule(String user); // should be view operational method
 
@@ -35,14 +35,14 @@ public interface Features {
   /**
    * Request for an XML file to be uploaded.
    *
-   * @param pathname
+   * @param pathname    path of XML file
    */
   void requestXMLScheduleUpload(String pathname);
 
   /**
    * Request for model state to be saved into multiple XML schedules.
    *
-   * @param pathname
+   * @param pathname       path of XML directory
    */
   void requestAllSchedulesDownload(String pathname);
 

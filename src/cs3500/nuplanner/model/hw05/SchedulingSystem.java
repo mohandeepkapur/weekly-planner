@@ -77,7 +77,8 @@ public interface SchedulingSystem extends ReadableSchedulingSystem {
    *
    * @throws IllegalArgumentException   if modification creates conflict with other Schedules
    */
-  void modifyEvent(String user, DaysOfTheWeek startDay, int startTime, String modification); //instead of String mod:
+  void modifyEvent(String user, DaysOfTheWeek startDay, int startTime, String modification);
+  // will replace modifyEvent signature in HW7
 
   /**
    * Checks whether an Event conflicts with relevant Schedules in Scheduling System.

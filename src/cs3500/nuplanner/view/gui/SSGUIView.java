@@ -1,4 +1,4 @@
-package cs3500.nuplanner.view.GUI;
+package cs3500.nuplanner.view.gui;
 
 import cs3500.nuplanner.controller.Features;
 import cs3500.nuplanner.model.hw05.DaysOfTheWeek;
@@ -25,8 +25,8 @@ public interface SSGUIView {
    * Displays the details of the displayed Event that current user has selected.
    * (Events available within their schedule.)
    *
-   * @param day
-   * @param time
+   * @param day           day on SSView user has clicked on
+   * @param time          time on SSView user has clicked on
    *
    * @throws IllegalArgumentException         if no user has been selected/ no schedule displayed
    */
