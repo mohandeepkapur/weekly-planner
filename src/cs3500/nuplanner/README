@@ -101,9 +101,14 @@ The Event implementation ITSELF ENFORCES MILITARY TIME.
 
 
 
+- need to update modify event signature - think about other model method sigs
+- need to use a Time class (discuss with TA, benefits again)
+- need to clean up code/javadocs <-- some are quite bad <-- think about what information should be interface vs impl level
+-
 
-
-
+if have time (prob won't):
+- think about the use of objective values everywhere --> always converting from military time to ov
+    - bunch of duplicate code in multiple components for that conversion
 
 
 
