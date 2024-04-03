@@ -35,7 +35,7 @@ public class SSPanel extends JPanel {
    *
    * @param user the user schedule  to view
    */
-  public void displayNewSchedule(String user) {
+  public void displayUserSchedule(String user) {
     this.userEvents = this.model.eventsInSchedule(user);
     this.repaint();
   }

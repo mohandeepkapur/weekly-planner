@@ -74,6 +74,13 @@ public interface ReadableEvent {
    */
   List<String> eventInvitees();
 
+  /**
+   * Checks whether provided time is contained within Event.
+   *
+   * @param day     day event suppos. contains
+   * @param time    time event suppos. contains
+   * @return        whether provided time is contained within Event
+   */
   boolean containsTime(DaysOfTheWeek day, int time);
 
 }

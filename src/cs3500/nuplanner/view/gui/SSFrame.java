@@ -153,6 +153,7 @@ public class SSFrame extends JFrame implements SSGUIView {
         }
 
         //System.out.println("current user displayed " + currentUserDisplayed + " col " + col);
+        //TODO: what if I added entire event
         features.requestExistingEventDetails(day, militarytime);
       }
 
@@ -188,7 +189,7 @@ public class SSFrame extends JFrame implements SSGUIView {
   @Override
   public void displayUserSchedule(String user) {
     System.out.println("Displaying new schedule... " + user);
-    panel.displayNewSchedule(user);
+    panel.displayUserSchedule(user);
     this.currentUserDisplayed = user;
   }
 
@@ -204,7 +205,7 @@ public class SSFrame extends JFrame implements SSGUIView {
    * Displays an empty Event-creation window for a user to interact with.
    */
   @Override
-  public void displayEmptyEventWindow() {
+  public void displayBlankEvent() {
     if (currentUserDisplayed == null) {
       throw new IllegalArgumentException("Must select user first...");
     }
@@ -223,7 +224,7 @@ public class SSFrame extends JFrame implements SSGUIView {
    * @throws IllegalArgumentException         if no user has been selected/ no schedule displayed
    */
   @Override
-  public void displayFilledEventWindow(DaysOfTheWeek day, int time) {
+  public void displayExistingEvent(DaysOfTheWeek day, int time) {
     // extract relevant user schedule
     List<ReadableEvent> userEvents = model.eventsInSchedule(currentUserDisplayed);
 
@@ -234,6 +235,7 @@ public class SSFrame extends JFrame implements SSGUIView {
       }
     }
 
+    //
   }
 
   /**

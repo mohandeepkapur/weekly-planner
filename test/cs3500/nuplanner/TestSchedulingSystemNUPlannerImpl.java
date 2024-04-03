@@ -153,7 +153,7 @@ public class TestSchedulingSystemNUPlannerImpl {
     model.addEvent("Elaine", users, "Badminton",
             "Marino Recreation", true,
             TUESDAY, 1000, TUESDAY, 1200);
-    model.removeEvent("Mia", TUESDAY, 1000);
+    model.removeEvent("Mia", , TUESDAY);
     assertFalse(model.eventConflict("Mia", onlyMia, "Shower",
             "Loftman Hall", false, TUESDAY, 1000, TUESDAY, 1030));
     assertTrue(model.eventConflict("Elaine", onlyElaine, "Shower",
@@ -167,7 +167,7 @@ public class TestSchedulingSystemNUPlannerImpl {
     model.addEvent("Elaine", new ArrayList<>(List.of("Elaine", "Mia")), "Tennis",
             "Carter Field", true,
             TUESDAY, 800, TUESDAY, 1000);
-    model.removeEvent("Elaine", TUESDAY, 800);
+    model.removeEvent("Elaine", , TUESDAY);
     assertFalse(model.eventConflict("Elaine", new ArrayList<>(List.of("Elaine", "Mia")),
             "Shower", "Loftman Hall", false, TUESDAY,
             800, TUESDAY, 830));
@@ -181,7 +181,7 @@ public class TestSchedulingSystemNUPlannerImpl {
             "Carter Field", true,
             TUESDAY, 800, TUESDAY, 1000);
     assertThrows(IllegalArgumentException.class, () ->
-            model.removeEvent("Leia", TUESDAY, 800));
+            model.removeEvent("Leia", , TUESDAY));
   }
 
   @Test

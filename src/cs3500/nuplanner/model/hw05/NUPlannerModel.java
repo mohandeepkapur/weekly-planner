@@ -135,29 +135,27 @@ public class NUPlannerModel implements SchedulingSystem {
    * Removes an Event from specified user's Schedule. Event state is updated accordingly.
    * Assumption that no Event in a Schedule shares the same start day and time.
    *
-   *
-   * @param user                        name of user whose schedule holds the Event
-   * @param startDay                    start day of Event
-   * @param startTime                   start time of Event
-   * @throws IllegalArgumentException   if Event with above properties does not exist in Schedule
+   * @param user  name of user whose schedule holds the Event
+   * @param event
+   * @throws IllegalArgumentException if Event with above properties does not exist in Schedule
    */
   @Override
-  public void removeEvent(String user, DaysOfTheWeek startDay, int startTime) {
+  public void removeEvent(String user, Event event) {
     confirmUserExists(user);
 
     // extract copy of Event from relevant schedule
-    Event copyEventToRemove =
-            userSchedules.get(user).eventAt(startDay, startTime);
+
+    //using startDay startTime to extract Event copy
+    //  <- why not just pass in Event copy in the first place?
+    //client of model will only be able to access/point to events contained within
+    //  through model obs methods -> which provide Event objs only
+    //using startDay/startTime consequence of textual-view consideration thinking?
 
     // if user removing event from their schedule is host of the event
-    if (copyEventToRemove.eventInvitees().get(0).equals(user)) {
-
-      removeEventFromEverySchedule(copyEventToRemove.eventInvitees(), copyEventToRemove);
-
+    if (event.eventInvitees().get(0).equals(user)) {
+      removeEventFromEverySchedule(event.eventInvitees(), (Event) event);
     } else {
-
-      removeEventFromSingleSchedule(user, copyEventToRemove);
-
+      removeEventFromSingleSchedule(user, (Event) event);
     }
 
   }
@@ -229,13 +227,13 @@ public class NUPlannerModel implements SchedulingSystem {
       // confirm that the invitee to remove is spelled correctly (invitees all in event will exist)
       confirmUserExists(tokens[1]);
       // if non-host's request wants to remove host of an event, OK
-      this.removeEvent(tokens[1], origEvent.startDay(), origEvent.startTime());
+      this.removeEvent(tokens[1], , origEvent.startDay());
       return;
     }
 
     // remove event-to-modify from all user schedules - required for all other modifications
     // side-effect: event-to-modify has its internal invitees wiped <- workaround
-    this.removeEvent(origEvent.host(), origEvent.startDay(), origEvent.startTime());
+    this.removeEvent(origEvent.host(), , origEvent.startDay());
 
     // modify copy of event-to-remove
     try {
@@ -315,6 +313,8 @@ public class NUPlannerModel implements SchedulingSystem {
     Event event = new NUEvent(invitees, eventName, location, isOnline,
             startDay, startTime,
             endDay, endTime);
+
+    // just using Event obj internally
 
     try {
       checkOpenSpaceRelevantSchedules(event);

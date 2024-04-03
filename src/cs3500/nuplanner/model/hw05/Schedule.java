@@ -31,7 +31,7 @@ public interface Schedule {
    * If an Event is removed from a Schedule, the invitee list of the Event should be updated
    * to reflect that change.
    * </p>
-   * @param eventToRemove                   Event to be removed
+   * @param eventToRemove                   Event to be removed (duplicate copy of Event)
    * @throws IllegalArgumentException       if Event is null
    * @throws IllegalArgumentException       if the given Event does not exist in Schedule
    */

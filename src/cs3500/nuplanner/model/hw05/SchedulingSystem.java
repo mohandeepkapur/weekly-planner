@@ -27,7 +27,6 @@ public interface SchedulingSystem extends ReadableSchedulingSystem {
    */
   void removeUser(String user);
 
-
   /**
    * Creates and adds a new Event to the relevant Schedules.
    *
@@ -60,12 +59,18 @@ public interface SchedulingSystem extends ReadableSchedulingSystem {
    * Event accordingly. If a non-host, then remove Event just from their own
    * schedule and update Event accordingly.
    * </p>
-   * @param user                        name of user whose schedule holds the Event
-   * @param startDay                    start day of Event
-   * @param startTime                   start time of Event
-   * @throws IllegalArgumentException   if Event with above properties does not exist in Schedule
+   *
+   * @param user  name of user whose schedule holds the Event
+   * @param event
+   * @throws IllegalArgumentException if Event with above properties does not exist in Schedule
    */
-  void removeEvent(String user, DaysOfTheWeek startDay, int startTime);
+  void removeEvent(String user, Event event);
+  // feel like providing a ReadableEvent is incorrect
+  // internally, in model implementation... well, should impl details ever
+  //   influence interface? no
+  // through providing readableEvent, I imply to client that to access
+  //    an event to remove, use model obs method that produces readable event
+  //      does that even really matter though
 
   /**
    * Modifies an Event within Scheduling System.

@@ -19,7 +19,7 @@ public interface SSGUIView {
   /**
    * Displays an empty Event-creation window for a user to interact with.
    */
-  void displayEmptyEventWindow();
+  void displayBlankEvent();
 
   /**
    * Displays the details of the displayed Event that current user has selected.
@@ -30,7 +30,7 @@ public interface SSGUIView {
    *
    * @throws IllegalArgumentException         if no user has been selected/ no schedule displayed
    */
-  void displayFilledEventWindow(DaysOfTheWeek day, int time);
+  void displayExistingEvent(DaysOfTheWeek day, int time);
 
   /**
    * Connects low-level events created by controls in GUI to high-level actions that affect rest

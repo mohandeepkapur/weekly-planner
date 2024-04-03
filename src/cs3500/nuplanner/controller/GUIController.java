@@ -38,7 +38,7 @@ public class GUIController implements SchedulingSystemController, Features {
   @Override
   public void displayBlankEvent() {
     //System.out.println("Should open blank event frame now...");
-    view.displayEmptyEventWindow();
+    view.displayBlankEvent();
   }
 
   /**
@@ -50,7 +50,7 @@ public class GUIController implements SchedulingSystemController, Features {
   @Override
   public void requestExistingEventDetails(DaysOfTheWeek day, int time) {
 
-    view.displayFilledEventWindow(day, time);
+    view.displayExistingEvent(day, time);
 
   }
 

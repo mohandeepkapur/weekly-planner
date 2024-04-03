@@ -31,6 +31,8 @@ public interface Features {
    * @param time time an event in user's schedule may contain
    */
   void requestExistingEventDetails(DaysOfTheWeek day, int time);
+  //not including String user due to view impl details, pretty sure
+  //CHANGE
 
   /**
    * Request for an XML file to be uploaded.
