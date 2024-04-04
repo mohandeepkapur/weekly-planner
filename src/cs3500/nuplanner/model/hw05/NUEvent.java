@@ -303,6 +303,8 @@ public class NUEvent implements Event {
   /**
    * Removes an invitee from the Event.
    *
+   * If host of Event is removed, all other invitees of Event are removed as consequence.
+   *
    * @param invitee                       invitee to remove
    * @throws IllegalArgumentException     if no invitees left in Event
    * @throws IllegalArgumentException     if invitee to remove is not part of Event
@@ -315,6 +317,10 @@ public class NUEvent implements Event {
     }
     if (!invitees.contains(invitee)) {
       throw new IllegalArgumentException("Event does not contain user to remove... ");
+    }
+    //HW7 addition
+    if (host.equals(invitee)) {
+      invitees.clear();
     }
     invitees.remove(invitee);
   }

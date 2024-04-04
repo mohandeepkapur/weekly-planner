@@ -244,7 +244,7 @@ public class TestView {
 
     assertEquals(original, out.toString());
 
-    model.removeEvent("Elaine", , SATURDAY);
+    //model.removeEvent("Elaine", , SATURDAY);
 
     try {
       view.render("Elaine");
@@ -312,7 +312,7 @@ public class TestView {
 
     assertEquals(original, out.toString());
 
-    model.modifyEvent("Elaine", SATURDAY, 800, "starttime 700");
+    //model.modifyEvent(, "Elaine", , SATURDAY);
 
     try {
       view.render("Elaine");

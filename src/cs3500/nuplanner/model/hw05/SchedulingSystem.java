@@ -60,29 +60,31 @@ public interface SchedulingSystem extends ReadableSchedulingSystem {
    * schedule and update Event accordingly.
    * </p>
    *
-   * @param user  name of user whose schedule holds the Event
-   * @param event
+   * @param user      name of user whose schedule holds the Event
+   * @param startDay
+   * @param startTime
    * @throws IllegalArgumentException if Event with above properties does not exist in Schedule
    */
-  void removeEvent(String user, Event event);
+  void removeEvent(String user, DaysOfTheWeek startDay, int startTime);
   // feel like providing a ReadableEvent is incorrect
   // internally, in model implementation... well, should impl details ever
   //   influence interface? no
+  // feel like providing most general-type implies below, and
+  //
   // through providing readableEvent, I imply to client that to access
   //    an event to remove, use model obs method that produces readable event
   //      does that even really matter though
 
+
   /**
    * Modifies an Event within Scheduling System.
    *
-   * @param user                        name of user whose schedule holds the Event
-   * @param startDay                    start day of Event
-   * @param startTime                   start time of Event
-   * @param modification                modification to be made
-   *
-   * @throws IllegalArgumentException   if modification creates conflict with other Schedules
+   * @param user
+   * @param origEvent
+   * @param modEvent
+   * @throws IllegalArgumentException if modification creates conflict with other Schedules
    */
-  void modifyEvent(String user, DaysOfTheWeek startDay, int startTime, String modification);
+  void modifyEvent(String user, Event origEvent, Event modEvent);
   // will replace modifyEvent signature in HW7
 
   /**

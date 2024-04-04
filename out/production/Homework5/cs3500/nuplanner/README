@@ -98,7 +98,8 @@ The Event implementation ITSELF ENFORCES MILITARY TIME.
 
 
 
-
+HW7
+- changed removeEvent and modifyEvent signatures
 
 
 - need to update modify event signature - think about other model method sigs

@@ -135,29 +135,38 @@ public class NUPlannerModel implements SchedulingSystem {
    * Removes an Event from specified user's Schedule. Event state is updated accordingly.
    * Assumption that no Event in a Schedule shares the same start day and time.
    *
-   * @param user  name of user whose schedule holds the Event
-   * @param event
+   * @param user      name of user whose schedule holds the Event
+   * @param startDay
+   * @param startTime
    * @throws IllegalArgumentException if Event with above properties does not exist in Schedule
    */
   @Override
-  public void removeEvent(String user, Event event) {
+  public void removeEvent(String user, DaysOfTheWeek startDay, int startTime) {
     confirmUserExists(user);
 
-    // extract copy of Event from relevant schedule
+    // with startDay signature, extract copy of Event from relevant schedule
+    // schedule would throw error if given event did not exist in schedule
 
-    //using startDay startTime to extract Event copy
-    //  <- why not just pass in Event copy in the first place?
-    //client of model will only be able to access/point to events contained within
-    //  through model obs methods -> which provide Event objs only
-    //using startDay/startTime consequence of textual-view consideration thinking?
+    Event event = userSchedules.get(user).eventAt(startDay, startTime);
+
+    removeEventNewSignature(user, event);
+
+  }
+
+  private void removeEventNewSignature(String user, Event event) {
+    // TODO:
+    // with new Event signature, need to check whether Event does not belong
+    // in user schedule
+    if (!userSchedules.get(user).events().contains(event)) {
+      throw new IllegalArgumentException("Event provided does not exist in provided user's schedule...");
+    }
 
     // if user removing event from their schedule is host of the event
     if (event.eventInvitees().get(0).equals(user)) {
-      removeEventFromEverySchedule(event.eventInvitees(), (Event) event);
+      removeEventFromEverySchedule(event.eventInvitees(), event);
     } else {
-      removeEventFromSingleSchedule(user, (Event) event);
+      removeEventFromSingleSchedule(user, event);
     }
-
   }
 
   /**
@@ -172,9 +181,15 @@ public class NUPlannerModel implements SchedulingSystem {
     // to access and modify original
     // updates copy while original modified to preserve equality and thus access to original Event
     if (!invitees.isEmpty()) {
-      Schedule inviteeSchedule = this.userSchedules.get(invitees.get(0));
+
+      // HW7 change:
+      // need to use last index, given updated Event behavior
+      // removeInvitee now removes all attendees in Event if host removed
+      int laIn = invitees.size() - 1;
+
+      Schedule inviteeSchedule = this.userSchedules.get(invitees.get(laIn));
       inviteeSchedule.removeEvent(copyEventToRemove); // method updates event's invitee list
-      copyEventToRemove.removeInvitee(invitees.get(0));
+      copyEventToRemove.removeInvitee(invitees.get(laIn));
       removeEventFromEverySchedule(copyEventToRemove.eventInvitees(), copyEventToRemove);
     }
 
@@ -194,57 +209,41 @@ public class NUPlannerModel implements SchedulingSystem {
   /**
    * Modifies an Event within Scheduling System.
    *
-   * @param user                        name of user whose schedule holds the Event
-   * @param startDay                    start day of Event
-   * @param startTime                   start time of Event
-   * @param modification                modification to be made
-   *
-   * @throws IllegalArgumentException   if modification creates conflict with other Schedules
+   * @param user
+   * @param origEvent
+   * @param modEvent
+   * @throws IllegalArgumentException if modification creates conflict with other Schedules
    */
   @Override
-  public void modifyEvent(String user, DaysOfTheWeek startDay, int startTime, String modification) {
-    //TODO:
-    // kind of leaning away from this approach to modify event
-    // many issues, if user wants to modify multiple event attributes as once (as they should)
-    // if multiple modifications applied, and last mod fails,
-    // no way to revert Event back to original state
-    // in controller, extracting differences between new and old event to produce series of
-    // modification strings would be very annoying
+  public void modifyEvent(String user, Event origEvent, Event modEvent) {
 
-    // extract event-to-modify from user's schedule in scheduling system
-    Event origEvent = userSchedules.get(user).eventAt(startDay, startTime);
+    // confirm origEvent exists in scheduling system
+    // check if event exists within correct schedule
+    // duplicate code
+    if (!userSchedules.get(user).events().contains(origEvent)) {
+      throw new IllegalArgumentException("Event provided does not exist in provided user's schedule...");
+    }
 
-    List<String> origInvitees = origEvent.eventInvitees();
+    // check whether modified version of event would conflict with sys
+    if (!this.eventConflict(modEvent.host(),
+            modEvent.eventInvitees(), modEvent.name(),
+            modEvent.location(), modEvent.isOnline(),
+            modEvent.startDay(), modEvent.startTime(),
+            modEvent.endDay(), modEvent.endTime())) {
 
-    // create copy of event-to-modify to modify
-    Event copyOfEvent = new NUEvent(origEvent);
+      // if not, then remove origEvent from sys and add modEvent
+      removeEventNewSignature(user, origEvent);
 
-    // interpret the modification request
-    String[] tokens = modification.split("\\s+", 2);
+      this.addEvent(modEvent.host(),
+              modEvent.eventInvitees(), modEvent.name(),
+              modEvent.location(), modEvent.isOnline(),
+              modEvent.startDay(), modEvent.startTime(),
+              modEvent.endDay(), modEvent.endTime());
 
-    // if modification request wants to remove an invitee from the event-to-modify
-    if (tokens[0].equals("removeinvitee")) {
-      // confirm that the invitee to remove is spelled correctly (invitees all in event will exist)
-      confirmUserExists(tokens[1]);
-      // if non-host's request wants to remove host of an event, OK
-      this.removeEvent(tokens[1], , origEvent.startDay());
       return;
     }
 
-    // remove event-to-modify from all user schedules - required for all other modifications
-    // side-effect: event-to-modify has its internal invitees wiped <- workaround
-    this.removeEvent(origEvent.host(), , origEvent.startDay());
-
-    // modify copy of event-to-remove
-    try {
-      performOtherModifications(copyOfEvent, tokens[0], tokens[1]);
-    } catch (IllegalArgumentException | IllegalStateException caught) {
-      throw new IllegalArgumentException(
-              "Cannot add this modified version of event in scheduling system... " +
-                      caught.getMessage());
-    }
-
-    tryToAddModCopyToSchedulingSystem(copyOfEvent, origEvent, origInvitees);
+    throw new IllegalArgumentException("Cannot modify event in this manner");
 
   }
 

@@ -135,3 +135,5 @@ reasoning for moving from start-day/start-time to Event
      - which must be model's responsibility
 also, if modifyEvent making switch, would be nice for removeEvent to change for consistency
 
+// Event just container for attendees
+// special actions if "host" removed handled by model
