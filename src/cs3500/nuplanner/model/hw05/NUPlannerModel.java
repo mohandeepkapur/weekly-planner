@@ -135,25 +135,17 @@ public class NUPlannerModel implements SchedulingSystem {
    * Removes an Event from specified user's Schedule. Event state is updated accordingly.
    * Assumption that no Event in a Schedule shares the same start day and time.
    *
-   * @param user      name of user whose schedule holds the Event
-   * @param startDay
-   * @param startTime
+   * @param user  name of user whose schedule holds the Event
+   * @param event
    * @throws IllegalArgumentException if Event with above properties does not exist in Schedule
    */
   @Override
-  public void removeEvent(String user, DaysOfTheWeek startDay, int startTime) {
+  public void removeEvent(String user, Event event) {
     confirmUserExists(user);
 
     // with startDay signature, extract copy of Event from relevant schedule
     // schedule would throw error if given event did not exist in schedule
 
-    Event event = userSchedules.get(user).eventAt(startDay, startTime);
-
-    removeEventNewSignature(user, event);
-
-  }
-
-  private void removeEventNewSignature(String user, Event event) {
     // TODO:
     // with new Event signature, need to check whether Event does not belong
     // in user schedule
@@ -167,6 +159,7 @@ public class NUPlannerModel implements SchedulingSystem {
     } else {
       removeEventFromSingleSchedule(user, event);
     }
+
   }
 
   /**

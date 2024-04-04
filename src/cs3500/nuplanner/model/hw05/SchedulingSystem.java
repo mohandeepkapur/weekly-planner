@@ -60,12 +60,11 @@ public interface SchedulingSystem extends ReadableSchedulingSystem {
    * schedule and update Event accordingly.
    * </p>
    *
-   * @param user      name of user whose schedule holds the Event
-   * @param startDay
-   * @param startTime
+   * @param user  name of user whose schedule holds the Event
+   * @param event
    * @throws IllegalArgumentException if Event with above properties does not exist in Schedule
    */
-  void removeEvent(String user, DaysOfTheWeek startDay, int startTime);
+  void removeEvent(String user, Event event);
   // feel like providing a ReadableEvent is incorrect
   // internally, in model implementation... well, should impl details ever
   //   influence interface? no
