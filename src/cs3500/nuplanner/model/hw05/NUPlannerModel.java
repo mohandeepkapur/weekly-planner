@@ -219,7 +219,7 @@ public class NUPlannerModel implements SchedulingSystem {
 
     // check whether modified version of event would conflict with sys
 
-    removeEventNewSignature(user, origEvent);
+    this.removeEvent(user, origEvent);
 
     if (!this.eventConflict(modEvent.host(),
             modEvent.eventInvitees(), modEvent.name(),
@@ -228,7 +228,7 @@ public class NUPlannerModel implements SchedulingSystem {
             modEvent.endDay(), modEvent.endTime())) {
 
       // if not, then remove origEvent from sys and add modEvent
-      removeEventNewSignature(user, origEvent);
+      this.removeEvent(user, origEvent);
 
       this.addEvent(modEvent.host(),
               modEvent.eventInvitees(), modEvent.name(),
