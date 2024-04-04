@@ -225,6 +225,9 @@ public class NUPlannerModel implements SchedulingSystem {
     }
 
     // check whether modified version of event would conflict with sys
+
+    removeEventNewSignature(user, origEvent);
+
     if (!this.eventConflict(modEvent.host(),
             modEvent.eventInvitees(), modEvent.name(),
             modEvent.location(), modEvent.isOnline(),
@@ -242,6 +245,12 @@ public class NUPlannerModel implements SchedulingSystem {
 
       return;
     }
+
+    this.eventConflict(origEvent.host(),
+            origEvent.eventInvitees(), origEvent.name(),
+            origEvent.location(), origEvent.isOnline(),
+            origEvent.startDay(), origEvent.startTime(),
+            origEvent.endDay(), origEvent.endTime());
 
     throw new IllegalArgumentException("Cannot modify event in this manner");
 
