@@ -1,0 +1,139 @@
+
+
+
+
+ISchedulingSystemView impl by SchedulingSystem Frame
+
+Clicking certain button on SchedulingSystem Frame --> will instantiate EventFrame
+
+
+View is SS Frame, and instantiate/dispose of EventFrames within it
+
+
+
+View has a read-only model
+
+
+If View does not need to change model-state, does not need to go through Features!!!! No point
+No need to request something that doesn't change model-state
+
+
+
+
+Event Frame
+
+
+IMPORTANT
+modifyEventButton.addActionListener(new ActionListener() {
+      @Override
+      public void actionPerformed(ActionEvent actionEvent) {
+        // print out modify-event details
+        // System.out.print(availableUsersList.getSelectedValue()); //null if nothing selected
+        if (areInputsBlank()) {
+
+        } else {
+          System.out.println("MODIFYING EVENT...");
+          System.out.println("Modifier of event: " + eventFrameOpenerUser);
+          // need to be able to detect modified invitee list when printing out contents
+          // if user selected, and user is invitee of event
+          // remove invitee from copyEvent list (if host, remove all invitees)
+          // view shouldn't be creating/modifying events <- request from features with all user inputs
+              // then features produces copy, updates copy, and then calls modify on og
+              // and copy event
+          printEventDetails();
+        }
+
+        // copy og event // perform modifications
+        // send to modifyEvent(new, old) -> swap out old for new event
+        // performing modifications means just pulling from user input
+
+        // copyOfCreateEvent();
+
+        // if selected user is invitee of event, remove invitee
+        // if selected user is not invitee, add invitee
+        // if no user has been selected, do nothing
+        // if name has been changed
+
+        // create new Event, and send it to model (via f)
+        // modifyEvent(old Event, new Event)
+      }
+    });
+
+
+        removeEventButton.addActionListener(actionEvent -> {
+          //areInputsBlank(); //view check before calling features method
+
+          // print out remove-event details // doesn't listen to JList selections
+          if (areInputsBlank()) {
+
+          } else {
+            System.out.println("REMOVING EVENT...");
+            System.out.println("Remover of event: " + eventFrameOpenerUser);
+            printEventDetails();
+          }
+          //features.requestRemoveEvent(); //provide start day, start time, user of event-to-remove
+                                           //event-frame needs to be aware of who opened frame?
+        });
+
+
+
+
+
+
+  /**
+   * Displays an event to the user with all the relevant details.
+   *
+   * @param event the event that the user has clicked on
+   */
+  private void openEventWindowWithFilledDetails(ReadableEvent event) {
+    EventGUIView eventView = new EventFrame(model, currentUserDisplayed);
+    eventView.addFeatures(features);
+
+    // consolidate into display event details? Then EventFrame also has ability to extract
+    // info from displayed event
+
+
+    eventView.displayEvent(event); // feel like this is better solution
+                                  // all views so far have a model/some obj they render themselves
+    // what info is given to eventView?
+    // the event obj to be displayed. the user who chose to display it. the model (needs to know all users)
+    // event obj info includes (host of event, non-hosts, all else)
+    //
+    // ask for createEvent --> view will try to create event through features, could be rejected
+    // ask for removeEvent --> view will try to remove event through features, alr knows who to
+    // remove + startday + start-time of event (all model needs)
+    // ask for modifyEvent --> view will try to modify event through features,
+
+
+    /*
+    If model worked with Events instead of start-day/start-time
+    Feel like system would be much more flexible?
+     */
+
+
+ModifyEvent utilizing Events <- necessary
+RemoveEvent utilizing startDay, startTime <- could take in Event too?
+
+- what if used Events instead of startday, starttime
+- if wanted to  remove events that shared startdaystartday
+    - as long as client had way to access specific event to remove
+        from model
+    - model could remove that event
+- using startday, starttime as signature for model operation methods
+  enforces interface-level constraint that scheduling-system
+    - CANNOT deal with Events that start at the same time
+- unique identifier of an Event is the entire Event itself, not just its startday and time
+
+reasoning for moving from start-day/start-time to Event
+- for remove: adds slight bit of flexibility to model
+    - if we change how event-conflicts defined by a schedule, remove constraint from
+           schedule that events within schedule must have unique start days/times
+- for modifyEvent: need to, to allow user to perform multiple mods at once
+    - issues w/ current event signature discussed
+- for eventConflict: will not move, responsibility of creating events is solely models
+    checking for eventConflicts within scheduling system may require creation of new event
+     - which must be model's responsibility
+also, if modifyEvent making switch, would be nice for removeEvent to change for consistency
+
+// Event just container for attendees
+// special actions if "host" removed handled by model
