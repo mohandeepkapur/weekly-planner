@@ -39,7 +39,7 @@ public class EventFrame extends JFrame implements EventGUIView {
   private JList<String> availableUsersList;
 
   private final ReadableSchedulingSystem model;
-  private ReadableEvent event;
+  private ReadableEvent currEventDisp;
   private String eventFrameOpenerUser;
 
   /**
@@ -395,7 +395,7 @@ public class EventFrame extends JFrame implements EventGUIView {
         System.out.println("Remover of event: " + eventFrameOpenerUser);
         System.out.println("Original Event details... ");
         printEventDetails();
-        System.out.println(this.event.eventInvitees());
+        System.out.println(this.currEventDisp.eventInvitees());
       }
     });
 
@@ -411,10 +411,10 @@ public class EventFrame extends JFrame implements EventGUIView {
         System.out.println("Modifier of event: " + eventFrameOpenerUser);
         printEventDetails();
 
-        List<String> modInviteeList = this.event.eventInvitees();
+        List<String> modInviteeList = this.currEventDisp.eventInvitees();
         for (String user : availableUsersList.getSelectedValuesList()) {
           // if event invitee list contains selected user
-          if (!this.event.eventInvitees().contains(user)) {
+          if (!this.currEventDisp.eventInvitees().contains(user)) {
             // if user selects a non-invitee on the screen, add that into mod event's invitee list
             modInviteeList.add(user);
           } else {
@@ -448,11 +448,13 @@ public class EventFrame extends JFrame implements EventGUIView {
 
   /**
    * Displays all Event details to user.
-   * @param event       event to be displayed
+   *
+   * @param user
+   * @param event event to be displayed
    */
   @Override
-  public void displayEvent(ReadableEvent event) {
-    this.event = event;
+  public void displayExistingEvent(String user, ReadableEvent event) {
+    this.currEventDisp = event;
 
     this.displayName(event.name());
     this.displayLocation(event.location());

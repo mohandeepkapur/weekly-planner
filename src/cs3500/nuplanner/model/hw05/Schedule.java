@@ -46,6 +46,9 @@ public interface Schedule {
 
   /**
    * Checks whether given Event would conflict with Events currently within schedule.
+   * Event conflict has been EXPLICITLY defined as no Event overlapping wrt time,
+   * except for the end (day, time) of an Event coinciding with the start (day, time) of another.
+   * That is an interface-level constraint.
    *
    * @param outerEvent                     Event that will be checked against Schedule's Events
    * @return                               boolean that signals whether Event can be added

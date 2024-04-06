@@ -135,23 +135,16 @@ public class NUPlannerModel implements SchedulingSystem {
    * Removes an Event from specified user's Schedule. Event state is updated accordingly.
    * Assumption that no Event in a Schedule shares the same start day and time.
    *
-   * @param user  name of user whose schedule holds the Event
-   * @param event
+   * @param user      name of user whose schedule holds the Event
+   * @param startDay
+   * @param startTime
    * @throws IllegalArgumentException if Event with above properties does not exist in Schedule
    */
   @Override
-  public void removeEvent(String user, Event event) {
+  public void removeEvent(String user, DaysOfTheWeek startDay, int startTime) {
     confirmUserExists(user);
 
-    // with startDay signature, extract copy of Event from relevant schedule
-    // schedule would throw error if given event did not exist in schedule
-
-    // TODO:
-    // with new Event signature, need to check whether Event does not belong
-    // in user schedule
-    if (!userSchedules.get(user).events().contains(event)) {
-      throw new IllegalArgumentException("Event provided does not exist in provided user's schedule...");
-    }
+    Event event = userSchedules.get(user).eventAt(startDay, startTime);
 
     // if user removing event from their schedule is host of the event
     if (event.eventInvitees().get(0).equals(user)) {
@@ -164,22 +157,21 @@ public class NUPlannerModel implements SchedulingSystem {
 
   /**
    * Recursive method that updates every user schedule when host is removed from an Event.
+   * Event is removed from every invitee's schedule.
    *
    * @param invitees                        current invitees in event (decreases recursively)
    * @param copyEventToRemove               copy of Event to remove (updates recursively too)
    */
   private void removeEventFromEverySchedule(List<String> invitees, Event copyEventToRemove) {
-    // directly manipulate Event object contained within Schedule (that Scheduling System
-    // cannot access bc observer method aliasing bad) by using a copy of the contained Event object
-    // to access and modify original
+    // manipulate Event object contained within Schedule
+    // (that Scheduling System cannot access bc observer method aliasing bad)
+    // by using a copy of the contained Event object to access and modify original
     // updates copy while original modified to preserve equality and thus access to original Event
     if (!invitees.isEmpty()) {
-
       // HW7 change:
       // need to use last index, given updated Event behavior
       // removeInvitee now removes all attendees in Event if host removed
       int laIn = invitees.size() - 1;
-
       Schedule inviteeSchedule = this.userSchedules.get(invitees.get(laIn));
       inviteeSchedule.removeEvent(copyEventToRemove); // method updates event's invitee list
       copyEventToRemove.removeInvitee(invitees.get(laIn));
@@ -202,34 +194,30 @@ public class NUPlannerModel implements SchedulingSystem {
   /**
    * Modifies an Event within Scheduling System.
    *
-   * @param user
-   * @param origEvent
-   * @param modEvent
-   * @throws IllegalArgumentException if modification creates conflict with other Schedules
+   * @param user           user requesting modification
+   * @param startDay       start day of event to modify in user's schedule
+   * @param startTime      start time of event to modify in user's schedule
+   * @param modEvent       modified event
    */
   @Override
-  public void modifyEvent(String user, Event origEvent, Event modEvent) {
+  public void modifyEvent(String user, DaysOfTheWeek startDay, int startTime, Event modEvent) {
 
-    // confirm origEvent exists in scheduling system
-    // check if event exists within correct schedule
-    // duplicate code
-    if (!userSchedules.get(user).events().contains(origEvent)) {
-      throw new IllegalArgumentException("Event provided does not exist in provided user's schedule...");
-    }
+    Event origEvent = userSchedules.get(user).eventAt(startDay, startTime);
+    List<String> origEventInvitees = origEvent.eventInvitees();
 
-    // check whether modified version of event would conflict with sys
+    // remove original event from all schedules --> all invitees within Event obj removed!
+    // must store list of invitees before Event obj removed from model
+    // if Event obj must be placed back into schedule in its before-removed state
+    this.removeEvent(origEvent.host(), startDay, startTime);
 
-    this.removeEvent(user, origEvent);
-
+    // check if modified event compatible with scheduling system
     if (!this.eventConflict(modEvent.host(),
             modEvent.eventInvitees(), modEvent.name(),
             modEvent.location(), modEvent.isOnline(),
             modEvent.startDay(), modEvent.startTime(),
             modEvent.endDay(), modEvent.endTime())) {
 
-      // if not, then remove origEvent from sys and add modEvent
-      this.removeEvent(user, origEvent);
-
+      // if so, add it
       this.addEvent(modEvent.host(),
               modEvent.eventInvitees(), modEvent.name(),
               modEvent.location(), modEvent.isOnline(),
@@ -239,8 +227,9 @@ public class NUPlannerModel implements SchedulingSystem {
       return;
     }
 
-    this.eventConflict(origEvent.host(),
-            origEvent.eventInvitees(), origEvent.name(),
+    // if not, add back original event and throw exception
+    this.addEvent(origEvent.host(),
+            origEventInvitees, origEvent.name(),
             origEvent.location(), origEvent.isOnline(),
             origEvent.startDay(), origEvent.startTime(),
             origEvent.endDay(), origEvent.endTime());
@@ -249,43 +238,43 @@ public class NUPlannerModel implements SchedulingSystem {
 
   }
 
-  /**
-   * Tries to add modified copy of Event into Scheduling System. If not possible, add back
-   * original event to scheduling system and inform client of failure.
-   *
-   * @param copyOfEvent             modified copy of event-to-modify
-   * @param origEvent               event-to-modify removed from scheduling system
-   * @param origInvitees            invitees of event-to-modify
-   */
-  private void tryToAddModCopyToSchedulingSystem(Event copyOfEvent, Event origEvent,
-                                                 List<String> origInvitees) {
-    // check if modified copy is compatible with scheduling system
-    if (!this.eventConflict(copyOfEvent.host(),
-            copyOfEvent.eventInvitees(), copyOfEvent.name(),
-            copyOfEvent.location(), copyOfEvent.isOnline(),
-            copyOfEvent.startDay(), copyOfEvent.startTime(),
-            copyOfEvent.endDay(), copyOfEvent.endTime())) {
-      // if so, add it! this is the "modified" event aka replaced
-      this.addEvent(copyOfEvent.host(),
-              copyOfEvent.eventInvitees(), copyOfEvent.name(),
-              copyOfEvent.location(), copyOfEvent.isOnline(),
-              copyOfEvent.startDay(), copyOfEvent.startTime(),
-              copyOfEvent.endDay(), copyOfEvent.endTime());
-      return;
-    }
-
-    // otherwise, add a copy of original event back into the schedule, with original invitees
-    // orig invitees valid <-- it is prev. known that this entire event construction below IS VALID
-    this.addEvent(origEvent.host(),
-            origInvitees, origEvent.name(),
-            origEvent.location(), origEvent.isOnline(),
-            origEvent.startDay(), origEvent.startTime(),
-            origEvent.endDay(), origEvent.endTime());
-
-    throw new IllegalArgumentException(
-            "Cannot add this modified version of event in scheduling system... ");
-  }
-
+  //  /**
+  //   * Tries to add modified copy of Event into Scheduling System. If not possible, add back
+  //   * original event to scheduling system and inform client of failure.
+  //   *
+  //   * @param copyOfEvent             modified copy of event-to-modify
+  //   * @param origEvent               event-to-modify removed from scheduling system
+  //   * @param origInvitees            invitees of event-to-modify
+  //   */
+  //  private void tryToAddModCopyToSchedulingSystem(Event copyOfEvent, Event origEvent,
+  //                                                 List<String> origInvitees) {
+  //    // check if modified copy is compatible with scheduling system
+  //    if (!this.eventConflict(copyOfEvent.host(),
+  //            copyOfEvent.eventInvitees(), copyOfEvent.name(),
+  //            copyOfEvent.location(), copyOfEvent.isOnline(),
+  //            copyOfEvent.startDay(), copyOfEvent.startTime(),
+  //            copyOfEvent.endDay(), copyOfEvent.endTime())) {
+  //      // if so, add it! this is the "modified" event aka replaced
+  //      this.addEvent(copyOfEvent.host(),
+  //              copyOfEvent.eventInvitees(), copyOfEvent.name(),
+  //              copyOfEvent.location(), copyOfEvent.isOnline(),
+  //              copyOfEvent.startDay(), copyOfEvent.startTime(),
+  //              copyOfEvent.endDay(), copyOfEvent.endTime());
+  //      return;
+  //    }
+  //
+  //    // otherwise, add a copy of original event back into the schedule, with original invitees
+  //    // orig invitees valid <-- it is prev. known that this entire event construction below IS VALID
+  //    this.addEvent(origEvent.host(),
+  //            origInvitees, origEvent.name(),
+  //            origEvent.location(), origEvent.isOnline(),
+  //            origEvent.startDay(), origEvent.startTime(),
+  //            origEvent.endDay(), origEvent.endTime());
+  //
+  //    throw new IllegalArgumentException(
+  //            "Cannot add this modified version of event in scheduling system... ");
+  //  }
+  //
 
   /**
    * Checks whether an Event can be added into Scheduling System given its current state.

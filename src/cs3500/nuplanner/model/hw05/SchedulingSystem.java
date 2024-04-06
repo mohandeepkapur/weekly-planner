@@ -60,11 +60,12 @@ public interface SchedulingSystem extends ReadableSchedulingSystem {
    * schedule and update Event accordingly.
    * </p>
    *
-   * @param user  name of user whose schedule holds the Event
-   * @param event
+   * @param user      name of user whose schedule holds the Event
+   * @param startDay
+   * @param startTime
    * @throws IllegalArgumentException if Event with above properties does not exist in Schedule
    */
-  void removeEvent(String user, Event event);
+  void removeEvent(String user, DaysOfTheWeek startDay, int startTime);
   // feel like providing a ReadableEvent is incorrect
   // internally, in model implementation... well, should impl details ever
   //   influence interface? no
@@ -78,13 +79,12 @@ public interface SchedulingSystem extends ReadableSchedulingSystem {
   /**
    * Modifies an Event within Scheduling System.
    *
-   * @param user
-   * @param origEvent
-   * @param modEvent
-   * @throws IllegalArgumentException if modification creates conflict with other Schedules
+   * @param user           user requesting modification
+   * @param startDay       start day of event to modify in user's schedule
+   * @param startTime      start time of event to modify in user's schedule
+   * @param modEvent       modified event
    */
-  void modifyEvent(String user, Event origEvent, Event modEvent);
-  // will replace modifyEvent signature in HW7
+  void modifyEvent(String user, DaysOfTheWeek startDay, int startTime, Event modEvent);
 
   /**
    * Checks whether an Event conflicts with relevant Schedules in Scheduling System.
@@ -107,6 +107,5 @@ public interface SchedulingSystem extends ReadableSchedulingSystem {
                         String eventName, String location, boolean isOnline,
                         DaysOfTheWeek startDay, int startTime,
                         DaysOfTheWeek endDay, int endTime);
-
 
 }
