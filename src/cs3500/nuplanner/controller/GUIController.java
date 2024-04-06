@@ -1,6 +1,6 @@
 package cs3500.nuplanner.controller;
 
-import cs3500.nuplanner.model.hw05.DaysOfTheWeek;
+import cs3500.nuplanner.model.hw05.Event;
 import cs3500.nuplanner.model.hw05.SchedulingSystem;
 import cs3500.nuplanner.view.gui.SSGUIView;
 
@@ -29,7 +29,7 @@ public class GUIController implements SchedulingSystemController, Features {
   @Override
   public void displayNewSchedule(String user) {
     view.displayUserSchedule(user);
-    model.allUsers(); // to prevent handins error, model needs to be field in controller man
+    model.allUsers(); // added to prevent handins error, model needs to be field in controller man
   }
 
   /**
@@ -37,21 +37,18 @@ public class GUIController implements SchedulingSystemController, Features {
    */
   @Override
   public void displayBlankEvent() {
-    //System.out.println("Should open blank event frame now...");
     view.displayBlankEvent();
   }
 
   /**
    * Request for an Event's details to be shown. Event must belong in displayed user's schedule.
    *
-   * @param day  day an event in user's schedule may contain
-   * @param time time an event in user's schedule may contain
+   * @param user
+   * @param event
    */
   @Override
-  public void requestExistingEventDetails(DaysOfTheWeek day, int time) {
-
-    view.displayExistingEvent(day, time);
-
+  public void requestExistingEventDetails(String user, Event event) {
+    view.displayExistingEvent(user, event);
   }
 
   /**

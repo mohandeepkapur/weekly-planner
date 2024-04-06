@@ -6,12 +6,12 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.io.File;
-import java.util.List;
 
 import javax.swing.*;
 
 import cs3500.nuplanner.controller.Features;
 import cs3500.nuplanner.model.hw05.DaysOfTheWeek;
+import cs3500.nuplanner.model.hw05.Event;
 import cs3500.nuplanner.model.hw05.ReadableEvent;
 import cs3500.nuplanner.model.hw05.ReadableSchedulingSystem;
 
@@ -135,26 +135,30 @@ public class SSFrame extends JFrame implements SSGUIView {
     });
     panel.addMouseListener(new MouseListener() {
       @Override
-      public void mouseClicked(MouseEvent e) {
-        //System.out.println(e.getX() + ", " + e.getY());
+      public void mouseClicked(MouseEvent e) { // System.out.println(e.getX() + ", " + e.getY());
+        //figuring out what day this click is at
+        int dayAsRow = e.getX() / (panel.getWidth() / 7);
+        DaysOfTheWeek day = createDay(dayAsRow);
 
-        //figuring out what hours or minutes this click is at
-        int row = e.getX() / (panel.getWidth() / 7);
-        DaysOfTheWeek day = createDay(row);
-        int col = e.getY() / (panel.getHeight() / 24 / 6); // 10 minute increments
+        //figuring out what hours + minutes this click is at
+        int minAsCol = e.getY() / (panel.getHeight() / 24 / 6); // 10 minute increments
 
-        int hours = col / 6;
-        int minutes = col % 6 * 10;
-        int militarytime;
+        int hours = minAsCol / 6;
+        int minutes = minAsCol % 6 * 10;
+
+        int militarytime = 0;
         if (minutes == 0) {
           militarytime = hours * 100;
         } else {
           militarytime = (hours * 100) + minutes;
         }
 
-        //System.out.println("current user displayed " + currentUserDisplayed + " col " + col);
-        //TODO: what if I added entire event
-        features.requestExistingEventDetails(day, militarytime);
+        for (ReadableEvent event : SSFrame.this.model.eventsInSchedule(currentUserDisplayed)) {
+          if (event.containsTime(day, militarytime)) {
+            features.requestExistingEventDetails(currentUserDisplayed, (Event) event); //TODO: WHY DOWNCASTING THINKKKK
+          }
+        }
+
       }
 
       @Override
@@ -209,56 +213,38 @@ public class SSFrame extends JFrame implements SSGUIView {
     if (currentUserDisplayed == null) {
       throw new IllegalArgumentException("Must select user first...");
     }
+
     EventGUIView eventView = new EventFrame(model, currentUserDisplayed);
+
     eventView.addFeatures(features);
+
     eventView.makeVisible();
+
   }
 
   /**
    * Displays the details of the displayed Event that current user has selected.
    * (Events available within their schedule.)
    *
-   * @param day           day on SSView user has clicked on
-   * @param time          time on SSView user has clicked on
-   *
-   * @throws IllegalArgumentException         if no user has been selected/ no schedule displayed
+   * @param user
+   * @param event @throws IllegalArgumentException         if no user has been selected/ no schedule displayed
    */
   @Override
-  public void displayExistingEvent(DaysOfTheWeek day, int time) {
-    // extract relevant user schedule
-    List<ReadableEvent> userEvents = model.eventsInSchedule(currentUserDisplayed);
-
-    // if clicked day/time did land on a user's event, display those event details
-    for (ReadableEvent event : userEvents) {
-      if (event.containsTime(day, time)) {
-        openEventWindowWithFilledDetails(event); // think about this...
-      }
+  public void displayExistingEvent(String user, Event event) {
+    if (!user.equals(currentUserDisplayed)) {
+      throw new IllegalArgumentException("Logically not possible to throw this exception...  ");
     }
 
-    //
-  }
-
-  /**
-   * Displays an event to the user with all the relevant details.
-   *
-   * @param event the event that the user has clicked on
-   */
-  private void openEventWindowWithFilledDetails(ReadableEvent event) {
     EventGUIView eventView = new EventFrame(model, currentUserDisplayed);
+
+    eventView.displayExistingEvent(user, event);
+
     eventView.addFeatures(features);
 
-    eventView.displayEvent(event);
-
-    //TODO:
-    // will need to add displayHost() and displayInvitees() operation methods to EventViewInterface
-    // <- oper. because invoking it changes state of EventView
-    // display host --> impl will highlight host of event in blue
-    // display invitees --> impl will highlight non-hosts of event in green
-    // remove displayX methods from EventView -> if ever going to display Event, it'll be entire
-    // thing, no...
-
     eventView.makeVisible();
+
   }
+
 
   /**
    * Converts provided an integer into a day of the week, if possible.

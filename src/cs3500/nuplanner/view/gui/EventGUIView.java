@@ -126,9 +126,11 @@ public interface EventGUIView {
   void displayInvitees(List<String> invitees);
 
   /**
-   * Displays all Event details to user.
-   * @param event       event to be displayed
+   * Displays an Event that exists within Scheduling System to user.
+   *
+   * @param user
+   * @param event event to be displayed
    */
-  void displayEvent(ReadableEvent event);
+  void displayExistingEvent(String user, ReadableEvent event);
 
 }

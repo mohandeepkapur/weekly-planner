@@ -1,7 +1,7 @@
 package cs3500.nuplanner.view.gui;
 
 import cs3500.nuplanner.controller.Features;
-import cs3500.nuplanner.model.hw05.DaysOfTheWeek;
+import cs3500.nuplanner.model.hw05.Event;
 
 /**
  * GUI View of the Scheduling System Program.
@@ -25,12 +25,12 @@ public interface SSGUIView {
    * Displays the details of the displayed Event that current user has selected.
    * (Events available within their schedule.)
    *
-   * @param day           day on SSView user has clicked on
-   * @param time          time on SSView user has clicked on
-   *
-   * @throws IllegalArgumentException         if no user has been selected/ no schedule displayed
+   * @param user
+   * @param event
+   * @throws IllegalArgumentException if no user has been selected/ no schedule displayed
+   * @throws IllegalArgumentException something about event and schedule mismatch
    */
-  void displayExistingEvent(DaysOfTheWeek day, int time);
+  void displayExistingEvent(String user, Event event);
 
   /**
    * Connects low-level events created by controls in GUI to high-level actions that affect rest

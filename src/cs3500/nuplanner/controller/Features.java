@@ -1,6 +1,6 @@
 package cs3500.nuplanner.controller;
 
-import cs3500.nuplanner.model.hw05.DaysOfTheWeek;
+import cs3500.nuplanner.model.hw05.Event;
 
 /**
  * User Requests made through GUI. Typically involves manip. model, view, or both (which is
@@ -27,12 +27,10 @@ public interface Features {
   /**
    * Request for an Event's details to be shown. Event must belong in displayed user's schedule.
    *
-   * @param day  day an event in user's schedule may contain
-   * @param time time an event in user's schedule may contain
+   * @param user        user requesting event's details to be shown
+   * @param event       event object to be shown
    */
-  void requestExistingEventDetails(DaysOfTheWeek day, int time);
-  //not including String user due to view impl details, pretty sure
-  //CHANGE
+  void requestExistingEventDetails(String user, Event event);
 
   /**
    * Request for an XML file to be uploaded.
