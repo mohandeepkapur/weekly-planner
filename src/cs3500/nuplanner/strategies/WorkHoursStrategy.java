@@ -7,23 +7,23 @@ import cs3500.nuplanner.model.hw05.Event;
 import cs3500.nuplanner.model.hw05.NUEvent;
 import cs3500.nuplanner.model.hw05.SchedulingSystem;
 
-public class AnyTimeStrategy implements SchedulingStrategies {
-
-
+public class WorkHoursStrategy implements SchedulingStrategies {
   @Override
-  public Event findTimeForScheduledEvent(SchedulingSystem model, String name, Boolean isOnline,
-                                         String location, int duration, List<String> invitees) {
+  public Event findTimeForScheduledEvent(SchedulingSystem model, String name, Boolean isOnline, String location, int duration, List<String> invitees) {
 
-    for (int day = 0; day < 7; day++) {
+    for (int day = 1; day <= 5; day++) {
       DaysOfTheWeek startingDay = convertIntToDay(day);
-      for (int startTime = 0; startTime < 2400; startTime++) {
+      for (int startTime = 900; startTime < 1700; startTime++) {
         int endTime = startTime + duration;
-        DaysOfTheWeek endingDay = determineEndingDay(day, startTime, duration);
+        int endingDay = determineEndingDay(day, startTime, duration);
 
-        if (model.eventConflict(invitees.get(0), invitees, name, location, isOnline, startingDay,
-                startTime, endingDay, endTime)) {
+        if (endTime <= 1700
+                && endingDay <= 5
+                && model.eventConflict(invitees.get(0), invitees, name, location, isOnline,
+                startingDay,
+                startTime, convertIntToDay(endingDay), endTime)) {
           return new NUEvent(invitees, name, location, isOnline, startingDay,
-                  startTime, endingDay, endTime);
+                  startTime, convertIntToDay(endingDay), endTime);
         } //do nothing and rerun the top For loop
       }
     }
@@ -38,12 +38,12 @@ public class AnyTimeStrategy implements SchedulingStrategies {
    * @param duration  duration of the event
    * @return ending day of the event
    */
-  private DaysOfTheWeek determineEndingDay(int day, int startTime, int duration) {
+  private int determineEndingDay(int day, int startTime, int duration) {
     int daysAfter = (startTime + duration) / 2400;
     if (startTime + duration > 0) {
-      return convertIntToDay(day + daysAfter);
+      return day + daysAfter;
     }
-    return convertIntToDay(day);
+    return day;
   }
 
   /**

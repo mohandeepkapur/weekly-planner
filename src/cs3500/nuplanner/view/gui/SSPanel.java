@@ -129,7 +129,7 @@ public class SSPanel extends JPanel {
 
     Rectangle2D rect = new Rectangle2D.Double(
             (int) ((double) this.getWidth() / 7) * startDay,
-            (((double) this.getHeight() / (24 * 60)) * minFromDayStart) - 3.4, //hardcoded adj.
+            (((double) this.getHeight() / (24 * 60)) * minFromDayStart) - 16, //TODO: Fix hardcoded adj.
             (int) ((double) this.getWidth() / 7),
             (double) this.getHeight() / (24 * 60)); // change
 

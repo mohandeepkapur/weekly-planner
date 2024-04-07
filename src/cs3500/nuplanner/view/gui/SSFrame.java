@@ -97,7 +97,7 @@ public class SSFrame extends JFrame implements SSGUIView {
    * Connects low-level events created by controls in GUI to high-level actions that affect rest
    * of codebase.
    *
-   * @param features              program-specific events in response to low-level events
+   * @param features program-specific events in response to low-level events
    */
   @Override
   public void addFeatures(Features features) {
@@ -135,30 +135,36 @@ public class SSFrame extends JFrame implements SSGUIView {
     });
     panel.addMouseListener(new MouseListener() {
       @Override
-      public void mouseClicked(MouseEvent e) { // System.out.println(e.getX() + ", " + e.getY());
+      public void mouseClicked(MouseEvent mouse) { // System.out.println(e.getX() + ", " + e.getY
+        // ());
         //figuring out what day this click is at
-        int dayAsRow = e.getX() / (panel.getWidth() / 7);
+        int dayAsRow = mouse.getX() / (panel.getWidth() / 7);
         DaysOfTheWeek day = createDay(dayAsRow);
 
-        //figuring out what hours + minutes this click is at
-        int minAsCol = e.getY() / (panel.getHeight() / 24 / 6); // 10 minute increments
+        //figuring out what hours + minutes this click is at + translating into total minutes
+        double minAsCol = ((double) mouse.getY() / (double) (panel.getHeight() / 24)) * 60;
 
-        int hours = minAsCol / 6;
-        int minutes = minAsCol % 6 * 10;
+//        System.out.println(mouse.getY());
+//        System.out.println(panel.getY());
 
-        int militaryTime = 0;
+        int hours = (int) minAsCol / 60;
+        double minutes = minAsCol % 60;
+
+        double militaryTime = 0;
         if (minutes == 0) {
           militaryTime = hours * 100;
         } else {
           militaryTime = (hours * 100) + minutes;
         }
+        int finalTime = (int) militaryTime;
+
+//        System.out.println(militaryTime); //prints correct military time
 
         for (ReadableEvent event : SSFrame.this.model.eventsInSchedule(currentUserDisplayed)) {
-          if (event.containsTime(day, militaryTime)) {
-            features.requestExistingEventDetails(currentUserDisplayed, (Event) event); //TODO: WHY DOWNCASTING THINKKKK
+          if (event.containsTime(day, finalTime)) {
+            features.requestExistingEventDetails(currentUserDisplayed, (Event) event);
           }
         }
-
       }
 
       @Override
@@ -188,7 +194,7 @@ public class SSFrame extends JFrame implements SSGUIView {
    * Displays the Schedule of an existing user in the Scheduling System.
    * Schedule displayed is considered current user of system.
    *
-   * @param user              user in Scheduling System
+   * @param user user in Scheduling System
    */
   @Override
   public void displayUserSchedule(String user) {
