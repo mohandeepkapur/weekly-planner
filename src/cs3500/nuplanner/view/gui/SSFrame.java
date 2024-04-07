@@ -146,15 +146,15 @@ public class SSFrame extends JFrame implements SSGUIView {
         int hours = minAsCol / 6;
         int minutes = minAsCol % 6 * 10;
 
-        int militarytime = 0;
+        int militaryTime = 0;
         if (minutes == 0) {
-          militarytime = hours * 100;
+          militaryTime = hours * 100;
         } else {
-          militarytime = (hours * 100) + minutes;
+          militaryTime = (hours * 100) + minutes;
         }
 
         for (ReadableEvent event : SSFrame.this.model.eventsInSchedule(currentUserDisplayed)) {
-          if (event.containsTime(day, militarytime)) {
+          if (event.containsTime(day, militaryTime)) {
             features.requestExistingEventDetails(currentUserDisplayed, (Event) event); //TODO: WHY DOWNCASTING THINKKKK
           }
         }
