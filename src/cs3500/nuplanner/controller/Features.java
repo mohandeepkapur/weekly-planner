@@ -19,10 +19,16 @@ public interface Features {
    */
   void displayBlankEvent();
 
+
   /**
    * Request to add an Event into requester's schedule.
    */
   void requestCreateEvent();
+
+  /**
+   * Request to create a new scheduled event.
+   */
+  void displayBlankScheduleEvent();
 
   /**
    * Request for an Event's details to be shown. Event must belong in displayed user's schedule.

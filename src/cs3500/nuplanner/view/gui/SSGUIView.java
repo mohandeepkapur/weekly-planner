@@ -22,6 +22,11 @@ public interface SSGUIView {
   void displayBlankEvent();
 
   /**
+   * Displays an empty Event-scheduling window for a user to interact with.
+   */
+  void displayBlankScheduleEvent();
+
+  /**
    * Displays the details of the displayed Event that current user has selected.
    * (Events available within their schedule.)
    *

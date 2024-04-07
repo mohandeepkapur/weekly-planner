@@ -10,8 +10,10 @@ import cs3500.nuplanner.model.hw05.NUPlannerModel;
 import cs3500.nuplanner.model.hw05.ReadableEvent;
 import cs3500.nuplanner.model.hw05.SchedulingSystem;
 
+import static cs3500.nuplanner.model.hw05.DaysOfTheWeek.FRIDAY;
 import static cs3500.nuplanner.model.hw05.DaysOfTheWeek.MONDAY;
 import static cs3500.nuplanner.model.hw05.DaysOfTheWeek.SUNDAY;
+import static cs3500.nuplanner.model.hw05.DaysOfTheWeek.THURSDAY;
 import static cs3500.nuplanner.model.hw05.DaysOfTheWeek.TUESDAY;
 import static cs3500.nuplanner.model.hw05.DaysOfTheWeek.WEDNESDAY;
 import static org.junit.Assert.assertEquals;
@@ -185,50 +187,87 @@ public class TestSchedulingSystemNUPlannerImpl {
     assertThrows(IllegalArgumentException.class, () ->
             model.removeEvent("Leia", TUESDAY, 800));
   }
-  //
-    @Test
-    public void testValidModifyEventName() {
-      SchedulingSystem model = new NUPlannerModel();
 
-      model.addUser("Elaine");
+  @Test
+  public void testValidMultipleModifications() {
+    SchedulingSystem model = new NUPlannerModel();
+    model.addUser("Elaine");
+    model.addEvent("Elaine", new ArrayList<>(List.of("Elaine", "Mia")), "Tennis",
+            "Carter Field", true,
+            TUESDAY, 800, TUESDAY, 1000);
+    Event eventToMod = (Event) model.eventAt("Elaine", TUESDAY, 800);
 
-      model.addEvent("Elaine", new ArrayList<>(List.of("Elaine", "Mia")), "Tennis",
-              "Carter Field", true,
-              TUESDAY, 800, TUESDAY, 1000);
+    eventToMod.updateName("Broomball");
+    eventToMod.updateLocation("Matthews Arena");
+    eventToMod.updateIsOnline(false);
+    eventToMod.updateStartTime(2000);
+    eventToMod.updateEndTime(2100);
+    eventToMod.updateEndDay(THURSDAY);
+    eventToMod.updateStartDay(THURSDAY);
+    eventToMod.addInvitee("Brandon");
+    eventToMod.removeInvitee("Mia");
 
-      // extract Elaine event from model (model will give me defensive copy)
-      Event eventToMod = (Event) model.eventAt("Mia", TUESDAY, 800);
-      // modify defensive copy in line with string modification in test "name Baseball"
-      eventToMod.updateName("Baseball");
-      // try to "modify" relevant event in model
-      // Mia could also request
-      model.modifyEvent("Elaine", TUESDAY, 800, eventToMod);
+    model.modifyEvent("Elaine", TUESDAY, 800, eventToMod);
 
-      assertEquals("Baseball", model.eventAt("Elaine", TUESDAY, 800).name());
-    }
-  //
-  //  @Test
-  //  public void testValidModifyEventLocation() {
-  //    SchedulingSystem model = new NUPlannerModel();
-  //    model.addUser("Elaine");
-  //    model.addEvent("Elaine", new ArrayList<>(List.of("Elaine", "Mia")), "Tennis",
-  //            "Carter Field", true,
-  //            TUESDAY, 800, TUESDAY, 1000);
-  //    model.modifyEvent("Elaine", TUESDAY, 800, "location Squashbusters");
-  //    assertEquals("Squashbusters", model.eventAt("Elaine", TUESDAY, 800).location());
-  //  }
-  //
-  //  @Test
-  //  public void testValidModifyEventOnline() {
-  //    SchedulingSystem model = new NUPlannerModel();
-  //    model.addUser("Elaine");
-  //    model.addEvent("Elaine", new ArrayList<>(List.of("Elaine", "Mia")), "Tennis",
-  //            "Carter Field", true,
-  //            TUESDAY, 800, TUESDAY, 1000);
-  //    model.modifyEvent("Elaine", TUESDAY, 800, "online false");
-  //    assertFalse(model.eventAt("Elaine", TUESDAY, 800).isOnline());
-  //  }
-  //
+    Event eventAfterMod = (Event) model.eventAt("Brandon", THURSDAY, 2000);
+
+    assertEquals("Broomball", eventAfterMod.name());
+    assertEquals("Matthews Arena", eventAfterMod.location());
+    assertFalse(eventAfterMod.isOnline());
+    assertEquals(2000, eventAfterMod.startTime());
+    assertEquals(2100, eventAfterMod.endTime());
+    assertEquals(THURSDAY, eventAfterMod.endDay());
+    assertEquals(THURSDAY, eventAfterMod.startDay());
+    assertEquals(new ArrayList<>(List.of("Elaine", "Brandon")), eventAfterMod.eventInvitees());
+  }
+
+  @Test
+  public void testValidModifyEventName() {
+    SchedulingSystem model = new NUPlannerModel();
+
+    model.addUser("Elaine");
+
+    model.addEvent("Elaine", new ArrayList<>(List.of("Elaine", "Mia")), "Tennis",
+            "Carter Field", true,
+            TUESDAY, 800, TUESDAY, 1000);
+
+    // extract Elaine event from model (model will give me defensive copy)
+    Event eventToMod = (Event) model.eventAt("Mia", TUESDAY, 800);
+    // modify defensive copy in line with string modification in test "name Baseball"
+    eventToMod.updateName("Baseball");
+    // try to "modify" relevant event in model
+    // Mia could also request
+    model.modifyEvent("Elaine", TUESDAY, 800, eventToMod);
+
+    assertEquals("Baseball", model.eventAt("Elaine", TUESDAY, 800).name());
+  }
+
+  @Test
+  public void testValidModifyEventLocation() {
+    SchedulingSystem model = new NUPlannerModel();
+    model.addUser("Elaine");
+    model.addEvent("Elaine", new ArrayList<>(List.of("Elaine", "Mia")), "Tennis",
+            "Carter Field", true,
+            TUESDAY, 800, TUESDAY, 1000);
+    Event eventToMod = (Event) model.eventAt("Elaine", TUESDAY, 800);
+    eventToMod.updateLocation("Squashbusters");
+    model.modifyEvent("Elaine", TUESDAY, 800, eventToMod);
+    assertEquals("Squashbusters", model.eventAt("Elaine", TUESDAY, 800).location());
+  }
+
+  @Test
+  public void testValidModifyEventOnline() {
+    SchedulingSystem model = new NUPlannerModel();
+    model.addUser("Elaine");
+    model.addEvent("Elaine", new ArrayList<>(List.of("Elaine", "Mia")), "Tennis",
+            "Carter Field", true,
+            TUESDAY, 800, TUESDAY, 1000);
+    Event eventToMod = (Event) model.eventAt("Elaine", TUESDAY, 800);
+    eventToMod.updateIsOnline(false);
+    model.modifyEvent("Elaine", TUESDAY, 800, eventToMod);
+    assertFalse(model.eventAt("Elaine", TUESDAY, 800).isOnline());
+  }
+
   //  @Test
   //  public void testInvalidModifyEventOnlineProvidedString() {
   //    SchedulingSystem model = new NUPlannerModel();
@@ -250,198 +289,202 @@ public class TestSchedulingSystemNUPlannerImpl {
   //    assertThrows(IllegalArgumentException.class, () ->
   //            model.modifyEvent("Elaine", TUESDAY, 800, "online 666"));
   //  }
-  //
-  //  @Test
-  //  public void testValidModifyEventStartTime() {
-  //    SchedulingSystem model = new NUPlannerModel();
-  //    model.addUser("Elaine");
-  //    model.addEvent("Elaine", new ArrayList<>(List.of("Elaine", "Mia")), "Tennis",
-  //            "Carter Field", true,
-  //            TUESDAY, 800, TUESDAY, 1000);
-  //    model.modifyEvent("Elaine", TUESDAY, 800, "starttime 730");
-  //    assertEquals(730, model.eventAt("Elaine", TUESDAY, 730).startTime());
-  //  }
-  //
-  //  @Test
-  //  public void testInvalidModifyEventWrongStartTime() {
-  //    SchedulingSystem model = new NUPlannerModel();
-  //    model.addUser("Elaine");
-  //    model.addEvent("Elaine", new ArrayList<>(List.of("Elaine", "Mia")), "Tennis",
-  //            "Carter Field", true,
-  //            TUESDAY, 800, TUESDAY, 1000);
-  //    assertThrows(IllegalArgumentException.class, () ->
-  //            model.modifyEvent("Elaine", TUESDAY, 800, "starttime 819465"));
-  //  }
-  //
-  //  @Test
-  //  public void testInvalidModifyEventStringStartTime() {
-  //    SchedulingSystem model = new NUPlannerModel();
-  //    model.addUser("Elaine");
-  //    model.addEvent("Elaine", new ArrayList<>(List.of("Elaine", "Mia")), "Tennis",
-  //            "Carter Field", true,
-  //            TUESDAY, 800, TUESDAY, 1000);
-  //    assertThrows(IllegalArgumentException.class, () ->
-  //            model.modifyEvent("Elaine", TUESDAY, 800, "starttime Nissan"));
-  //  }
-  //
-  //  @Test
-  //  public void testValidModifyEventEndTime() {
-  //    SchedulingSystem model = new NUPlannerModel();
-  //    model.addUser("Elaine");
-  //    model.addEvent("Elaine", new ArrayList<>(List.of("Elaine", "Mia")), "Tennis",
-  //            "Carter Field", true,
-  //            TUESDAY, 800, TUESDAY, 1000);
-  //    model.modifyEvent("Elaine", TUESDAY, 800, "endtime 1030");
-  //    assertEquals(1030, model.eventAt("Elaine", TUESDAY, 800).endTime());
-  //  }
-  //
-  //  @Test
-  //  public void testInvalidModifyEventWrongEndTime() {
-  //    SchedulingSystem model = new NUPlannerModel();
-  //    model.addUser("Elaine");
-  //    model.addEvent("Elaine", new ArrayList<>(List.of("Elaine", "Mia")), "Tennis",
-  //            "Carter Field", true,
-  //            TUESDAY, 800, TUESDAY, 1000);
-  //    assertThrows(IllegalArgumentException.class, () ->
-  //            model.modifyEvent("Elaine", TUESDAY, 800, "endtime 819465"));
-  //  }
-  //
-  //  @Test
-  //  public void testInvalidModifyEventStringEndTime() {
-  //    SchedulingSystem model = new NUPlannerModel();
-  //    model.addUser("Elaine");
-  //    model.addEvent("Elaine", new ArrayList<>(List.of("Elaine", "Mia")), "Tennis",
-  //            "Carter Field", true,
-  //            TUESDAY, 800, TUESDAY, 1000);
-  //    assertThrows(IllegalArgumentException.class, () ->
-  //            model.modifyEvent("Elaine", TUESDAY, 800, "endtime Nissan"));
-  //  }
-  //
-  //  @Test
-  //  public void testValidModifyEventStartDay() {
-  //    SchedulingSystem model = new NUPlannerModel();
-  //    model.addUser("Elaine");
-  //    model.addEvent("Elaine", new ArrayList<>(List.of("Elaine", "Mia")), "Tennis",
-  //            "Carter Field", true,
-  //            TUESDAY, 800, TUESDAY, 1000);
-  //    model.modifyEvent("Elaine", TUESDAY, 800, "startday MONDAY");
-  //    assertEquals(MONDAY, model.eventAt("Elaine", MONDAY, 800).startDay());
-  //  }
-  //
-  //  @Test
-  //  public void testInvalidModifyEventStringStartDay() {
-  //    SchedulingSystem model = new NUPlannerModel();
-  //    model.addUser("Elaine");
-  //    model.addEvent("Elaine", new ArrayList<>(List.of("Elaine", "Mia")), "Tennis",
-  //            "Carter Field", true,
-  //            TUESDAY, 800, TUESDAY, 1000);
-  //    assertThrows(IllegalArgumentException.class, () ->
-  //            model.modifyEvent("Elaine", TUESDAY, 800, "startday nissan"));
-  //  }
-  //
-  //  @Test
-  //  public void testInvalidModifyEventNumberStartDay() {
-  //    SchedulingSystem model = new NUPlannerModel();
-  //    model.addUser("Elaine");
-  //    model.addEvent("Elaine", new ArrayList<>(List.of("Elaine", "Mia")), "Tennis",
-  //            "Carter Field", true,
-  //            TUESDAY, 800, TUESDAY, 1000);
-  //    assertThrows(IllegalArgumentException.class, () ->
-  //            model.modifyEvent("Elaine", TUESDAY, 800, "startday 666"));
-  //  }
-  //
-  //  @Test
-  //  public void testValidModifyEventEndDay() {
-  //    SchedulingSystem model = new NUPlannerModel();
-  //    model.addUser("Elaine");
-  //    model.addEvent("Elaine", new ArrayList<>(List.of("Elaine", "Mia")), "Tennis",
-  //            "Carter Field", true,
-  //            TUESDAY, 800, TUESDAY, 1000);
-  //    model.modifyEvent("Elaine", TUESDAY, 800, "endday WEDNESDAY");
-  //    assertEquals(WEDNESDAY, model.eventAt("Elaine", TUESDAY, 800).endDay());
-  //  }
-  //
-  //  @Test
-  //  public void testInvalidModifyEventStringEndDay() {
-  //    SchedulingSystem model = new NUPlannerModel();
-  //    model.addUser("Elaine");
-  //    model.addEvent("Elaine", new ArrayList<>(List.of("Elaine", "Mia")), "Tennis",
-  //            "Carter Field", true,
-  //            TUESDAY, 800, TUESDAY, 1000);
-  //    assertThrows(IllegalArgumentException.class, () ->
-  //            model.modifyEvent("Elaine", TUESDAY, 800, "endday nissan"));
-  //  }
-  //
-  //  @Test
-  //  public void testInvalidModifyEventNumberEndDay() {
-  //    SchedulingSystem model = new NUPlannerModel();
-  //    model.addUser("Elaine");
-  //    model.addEvent("Elaine", new ArrayList<>(List.of("Elaine", "Mia")), "Tennis",
-  //            "Carter Field", true,
-  //            TUESDAY, 800, TUESDAY, 1000);
-  //    assertThrows(IllegalArgumentException.class, () ->
-  //            model.modifyEvent("Elaine", TUESDAY, 800, "endday 666"));
-  //  }
-  //
-  //  @Test
-  //  public void testValidModifyEventAddInviteeInSystem() {
-  //    SchedulingSystem model = new NUPlannerModel();
-  //    model.addUser("Elaine");
-  //    model.addUser("Lisa");
-  //    model.addEvent("Elaine", new ArrayList<>(List.of("Elaine", "Mia")), "Tennis",
-  //            "Carter Field", true,
-  //            TUESDAY, 800, TUESDAY, 1000);
-  //    model.modifyEvent("Elaine", TUESDAY, 800, "addinvitee Lisa");
-  //    assertEquals(new ArrayList<>(List.of("Elaine", "Mia", "Lisa")),
-  //            model.eventAt("Elaine", TUESDAY, 800).eventInvitees());
-  //  }
-  //
-  //  @Test
-  //  public void testValidModifyEventAddInviteeNotInSystem() {
-  //    SchedulingSystem model = new NUPlannerModel();
-  //    model.addUser("Elaine");
-  //    model.addEvent("Elaine", new ArrayList<>(List.of("Elaine", "Mia")), "Tennis",
-  //            "Carter Field", true,
-  //            TUESDAY, 800, TUESDAY, 1000);
-  //    model.modifyEvent("Elaine", TUESDAY, 800, "addinvitee Lisa");
-  //    assertEquals(new ArrayList<>(List.of("Elaine", "Mia", "Lisa")),
-  //            model.eventAt("Elaine", TUESDAY, 800).eventInvitees());
-  //  }
-  //
-  //  @Test
-  //  public void testInvalidModifyEventInviteeAlreadyInEvent() {
-  //    SchedulingSystem model = new NUPlannerModel();
-  //    model.addUser("Elaine");
-  //    model.addEvent("Elaine", new ArrayList<>(List.of("Elaine", "Mia")), "Tennis",
-  //            "Carter Field", true,
-  //            TUESDAY, 800, TUESDAY, 1000);
-  //    assertThrows(IllegalArgumentException.class, () ->
-  //            model.modifyEvent("Elaine", TUESDAY, 800, "addinvitee Mia"));
-  //  }
-  //
-  //  @Test
-  //  public void testValidModifyEventRemoveInvitee() {
-  //    SchedulingSystem model = new NUPlannerModel();
-  //    model.addUser("Elaine");
-  //    model.addEvent("Elaine", new ArrayList<>(List.of("Elaine", "Mia")), "Tennis",
-  //            "Carter Field", true,
-  //            TUESDAY, 800, TUESDAY, 1000);
-  //    model.modifyEvent("Elaine", TUESDAY, 800, "removeinvitee Mia");
-  //    assertEquals(new ArrayList<>(List.of("Elaine")),
-  //            model.eventAt("Elaine", TUESDAY, 800).eventInvitees());
-  //  }
-  //
-  //  @Test
-  //  public void testValidModifyEventRemoveHost() {
-  //    SchedulingSystem model = new NUPlannerModel();
-  //    model.addUser("Elaine");
-  //    model.addEvent("Elaine", new ArrayList<>(List.of("Elaine", "Mia")), "Tennis",
-  //            "Carter Field", true,
-  //            TUESDAY, 800, TUESDAY, 1000);
-  //    model.modifyEvent("Elaine", TUESDAY, 800, "removeinvitee Elaine");
-  //    assertThrows(IllegalArgumentException.class, () ->
-  //            model.eventAt("Elaine", TUESDAY, 800));
-  //  }
+
+  @Test
+  public void testValidModifyEventStartTime() {
+    SchedulingSystem model = new NUPlannerModel();
+    model.addUser("Elaine");
+    model.addEvent("Elaine", new ArrayList<>(List.of("Elaine", "Mia")), "Tennis",
+            "Carter Field", true,
+            TUESDAY, 800, TUESDAY, 1000);
+    Event eventToMod = (Event) model.eventAt("Elaine", TUESDAY, 800);
+    eventToMod.updateStartTime(730);
+    model.modifyEvent("Elaine", TUESDAY, 800, eventToMod);
+    assertEquals(730, model.eventAt("Elaine", TUESDAY, 730).startTime());
+  }
+
+  @Test
+  public void testInvalidModifyEventWrongStartTime() {
+    SchedulingSystem model = new NUPlannerModel();
+    model.addUser("Elaine");
+    model.addEvent("Elaine", new ArrayList<>(List.of("Elaine", "Mia")), "Tennis",
+            "Carter Field", true,
+            TUESDAY, 800, TUESDAY, 1000);
+    Event eventToMod = (Event) model.eventAt("Elaine", TUESDAY, 800);
+    assertThrows(IllegalArgumentException.class, () -> eventToMod.updateStartTime(819465));
+  }
+
+  @Test
+  public void testInvalidModifyEventStartTimeAfter() {
+    SchedulingSystem model = new NUPlannerModel();
+    model.addUser("Elaine");
+    model.addEvent("Elaine", new ArrayList<>(List.of("Elaine", "Mia")), "Tennis",
+            "Carter Field", true,
+            TUESDAY, 800, TUESDAY, 1000);
+    Event eventToMod = (Event) model.eventAt("Elaine", TUESDAY, 800);
+    eventToMod.updateStartTime(1030);
+    assertThrows(IllegalArgumentException.class, () ->
+            model.modifyEvent("Elaine", TUESDAY, 800, eventToMod));
+  }
+
+  @Test
+  public void testValidModifyEventEndTime() {
+    SchedulingSystem model = new NUPlannerModel();
+    model.addUser("Elaine");
+    model.addEvent("Elaine", new ArrayList<>(List.of("Elaine", "Mia")), "Tennis",
+            "Carter Field", true,
+            TUESDAY, 800, TUESDAY, 1000);
+    Event eventToMod = (Event) model.eventAt("Elaine", TUESDAY, 800);
+    eventToMod.updateEndTime(1030);
+    model.modifyEvent("Elaine", TUESDAY, 800, eventToMod);
+    assertEquals(1030, model.eventAt("Elaine", TUESDAY, 800).endTime());
+  }
+
+  @Test
+  public void testInvalidModifyEventWrongEndTime() {
+    SchedulingSystem model = new NUPlannerModel();
+    model.addUser("Elaine");
+    model.addEvent("Elaine", new ArrayList<>(List.of("Elaine", "Mia")), "Tennis",
+            "Carter Field", true,
+            TUESDAY, 800, TUESDAY, 1000);
+    Event eventToMod = (Event) model.eventAt("Elaine", TUESDAY, 800);
+    assertThrows(IllegalArgumentException.class, () -> eventToMod.updateEndTime(819465));
+  }
+
+
+  @Test
+  public void testInvalidModifyEventEndTimeBefore() {
+    SchedulingSystem model = new NUPlannerModel();
+    model.addUser("Elaine");
+    model.addEvent("Elaine", new ArrayList<>(List.of("Elaine", "Mia")), "Tennis",
+            "Carter Field", true,
+            TUESDAY, 800, TUESDAY, 1000);
+    Event eventToMod = (Event) model.eventAt("Elaine", TUESDAY, 800);
+    eventToMod.updateEndTime(730);
+    assertThrows(IllegalArgumentException.class, () ->
+            model.modifyEvent("Elaine", TUESDAY, 800, eventToMod));
+    //doesn't throw an exception, but it looks like it rejects it anyway
+  }
+
+  @Test
+  public void testValidModifyEventStartDay() {
+    SchedulingSystem model = new NUPlannerModel();
+    model.addUser("Elaine");
+    model.addEvent("Elaine", new ArrayList<>(List.of("Elaine", "Mia")), "Tennis",
+            "Carter Field", true,
+            TUESDAY, 800, TUESDAY, 1000);
+    Event eventToMod = (Event) model.eventAt("Elaine", TUESDAY, 800);
+    eventToMod.updateStartDay(MONDAY);
+    model.modifyEvent("Elaine", TUESDAY, 800, eventToMod);
+    assertEquals(MONDAY, model.eventAt("Elaine", MONDAY, 800).startDay());
+  }
+
+
+  @Test
+  public void testInvalidModifyEventStartDayAfter() {
+    SchedulingSystem model = new NUPlannerModel();
+    model.addUser("Elaine");
+    model.addEvent("Elaine", new ArrayList<>(List.of("Elaine", "Mia")), "Tennis",
+            "Carter Field", true,
+            TUESDAY, 800, TUESDAY, 1000);
+    Event eventToMod = (Event) model.eventAt("Elaine", TUESDAY, 800);
+    eventToMod.updateStartDay(FRIDAY);
+    assertThrows(IllegalArgumentException.class, () ->
+            model.modifyEvent("Elaine", TUESDAY, 800, eventToMod));
+  }
+
+  @Test
+  public void testValidModifyEventEndDay() {
+    SchedulingSystem model = new NUPlannerModel();
+    model.addUser("Elaine");
+    model.addEvent("Elaine", new ArrayList<>(List.of("Elaine", "Mia")), "Tennis",
+            "Carter Field", true,
+            TUESDAY, 800, TUESDAY, 1000);
+    Event eventToMod = (Event) model.eventAt("Elaine", TUESDAY, 800);
+    eventToMod.updateEndDay(WEDNESDAY);
+    model.modifyEvent("Elaine", TUESDAY, 800, eventToMod);
+    assertEquals(WEDNESDAY, model.eventAt("Elaine", TUESDAY, 800).endDay());
+  }
+
+  @Test
+  public void testInvalidModifyEventEndDayBefore() {
+    SchedulingSystem model = new NUPlannerModel();
+    model.addUser("Elaine");
+    model.addEvent("Elaine", new ArrayList<>(List.of("Elaine", "Mia")), "Tennis",
+            "Carter Field", true,
+            TUESDAY, 800, TUESDAY, 1000);
+    Event eventToMod = (Event) model.eventAt("Elaine", TUESDAY, 800);
+    eventToMod.updateEndDay(MONDAY);
+    assertThrows(IllegalArgumentException.class, () ->
+            model.modifyEvent("Elaine", TUESDAY, 800, eventToMod));
+  }
+
+  @Test
+  public void testValidModifyEventAddInviteeInSystem() {
+    SchedulingSystem model = new NUPlannerModel();
+    model.addUser("Elaine");
+    model.addUser("Lisa");
+    model.addEvent("Elaine", new ArrayList<>(List.of("Elaine", "Mia")), "Tennis",
+            "Carter Field", true,
+            TUESDAY, 800, TUESDAY, 1000);
+    Event eventToMod = (Event) model.eventAt("Elaine", TUESDAY, 800);
+    eventToMod.addInvitee("Lisa");
+    model.modifyEvent("Elaine", TUESDAY, 800, eventToMod);
+    assertEquals(new ArrayList<>(List.of("Elaine", "Mia", "Lisa")),
+            model.eventAt("Elaine", TUESDAY, 800).eventInvitees());
+  }
+
+  @Test
+  public void testValidModifyEventAddInviteeNotInSystem() {
+    SchedulingSystem model = new NUPlannerModel();
+    model.addUser("Elaine");
+    model.addEvent("Elaine", new ArrayList<>(List.of("Elaine", "Mia")), "Tennis",
+            "Carter Field", true,
+            TUESDAY, 800, TUESDAY, 1000);
+    Event eventToMod = (Event) model.eventAt("Elaine", TUESDAY, 800);
+    eventToMod.addInvitee("Lisa");
+    model.modifyEvent("Elaine", TUESDAY, 800, eventToMod);
+    assertEquals(new ArrayList<>(List.of("Elaine", "Mia", "Lisa")),
+            model.eventAt("Elaine", TUESDAY, 800).eventInvitees());
+  }
+
+  @Test
+  public void testInvalidModifyEventInviteeAlreadyInEvent() {
+    SchedulingSystem model = new NUPlannerModel();
+    model.addUser("Elaine");
+    model.addEvent("Elaine", new ArrayList<>(List.of("Elaine", "Mia")), "Tennis",
+            "Carter Field", true,
+            TUESDAY, 800, TUESDAY, 1000);
+    Event eventToMod = (Event) model.eventAt("Elaine", TUESDAY, 800);
+    assertThrows(IllegalArgumentException.class, () -> eventToMod.addInvitee("Mia"));
+  }
+
+  @Test
+  public void testValidModifyEventRemoveInvitee() {
+    SchedulingSystem model = new NUPlannerModel();
+    model.addUser("Elaine");
+    model.addEvent("Elaine", new ArrayList<>(List.of("Elaine", "Mia")), "Tennis",
+            "Carter Field", true,
+            TUESDAY, 800, TUESDAY, 1000);
+    Event eventToMod = (Event) model.eventAt("Elaine", TUESDAY, 800);
+    eventToMod.removeInvitee("Mia");
+    model.modifyEvent("Elaine", TUESDAY, 800, eventToMod);
+    assertEquals(new ArrayList<>(List.of("Elaine")),
+            model.eventAt("Elaine", TUESDAY, 800).eventInvitees());
+  }
+
+  @Test
+  public void testValidModifyEventRemoveHost() {
+    SchedulingSystem model = new NUPlannerModel();
+    model.addUser("Elaine");
+    model.addEvent("Elaine", new ArrayList<>(List.of("Elaine", "Mia")), "Tennis",
+            "Carter Field", true,
+            TUESDAY, 800, TUESDAY, 1000);
+    Event eventToMod = (Event) model.eventAt("Elaine", TUESDAY, 800);
+    eventToMod.removeInvitee("Elaine");
+    assertThrows(IllegalArgumentException.class, () ->
+            model.modifyEvent("Elaine", TUESDAY, 800, eventToMod));
+  }
 
   @Test
   public void testValidEventsInSchedule() {

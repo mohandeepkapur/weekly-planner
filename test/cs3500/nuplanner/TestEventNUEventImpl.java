@@ -374,8 +374,20 @@ public class TestEventNUEventImpl {
             MONDAY, 1100, MONDAY, 1200);
     List<String> original = new ArrayList<>(List.of("John", "Ella"));
     assertEquals(original, event.eventInvitees());
+    event.removeInvitee("Ella");
+    List<String> updated = new ArrayList<>(List.of("John"));
+    assertEquals(updated, event.eventInvitees());
+  }
+
+  @Test
+  public void testValidEventModificationRemoveHost() {
+    Event event = new NUEvent(new ArrayList<>(List.of("John", "Ella")),
+            "Soccer", "Carter Field", false,
+            MONDAY, 1100, MONDAY, 1200);
+    List<String> original = new ArrayList<>(List.of("John", "Ella"));
+    assertEquals(original, event.eventInvitees());
     event.removeInvitee("John");
-    List<String> updated = new ArrayList<>(List.of("Ella"));
+    List<String> updated = new ArrayList<>(List.of());
     assertEquals(updated, event.eventInvitees());
   }
 

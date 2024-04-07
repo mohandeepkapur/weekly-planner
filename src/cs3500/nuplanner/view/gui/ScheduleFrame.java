@@ -1,9 +1,12 @@
 package cs3500.nuplanner.view.gui;
 
 import java.awt.*;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.*;
 
+import cs3500.nuplanner.controller.Features;
 import cs3500.nuplanner.model.hw05.ReadableEvent;
 import cs3500.nuplanner.model.hw05.ReadableSchedulingSystem;
 
@@ -12,7 +15,7 @@ import cs3500.nuplanner.model.hw05.ReadableSchedulingSystem;
  * the user to be used in the model.
  */
 
-public class ScheduleFrame extends JFrame {
+public class ScheduleFrame extends JFrame implements ScheduleGUIView {
   private SchedulePanel panel;
   private JTextField eventNameTextField;
   private JTextField locationTextField;
@@ -140,5 +143,138 @@ public class ScheduleFrame extends JFrame {
     schedulePane.setLayout(new BoxLayout(schedulePane, BoxLayout.LINE_AXIS));
     schedulePane.add(eventNameTextField);
     panel.add(schedulePane, BorderLayout.CENTER);
+  }
+
+  @Override
+  public String nameInput() {
+    return eventNameTextField.getText();
+  }
+
+  @Override
+  public void displayName(String name) {
+    eventNameTextField.setText("");
+    eventNameTextField.setText(name);
+  }
+
+  @Override
+  public String locationInput() {
+    return locationTextField.getText();
+  }
+
+  @Override
+  public void displayLocation(String location) {
+    locationTextField.setText("");
+    locationTextField.setText(location);
+  }
+
+  @Override
+  public String isOnlineInput() {
+    return (String) isOnline.getSelectedItem();
+  }
+
+  @Override
+  public void displayIsOnline(String isOnline) {
+    this.isOnline.setSelectedItem(isOnline);
+  }
+
+  @Override
+  public String startDayInput() {
+    return null;
+  }
+
+  @Override
+  public void displayStartDay(String startDay) {
+
+  }
+
+  @Override
+  public String startTimeInput() {
+    return null;
+  }
+
+  @Override
+  public void displayStartTime(String startTime) {
+
+  }
+
+  @Override
+  public String endDayInput() {
+    return null;
+  }
+
+  @Override
+  public void displayEndDay(String endDay) {
+
+  }
+
+  @Override
+  public String endTimeInput() {
+    return null;
+  }
+
+  @Override
+  public void displayEndTime(String endTime) {
+
+  }
+
+  @Override
+  public void addFeatures(Features features) {
+    scheduleEventButton.addActionListener(actionEvent -> {
+      // areInputsBlank(); <- view check before calling features method
+
+      // print out create-event details
+      if (areInputsBlank()) {
+        printErrorMessage();
+      } else {
+        System.out.println("CREATING EVENT...");
+        System.out.println("Creator/Host of event: " + scheduleFrameOpenerUser);
+        printEventDetails();
+        // print JList selections as invitees
+        System.out.println(scheduleFrameOpenerUser + " " + availableUsersList.getSelectedValuesList());
+      }
+    });
+  }
+
+  private void printErrorMessage() {
+    System.out.print("Cannot execute button based on user input... ");
+  }
+
+  /**
+   * Checks for User if don't fill Event Frame completely.
+   */
+  private boolean areInputsBlank() {
+    return this.nameInput().isEmpty() || this.locationInput().isEmpty() || this.isOnlineInput()
+            .isEmpty()
+            || this.startDayInput().isEmpty() || this.startTimeInput()
+            .isEmpty() || this.endDayInput().isEmpty()
+            || this.endTimeInput().isEmpty();
+  }
+
+  private void printEventDetails() {
+    System.out.println(this.nameInput());
+    System.out.println(this.locationInput());
+    System.out.println(this.isOnlineInput());
+    System.out.println(this.startDayInput());
+    System.out.println(this.startTimeInput());
+    System.out.println(this.endDayInput());
+    System.out.println(this.endTimeInput());
+  }
+
+  @Override
+  public void makeVisible() {
+    setVisible(true);
+  }
+
+  @Override
+  public void displayInvitees(List<String> invitees) {
+    List<String> inviteesToColor = new ArrayList<>();
+
+    // for all users in scheduling system
+    for (String user : model.allUsers()) {
+      // if user is an invitee of event being displayed
+      if (invitees.contains(user)) {
+        inviteesToColor.add(user);
+      }
+    }
   }
 }
