@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import cs3500.nuplanner.model.hw05.Event;
 import cs3500.nuplanner.model.hw05.NUPlannerModel;
 import cs3500.nuplanner.model.hw05.SchedulingSystem;
 import cs3500.nuplanner.view.SchedulingSystemTextView;
@@ -244,7 +245,7 @@ public class TestView {
 
     assertEquals(original, out.toString());
 
-    //model.removeEvent("Elaine", , SATURDAY);
+    model.removeEvent("Elaine", SATURDAY, 800);
 
     try {
       view.render("Elaine");
@@ -312,7 +313,9 @@ public class TestView {
 
     assertEquals(original, out.toString());
 
-    //model.modifyEvent(, "Elaine", , SATURDAY);
+    Event eventToMod = (Event) model.eventAt("Elaine", SATURDAY, 800);
+    eventToMod.updateStartTime(700);
+    model.modifyEvent("Elaine",SATURDAY,800,eventToMod);
 
     try {
       view.render("Elaine");
