@@ -8,6 +8,7 @@ import cs3500.nuplanner.model.hw05.SchedulingSystem;
  * system can meet and is chosen through a command line argument.
  */
 public interface SchedulingStrategies {
+
   /**
    * Strategy will then decide when to schedule the event based on certain criteria.
    *
@@ -15,4 +16,5 @@ public interface SchedulingStrategies {
    * @param duration the duration of the event
    */
   Event chooseSchedulingStrategy(SchedulingSystem model, int duration);
+
 }
