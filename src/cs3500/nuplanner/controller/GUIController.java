@@ -16,7 +16,7 @@ public class GUIController implements SchedulingSystemController, Features {
   /**
    * Constructs a controller.
    *
-   * @param ssView      main GUI controller will manipulate
+   * @param ssView main GUI controller will manipulate
    */
   public GUIController(SSGUIView ssView) {
     this.view = ssView;
@@ -24,7 +24,8 @@ public class GUIController implements SchedulingSystemController, Features {
 
   /**
    * Request for a new user's schedule to be shown.
-   * @param user        user whose schedule to be shown
+   *
+   * @param user user whose schedule to be shown
    */
   @Override
   public void displayNewSchedule(String user) {
@@ -64,10 +65,15 @@ public class GUIController implements SchedulingSystemController, Features {
     System.out.print("boop");
   }
 
+  @Override
+  public void displayBlankScheduleEvent() {
+    view.displayBlankScheduleEvent();
+  }
+
   /**
    * Request for an XML file to be uploaded.
    *
-   * @param pathname    path of XML file
+   * @param pathname path of XML file
    */
   @Override
   public void requestXMLScheduleUpload(String pathname) {
@@ -77,7 +83,7 @@ public class GUIController implements SchedulingSystemController, Features {
   /**
    * Request for model state to be saved into multiple XML schedules.
    *
-   * @param pathname       path of XML directory
+   * @param pathname path of XML directory
    */
   @Override
   public void requestAllSchedulesDownload(String pathname) {
@@ -129,8 +135,8 @@ public class GUIController implements SchedulingSystemController, Features {
   /**
    * Runs scheduling system using XML file.
    *
-   * @param pathname                     path to XML file
-   * @throws IllegalStateException       if unable to open or parse XML file
+   * @param pathname path to XML file
+   * @throws IllegalStateException if unable to open or parse XML file
    */
   @Override
   public void useSchedulingSystem(String pathname) {

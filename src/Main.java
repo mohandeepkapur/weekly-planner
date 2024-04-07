@@ -19,9 +19,8 @@ public class Main {
     // loading in data into model
     SchedulingSystem model = new NUPlannerModel();
     SchedulingSystemController xmlCont = new XMLController(model);
-    xmlCont.useSchedulingSystem("/Users/mohandeepkapur/IdeaProjects/" +
-            "ood/group/Homework5/XMLFiles/toRead/Prof. Lucia.xml");
-
+    xmlCont.useSchedulingSystem("XMLFiles/toRead/Prof. Lucia.xml");
+//    "/Users/mohandeepkapur/IdeaProjects/ood/group/Homework5/XMLFiles/toRead/Prof. Lucia.xml"
     SSGUIView view = new SSFrame(model);
     SchedulingSystemController controller = new GUIController(view);
     controller.useSchedulingSystem(model);

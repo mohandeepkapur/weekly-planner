@@ -106,7 +106,7 @@ public class SSFrame extends JFrame implements SSGUIView {
     // callbacks are now program-relevant commands (no JFrame dependence externally)
     // rather than callback being a class that needs to interpret JFrame specific code
     createEventButton.addActionListener(evt -> features.displayBlankEvent());
-    scheduleEventButton.addActionListener(evt -> features.displayBlankEvent());
+    scheduleEventButton.addActionListener(evt -> features.displayBlankScheduleEvent());
     userDropdown.addActionListener(new ActionListener() {
       @Override
       public void actionPerformed(ActionEvent actionEvent) {
@@ -220,6 +220,19 @@ public class SSFrame extends JFrame implements SSGUIView {
 
     eventView.makeVisible();
 
+  }
+
+  @Override
+  public void displayBlankScheduleEvent() {
+    if (currentUserDisplayed == null) {
+      throw new IllegalArgumentException("Must select user first...");
+    }
+
+    ScheduleGUIView scheduleView = new ScheduleFrame(model, currentUserDisplayed);
+
+    scheduleView.addFeatures(features);
+
+    scheduleView.makeVisible();
   }
 
   /**
