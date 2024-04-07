@@ -21,11 +21,6 @@ public interface Features {
 
 
   /**
-   * Request to add an Event into requester's schedule.
-   */
-  void requestCreateEvent();
-
-  /**
    * Request to create a new scheduled event.
    */
   void displayBlankScheduleEvent();
@@ -51,6 +46,11 @@ public interface Features {
    * @param pathname       path of XML directory
    */
   void requestAllSchedulesDownload(String pathname);
+
+  /**
+   * Request to add an Event into requester's schedule.
+   */
+  void requestCreateEvent(Event event);
 
   /**
    * Request to "schedule an event".

@@ -8,6 +8,8 @@ import java.util.List;
 import javax.swing.*;
 
 import cs3500.nuplanner.controller.Features;
+import cs3500.nuplanner.model.hw05.DaysOfTheWeek;
+import cs3500.nuplanner.model.hw05.NUEvent;
 import cs3500.nuplanner.model.hw05.ReadableEvent;
 import cs3500.nuplanner.model.hw05.ReadableSchedulingSystem;
 
@@ -92,7 +94,8 @@ public class EventFrame extends JFrame implements EventGUIView {
 
   /**
    * Adds available users to panel.
-   * @param model       used to extract available users in sched sys
+   *
+   * @param model used to extract available users in sched sys
    */
   private void addAvailableUsersBox(ReadableSchedulingSystem model) {
     JLabel availableUsers = new JLabel();
@@ -380,6 +383,22 @@ public class EventFrame extends JFrame implements EventGUIView {
         printEventDetails();
         // print JList selections as invitees
         System.out.println(eventFrameOpenerUser + " " + availableUsersList.getSelectedValuesList());
+
+        List<String> invitees = availableUsersList.getSelectedValuesList();
+        String name = this.nameInput();
+        String location = this.locationInput();
+        boolean isOnline = Boolean.parseBoolean(this.isOnlineInput());
+        DaysOfTheWeek startDay = convertStringToDay(this.startDayInput());
+        int startTime = Integer.parseInt(this.startTimeInput());
+        DaysOfTheWeek endDay = convertStringToDay(this.endDayInput());
+        int endTime = Integer.parseInt(this.endTimeInput());
+
+        NUEvent eventToCreate = new NUEvent(invitees, name, location, isOnline, startDay,
+                startTime, endDay, endTime);
+
+        features.requestCreateEvent(eventToCreate);
+        //TODO: Need to redraw schedule to show the new event
+        //TODO: Need to close the window after clicking the button
       }
     });
 
@@ -532,6 +551,41 @@ public class EventFrame extends JFrame implements EventGUIView {
 
       return renderer;
     }
+
+  }
+
+  /**
+   * Converts provided string into a day of the week, if possible.
+   *
+   * @param string                        string to convert into day
+   * @return                              DaysOfTheWeek enum constant
+   * @throws IllegalArgumentException     if string cannot be converted into a day
+   */
+  private DaysOfTheWeek convertStringToDay(String string) {
+
+    if (DaysOfTheWeek.SUNDAY.toString().equals(string)) {
+      return DaysOfTheWeek.SUNDAY;
+    }
+    if (DaysOfTheWeek.MONDAY.toString().equals(string)) {
+      return DaysOfTheWeek.MONDAY;
+    }
+    if (DaysOfTheWeek.TUESDAY.toString().equals(string)) {
+      return DaysOfTheWeek.TUESDAY;
+    }
+    if (DaysOfTheWeek.WEDNESDAY.toString().equals(string)) {
+      return DaysOfTheWeek.WEDNESDAY;
+    }
+    if (DaysOfTheWeek.THURSDAY.toString().equals(string)) {
+      return DaysOfTheWeek.THURSDAY;
+    }
+    if (DaysOfTheWeek.FRIDAY.toString().equals(string)) {
+      return DaysOfTheWeek.FRIDAY;
+    }
+    if (DaysOfTheWeek.SATURDAY.toString().equals(string)) {
+      return DaysOfTheWeek.SATURDAY;
+    }
+
+    throw new IllegalArgumentException("Invalid modification request... ");
 
   }
 

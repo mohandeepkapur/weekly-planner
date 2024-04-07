@@ -144,9 +144,6 @@ public class SSFrame extends JFrame implements SSGUIView {
         //figuring out what hours + minutes this click is at + translating into total minutes
         double minAsCol = ((double) mouse.getY() / (double) (panel.getHeight() / 24)) * 60;
 
-//        System.out.println(mouse.getY());
-//        System.out.println(panel.getY());
-
         int hours = (int) minAsCol / 60;
         double minutes = minAsCol % 60;
 
@@ -158,7 +155,7 @@ public class SSFrame extends JFrame implements SSGUIView {
         }
         int finalTime = (int) militaryTime;
 
-//        System.out.println(militaryTime); //prints correct military time
+        System.out.println(militaryTime); //prints correct military time
 
         for (ReadableEvent event : SSFrame.this.model.eventsInSchedule(currentUserDisplayed)) {
           if (event.containsTime(day, finalTime)) {

@@ -52,19 +52,6 @@ public class GUIController implements SchedulingSystemController, Features {
     view.displayExistingEvent(user, event);
   }
 
-  /**
-   * Request to add an Event into requester's schedule.
-   */
-  @Override
-  public void requestCreateEvent() {
-    // controller ensuring valid inputs in limited manner:
-    // check that user has filled all necessary event fields
-    // check that certain inputs can be parsed as desired types
-
-    // if so, print out contents
-    System.out.print("boop");
-  }
-
   @Override
   public void displayBlankScheduleEvent() {
     view.displayBlankScheduleEvent();
@@ -88,6 +75,22 @@ public class GUIController implements SchedulingSystemController, Features {
   @Override
   public void requestAllSchedulesDownload(String pathname) {
     System.out.println(pathname);
+  }
+
+  /**
+   * Request to add an Event into requester's schedule.
+   */
+  @Override
+  public void requestCreateEvent(Event event) {
+    // controller ensuring valid inputs in limited manner:
+    // check that user has filled all necessary event fields
+    // check that certain inputs can be parsed as desired types
+
+    // if so, print out contents
+    System.out.print("boop");
+    model.addEvent(event.eventInvitees().get(0), event.eventInvitees(), event.name(),
+            event.location(), event.isOnline(), event.startDay(),
+            event.startTime(), event.endDay(), event.endTime());
   }
 
   /**
