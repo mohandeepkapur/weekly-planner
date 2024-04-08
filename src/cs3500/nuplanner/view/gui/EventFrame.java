@@ -428,6 +428,7 @@ public class EventFrame extends JFrame implements EventGUIView {
       // will still remove correct event thanks to field that tracks curr Event obj displayed
       features.requestRemoveEvent(this.eventFrameOpenerUser, (Event) currEventDisp);
       features.displayNewSchedule(eventFrameOpenerUser);
+      this.dispose();
     });
   }
 
@@ -480,9 +481,12 @@ public class EventFrame extends JFrame implements EventGUIView {
   }
 
   /**
-   * Error message for User if don't fill Event Frame completely.
+   * Error message popup for the user if the user fails to fill the Event Frame completely.
    */
   private void printErrorMessage() {
+    JOptionPane.showMessageDialog(null,
+            "Issue with user input. Please fill in all blank fields.",
+            "Error", JOptionPane.ERROR_MESSAGE);
     System.out.print("Cannot execute button based on user input... ");
   }
 
