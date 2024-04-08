@@ -394,7 +394,13 @@ public class EventFrame extends JFrame implements EventGUIView {
         int endTime = Integer.parseInt(this.endTimeInput());
 
         NUEvent eventToCreate = new NUEvent(invitees, name, location, isOnline, startDay,
-                startTime, endDay, endTime);
+                startTime, endDay, endTime); //conversion of low-level data into high-level signature
+        // Pro reasoning: not manipulating model, could consider Event as signature to be higher-level/more general request
+        // but focus is on <<request>> evolution, not signature evolution
+        // hmm will come back to whether View should create an Event. not manip model, but still.. cohesion?
+
+        // view job: impassively render model state
+        // gui view job: super() and also to translate low-level user inputs into high-level requests <- but going from low to high shouldn't be justification for view not sticking to its purpose <- jank
 
         features.requestCreateEvent(eventToCreate);
         features.displayNewSchedule(invitees.get(0));
