@@ -372,6 +372,52 @@ public class EventFrame extends JFrame implements EventGUIView {
     // instead of linking existing class to control,
     // creating anon. class whose callback will be executed once relevant event happens
 
+    createEventButtonCallback(features);
+    removeEventButtonCallback(features);
+    modifyEventButtonCallback(features);
+
+  }
+
+  private void modifyEventButtonCallback(Features features) {
+    modifyEventButton.addActionListener(actionEvent -> {
+      // if user selects a non-invitee on the screen, add that into mod event's invitee list
+
+      // any work to do with processing GUI results... not view problem
+      if (!areInputsBlank()) {
+        // print out modified event details <-- new event
+        System.out.println("MODIFYING EVENT...");
+        System.out.println("Modifier of event: " + eventFrameOpenerUser);
+        printEventDetails();
+
+        List<String> modInviteeList = this.currEventDisp.eventInvitees();
+        for (String user : availableUsersList.getSelectedValuesList()) {
+          // if event invitee list contains selected user
+          if (!this.currEventDisp.eventInvitees().contains(user)) {
+            // if user selects a non-invitee on the screen, add that into mod event's invitee list
+            modInviteeList.add(user);
+          } else {
+            // if user selects a non-invitee on the screen, remove from mod event's invitee list
+            modInviteeList.remove(user);
+          }
+        }
+        System.out.println(modInviteeList);
+      } else {
+        printErrorMessage();
+      }
+
+    });
+  }
+
+  private void removeEventButtonCallback(Features features) {
+    removeEventButton.addActionListener(actionEvent -> {
+      // button doesn't care if any data removed from event-frame popup by user
+      // will still remove correct event thanks to field that tracks curr Event obj displayed
+      features.requestRemoveEvent(this.eventFrameOpenerUser, (Event) currEventDisp);
+      features.displayNewSchedule(eventFrameOpenerUser);
+    });
+  }
+
+  private void createEventButtonCallback(Features features) {
     createEventButton.addActionListener(actionEvent -> {
       // areInputsBlank(); <- view check before calling features method
 
@@ -408,54 +454,6 @@ public class EventFrame extends JFrame implements EventGUIView {
       } else {
         printErrorMessage();
       }
-    });
-
-    removeEventButton.addActionListener(actionEvent -> {
-      // areInputsBlank(); <- view check before calling features method
-
-      // print out remove-event details
-      // remove-event doesn't care about JList selections
-      if (!areInputsBlank()) {
-        System.out.println("REMOVING EVENT...");
-        System.out.println("Remover of event: " + eventFrameOpenerUser);
-        System.out.println("Original Event details... ");
-        printEventDetails();
-        System.out.println(this.currEventDisp.eventInvitees());
-
-        features.requestRemoveEvent(this.eventFrameOpenerUser, (Event) currEventDisp);
-        features.displayNewSchedule(eventFrameOpenerUser);
-        //TODO: Need to close the window after clicking the button
-      } else {
-        printErrorMessage();
-      }
-    });
-
-    modifyEventButton.addActionListener(actionEvent -> {
-      // if user selects a non-invitee on the screen, add that into mod event's invitee list
-
-      // any work to do with processing GUI results... not view problem
-      if (!areInputsBlank()) {
-        // print out modified event details <-- new event
-        System.out.println("MODIFYING EVENT...");
-        System.out.println("Modifier of event: " + eventFrameOpenerUser);
-        printEventDetails();
-
-        List<String> modInviteeList = this.currEventDisp.eventInvitees();
-        for (String user : availableUsersList.getSelectedValuesList()) {
-          // if event invitee list contains selected user
-          if (!this.currEventDisp.eventInvitees().contains(user)) {
-            // if user selects a non-invitee on the screen, add that into mod event's invitee list
-            modInviteeList.add(user);
-          } else {
-            // if user selects a non-invitee on the screen, remove from mod event's invitee list
-            modInviteeList.remove(user);
-          }
-        }
-        System.out.println(modInviteeList);
-      } else {
-        printErrorMessage();
-      }
-
     });
   }
 
