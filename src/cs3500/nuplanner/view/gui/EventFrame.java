@@ -416,6 +416,24 @@ public class EventFrame extends JFrame implements EventGUIView {
         System.out.println("Original Event details... ");
         printEventDetails();
         System.out.println(this.currEventDisp.eventInvitees());
+
+        List<String> invitees = availableUsersList.getSelectedValuesList();
+        String name = this.nameInput();
+        String location = this.locationInput();
+        boolean isOnline = Boolean.parseBoolean(this.isOnlineInput());
+        DaysOfTheWeek startDay = convertStringToDay(this.startDayInput());
+        int startTime = Integer.parseInt(this.startTimeInput());
+        DaysOfTheWeek endDay = convertStringToDay(this.endDayInput());
+        int endTime = Integer.parseInt(this.endTimeInput());
+
+        NUEvent eventToRemove = new NUEvent(invitees, name, location, isOnline, startDay,
+                startTime, endDay, endTime);
+
+        String user = invitees.get(0);
+
+        features.requestRemoveEvent(eventToRemove);
+        features.displayNewSchedule(user);
+        //TODO: Need to close the window after clicking the button
       }
     });
 

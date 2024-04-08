@@ -92,18 +92,19 @@ public class GUIController implements SchedulingSystemController, Features {
   }
 
   /**
+   * User request to remove an event they've selected from scheduling system.
+   */
+  @Override
+  public void requestRemoveEvent(Event event) {
+    model.removeEvent(event.eventInvitees().get(0), event.startDay(),
+            event.startTime());
+  }
+
+  /**
    * Request to "schedule an event".
    */
   @Override
   public void requestScheduleEvent() {
-    // empty for now
-  }
-
-  /**
-   * User request to remove an event they've selected from scheduling system.
-   */
-  @Override
-  public void requestRemoveEvent() {
     // empty for now
   }
 
