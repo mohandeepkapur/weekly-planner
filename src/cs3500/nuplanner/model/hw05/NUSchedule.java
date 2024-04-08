@@ -135,7 +135,6 @@ public class NUSchedule implements Schedule {
 
   }
 
-
   /**
    * Observes all the Events contained within the Schedule.
    *

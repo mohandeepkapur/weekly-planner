@@ -15,8 +15,8 @@ import cs3500.nuplanner.model.hw05.ReadableSchedulingSystem;
  * the user to be used in the model.
  */
 
-public class ScheduleFrame extends JFrame implements ScheduleGUIView {
-  private SchedulePanel panel;
+public class ScheduleEventFrame extends JFrame implements ScheduleEventGUIView {
+  private ScheduleEventPanel panel;
   private JTextField eventNameTextField;
   private JTextField locationTextField;
   private JComboBox<String> isOnline;
@@ -34,7 +34,7 @@ public class ScheduleFrame extends JFrame implements ScheduleGUIView {
    * @param model the model to be used
    * @param user  the user populating the EventFrame
    */
-  public ScheduleFrame(ReadableSchedulingSystem model, String user) {
+  public ScheduleEventFrame(ReadableSchedulingSystem model, String user) {
     super();
 
     this.model = model;
@@ -42,7 +42,7 @@ public class ScheduleFrame extends JFrame implements ScheduleGUIView {
 
     setSize(500, 400);
     setDefaultCloseOperation(EXIT_ON_CLOSE);
-    panel = new SchedulePanel(model);
+    panel = new ScheduleEventPanel(model);
     panel.setLayout(new BoxLayout(panel, BoxLayout.PAGE_AXIS));
 
     addEventNameBox();

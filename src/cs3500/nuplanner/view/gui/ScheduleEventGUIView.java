@@ -4,7 +4,7 @@ import java.util.List;
 
 import cs3500.nuplanner.controller.Features;
 
-public interface ScheduleGUIView {
+public interface ScheduleEventGUIView {
   /**
    * Returns the name of the event.
    *

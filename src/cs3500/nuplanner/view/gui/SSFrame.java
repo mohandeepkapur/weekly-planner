@@ -231,7 +231,7 @@ public class SSFrame extends JFrame implements SSGUIView {
       throw new IllegalArgumentException("Must select user first...");
     }
 
-    ScheduleGUIView scheduleView = new ScheduleFrame(model, currentUserDisplayed);
+    ScheduleEventGUIView scheduleView = new ScheduleEventFrame(model, currentUserDisplayed);
 
     scheduleView.addFeatures(features);
 

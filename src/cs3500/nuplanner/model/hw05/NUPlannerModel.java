@@ -238,44 +238,6 @@ public class NUPlannerModel implements SchedulingSystem {
 
   }
 
-  //  /**
-  //   * Tries to add modified copy of Event into Scheduling System. If not possible, add back
-  //   * original event to scheduling system and inform client of failure.
-  //   *
-  //   * @param copyOfEvent             modified copy of event-to-modify
-  //   * @param origEvent               event-to-modify removed from scheduling system
-  //   * @param origInvitees            invitees of event-to-modify
-  //   */
-  //  private void tryToAddModCopyToSchedulingSystem(Event copyOfEvent, Event origEvent,
-  //                                                 List<String> origInvitees) {
-  //    // check if modified copy is compatible with scheduling system
-  //    if (!this.eventConflict(copyOfEvent.host(),
-  //            copyOfEvent.eventInvitees(), copyOfEvent.name(),
-  //            copyOfEvent.location(), copyOfEvent.isOnline(),
-  //            copyOfEvent.startDay(), copyOfEvent.startTime(),
-  //            copyOfEvent.endDay(), copyOfEvent.endTime())) {
-  //      // if so, add it! this is the "modified" event aka replaced
-  //      this.addEvent(copyOfEvent.host(),
-  //              copyOfEvent.eventInvitees(), copyOfEvent.name(),
-  //              copyOfEvent.location(), copyOfEvent.isOnline(),
-  //              copyOfEvent.startDay(), copyOfEvent.startTime(),
-  //              copyOfEvent.endDay(), copyOfEvent.endTime());
-  //      return;
-  //    }
-  //
-  //    // otherwise, add a copy of original event back into the schedule, with original invitees
-  //    // orig invitees valid <-- it is prev. known that this entire event construction below IS VALID
-  //    this.addEvent(origEvent.host(),
-  //            origInvitees, origEvent.name(),
-  //            origEvent.location(), origEvent.isOnline(),
-  //            origEvent.startDay(), origEvent.startTime(),
-  //            origEvent.endDay(), origEvent.endTime());
-  //
-  //    throw new IllegalArgumentException(
-  //            "Cannot add this modified version of event in scheduling system... ");
-  //  }
-  //
-
   /**
    * Checks whether an Event can be added into Scheduling System given its current state.
    *
@@ -305,13 +267,13 @@ public class NUPlannerModel implements SchedulingSystem {
             endDay, endTime);
 
     // just using Event obj internally
-
     try {
       checkOpenSpaceRelevantSchedules(event);
       return false;
     } catch (IllegalStateException caught) {
       return true;
     }
+
   }
 
   /**
@@ -329,63 +291,7 @@ public class NUPlannerModel implements SchedulingSystem {
                + "scheduling conflict with at least one invitee's schedule... ");
       }
     }
-  }
 
-  /**
-   * Updates the given Event object's state.
-   *
-   * @param event                         event to be modified
-   * @param stateToUpdate                 single-state of Event that will be updated
-   * @param update                        new version of that state
-   * @throws IllegalArgumentException     if single-state to update is not part of Event
-   * @implNote                            modification to be performed must be given in the form
-   *                                      "single-state-of-Event updated-single-state"
-   */
-  private void performOtherModifications(Event event, String stateToUpdate, String update) {
-    switch (stateToUpdate) {
-      case "name":
-        event.updateName(update);
-        break;
-      case "location":
-        event.updateLocation(update);
-        break;
-      case "online":
-        if (!Boolean.parseBoolean(update) && !update.equals("false")) {
-          throw new IllegalArgumentException("Invalid modification for event online status...  ");
-        }
-        event.updateIsOnline(Boolean.parseBoolean(update));
-        break;
-      case "starttime":
-        try {
-          event.updateStartTime(Integer.parseInt(update));
-          break;
-        } catch (NumberFormatException caught) {
-          throw new IllegalArgumentException("Invalid modification for event start time...  ");
-        }
-      case "endtime":
-        try {
-          event.updateEndTime(Integer.parseInt(update));
-          break;
-        } catch (NumberFormatException caught) {
-          throw new IllegalArgumentException("Invalid modification for event online status...  ");
-        }
-      case "startday":
-        event.updateStartDay(convertStringToDay(update));
-        break;
-      case "endday":
-        event.updateEndDay(convertStringToDay(update));
-        break;
-      case "addinvitee":
-        try {
-          confirmUserExists(update);
-        } catch (IllegalArgumentException caught) {
-          this.addUser(update);
-        }
-        event.addInvitee(update);
-        break;
-      default:
-        throw new IllegalArgumentException("Param to update event with DNE for an event...  ");
-    }
   }
 
   /**
@@ -453,41 +359,6 @@ public class NUPlannerModel implements SchedulingSystem {
     if (this.userSchedules.containsKey(user)) {
       throw new IllegalArgumentException("User already exists in scheduling system... ");
     }
-  }
-
-  /**
-   * Converts provided string into a day of the week, if possible.
-   *
-   * @param string                        string to convert into day
-   * @return                              DaysOfTheWeek enum constant
-   * @throws IllegalArgumentException     if string cannot be converted into a day
-   */
-  private DaysOfTheWeek convertStringToDay(String string) {
-
-    if (DaysOfTheWeek.SUNDAY.toString().equals(string)) {
-      return DaysOfTheWeek.SUNDAY;
-    }
-    if (DaysOfTheWeek.MONDAY.toString().equals(string)) {
-      return DaysOfTheWeek.MONDAY;
-    }
-    if (DaysOfTheWeek.TUESDAY.toString().equals(string)) {
-      return DaysOfTheWeek.TUESDAY;
-    }
-    if (DaysOfTheWeek.WEDNESDAY.toString().equals(string)) {
-      return DaysOfTheWeek.WEDNESDAY;
-    }
-    if (DaysOfTheWeek.THURSDAY.toString().equals(string)) {
-      return DaysOfTheWeek.THURSDAY;
-    }
-    if (DaysOfTheWeek.FRIDAY.toString().equals(string)) {
-      return DaysOfTheWeek.FRIDAY;
-    }
-    if (DaysOfTheWeek.SATURDAY.toString().equals(string)) {
-      return DaysOfTheWeek.SATURDAY;
-    }
-
-    throw new IllegalArgumentException("Invalid modification request... ");
-
   }
 
 }
