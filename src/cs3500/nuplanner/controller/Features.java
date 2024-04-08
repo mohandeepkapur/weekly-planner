@@ -60,7 +60,7 @@ public interface Features {
   /**
    * User request to remove an event they've selected from scheduling system.
    */
-  void requestRemoveEvent();
+  void requestRemoveEvent(Event event);
 
   /**
    * User request to modify an existing event based on how its manipulated event in GUI.
