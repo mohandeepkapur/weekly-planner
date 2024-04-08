@@ -86,8 +86,6 @@ public class GUIController implements SchedulingSystemController, Features {
     // check that user has filled all necessary event fields
     // check that certain inputs can be parsed as desired types
 
-    // if so, print out contents
-    System.out.print("boop");
     model.addEvent(event.eventInvitees().get(0), event.eventInvitees(), event.name(),
             event.location(), event.isOnline(), event.startDay(),
             event.startTime(), event.endDay(), event.endTime());

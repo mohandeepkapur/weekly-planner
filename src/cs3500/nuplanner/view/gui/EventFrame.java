@@ -397,7 +397,8 @@ public class EventFrame extends JFrame implements EventGUIView {
                 startTime, endDay, endTime);
 
         features.requestCreateEvent(eventToCreate);
-        //TODO: Need to redraw schedule to show the new event
+        features.displayNewSchedule(invitees.get(0));
+        //frame.dispose(); //this does it just need to get it to work
         //TODO: Need to close the window after clicking the button
       }
     });
