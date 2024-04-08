@@ -376,9 +376,7 @@ public class EventFrame extends JFrame implements EventGUIView {
       // areInputsBlank(); <- view check before calling features method
 
       // print out create-event details
-      if (areInputsBlank()) {
-        printErrorMessage();
-      } else {
+      if (!areInputsBlank()) {
         System.out.println("CREATING EVENT...");
         System.out.println("Creator/Host of event: " + eventFrameOpenerUser);
         printEventDetails();
@@ -407,6 +405,8 @@ public class EventFrame extends JFrame implements EventGUIView {
         features.displayNewSchedule(invitees.get(0));
         //frame.dispose(); //this does it just need to get it to work
         //TODO: Need to close the window after clicking the button
+      } else {
+        printErrorMessage();
       }
     });
 
@@ -415,9 +415,7 @@ public class EventFrame extends JFrame implements EventGUIView {
 
       // print out remove-event details
       // remove-event doesn't care about JList selections
-      if (areInputsBlank()) {
-        printErrorMessage();
-      } else {
+      if (!areInputsBlank()) {
         System.out.println("REMOVING EVENT...");
         System.out.println("Remover of event: " + eventFrameOpenerUser);
         System.out.println("Original Event details... ");
@@ -427,6 +425,8 @@ public class EventFrame extends JFrame implements EventGUIView {
         features.requestRemoveEvent(this.eventFrameOpenerUser, (Event) currEventDisp);
         features.displayNewSchedule(eventFrameOpenerUser);
         //TODO: Need to close the window after clicking the button
+      } else {
+        printErrorMessage();
       }
     });
 
@@ -434,9 +434,7 @@ public class EventFrame extends JFrame implements EventGUIView {
       // if user selects a non-invitee on the screen, add that into mod event's invitee list
 
       // any work to do with processing GUI results... not view problem
-      if (areInputsBlank()) {
-        printErrorMessage();
-      } else {
+      if (!areInputsBlank()) {
         // print out modified event details <-- new event
         System.out.println("MODIFYING EVENT...");
         System.out.println("Modifier of event: " + eventFrameOpenerUser);
@@ -454,6 +452,8 @@ public class EventFrame extends JFrame implements EventGUIView {
           }
         }
         System.out.println(modInviteeList);
+      } else {
+        printErrorMessage();
       }
 
     });
