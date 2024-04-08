@@ -47,7 +47,7 @@ public class XMLController implements SchedulingSystemController {
    * Runs scheduling system using user input.
    */
   @Override
-  public void useSchedulingSystem(SchedulingSystem model) {
+  public void launchSchedulingSystem(SchedulingSystem model) {
     throw new IllegalArgumentException("XML Controller does not run on user input... ");
   }
 
@@ -58,7 +58,7 @@ public class XMLController implements SchedulingSystemController {
    * @throws IllegalStateException       if unable to open or parse XML file
    */
   @Override
-  public void useSchedulingSystem(String pathname) {
+  public void launchSchedulingSystem(String pathname) {
     try {
       DocumentBuilder builder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
       Document xmlDoc = builder.parse(new File(pathname));

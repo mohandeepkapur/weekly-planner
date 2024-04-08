@@ -9,7 +9,7 @@ import cs3500.nuplanner.view.gui.SSGUIView;
 /**
  * Class to run Scheduling System.
  */
-public class Main {
+public final class PlannerRunner {
 
   /**
    * Runs Scheduling System.
@@ -19,11 +19,13 @@ public class Main {
     // loading in data into model
     SchedulingSystem model = new NUPlannerModel();
     SchedulingSystemController xmlCont = new XMLController(model);
-    xmlCont.useSchedulingSystem("XMLFiles/toRead/Prof. Lucia.xml");
+    xmlCont.launchSchedulingSystem("XMLFiles/toRead/Prof. Lucia.xml");
 //    "/Users/mohandeepkapur/IdeaProjects/ood/group/Homework5/XMLFiles/toRead/Prof. Lucia.xml"
+
+   // launching the model with user input
     SSGUIView view = new SSFrame(model);
     SchedulingSystemController controller = new GUIController(view);
-    controller.useSchedulingSystem(model);
+    controller.launchSchedulingSystem(model);
 
   }
 

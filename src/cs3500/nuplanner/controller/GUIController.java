@@ -138,7 +138,7 @@ public class GUIController implements SchedulingSystemController, Features {
    * Runs scheduling system using user input.
    */
   @Override
-  public void useSchedulingSystem(SchedulingSystem model) {
+  public void launchSchedulingSystem(SchedulingSystem model) {
     this.model = model;
     view.addFeatures(this);
     view.makeVisible();
@@ -151,7 +151,7 @@ public class GUIController implements SchedulingSystemController, Features {
    * @throws IllegalStateException if unable to open or parse XML file
    */
   @Override
-  public void useSchedulingSystem(String pathname) {
+  public void launchSchedulingSystem(String pathname) {
     // empty for now
   }
 
