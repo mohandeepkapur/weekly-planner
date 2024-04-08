@@ -419,6 +419,12 @@ public class NUPlannerModel implements SchedulingSystem {
 
   }
 
+  //  @Override
+  //  public ReadableEvent eventAt(String user, Event eventToExtract) {
+  //    confirmUserExists(user);
+  //    return this.userSchedules.get(user).eventAt(eventToExtract);
+  //  }
+
   /**
    * Confirms that a user exists in the Scheduling System.
    *

@@ -5,6 +5,9 @@ import cs3500.nuplanner.model.hw05.Event;
 /**
  * User Requests made through GUI. Typically involves manip. model, view, or both (which is
  * controller's job).
+ *
+ * Though certain features may not require the user that requested it as data, that data is
+ * still provided, in case it may prove important in the future.
  */
 public interface Features {
 
@@ -17,13 +20,12 @@ public interface Features {
   /**
    * Request to create a new Event.
    */
-  void displayBlankEvent();
-
+  void displayBlankEvent(String user);
 
   /**
    * Request to create a new scheduled event.
    */
-  void displayBlankScheduleEvent();
+  void displayBlankScheduleEvent(String user);
 
   /**
    * Request for an Event's details to be shown. Event must belong in displayed user's schedule.
@@ -32,6 +34,27 @@ public interface Features {
    * @param event       event object to be shown
    */
   void requestExistingEventDetails(String user, Event event);
+
+  /**
+   * Request to add an Event into requester's schedule.
+   */
+  void requestCreateEvent(String user, Event event);
+
+  /**
+   * User request to remove an event they've selected from scheduling system.
+   */
+  void requestRemoveEvent(String user, Event event);
+
+  /**
+   * User request to modify an existing event based on how its manipulated event in GUI.
+   */
+  void requestModifyEvent(String user, Event currEvent, Event modEvent);
+
+  /**
+   * Request to "schedule an event".
+   */
+  void requestScheduleEvent();
+
 
   /**
    * Request for an XML file to be uploaded.
@@ -47,25 +70,6 @@ public interface Features {
    */
   void requestAllSchedulesDownload(String pathname);
 
-  /**
-   * Request to add an Event into requester's schedule.
-   */
-  void requestCreateEvent(Event event);
-
-  /**
-   * Request to "schedule an event".
-   */
-  void requestScheduleEvent();
-
-  /**
-   * User request to remove an event they've selected from scheduling system.
-   */
-  void requestRemoveEvent(String user, Event event);
-
-  /**
-   * User request to modify an existing event based on how its manipulated event in GUI.
-   */
-  void requestModifyEvent();
 
   /**
    * User request to exit program.

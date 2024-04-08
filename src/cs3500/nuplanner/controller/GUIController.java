@@ -37,7 +37,7 @@ public class GUIController implements SchedulingSystemController, Features {
    * Request to create a new Event.
    */
   @Override
-  public void displayBlankEvent() {
+  public void displayBlankEvent(String user) {
     view.displayBlankEvent();
   }
 
@@ -53,7 +53,7 @@ public class GUIController implements SchedulingSystemController, Features {
   }
 
   @Override
-  public void displayBlankScheduleEvent() {
+  public void displayBlankScheduleEvent(String user) {
     view.displayBlankScheduleEvent();
   }
 
@@ -81,7 +81,7 @@ public class GUIController implements SchedulingSystemController, Features {
    * Request to add an Event into requester's schedule.
    */
   @Override
-  public void requestCreateEvent(Event event) {
+  public void requestCreateEvent(String user, Event event) {
     // controller ensuring valid inputs in limited manner:
     // check that user has filled all necessary event fields
     // check that certain inputs can be parsed as desired types
@@ -115,8 +115,15 @@ public class GUIController implements SchedulingSystemController, Features {
    * User request to modify an existing event based on how its manipulated event in GUI.
    */
   @Override
-  public void requestModifyEvent() {
-    // empty for now
+  public void requestModifyEvent(String user, Event currEvent, Event modEvent) {
+    // check if currEvent not in requester's schedule (View itself will never this error)
+    // but any other component stupidly could, and actually harm model internals
+    // thanks to model signature chosen (could collide model w/ other event w/ same start-point)
+    try {
+      this.model.modifyEvent(user, currEvent.startDay(), currEvent.startTime(), modEvent);
+    } catch (IllegalArgumentException caught) {
+      System.out.print("ERROR: " + caught.getMessage());
+    }
   }
 
   /**

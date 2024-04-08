@@ -383,12 +383,9 @@ public class EventFrame extends JFrame implements EventGUIView {
       // if user selects a non-invitee on the screen, add that into mod event's invitee list
 
       // any work to do with processing GUI results... not view problem
+      // <-- but view is doing ton of work in processing GUI results (look at createEvent comments)
       if (!areInputsBlank()) {
-        // print out modified event details <-- new event
-        System.out.println("MODIFYING EVENT...");
-        System.out.println("Modifier of event: " + eventFrameOpenerUser);
-        printEventDetails();
-
+        // update Event's invitee list based on currently selected users
         List<String> modInviteeList = this.currEventDisp.eventInvitees();
         for (String user : availableUsersList.getSelectedValuesList()) {
           // if event invitee list contains selected user
@@ -400,7 +397,24 @@ public class EventFrame extends JFrame implements EventGUIView {
             modInviteeList.remove(user);
           }
         }
-        System.out.println(modInviteeList);
+
+        // print out modified event details <-- new event
+        System.out.println("MODIFYING EVENT...");
+        System.out.println("Modifier of event: " + eventFrameOpenerUser);
+        printEventDetails();
+        System.out.println("Modified Event invitees" + modInviteeList);
+
+        // view doing controller's job of parsing inputs for model -> it "feels" ok though, why?
+        // (well, for creation of Event, but that Event will be fed into/manipulate model)
+
+        Event modifiedEvent = createEventFromUserInput(modInviteeList);
+
+        features.requestModifyEvent(eventFrameOpenerUser, (Event) currEventDisp, modifiedEvent);
+        features.displayNewSchedule(eventFrameOpenerUser);
+        // if automatic disposal removed, will need to add this.currEventDisp = modifiedEvent;
+        // then adjust impl slightly to prevent weird bug
+        // where even if mod unsuccessful, current event frame now linked to wrong event obj
+        this.dispose();
       } else {
         printErrorMessage();
       }
@@ -419,42 +433,50 @@ public class EventFrame extends JFrame implements EventGUIView {
 
   private void createEventButtonCallback(Features features) {
     createEventButton.addActionListener(actionEvent -> {
-      // areInputsBlank(); <- view check before calling features method
-
-      // print out create-event details
-      if (!areInputsBlank()) {
+      if (!areInputsBlank()) { // view check before calling features method
+        // print out create-event details
         System.out.println("CREATING EVENT...");
         System.out.println("Creator/Host of event: " + eventFrameOpenerUser);
         printEventDetails();
         // print JList selections as invitees
         System.out.println(eventFrameOpenerUser + " " + availableUsersList.getSelectedValuesList());
 
-        List<String> invitees = availableUsersList.getSelectedValuesList();
-        String name = this.nameInput();
-        String location = this.locationInput();
-        boolean isOnline = Boolean.parseBoolean(this.isOnlineInput());
-        DaysOfTheWeek startDay = convertStringToDay(this.startDayInput());
-        int startTime = Integer.parseInt(this.startTimeInput());
-        DaysOfTheWeek endDay = convertStringToDay(this.endDayInput());
-        int endTime = Integer.parseInt(this.endTimeInput());
-
-        NUEvent eventToCreate = new NUEvent(invitees, name, location, isOnline, startDay,
-                startTime, endDay, endTime); //conversion of low-level data into high-level signature
-        // Pro reasoning: not manipulating model, could consider Event as signature to be higher-level/more general request
+        Event eventToCreate = createEventFromUserInput(availableUsersList.getSelectedValuesList());
+        //conversion of low-level data into high-level signature
         // but focus is on <<request>> evolution, not signature evolution
-        // hmm will come back to whether View should create an Event. not manip model, but still.. cohesion?
 
-        // view job: impassively render model state
-        // gui view job: super() and also to translate low-level user inputs into high-level requests <- but going from low to high shouldn't be justification for view not sticking to its purpose <- jank
-
-        features.requestCreateEvent(eventToCreate);
-        features.displayNewSchedule(invitees.get(0));
-        //frame.dispose(); //this does it just need to get it to work
-        //TODO: Need to close the window after clicking the button
+        features.requestCreateEvent(eventFrameOpenerUser, eventToCreate);
+        features.displayNewSchedule(eventFrameOpenerUser);
+        this.dispose();
       } else {
         printErrorMessage();
       }
     });
+  }
+
+  /**
+   * Creates an Event from user selections on GUI. Invitees also extracted from user selections on
+   * GUI, but differently depending on whether create event or modify event pressed.
+   *
+   * Thus, extracting invitee data from GUI left to client (either create event callback impl
+   * of modify event callback impl) of method.
+   *
+   * @param invitees      invitee list info for Event
+   * @return              Event
+   * @implNote            (weird helper method, but does consolidate code)
+   */
+  private Event createEventFromUserInput(List<String> invitees) {
+    String name = this.nameInput();
+    String location = this.locationInput();
+    boolean isOnline = Boolean.parseBoolean(this.isOnlineInput());
+    DaysOfTheWeek startDay = DaysOfTheWeek.stringToDay(this.startDayInput());
+    int startTime = Integer.parseInt(this.startTimeInput());
+    DaysOfTheWeek endDay = DaysOfTheWeek.stringToDay(this.endDayInput());
+    int endTime = Integer.parseInt(this.endTimeInput());
+
+    return new NUEvent(invitees, name, location, isOnline, startDay,
+            startTime, endDay, endTime);
+
   }
 
   /**
@@ -560,42 +582,8 @@ public class EventFrame extends JFrame implements EventGUIView {
       }
 
       return renderer;
-    }
 
-  }
-
-  /**
-   * Converts provided string into a day of the week, if possible.
-   *
-   * @param string                        string to convert into day
-   * @return                              DaysOfTheWeek enum constant
-   * @throws IllegalArgumentException     if string cannot be converted into a day
-   */
-  private DaysOfTheWeek convertStringToDay(String string) {
-
-    if (DaysOfTheWeek.SUNDAY.toString().equals(string)) {
-      return DaysOfTheWeek.SUNDAY;
     }
-    if (DaysOfTheWeek.MONDAY.toString().equals(string)) {
-      return DaysOfTheWeek.MONDAY;
-    }
-    if (DaysOfTheWeek.TUESDAY.toString().equals(string)) {
-      return DaysOfTheWeek.TUESDAY;
-    }
-    if (DaysOfTheWeek.WEDNESDAY.toString().equals(string)) {
-      return DaysOfTheWeek.WEDNESDAY;
-    }
-    if (DaysOfTheWeek.THURSDAY.toString().equals(string)) {
-      return DaysOfTheWeek.THURSDAY;
-    }
-    if (DaysOfTheWeek.FRIDAY.toString().equals(string)) {
-      return DaysOfTheWeek.FRIDAY;
-    }
-    if (DaysOfTheWeek.SATURDAY.toString().equals(string)) {
-      return DaysOfTheWeek.SATURDAY;
-    }
-
-    throw new IllegalArgumentException("Invalid modification request... ");
 
   }
 
