@@ -95,9 +95,12 @@ public class GUIController implements SchedulingSystemController, Features {
    * User request to remove an event they've selected from scheduling system.
    */
   @Override
-  public void requestRemoveEvent(Event event) {
-    model.removeEvent(event.eventInvitees().get(0), event.startDay(),
-            event.startTime());
+  public void requestRemoveEvent(String user, Event event) {
+    // user can also access events within their schedule
+    // would be strange to check whether given event belongs in given user's schedule,
+    // since that's been proven before-hand --> model will check for us --> actually, there is case where it doesn't
+
+    this.model.removeEvent(user, event.startDay(), event.startTime());
   }
 
   /**

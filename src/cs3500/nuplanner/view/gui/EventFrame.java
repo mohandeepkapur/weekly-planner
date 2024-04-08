@@ -9,6 +9,7 @@ import javax.swing.*;
 
 import cs3500.nuplanner.controller.Features;
 import cs3500.nuplanner.model.hw05.DaysOfTheWeek;
+import cs3500.nuplanner.model.hw05.Event;
 import cs3500.nuplanner.model.hw05.NUEvent;
 import cs3500.nuplanner.model.hw05.ReadableEvent;
 import cs3500.nuplanner.model.hw05.ReadableSchedulingSystem;
@@ -423,22 +424,8 @@ public class EventFrame extends JFrame implements EventGUIView {
         printEventDetails();
         System.out.println(this.currEventDisp.eventInvitees());
 
-        List<String> invitees = availableUsersList.getSelectedValuesList();
-        String name = this.nameInput();
-        String location = this.locationInput();
-        boolean isOnline = Boolean.parseBoolean(this.isOnlineInput());
-        DaysOfTheWeek startDay = convertStringToDay(this.startDayInput());
-        int startTime = Integer.parseInt(this.startTimeInput());
-        DaysOfTheWeek endDay = convertStringToDay(this.endDayInput());
-        int endTime = Integer.parseInt(this.endTimeInput());
-
-        NUEvent eventToRemove = new NUEvent(invitees, name, location, isOnline, startDay,
-                startTime, endDay, endTime);
-
-        String user = invitees.get(0);
-
-        features.requestRemoveEvent(eventToRemove);
-        features.displayNewSchedule(user);
+        features.requestRemoveEvent(this.eventFrameOpenerUser, (Event) currEventDisp);
+        features.displayNewSchedule(eventFrameOpenerUser);
         //TODO: Need to close the window after clicking the button
       }
     });
