@@ -1,11 +1,15 @@
 package cs3500.nuplanner.controller;
 
+import java.io.IOException;
+
 import cs3500.nuplanner.model.hw05.DaysOfTheWeek;
 import cs3500.nuplanner.model.hw05.Event;
 import cs3500.nuplanner.model.hw05.NUEvent;
 import cs3500.nuplanner.model.hw05.RawEventData;
 import cs3500.nuplanner.model.hw05.ReadableEvent;
 import cs3500.nuplanner.model.hw05.SchedulingSystem;
+import cs3500.nuplanner.view.SchedulingSystemView;
+import cs3500.nuplanner.view.SchedulingSystemXMLView;
 import cs3500.nuplanner.view.gui.SSGUIView;
 
 /**
@@ -42,7 +46,11 @@ public class GUIController implements SchedulingSystemController, Features {
    */
   @Override
   public void displayBlankEvent(String user) {
-    view.displayBlankEvent();
+    try {
+      view.displayBlankEvent();
+    } catch (IllegalArgumentException caught) {
+      this.view.displayErrorMessage("Must select user first... ");
+    }
   }
 
   /**
@@ -60,7 +68,11 @@ public class GUIController implements SchedulingSystemController, Features {
 
   @Override
   public void displayBlankScheduleEvent(String user) {
-    view.displayBlankScheduleEvent();
+    try {
+      view.displayBlankScheduleEvent();
+    } catch (IllegalArgumentException caught) {
+      this.view.displayErrorMessage("Must select user first... ");
+    }
   }
 
   /**
@@ -71,6 +83,14 @@ public class GUIController implements SchedulingSystemController, Features {
   @Override
   public void requestXMLScheduleUpload(String pathname) {
     System.out.println(pathname);
+    try {
+      SchedulingSystemController xmlcontroller = new XMLController(this.model);
+      xmlcontroller.useSchedulingSystem(pathname);
+      this.view.refresh();
+      this.view.displayUserSchedule(this.model.allUsers().get(0));
+    } catch (IllegalStateException caught) {
+      this.view.displayErrorMessage("Unable to process XML file..");
+    }
   }
 
   /**
@@ -81,6 +101,14 @@ public class GUIController implements SchedulingSystemController, Features {
   @Override
   public void requestAllSchedulesDownload(String pathname) {
     System.out.println(pathname);
+    try {
+      SchedulingSystemView xmlview = new SchedulingSystemXMLView(this.model);
+      for (String user : this.model.allUsers()) {
+        xmlview.render(user, pathname + user + ".xml");
+      }
+    } catch (IOException e) {
+      this.view.displayErrorMessage("Cannot save XML version of schedules to given directory...");
+    }
   }
 
   /**
@@ -162,7 +190,7 @@ public class GUIController implements SchedulingSystemController, Features {
    */
   @Override
   public void requestScheduleEvent() {
-    // empty for now
+
   }
 
   /**

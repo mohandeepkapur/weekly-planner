@@ -457,7 +457,6 @@ public class EventFrame extends JFrame implements EventGUIView {
 
 
   private RawEventData createRawEventFromUserInput(List<String> invitees) {
-
     return new RawEventData(invitees, this.nameInput(), this.locationInput(), this.isOnlineInput(), this.startDayInput(),
             this.startTimeInput(), this.endDayInput(), this.endTimeInput());
 

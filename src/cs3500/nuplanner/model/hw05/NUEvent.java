@@ -48,9 +48,9 @@ public class NUEvent implements Event {
     ensureProperMilitaryTime(startTime);
     ensureProperMilitaryTime(endTime);
 
-//    if (invitees.isEmpty()) {
-//      throw new IllegalArgumentException("Event cannot be init. with no invitees... ");
-//    }
+    if (invitees.isEmpty()) {
+      throw new IllegalArgumentException("Event cannot be init. with no invitees... ");
+    }
 
     this.invitees = invitees;
     this.name = eventName;

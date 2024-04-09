@@ -6,6 +6,9 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.io.File;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import javax.swing.*;
 
@@ -189,6 +192,8 @@ public class SSFrame extends JFrame implements SSGUIView {
     System.out.println("Displaying new schedule... " + user);
     panel.displayUserSchedule(user);
     this.currentUserDisplayed = user;
+
+    // one method two purpose?
   }
 
   /**
@@ -257,6 +262,22 @@ public class SSFrame extends JFrame implements SSGUIView {
     JOptionPane.showMessageDialog(null, errorMessage, "Error",
             JOptionPane.ERROR_MESSAGE);
     System.out.println("Cannot execute request based on user input... ");
+  }
+
+  /**
+   * Refreshes relevant controls of View according to updated Scheduling System state.
+   */
+  @Override
+  public void refresh() {
+    List<String> jcomboCurrEntries = new ArrayList<>();
+    for (int i = 0; i < userDropdown.getItemCount(); i++) {
+      jcomboCurrEntries.add(userDropdown.getItemAt(i));
+    }
+    for (String user : this.model.allUsers()) {
+      if (!jcomboCurrEntries.contains(user)) {
+        this.userDropdown.addItem(user);
+      }
+    }
   }
 
 

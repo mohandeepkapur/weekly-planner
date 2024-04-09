@@ -51,9 +51,14 @@ public interface SSGUIView {
   void makeVisible();
 
   /**
-   *
-   * @param errorMessage
+   * Displays error message to User after failed request.
+   * @param errorMessage        error message
    */
   void displayErrorMessage(String errorMessage);
+
+  /**
+   * Refreshes relevant controls of View according to updated Scheduling System state.
+   */
+  void refresh();
 
 }

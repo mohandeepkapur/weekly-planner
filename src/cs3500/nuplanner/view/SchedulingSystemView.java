@@ -8,11 +8,20 @@ import java.io.IOException;
 public interface SchedulingSystemView {
 
   /**
-   * Renders view of a user's schedule.
+   * Renders view of a user's schedule. Implementation may assume default path provided if none
+   * given.
    *
-   * @throws IOException     if unable to render view
+   * @throws IOException                if unable to render view
    */
   void render(String user) throws IOException;
+
+  /**
+   * Renders view of a user's schedule. Saves rendering to provided path. Implementation may assume
+   * default path even if one provided.
+   *
+   * @throws IOException                if unable to render view
+   */
+  void render(String user, String pathname) throws IOException;
 
 
 }

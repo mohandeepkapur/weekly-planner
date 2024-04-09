@@ -22,7 +22,7 @@ import static org.junit.Assert.assertEquals;
  * A class to test the functionality of the simple textual view for the scheduling system.
  */
 
-public class TestView {
+public class TestSchedulingSystemView {
 
   @Test
   public void ensureUserScheduleTextualRenderCorrect() {

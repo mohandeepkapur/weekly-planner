@@ -32,9 +32,13 @@ public class SchedulingSystemXMLView implements SchedulingSystemView {
    */
   @Override
   public void render(String user) throws IOException {
+    this.render(user, "XMLFiles/toWrite/" + user + ".xml");
+  }
 
+  @Override
+  public void render(String user, String pathname) throws IOException {
     List<ReadableEvent> events = this.model.eventsInSchedule(user);
-    Writer file = new FileWriter("XMLFiles/toWrite/" + user + ".xml");
+    Writer file = new FileWriter(pathname);
     file.write("<?xml version=\"1.0\"?>");
     file.write("\n");
     file.write("<schedule id=\"" + user + "\">");
@@ -73,7 +77,6 @@ public class SchedulingSystemXMLView implements SchedulingSystemView {
 
     file.write("</schedule>");
     file.close();
-
   }
 
 }

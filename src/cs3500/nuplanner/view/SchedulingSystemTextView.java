@@ -39,6 +39,11 @@ public class SchedulingSystemTextView implements SchedulingSystemView {
     out.append(toStringUserSchedule(user));
   }
 
+  @Override
+  public void render(String user, String pathname) throws IOException {
+    this.render(user);
+  }
+
   /**
    * Accumulating information about user schedule.
    *
