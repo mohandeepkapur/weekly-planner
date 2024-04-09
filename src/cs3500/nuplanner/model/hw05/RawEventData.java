@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Wraps user input data necessary to create an Event. Event may or may not be able
+ * Wraps user-input data used to create an Event. Event may not be able
  * be initializeable from held data.
  *
  * Point of this class is to get data. Not observe.
