@@ -25,6 +25,8 @@ public interface SSGUIView {
 
   /**
    * Displays an empty Event-scheduling window for a user to interact with.
+   *
+   * @throws IllegalArgumentException    if a user's schedule is not currently displayed
    */
   void displayBlankScheduleEvent();
 

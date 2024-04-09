@@ -132,7 +132,6 @@ public class NUSchedule implements Schedule {
     }
     throw new IllegalArgumentException("Event with specified start day and time "
             + "does not exist in " + user + "'s schedule");
-
   }
 
   /**

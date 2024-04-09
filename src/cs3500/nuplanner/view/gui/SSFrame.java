@@ -221,6 +221,11 @@ public class SSFrame extends JFrame implements SSGUIView {
 
   }
 
+  /**
+   * Displays an empty Event-scheduling window for a user to interact with.
+   *
+   * @throws IllegalArgumentException    if a user's schedule is not currently displayed
+   */
   @Override
   public void displayBlankScheduleEvent() {
     if (currentUserDisplayed == null) {

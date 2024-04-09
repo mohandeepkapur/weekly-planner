@@ -56,4 +56,9 @@ public class MockView implements SSGUIView {
     } catch (IOException ignored) {
     }
   }
+
+  @Override
+  public void refresh() {
+
+  }
 }

@@ -62,8 +62,11 @@ public class GUIController implements SchedulingSystemController, Features {
   @Override
   public void displayExistingEvent(String user, ReadableEvent eventData) {
     // check if given event does exist in user's schedule
-
-    view.displayExistingEvent(user, eventData);
+    try {
+      view.displayExistingEvent(user, eventData);
+    } catch (IllegalArgumentException caught) {
+      this.view.displayErrorMessage(caught.getMessage());
+    }
   }
 
   @Override
@@ -71,7 +74,7 @@ public class GUIController implements SchedulingSystemController, Features {
     try {
       view.displayBlankScheduleEvent();
     } catch (IllegalArgumentException caught) {
-      this.view.displayErrorMessage("Must select user first... ");
+      this.view.displayErrorMessage(caught.getMessage());
     }
   }
 

@@ -399,10 +399,12 @@ public class EventFrame extends JFrame implements EventGUIView {
       }
 
       // if host of event was removed by user
-      if (!modInviteeList.get(0).equals(currEventDisp.eventInvitees().get(0))) {
+      if (!modInviteeList.isEmpty()
+              && !modInviteeList.get(0).equals(currEventDisp.eventInvitees().get(0))) {
         // modified event should be removed from all schedules
         modInviteeList.clear();
       }
+
 
       // print out modified event details <-- new event
       System.out.println("MODIFYING EVENT...");

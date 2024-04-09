@@ -11,7 +11,7 @@ public interface ReadableEvent {
 
   /**
    * Observes host of Event.
-   * Event host is fixed/cannot be updated.
+   * HW 7 REMOVE: Event host is fixed/cannot be updated.
    *
    * @return the host of event
    */

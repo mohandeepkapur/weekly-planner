@@ -14,7 +14,7 @@ public class NUEvent implements Event {
   // first user in invitees is host of event
   private final List<String> invitees;
   // host of an event cannot be changed
-  private final String host;
+  private String host;
 
   private String name;
   private String location;
@@ -49,7 +49,10 @@ public class NUEvent implements Event {
     ensureProperMilitaryTime(endTime);
 
     if (invitees.isEmpty()) {
-      throw new IllegalArgumentException("Event cannot be init. with no invitees... ");
+      this.host = null;
+      //throw new IllegalArgumentException("Event cannot be init. with no invitees... ");
+    } else {
+      this.host = invitees.get(0);
     }
 
     this.invitees = invitees;
@@ -60,7 +63,6 @@ public class NUEvent implements Event {
     this.startTime = startTime;
     this.endDay = endDay;
     this.endTime = endTime;
-    this.host = invitees.get(0);
 
     ensureValidTimeSpan(this.startTime, this.endTime, this.startDay, this.endDay);
 
@@ -93,15 +95,15 @@ public class NUEvent implements Event {
 
   /**
    * Observes host of Event.
-   * Event host is fixed/cannot be updated.
+   * HW 7 REMOVE: Event host is fixed/cannot be updated.
    *
    * @return the host of event
    */
   @Override
   public String host() {
-    //    if (invitees.isEmpty()) {
-    //      throw new IllegalArgumentException("Event has no host... has no invitees... ");
-    //    }
+    if (host == null) {
+      throw new IllegalArgumentException("Event has no host... has no invitees... ");
+    }
     return this.host;
   }
 
@@ -326,6 +328,9 @@ public class NUEvent implements Event {
       invitees.clear();
     }
     invitees.remove(invitee);
+    if (invitees.isEmpty()) {
+      host = null;
+    }
   }
 
   /**
@@ -337,6 +342,11 @@ public class NUEvent implements Event {
    */
   @Override
   public void addInvitee(String invitee) {
+
+    if (host == null) {
+      this.host = invitee;
+      this.invitees.add(host);
+    }
 
     if (invitees.contains(invitee)) {
       throw new IllegalArgumentException("Invitee already exists in schedule... ");

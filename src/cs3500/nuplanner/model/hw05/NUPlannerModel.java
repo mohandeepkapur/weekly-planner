@@ -205,11 +205,15 @@ public class NUPlannerModel implements SchedulingSystem {
    */
   @Override
   public void modifyEvent(String user, DaysOfTheWeek startDay, int startTime, Event modEvent) {
-
-    // if event contains non-hosts that don't exist, invite them into the planning system
-
     Event origEvent = userSchedules.get(user).eventAt(startDay, startTime);
     List<String> origEventInvitees = origEvent.eventInvitees();
+
+    // if modified Event comes in with no invitees <-- signal that host of orig event removed
+    // thus, remove origEvent from model <-- removal will never create conflict
+    if (modEvent.eventInvitees().isEmpty()) {
+      this.removeEvent(origEvent.host(), startDay, startTime);
+      return;
+    }
 
     // remove original event from all schedules --> all invitees within Event obj removed!
     // must store list of invitees before Event obj removed from model
