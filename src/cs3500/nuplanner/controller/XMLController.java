@@ -82,12 +82,12 @@ public class XMLController implements SchedulingSystemController {
                 .getTextContent();
         boolean isOnline = Boolean.parseBoolean(
                 currentEventDetails.getElementsByTagName("online").item(0).getTextContent());
-        DaysOfTheWeek startDay = createDay(
+        DaysOfTheWeek startDay = DaysOfTheWeek.stringToDay(
                 currentEventDetails.getElementsByTagName("start-day").item(0).getTextContent()
                         .toUpperCase());
         int startTime = Integer.parseInt(
                 currentEventDetails.getElementsByTagName("start").item(0).getTextContent());
-        DaysOfTheWeek endDay = createDay(
+        DaysOfTheWeek endDay = DaysOfTheWeek.stringToDay(
                 currentEventDetails.getElementsByTagName("end-day").item(0).getTextContent()
                         .toUpperCase());
         int endTime = Integer.parseInt(
@@ -163,38 +163,6 @@ public class XMLController implements SchedulingSystemController {
       throw new IllegalStateException("Error in parsing the file");
     }
 
-  }
-
-  /**
-   * Converts provided string into a day of the week, if possible.
-   *
-   * @param day                           string to convert into day
-   * @return                              DaysOfTheWeek enum constant
-   * @throws IllegalArgumentException     if string cannot be converted into a day
-   */
-  private DaysOfTheWeek createDay(String day) {
-    if (day.equals(SUNDAY.toString())) {
-      return SUNDAY;
-    }
-    if (day.equals(MONDAY.toString())) {
-      return MONDAY;
-    }
-    if (day.equals(TUESDAY.toString())) {
-      return TUESDAY;
-    }
-    if (day.equals(WEDNESDAY.toString())) {
-      return WEDNESDAY;
-    }
-    if (day.equals(THURSDAY.toString())) {
-      return THURSDAY;
-    }
-    if (day.equals(FRIDAY.toString())) {
-      return FRIDAY;
-    }
-    if (day.equals(SATURDAY.toString())) {
-      return SATURDAY;
-    }
-    throw new IllegalArgumentException("Not a day of the week!");
   }
 
 }
