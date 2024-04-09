@@ -28,25 +28,25 @@ public interface SchedulingSystem extends ReadableSchedulingSystem {
   void removeUser(String user);
 
   /**
-   * Creates and adds a new Event to the relevant Schedules.
+   * Creates and adds a new Event to the relevant schedules. Invitees not existing in
+   * scheduling system automatically added.
    *
-   * @param host                        host of Event
-   * @param invitees                    users added to Event (includes host)
-   * @param eventName                   name of Event
-   * @param location                    location of Event
-   * @param isOnline                    online/offline status of Event
-   * @param startDay                    start day of event
-   * @param startTime                   start time of Event
-   * @param endDay                      end day of Event
-   * @param endTime                     end time of Event
-   *
-   * @throws IllegalArgumentException   if provided host does not exist in scheduling system
-   * @throws IllegalArgumentException   if Event cannot be constructed due to invalid information
-   * @throws IllegalArgumentException   if the Event's host is not first in its invitees list
-   * @throws IllegalArgumentException   if Event conflicts with any Schedule within the Scheduling
-   *                                    System
+   * @param user      host of Event
+   * @param invitees  users added to Event (includes host)
+   * @param eventName name of Event
+   * @param location  location of Event
+   * @param isOnline  online/offline status of Event
+   * @param startDay  start day of event
+   * @param startTime start time of Event
+   * @param endDay    end day of Event
+   * @param endTime   end time of Event
+   * @throws IllegalArgumentException if user does not exist in scheduling system
+   * @throws IllegalArgumentException if Event cannot be constructed due to invalid information
+   * @throws IllegalArgumentException if user creating event is not host of Event
+   * @throws IllegalArgumentException if Event conflicts with any Schedule within the Scheduling
+   *                                  System
    */
-  void addEvent(String host, List<String> invitees,
+  void addEvent(String user, List<String> invitees,
                 String eventName, String location, boolean isOnline,
                 DaysOfTheWeek startDay, int startTime,
                 DaysOfTheWeek endDay, int endTime);
@@ -89,7 +89,7 @@ public interface SchedulingSystem extends ReadableSchedulingSystem {
   /**
    * Checks whether an Event can be added into Scheduling System given its current state.
    * Event invitees that do not exist in model assumed
-   * to have blank schedules.
+   * to have blank schedules, but are not actually added into model.
    *
    * @param host                        host of Event
    * @param invitees                    users added to Event (includes host)

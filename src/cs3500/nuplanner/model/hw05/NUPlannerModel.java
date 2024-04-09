@@ -1,7 +1,6 @@
 package cs3500.nuplanner.model.hw05;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -61,55 +60,59 @@ public class NUPlannerModel implements SchedulingSystem {
   }
 
   /**
-   * Creates and adds a new Event to the relevant schedules.
+   * Creates and adds a new Event to the relevant schedules. Invitees not existing in
+   * scheduling system automatically added.
    *
-   * @param host                        host of Event
-   * @param invitees                    users added to Event (includes host)
-   * @param eventName                   name of Event
-   * @param location                    location of Event
-   * @param isOnline                    online/offline status of Event
-   * @param startDay                    start day of event
-   * @param startTime                   start time of Event
-   * @param endDay                      end day of Event
-   * @param endTime                     end time of Event
-   *
-   * @throws IllegalArgumentException   if provided host does not exist in scheduling system
-   * @throws IllegalArgumentException   if Event cannot be constructed due to invalid information
-   * @throws IllegalArgumentException   if the Event's host is not first in its invitees list
-   * @throws IllegalArgumentException   if Event conflicts with any Schedule within the Scheduling
-   *                                    System
+   * @param user      host of Event
+   * @param invitees  users added to Event (includes host)
+   * @param eventName name of Event
+   * @param location  location of Event
+   * @param isOnline  online/offline status of Event
+   * @param startDay  start day of event
+   * @param startTime start time of Event
+   * @param endDay    end day of Event
+   * @param endTime   end time of Event
+   * @throws IllegalArgumentException if user does not exist in scheduling system
+   * @throws IllegalArgumentException if Event cannot be constructed due to invalid information
+   * @throws IllegalArgumentException if user creating event is not host of Event
+   * @throws IllegalArgumentException if Event conflicts with any Schedule within the Scheduling
+   *                                  System
    */
   @Override
-  public void addEvent(String host, List<String> invitees,
+  public void addEvent(String user, List<String> invitees,
                        String eventName, String location, boolean isOnline,
                        DaysOfTheWeek startDay, int startTime,
                        DaysOfTheWeek endDay, int endTime) {
 
+    confirmUserExists(user);
 
-    confirmUserExists(host);
-
-    // if event contains non-hosts that don't exist, invite them into the planning system
-    for (String user : invitees) {
-      try {
-        confirmUserExists(user);
-      } catch (IllegalArgumentException caught) {
-        addUser(user);
-      }
+    if (invitees.isEmpty()) {
+      throw new IllegalArgumentException("Cannot construct Event with no invitees... ");
     }
 
     // check if user creating event sets some other user as the host
-    if (!invitees.get(0).equals(host)) {
+    if (!invitees.get(0).equals(user)) {
       throw new IllegalArgumentException("Unable to add event in sys where adder is not host... ");
     }
 
     // TODO: Check
-    if (eventConflict(host, invitees, eventName, location, isOnline, startDay, startTime, endDay,
+    if (eventConflict(user, invitees, eventName, location, isOnline, startDay, startTime, endDay,
             endTime)) {
       throw new IllegalArgumentException(
               "Cannot add event, conflicts with an invitee schedule... ");
     }
 
+    // if event contains non-hosts that don't exist, invite them into the planning system
+    for (String invitee : invitees) {
+      try {
+        confirmUserExists(invitee);
+      } catch (IllegalArgumentException caught) {
+        addUser(invitee);
+      }
+    }
+
     // create new Event -> Event constructor will inform model whether params valid
+    // hardcoded model to work with military time <- bad <- change
     Event event = new NUEvent(invitees, eventName, location, isOnline,
             startDay, startTime,
             endDay, endTime);
@@ -244,7 +247,7 @@ public class NUPlannerModel implements SchedulingSystem {
   /**
    * Checks whether an Event can be added into Scheduling System given its current state.
    * Event invitees that do not exist in model assumed
-   * to have blank schedules.
+   * to have blank schedules, but are not actually added into model.
    *
    * @param host                        host of Event
    * @param invitees                    users added to Event (includes host)
