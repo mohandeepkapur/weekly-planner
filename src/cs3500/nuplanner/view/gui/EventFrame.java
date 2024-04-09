@@ -393,9 +393,15 @@ public class EventFrame extends JFrame implements EventGUIView {
           // if user selects a non-invitee on the screen, add that into mod event's invitee list
           modInviteeList.add(user);
         } else {
-          // if user selects a non-invitee on the screen, remove from mod event's invitee list
+          // if user selects a invitee on the screen, remove from mod event's invitee list
           modInviteeList.remove(user);
         }
+      }
+
+      // if host of event was removed by user
+      if (!modInviteeList.get(0).equals(currEventDisp.eventInvitees().get(0))) {
+        // modified event should be removed from all schedules
+        modInviteeList.clear();
       }
 
       // print out modified event details <-- new event

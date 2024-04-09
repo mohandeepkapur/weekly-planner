@@ -87,7 +87,9 @@ public interface SchedulingSystem extends ReadableSchedulingSystem {
   void modifyEvent(String user, DaysOfTheWeek startDay, int startTime, Event modEvent);
 
   /**
-   * Checks whether an Event conflicts with relevant Schedules in Scheduling System.
+   * Checks whether an Event can be added into Scheduling System given its current state.
+   * Event invitees that do not exist in model assumed
+   * to have blank schedules.
    *
    * @param host                        host of Event
    * @param invitees                    users added to Event (includes host)

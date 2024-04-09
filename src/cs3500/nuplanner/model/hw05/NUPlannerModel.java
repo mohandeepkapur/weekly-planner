@@ -243,6 +243,8 @@ public class NUPlannerModel implements SchedulingSystem {
 
   /**
    * Checks whether an Event can be added into Scheduling System given its current state.
+   * Event invitees that do not exist in model assumed
+   * to have blank schedules.
    *
    * @param host                        host of Event
    * @param invitees                    users added to Event (includes host)

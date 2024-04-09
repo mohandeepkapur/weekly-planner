@@ -10,7 +10,7 @@ import java.util.List;
 public interface ReadableEvent {
 
   /**
-   * Observes host of Event, (-- what if all Event's invitees removed --)
+   * Observes host of Event.
    * Event host is fixed/cannot be updated.
    *
    * @return the host of event

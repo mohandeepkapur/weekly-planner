@@ -99,6 +99,9 @@ public class NUEvent implements Event {
    */
   @Override
   public String host() {
+    //    if (invitees.isEmpty()) {
+    //      throw new IllegalArgumentException("Event has no host... has no invitees... ");
+    //    }
     return this.host;
   }
 

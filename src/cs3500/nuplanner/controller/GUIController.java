@@ -168,6 +168,9 @@ public class GUIController implements SchedulingSystemController, Features {
   /**
    * User request to modify an existing event based on how its manipulated event in GUI.
    */
+  // need to make it such that
+  // removal of host on user-side when pressing mod event
+  // actually performs removal
   @Override
   public void requestModifyEvent(String user, RawEventData currEvent, RawEventData modEvent) {
     // check if currEvent not in requester's schedule (View itself will never this error)
@@ -229,7 +232,6 @@ public class GUIController implements SchedulingSystemController, Features {
     // empty for now
   }
 
-
   /**
    * Super important private method
    *
@@ -264,7 +266,7 @@ public class GUIController implements SchedulingSystemController, Features {
     return event.nameInput().isEmpty() || event.locationInput().isEmpty()
             || event.isOnlineInput().isEmpty() || event.startDayInput().isEmpty()
             || event.startTimeInput().isEmpty() || event.endDayInput().isEmpty()
-            || event.endTimeInput().isEmpty() || event.invitees().isEmpty();
+            || event.endTimeInput().isEmpty();// || event.invitees().isEmpty();
   }
 
 
