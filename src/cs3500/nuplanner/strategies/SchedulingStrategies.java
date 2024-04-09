@@ -19,6 +19,5 @@ public interface SchedulingStrategies {
    */
   Event findTimeForScheduledEvent(SchedulingSystem model, String name,
                                   Boolean isOnline, String location, int duration, List<String> invitees);
-
 }
 

@@ -6,28 +6,46 @@ import cs3500.nuplanner.model.hw05.DaysOfTheWeek;
 import cs3500.nuplanner.model.hw05.Event;
 import cs3500.nuplanner.model.hw05.NUEvent;
 import cs3500.nuplanner.model.hw05.SchedulingSystem;
+import cs3500.nuplanner.strategies.SchedulingStrategies;
 
 public class WorkHoursStrategy implements SchedulingStrategies {
   @Override
   public Event findTimeForScheduledEvent(SchedulingSystem model, String name, Boolean isOnline, String location, int duration, List<String> invitees) {
 
     for (int day = 1; day <= 5; day++) {
-      DaysOfTheWeek startingDay = DaysOfTheWeek.valToDay(day);
-      for (int startTime = 900; startTime < 1700; startTime++) {
-        int endTime = startTime + duration;
-        int endingDay = determineEndingDay(day, startTime, duration);
+      DaysOfTheWeek startingDay = convertIntToDay(day);
+      for (int hour = 9; hour <= 17; hour++) {
+        for (int minutes = 0; minutes < 59; minutes++) {
 
-        if (endTime <= 1700
-                && endingDay <= 5
-                && model.eventConflict(invitees.get(0), invitees, name, location, isOnline,
-                startingDay,
-                startTime, DaysOfTheWeek.valToDay(endingDay), endTime)) {
-          return new NUEvent(invitees, name, location, isOnline, startingDay,
-                  startTime, DaysOfTheWeek.valToDay(endingDay), endTime);
-        } //do nothing and rerun the top For loop
-      }
+          int startTime = (hour * 100) + minutes;
+          int endTime = (hour * 100) + minutes + convertToMilitaryTime(duration);
+
+          DaysOfTheWeek endingDay = determineEndingDay(day, startTime, duration);
+
+          System.out.println(startTime);
+          System.out.println(endTime);
+          System.out.println(startingDay);
+          System.out.println(endingDay);
+
+          if (!model.eventConflict(invitees.get(0), invitees, name, location, isOnline, startingDay,
+                  startTime, endingDay, endTime)) {
+
+            return new NUEvent(invitees, name, location, isOnline, startingDay,
+                    startTime, endingDay, endTime);
+          }
+        }
+
+
+      } //do nothing and rerun the top For loop
+
     }
     throw new IllegalArgumentException("Can't create event with provided parameters");
+  }
+
+  private int convertToMilitaryTime(int duration) {
+    int minutes = duration % 60;
+    int hours = (duration / 60) * 100;
+    return hours + minutes;
   }
 
   /**
@@ -38,12 +56,46 @@ public class WorkHoursStrategy implements SchedulingStrategies {
    * @param duration  duration of the event
    * @return ending day of the event
    */
-  private int determineEndingDay(int day, int startTime, int duration) {
+  private DaysOfTheWeek determineEndingDay(int day, int startTime, int duration) {
     int daysAfter = (startTime + duration) / 2400;
     if (startTime + duration > 0) {
-      return day + daysAfter;
+      return convertIntToDay(day + daysAfter);
     }
-    return day;
+    return convertIntToDay(day);
   }
 
+  /**
+   * Converts provided int into a day of the week, if possible.
+   *
+   * @param day int to convert into day
+   * @return DaysOfTheWeek enum constant
+   * @throws IllegalArgumentException if string cannot be converted into a day
+   */
+  private DaysOfTheWeek convertIntToDay(int day) {
+
+    if (day == 0) {
+      return DaysOfTheWeek.SUNDAY;
+    }
+    if (day == 1) {
+      return DaysOfTheWeek.MONDAY;
+    }
+    if (day == 2) {
+      return DaysOfTheWeek.TUESDAY;
+    }
+    if (day == 3) {
+      return DaysOfTheWeek.WEDNESDAY;
+    }
+    if (day == 4) {
+      return DaysOfTheWeek.THURSDAY;
+    }
+    if (day == 5) {
+      return DaysOfTheWeek.FRIDAY;
+    }
+    if (day == 6) {
+      return DaysOfTheWeek.SATURDAY;
+    }
+
+    throw new IllegalArgumentException("Invalid modification request... ");
+
+  }
 }
