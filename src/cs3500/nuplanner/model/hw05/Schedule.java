@@ -60,7 +60,7 @@ public interface Schedule {
    * Observes an Event contained within the Schedule.
    *
    * @return                              an Event within Schedule
-   * @throws IllegalArgumentException     if no Event at given start day and time exists
+   * @throws IllegalArgumentException     if no Event at given start day and time exists in schedule
    */
   Event eventAt(DaysOfTheWeek startDay, int startTime);
 

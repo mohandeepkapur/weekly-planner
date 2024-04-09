@@ -50,4 +50,10 @@ public interface SSGUIView {
    */
   void makeVisible();
 
+  /**
+   *
+   * @param errorMessage
+   */
+  void displayErrorMessage(String errorMessage);
+
 }

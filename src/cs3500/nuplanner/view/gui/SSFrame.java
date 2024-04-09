@@ -139,7 +139,7 @@ public class SSFrame extends JFrame implements SSGUIView {
         // ());
         //figuring out what day this click is at
         int dayAsRow = mouse.getX() / (panel.getWidth() / 7);
-        DaysOfTheWeek day = createDay(dayAsRow);
+        DaysOfTheWeek day = DaysOfTheWeek.valToDay(dayAsRow);
 
         //figuring out what hours + minutes this click is at + translating into total minutes
         double minAsCol = ((double) mouse.getY() / (double) (panel.getHeight() / 24)) * 60;
@@ -261,37 +261,12 @@ public class SSFrame extends JFrame implements SSGUIView {
 
   }
 
-
-  /**
-   * Converts provided an integer into a day of the week, if possible.
-   *
-   * @param day integer to convert into day
-   * @return DaysOfTheWeek enum constant
-   * @throws IllegalArgumentException if integer cannot be converted into a day
-   */
-  private DaysOfTheWeek createDay(int day) {
-    if (day == SUNDAY.val()) {
-      return SUNDAY;
-    }
-    if (day == MONDAY.val()) {
-      return MONDAY;
-    }
-    if (day == TUESDAY.val()) {
-      return TUESDAY;
-    }
-    if (day == WEDNESDAY.val()) {
-      return WEDNESDAY;
-    }
-    if (day == THURSDAY.val()) {
-      return THURSDAY;
-    }
-    if (day == FRIDAY.val()) {
-      return FRIDAY;
-    }
-    if (day == SATURDAY.val()) {
-      return SATURDAY;
-    }
-    throw new IllegalArgumentException("Not a day of the week!");
+  @Override
+  public void displayErrorMessage(String errorMessage) {
+    JOptionPane.showMessageDialog(null, errorMessage, "Error",
+            JOptionPane.ERROR_MESSAGE);
+    System.out.println("Cannot execute request based on user input... ");
   }
+
 
 }

@@ -8,9 +8,8 @@ import java.util.List;
 import javax.swing.*;
 
 import cs3500.nuplanner.controller.Features;
-import cs3500.nuplanner.model.hw05.DaysOfTheWeek;
 import cs3500.nuplanner.model.hw05.Event;
-import cs3500.nuplanner.model.hw05.NUEvent;
+import cs3500.nuplanner.model.hw05.RawEventData;
 import cs3500.nuplanner.model.hw05.ReadableEvent;
 import cs3500.nuplanner.model.hw05.ReadableSchedulingSystem;
 
@@ -25,6 +24,10 @@ import static cs3500.nuplanner.model.hw05.DaysOfTheWeek.WEDNESDAY;
 /**
  * Represents an event frame with all the associated text boxes and fields to collect data from
  * the user to be used in the model.
+ *
+ * Way View is currently set up, will only provide NUEvents to Features!!! Impl specific View!!!!
+ * Cannot have this!!! If change impl-type of Events in Model, this View will need to be edited!!!
+ * Bad coupling!!!
  */
 public class EventFrame extends JFrame implements EventGUIView {
 
@@ -43,7 +46,7 @@ public class EventFrame extends JFrame implements EventGUIView {
 
   private final ReadableSchedulingSystem model;
   private ReadableEvent currEventDisp;
-  private String eventFrameOpenerUser;
+  private String userWhoOpenedEventFrame;
 
   /**
    * Creates an EventFrame for a user with a default size and all the associated fields.
@@ -55,7 +58,7 @@ public class EventFrame extends JFrame implements EventGUIView {
     super();
 
     this.model = model;
-    this.eventFrameOpenerUser = user;
+    this.userWhoOpenedEventFrame = user;
 
     setSize(500, 400);
     setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -382,42 +385,27 @@ public class EventFrame extends JFrame implements EventGUIView {
     modifyEventButton.addActionListener(actionEvent -> {
       // if user selects a non-invitee on the screen, add that into mod event's invitee list
 
-      // any work to do with processing GUI results... not view problem
-      // <-- but view is doing ton of work in processing GUI results (look at createEvent comments)
-      if (!areInputsBlank()) {
-        // update Event's invitee list based on currently selected users
-        List<String> modInviteeList = this.currEventDisp.eventInvitees();
-        for (String user : availableUsersList.getSelectedValuesList()) {
-          // if event invitee list contains selected user
-          if (!this.currEventDisp.eventInvitees().contains(user)) {
-            // if user selects a non-invitee on the screen, add that into mod event's invitee list
-            modInviteeList.add(user);
-          } else {
-            // if user selects a non-invitee on the screen, remove from mod event's invitee list
-            modInviteeList.remove(user);
-          }
+      // update Event's invitee list based on currently selected users
+      List<String> modInviteeList = this.currEventDisp.eventInvitees();
+      for (String user : availableUsersList.getSelectedValuesList()) {
+        // if event invitee list contains selected user
+        if (!this.currEventDisp.eventInvitees().contains(user)) {
+          // if user selects a non-invitee on the screen, add that into mod event's invitee list
+          modInviteeList.add(user);
+        } else {
+          // if user selects a non-invitee on the screen, remove from mod event's invitee list
+          modInviteeList.remove(user);
         }
-
-        // print out modified event details <-- new event
-        System.out.println("MODIFYING EVENT...");
-        System.out.println("Modifier of event: " + eventFrameOpenerUser);
-        printEventDetails();
-        System.out.println("Modified Event invitees" + modInviteeList);
-
-        // view doing controller's job of parsing inputs for model -> it "feels" ok though, why?
-        // (well, for creation of Event, but that Event will be fed into/manipulate model)
-
-        Event modifiedEvent = createEventFromUserInput(modInviteeList);
-
-        features.requestModifyEvent(eventFrameOpenerUser, (Event) currEventDisp, modifiedEvent);
-        features.displayNewSchedule(eventFrameOpenerUser);
-        // if automatic disposal removed, will need to add this.currEventDisp = modifiedEvent;
-        // then adjust impl slightly to prevent weird bug
-        // where even if mod unsuccessful, current event frame now linked to wrong event obj
-        this.dispose();
-      } else {
-        printErrorMessage();
       }
+
+      // print out modified event details <-- new event
+      System.out.println("MODIFYING EVENT...");
+      System.out.println("Modifier of event: " + userWhoOpenedEventFrame);
+      printEventDetails();
+      System.out.println("Modified Event invitees" + modInviteeList);
+
+      features.requestModifyEvent(userWhoOpenedEventFrame, createRawEventFromEvent(currEventDisp), createRawEventFromUserInput(modInviteeList));
+      this.dispose();
 
     });
   }
@@ -426,79 +414,36 @@ public class EventFrame extends JFrame implements EventGUIView {
     removeEventButton.addActionListener(actionEvent -> {
       // button doesn't care if any data removed from event-frame popup by user
       // will still remove correct event thanks to field that tracks curr Event obj displayed
-      features.requestRemoveEvent(this.eventFrameOpenerUser, (Event) currEventDisp);
-      features.displayNewSchedule(eventFrameOpenerUser);
+      features.requestRemoveEvent(this.userWhoOpenedEventFrame, createRawEventFromEvent(currEventDisp));
       this.dispose();
     });
   }
 
+  private RawEventData createRawEventFromEvent(ReadableEvent event) {
+    return new RawEventData(event.eventInvitees(), event.name(), event.location(), String.valueOf(event.isOnline()), String.valueOf(event.startDay()), String.valueOf(event.startTime()), String.valueOf(event.endDay()), String.valueOf(event.endTime()));
+  }
+
   private void createEventButtonCallback(Features features) {
     createEventButton.addActionListener(actionEvent -> {
-      if (!areInputsBlank()) { // view check before calling features method
-        // print out create-event details
-        System.out.println("CREATING EVENT...");
-        System.out.println("Creator/Host of event: " + eventFrameOpenerUser);
-        printEventDetails();
-        // print JList selections as invitees
-        System.out.println(eventFrameOpenerUser + " " + availableUsersList.getSelectedValuesList());
+      // print out create-event details
+      System.out.println("CREATING EVENT...");
+      System.out.println("Creator/Host of event: " + userWhoOpenedEventFrame);
+      printEventDetails();
+      System.out.println(userWhoOpenedEventFrame + " " + availableUsersList.getSelectedValuesList());
 
-        Event eventToCreate = createEventFromUserInput(availableUsersList.getSelectedValuesList());
-        //conversion of low-level data into high-level signature
-        // but focus is on <<request>> evolution, not signature evolution
-
-        features.requestCreateEvent(eventFrameOpenerUser, eventToCreate);
-        features.displayNewSchedule(eventFrameOpenerUser);
-        this.dispose();
-      } else {
-        printErrorMessage();
-      }
+      //conversion of low-level data into high-level signature
+      // but focus is on <<request>> evolution, not signature evolution
+      features.requestCreateEvent(userWhoOpenedEventFrame, createRawEventFromUserInput(availableUsersList.getSelectedValuesList()));
+      this.dispose();
     });
   }
 
-  /**
-   * Creates an Event from user selections on GUI. Invitees also extracted from user selections on
-   * GUI, but differently depending on whether create event or modify event pressed.
-   *
-   * Thus, extracting invitee data from GUI left to client (either create event callback impl
-   * of modify event callback impl) of method.
-   *
-   * @param invitees      invitee list info for Event
-   * @return              Event
-   * @implNote            (weird helper method, but does consolidate code)
-   */
-  private Event createEventFromUserInput(List<String> invitees) {
-    String name = this.nameInput();
-    String location = this.locationInput();
-    boolean isOnline = Boolean.parseBoolean(this.isOnlineInput());
-    DaysOfTheWeek startDay = DaysOfTheWeek.stringToDay(this.startDayInput());
-    int startTime = Integer.parseInt(this.startTimeInput());
-    DaysOfTheWeek endDay = DaysOfTheWeek.stringToDay(this.endDayInput());
-    int endTime = Integer.parseInt(this.endTimeInput());
 
-    return new NUEvent(invitees, name, location, isOnline, startDay,
-            startTime, endDay, endTime);
+  private RawEventData createRawEventFromUserInput(List<String> invitees) {
 
-  }
+    return new RawEventData(invitees, this.nameInput(), this.locationInput(), this.isOnlineInput(), this.startDayInput(),
+            this.startTimeInput(), this.endDayInput(), this.endTimeInput());
 
-  /**
-   * Error message popup for the user if the user fails to fill the Event Frame completely.
-   */
-  private void printErrorMessage() {
-    JOptionPane.showMessageDialog(null,
-            "Issue with user input. Please fill in all blank fields.",
-            "Error", JOptionPane.ERROR_MESSAGE);
-    System.out.print("Cannot execute button based on user input... ");
-  }
-
-  /**
-   * Checks for User if don't fill Event Frame completely.
-   */
-  private boolean areInputsBlank() {
-    return this.nameInput().isEmpty() || this.locationInput().isEmpty() || this.isOnlineInput()
-            .isEmpty()
-            || this.startDayInput().isEmpty() || this.startTimeInput()
-            .isEmpty() || this.endDayInput().isEmpty()
-            || this.endTimeInput().isEmpty();
   }
 
   /**

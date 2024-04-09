@@ -1,6 +1,10 @@
 package cs3500.nuplanner.controller;
 
+import cs3500.nuplanner.model.hw05.DaysOfTheWeek;
 import cs3500.nuplanner.model.hw05.Event;
+import cs3500.nuplanner.model.hw05.NUEvent;
+import cs3500.nuplanner.model.hw05.RawEventData;
+import cs3500.nuplanner.model.hw05.ReadableEvent;
 import cs3500.nuplanner.model.hw05.SchedulingSystem;
 import cs3500.nuplanner.view.gui.SSGUIView;
 
@@ -45,11 +49,13 @@ public class GUIController implements SchedulingSystemController, Features {
    * Request for an Event's details to be shown. Event must belong in displayed user's schedule.
    *
    * @param user
-   * @param event
+   * @param eventData
    */
   @Override
-  public void requestExistingEventDetails(String user, Event event) {
-    view.displayExistingEvent(user, event);
+  public void requestExistingEventDetails(String user, Event eventData) {
+    // check if given event does exist in user's schedule
+
+    view.displayExistingEvent(user, eventData);
   }
 
   @Override
@@ -81,26 +87,74 @@ public class GUIController implements SchedulingSystemController, Features {
    * Request to add an Event into requester's schedule.
    */
   @Override
-  public void requestCreateEvent(String user, Event event) {
+  public void requestCreateEvent(String user, RawEventData event) {
+
+    // check if given event does exist in user's schedule
+
     // controller ensuring valid inputs in limited manner:
     // check that user has filled all necessary event fields
     // check that certain inputs can be parsed as desired types
 
-    model.addEvent(event.eventInvitees().get(0), event.eventInvitees(), event.name(),
-            event.location(), event.isOnline(), event.startDay(),
-            event.startTime(), event.endDay(), event.endTime());
+    Event validEvent;
+    try {
+      validEvent = parseRawEventData(event);
+    } catch (IllegalArgumentException caught) {
+      this.view.displayErrorMessage("Cannot create event with provided input... ");
+      return;
+    }
+
+    try {
+      model.addEvent(validEvent.eventInvitees().get(0), validEvent.eventInvitees(),
+              validEvent.name(),
+              validEvent.location(), validEvent.isOnline(), validEvent.startDay(),
+              validEvent.startTime(), validEvent.endDay(), validEvent.endTime());
+      this.view.displayUserSchedule(user);
+    } catch (IllegalArgumentException caught) {
+      this.view.displayErrorMessage(caught.getMessage());
+    }
   }
+
 
   /**
    * User request to remove an event they've selected from scheduling system.
    */
   @Override
-  public void requestRemoveEvent(String user, Event event) {
-    // user can also access events within their schedule
-    // would be strange to check whether given event belongs in given user's schedule,
-    // since that's been proven before-hand --> model will check for us --> actually, there is case where it doesn't
+  public void requestRemoveEvent(String user, RawEventData event) {
 
-    this.model.removeEvent(user, event.startDay(), event.startTime());
+    // current View impl logically will never trigger this try-catch
+    // but future impls may do so
+    Event validEvent;
+    try {
+      validEvent = parseRawEventData(event);
+    } catch (IllegalArgumentException caught) {
+      this.view.displayErrorMessage("Cannot remove event with provided input... "
+              + caught.getMessage());
+      return;
+    }
+
+    // should also never get triggered
+    try {
+      checkIfEventInUserSchedule(user, validEvent);
+    } catch (IllegalArgumentException caught) {
+      this.view.displayErrorMessage(caught.getMessage());
+    }
+
+    try {
+      this.model.removeEvent(user, validEvent.startDay(), validEvent.startTime());
+      this.view.displayUserSchedule(user);
+    } catch (IllegalArgumentException caught) {
+      this.view.displayErrorMessage(caught.getMessage());
+    }
+  }
+
+  private void checkIfEventInUserSchedule(String user, Event validEvent) {
+
+    ReadableEvent userEvent = this.model.eventAt(user, validEvent.startDay(), validEvent.startTime());
+
+    if (!userEvent.equals(validEvent)) {
+      throw new IllegalArgumentException("Given Event not in given user schedule... ");
+    }
+
   }
 
   /**
@@ -115,12 +169,32 @@ public class GUIController implements SchedulingSystemController, Features {
    * User request to modify an existing event based on how its manipulated event in GUI.
    */
   @Override
-  public void requestModifyEvent(String user, Event currEvent, Event modEvent) {
+  public void requestModifyEvent(String user, RawEventData currEvent, RawEventData modEvent) {
     // check if currEvent not in requester's schedule (View itself will never this error)
     // but any other component stupidly could, and actually harm model internals
     // thanks to model signature chosen (could collide model w/ other event w/ same start-point)
+
+    Event validCurrEvent;
     try {
-      this.model.modifyEvent(user, currEvent.startDay(), currEvent.startTime(), modEvent);
+      validCurrEvent = parseRawEventData(currEvent);
+    } catch (IllegalArgumentException caught) {
+      this.view.displayErrorMessage(caught.getMessage());
+      return;
+    }
+
+    Event validModEvent;
+    try {
+      validModEvent = parseRawEventData(modEvent);
+    } catch (IllegalArgumentException caught) {
+      this.view.displayErrorMessage(caught.getMessage());
+      return;
+    }
+
+    checkIfEventInUserSchedule(user, validCurrEvent);
+
+    try {
+      this.model.modifyEvent(user, validCurrEvent.startDay(), validCurrEvent.startTime(), validModEvent);
+      this.view.displayUserSchedule(user);
     } catch (IllegalArgumentException caught) {
       System.out.print("ERROR: " + caught.getMessage());
     }
@@ -138,7 +212,7 @@ public class GUIController implements SchedulingSystemController, Features {
    * Runs scheduling system using user input.
    */
   @Override
-  public void launchSchedulingSystem(SchedulingSystem model) {
+  public void useSchedulingSystem(SchedulingSystem model) {
     this.model = model;
     view.addFeatures(this);
     view.makeVisible();
@@ -151,8 +225,48 @@ public class GUIController implements SchedulingSystemController, Features {
    * @throws IllegalStateException if unable to open or parse XML file
    */
   @Override
-  public void launchSchedulingSystem(String pathname) {
+  public void useSchedulingSystem(String pathname) {
     // empty for now
   }
+
+
+  /**
+   * Super important private method
+   *
+   * @param event
+   * @return
+   * @throws IllegalArgumentException
+   */
+  private Event parseRawEventData(RawEventData event) throws IllegalArgumentException {
+
+    if(isAnyDataWithheldBlank(event)) {
+      throw new IllegalArgumentException("Input withheld necessary details needed to create an Event... ");
+    }
+
+    try {
+      int startTime = Integer.parseInt(event.startTimeInput());
+      int endTime = Integer.parseInt(event.endTimeInput());
+      boolean isOnline = Boolean.parseBoolean(event.isOnlineInput());
+      DaysOfTheWeek startDay = DaysOfTheWeek.stringToDay(event.startDayInput());
+      DaysOfTheWeek endDay = DaysOfTheWeek.stringToDay(event.endDayInput());
+
+      // hard-coded NUEvent. Wouldn't matter if time-rep was decoupled from an Event impl!
+      return new NUEvent(event.invitees(), event.nameInput(), event.locationInput(),
+              isOnline, startDay, startTime, endDay, endTime);
+
+    } catch (IllegalArgumentException caught) {
+      throw new IllegalArgumentException("Input cannot be parsed into a valid Event... ");
+    }
+
+  }
+
+  private boolean isAnyDataWithheldBlank(RawEventData event) {
+    return event.nameInput().isEmpty() || event.locationInput().isEmpty()
+            || event.isOnlineInput().isEmpty() || event.startDayInput().isEmpty()
+            || event.startTimeInput().isEmpty() || event.endDayInput().isEmpty()
+            || event.endTimeInput().isEmpty() || event.invitees().isEmpty();
+  }
+
+
 
 }

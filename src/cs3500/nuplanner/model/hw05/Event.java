@@ -3,6 +3,9 @@ package cs3500.nuplanner.model.hw05;
 /**
  * Operations necessary for an Event in a Scheduling System. Observations
  * described within the ReadableEvent interface.
+ *
+ * Event implementations would differ only due to diff time
+ * representations. Should probably decouple time rep. from Event. Would like anything that implements Event to be identical/have no impl-specific quirks. Makes me feel comfortable hard-coding NUEvent in model and controller then.
  */
 public interface Event extends ReadableEvent {
 

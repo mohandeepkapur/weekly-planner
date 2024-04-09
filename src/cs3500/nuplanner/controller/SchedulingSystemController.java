@@ -10,7 +10,7 @@ public interface SchedulingSystemController {
   /**
    * Runs scheduling system using user input.
    */
-  void launchSchedulingSystem(SchedulingSystem model);
+  void useSchedulingSystem(SchedulingSystem model);
 
   /**
    * Runs scheduling system using XML file.
@@ -18,6 +18,6 @@ public interface SchedulingSystemController {
    * @param pathname                     path to XML file
    * @throws IllegalStateException       if unable to open or parse XML file
    */
-  void launchSchedulingSystem(String pathname);
+  void useSchedulingSystem(String pathname);
 
 }

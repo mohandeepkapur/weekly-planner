@@ -30,6 +30,8 @@ public interface ReadableSchedulingSystem {
    * @param user                        name of user whose Event to return
    * @return                            Event belonging to that user
    * @throws IllegalArgumentException   if user does not exist in scheduling system
+   * @throws IllegalArgumentException   if no Event at given start day and time exists in
+   *                                    user schedule
    */
   ReadableEvent eventAt(String user, DaysOfTheWeek startDay, int startTime);
 
