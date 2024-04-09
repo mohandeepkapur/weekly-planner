@@ -52,7 +52,7 @@ public class GUIController implements SchedulingSystemController, Features {
    * @param eventData
    */
   @Override
-  public void requestExistingEventDetails(String user, Event eventData) {
+  public void displayExistingEvent(String user, ReadableEvent eventData) {
     // check if given event does exist in user's schedule
 
     view.displayExistingEvent(user, eventData);

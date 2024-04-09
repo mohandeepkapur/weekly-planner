@@ -11,17 +11,8 @@ import javax.swing.*;
 
 import cs3500.nuplanner.controller.Features;
 import cs3500.nuplanner.model.hw05.DaysOfTheWeek;
-import cs3500.nuplanner.model.hw05.Event;
 import cs3500.nuplanner.model.hw05.ReadableEvent;
 import cs3500.nuplanner.model.hw05.ReadableSchedulingSystem;
-
-import static cs3500.nuplanner.model.hw05.DaysOfTheWeek.FRIDAY;
-import static cs3500.nuplanner.model.hw05.DaysOfTheWeek.MONDAY;
-import static cs3500.nuplanner.model.hw05.DaysOfTheWeek.SATURDAY;
-import static cs3500.nuplanner.model.hw05.DaysOfTheWeek.SUNDAY;
-import static cs3500.nuplanner.model.hw05.DaysOfTheWeek.THURSDAY;
-import static cs3500.nuplanner.model.hw05.DaysOfTheWeek.TUESDAY;
-import static cs3500.nuplanner.model.hw05.DaysOfTheWeek.WEDNESDAY;
 
 /**
  * A frame that shows the schedule of a user and implements all the features to function.
@@ -159,7 +150,7 @@ public class SSFrame extends JFrame implements SSGUIView {
 
         for (ReadableEvent event : SSFrame.this.model.eventsInSchedule(currentUserDisplayed)) {
           if (event.containsTime(day, finalTime)) {
-            features.requestExistingEventDetails(currentUserDisplayed, (Event) event);
+            features.displayExistingEvent(currentUserDisplayed, event);
           }
         }
       }
@@ -246,7 +237,7 @@ public class SSFrame extends JFrame implements SSGUIView {
    * @param event @throws IllegalArgumentException         if no user has been selected/ no schedule displayed
    */
   @Override
-  public void displayExistingEvent(String user, Event event) {
+  public void displayExistingEvent(String user, ReadableEvent event) {
     if (!user.equals(currentUserDisplayed)) {
       throw new IllegalArgumentException("Logically not possible to throw this exception...  ");
     }

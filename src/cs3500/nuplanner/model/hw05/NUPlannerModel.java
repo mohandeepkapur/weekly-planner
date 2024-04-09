@@ -203,6 +203,8 @@ public class NUPlannerModel implements SchedulingSystem {
   @Override
   public void modifyEvent(String user, DaysOfTheWeek startDay, int startTime, Event modEvent) {
 
+    // if event contains non-hosts that don't exist, invite them into the planning system
+
     Event origEvent = userSchedules.get(user).eventAt(startDay, startTime);
     List<String> origEventInvitees = origEvent.eventInvitees();
 
@@ -262,18 +264,38 @@ public class NUPlannerModel implements SchedulingSystem {
                                DaysOfTheWeek startDay, int startTime,
                                DaysOfTheWeek endDay, int endTime) {
 
+    // allows eventConflict method to check Events that contain invitees that don't exist in model
+    // those invitees assumed to have blank schedules
+    List<String> notAddedUsers = new ArrayList<>();
+    for (String user : invitees) {
+      try {
+        confirmUserExists(user);
+      } catch (IllegalArgumentException caught) {
+        addUser(user);
+        notAddedUsers.add(user);
+      }
+    }
+
     // create new Event -> Event constructor will inform model whether params valid
     Event event = new NUEvent(invitees, eventName, location, isOnline,
             startDay, startTime,
             endDay, endTime);
 
-    // just using Event obj internally
+    boolean isConflict;
     try {
+      // just using Event obj internally
       checkOpenSpaceRelevantSchedules(event);
-      return false;
+      isConflict = false;
     } catch (IllegalStateException caught) {
-      return true;
+      isConflict =  true;
     }
+
+    // remove event invitees that do not exist in model yet from model
+    for (String modEventUser : notAddedUsers) {
+      this.removeUser(modEventUser);
+    }
+
+    return isConflict;
 
   }
 

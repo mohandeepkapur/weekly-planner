@@ -268,28 +268,6 @@ public class TestSchedulingSystemNUPlannerImpl {
     assertFalse(model.eventAt("Elaine", TUESDAY, 800).isOnline());
   }
 
-  //  @Test
-  //  public void testInvalidModifyEventOnlineProvidedString() {
-  //    SchedulingSystem model = new NUPlannerModel();
-  //    model.addUser("Elaine");
-  //    model.addEvent("Elaine", new ArrayList<>(List.of("Elaine", "Mia")), "Tennis",
-  //            "Carter Field", true,
-  //            TUESDAY, 800, TUESDAY, 1000);
-  //    assertThrows(IllegalArgumentException.class, () ->
-  //            model.modifyEvent("Elaine", TUESDAY, 800, "online Nissan"));
-  //  }
-  //
-  //  @Test
-  //  public void testInvalidModifyEventOnlineProvidedNumber() {
-  //    SchedulingSystem model = new NUPlannerModel();
-  //    model.addUser("Elaine");
-  //    model.addEvent("Elaine", new ArrayList<>(List.of("Elaine", "Mia")), "Tennis",
-  //            "Carter Field", true,
-  //            TUESDAY, 800, TUESDAY, 1000);
-  //    assertThrows(IllegalArgumentException.class, () ->
-  //            model.modifyEvent("Elaine", TUESDAY, 800, "online 666"));
-  //  }
-
   @Test
   public void testValidModifyEventStartTime() {
     SchedulingSystem model = new NUPlannerModel();
@@ -314,6 +292,7 @@ public class TestSchedulingSystemNUPlannerImpl {
     assertThrows(IllegalArgumentException.class, () -> eventToMod.updateStartTime(819465));
   }
 
+  //TODO: Modification provided is actually valid. Needs to be fixed.
   @Test
   public void testInvalidModifyEventStartTimeAfter() {
     SchedulingSystem model = new NUPlannerModel();
@@ -351,7 +330,7 @@ public class TestSchedulingSystemNUPlannerImpl {
     assertThrows(IllegalArgumentException.class, () -> eventToMod.updateEndTime(819465));
   }
 
-
+  //TODO: Modification provided is actually valid. Needs to be fixed.
   @Test
   public void testInvalidModifyEventEndTimeBefore() {
     SchedulingSystem model = new NUPlannerModel();
@@ -379,7 +358,7 @@ public class TestSchedulingSystemNUPlannerImpl {
     assertEquals(MONDAY, model.eventAt("Elaine", MONDAY, 800).startDay());
   }
 
-
+  //TODO: Modification provided is actually valid. Needs to be fixed.
   @Test
   public void testInvalidModifyEventStartDayAfter() {
     SchedulingSystem model = new NUPlannerModel();
@@ -406,6 +385,7 @@ public class TestSchedulingSystemNUPlannerImpl {
     assertEquals(WEDNESDAY, model.eventAt("Elaine", TUESDAY, 800).endDay());
   }
 
+  //TODO: Modification provided is actually valid. Needs to be fixed.
   @Test
   public void testInvalidModifyEventEndDayBefore() {
     SchedulingSystem model = new NUPlannerModel();

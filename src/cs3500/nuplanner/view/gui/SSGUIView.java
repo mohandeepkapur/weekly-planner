@@ -1,7 +1,7 @@
 package cs3500.nuplanner.view.gui;
 
 import cs3500.nuplanner.controller.Features;
-import cs3500.nuplanner.model.hw05.Event;
+import cs3500.nuplanner.model.hw05.ReadableEvent;
 
 /**
  * GUI View of the Scheduling System Program.
@@ -35,7 +35,7 @@ public interface SSGUIView {
    * @throws IllegalArgumentException if no user has been selected/ no schedule displayed
    * @throws IllegalArgumentException something about event and schedule mismatch
    */
-  void displayExistingEvent(String user, Event event);
+  void displayExistingEvent(String user, ReadableEvent event);
 
   /**
    * Connects low-level events created by controls in GUI to high-level actions that affect rest

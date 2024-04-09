@@ -1,7 +1,7 @@
 package cs3500.nuplanner.controller;
 
-import cs3500.nuplanner.model.hw05.Event;
 import cs3500.nuplanner.model.hw05.RawEventData;
+import cs3500.nuplanner.model.hw05.ReadableEvent;
 
 /**
  * User Requests made through GUI. Typically involves manip. model, view, or both (which is
@@ -18,7 +18,7 @@ public interface Features {
    * Request for a new user's schedule to be shown.
    * @param user        user whose schedule to be shown
    */
-  void displayNewSchedule(String user); // should be view operational method
+  void displayNewSchedule(String user);
 
   /**
    * Request to create a new Event.
@@ -36,7 +36,7 @@ public interface Features {
    * @param user      user requesting event's details to be shown
    * @param event event object to be shown
    */
-  void requestExistingEventDetails(String user, Event event);
+  void displayExistingEvent(String user, ReadableEvent event);
 
   /**
    * Request to add an Event into requester's schedule.
@@ -71,7 +71,6 @@ public interface Features {
    * @param pathname       path of XML directory
    */
   void requestAllSchedulesDownload(String pathname);
-
 
   /**
    * User request to exit program.
