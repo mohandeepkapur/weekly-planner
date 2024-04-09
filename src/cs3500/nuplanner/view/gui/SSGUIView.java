@@ -1,7 +1,9 @@
 package cs3500.nuplanner.view.gui;
 
+
 import cs3500.nuplanner.controller.Features;
 import cs3500.nuplanner.model.hw05.ReadableEvent;
+
 
 /**
  * GUI View of the Scheduling System Program.
