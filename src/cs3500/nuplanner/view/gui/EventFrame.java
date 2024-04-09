@@ -437,9 +437,20 @@ public class EventFrame extends JFrame implements EventGUIView {
       printEventDetails();
       System.out.println(userWhoOpenedEventFrame + " " + availableUsersList.getSelectedValuesList());
 
+      List<String> eventInvitees = new ArrayList<>(availableUsersList.getSelectedValuesList());
+
+      // interpret getSelectedValues List properly to send
+      // correct create-event data
+      if (eventInvitees.contains(userWhoOpenedEventFrame)) {
+        eventInvitees.remove(userWhoOpenedEventFrame);
+        eventInvitees.add(0, userWhoOpenedEventFrame);
+      } else {
+        eventInvitees.add(0, userWhoOpenedEventFrame);
+      }
+
       //conversion of low-level data into high-level signature
       // but focus is on <<request>> evolution, not signature evolution
-      features.requestCreateEvent(userWhoOpenedEventFrame, createRawEventFromUserInput(availableUsersList.getSelectedValuesList()));
+      features.requestCreateEvent(userWhoOpenedEventFrame, createRawEventFromUserInput(eventInvitees));
       this.dispose();
     });
   }
