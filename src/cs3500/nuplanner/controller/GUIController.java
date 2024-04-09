@@ -230,7 +230,7 @@ public class GUIController implements SchedulingSystemController, Features {
       this.model.modifyEvent(user, validCurrEvent.startDay(), validCurrEvent.startTime(), validModEvent);
       this.view.displayUserSchedule(user);
     } catch (IllegalArgumentException caught) {
-      System.out.print("ERROR: " + caught.getMessage());
+      this.view.displayErrorMessage("ERROR: " + caught.getMessage());
     }
   }
 

@@ -19,14 +19,20 @@ public class Time {
     this.militaryTime = time;
   }
 
-  public int getTime() {
-    return this.militaryTime;
-  }
-
   private void ensureProperMilitaryTime(int time) {
     if (time / 100 < 0 || time / 100 > 23 || time % 100 > 59) {
       throw new IllegalArgumentException("Time cannot be init. with invalid military time...  ");
     }
   }
+
+  public int getTime() {
+    return this.militaryTime;
+  }
+
+  // very useful
+  public int convertTimeToObjValue() {
+    return 0;
+  }
+
 
 }
