@@ -33,14 +33,11 @@ import static cs3500.nuplanner.model.hw05.DaysOfTheWeek.TUESDAY;
 import static cs3500.nuplanner.model.hw05.DaysOfTheWeek.WEDNESDAY;
 
 /**
- * Represents an event frame with all the associated text boxes and fields to collect data from
- * the user to be used in the model.
- * Way View is currently set up, will only provide NUEvents to Features!!! Impl specific View!!!!
- * Cannot have this!!! If change impl-type of Events in Model, this View will need to be edited!!!
- * Bad coupling!!!
+ * Represents an event frame with all the associated text boxes and fields
+ * to collect data from the user to be used by controller
+ * to manipulate the model.
  */
 public class EventFrame extends JFrame implements EventGUIView {
-
   private EventPanel panel;
   private JTextField eventNameTextField;
   private JTextField locationTextField;
@@ -72,7 +69,7 @@ public class EventFrame extends JFrame implements EventGUIView {
 
     setSize(500, 400);
     setDefaultCloseOperation(EXIT_ON_CLOSE);
-    panel = new EventPanel(model);
+    panel = new EventPanel();
     panel.setLayout(new BoxLayout(panel, BoxLayout.PAGE_AXIS));
 
     addEventNameBox();

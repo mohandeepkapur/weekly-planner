@@ -40,7 +40,7 @@ public class ScheduleEventFrame extends JFrame implements ScheduleEventGUIView {
 
     setSize(500, 400);
     setDefaultCloseOperation(EXIT_ON_CLOSE);
-    panel = new ScheduleEventPanel(model);
+    panel = new ScheduleEventPanel();
     panel.setLayout(new BoxLayout(panel, BoxLayout.PAGE_AXIS));
 
     addEventNameBox();

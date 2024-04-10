@@ -18,7 +18,7 @@ public interface EventGUIView extends ScheduleEventGUIView {
    *
    * @return the start day of an event
    */
-  String startDayInput();  //get selected item from JComboBox
+  String startDayInput();
 
   /**
    * Sets the start date of an event.

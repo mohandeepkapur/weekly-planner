@@ -11,7 +11,7 @@ import cs3500.nuplanner.controller.Features;
  */
 
 public interface ScheduleEventGUIView {
-  
+
   /**
    * Returns the name of the event.
    *
