@@ -5,8 +5,7 @@ import java.util.List;
 /**
  * A class to represent time in military time format. time representation can change.
  * Used for Strategies only as proof of concept to encapsulate an Event's (day, time)!
- *
- * Will add for fun after OOD. Need to think wisely about Time class.
+ * ONLY USED FOR STRATEGIES. Everywhere else, every component assumes military time.
  */
 // advantages of having a time interface/impl
 // in theory, if I swap out this time-impl and enforce a new kind of time, codebase should still run

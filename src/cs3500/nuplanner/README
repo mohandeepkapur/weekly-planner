@@ -40,6 +40,10 @@ View's implementation details. The essence of what Features does is permit the V
 state, and to manipulate model state. Changing model and view state is equivalent to the controller
 job, thus controller implements the Features interface.
 
+Some data sent over FEATURES is wrapped in RawEventData. This is the raw user input encapsulated
+into a class. The purpose is so the controller can take responsibility for parsing + interpreting
+user input vs the View.
+
 The SSGUIView is the Main View that takes in a Readable model and is given to Controller, and allows
 the user to view multiple schedules, interact with existing events, upload and download schedules,
 and create new events.
@@ -55,6 +59,7 @@ the multiple attending users in the same box (and press modify).
 In the EventView, the host of an existing event user clicks on is highlighted green,
 while the non-host members arehighlighted blue.
 
+In the ScheduleView,
 
 Key Components (mentioned in overview, so this section kept brief):
 
@@ -102,6 +107,9 @@ CHANGES FOR HW 7:
     - In future, will need to create a Time-class to make codebase more flexible and compatible with
       any representation of Time. Due to time constraints between my partner and I, this has not
       been accomplished before the HW7 deadline.
+    - I HAVE CREATED TIME CLASS AND USED IT INTERNALLY WITHIN STRATEGIES as proof of concept
+      for what-could-be, for all components.
+
 
 REASONING FOR NOT IMPLEMENTING TIME CLASS AFTER TA FEEDBACK: Will be doing so after Exam 2.
 However as justification for no time class, an Event itself ensures that the time used to construct
@@ -116,12 +124,6 @@ The Event implementation ITSELF ENFORCES MILITARY TIME.
 
 HW7
 - changed removeEvent and modifyEvent signatures
-
-
-- need to update modify event signature - think about other model method sigs
-- need to use a Time class (discuss with TA, benefits again)
-- need to clean up code/javadocs <-- some are quite bad <-- think about what information should be interface vs impl level
--
 
 if have time (prob won't):
 - think about the use of objective values everywhere --> always converting from military time to ov
