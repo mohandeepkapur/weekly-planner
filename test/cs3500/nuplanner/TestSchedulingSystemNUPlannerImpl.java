@@ -7,7 +7,6 @@ import java.util.List;
 
 import cs3500.nuplanner.model.hw05.Event;
 import cs3500.nuplanner.model.hw05.NUPlannerModel;
-import cs3500.nuplanner.model.hw05.ReadableEvent;
 import cs3500.nuplanner.model.hw05.SchedulingSystem;
 
 import static cs3500.nuplanner.model.hw05.DaysOfTheWeek.FRIDAY;

@@ -4,6 +4,10 @@ import cs3500.nuplanner.controller.Features;
 import cs3500.nuplanner.model.hw05.ReadableEvent;
 import cs3500.nuplanner.view.gui.SSGUIView;
 
+/**
+ * A mock of the view that the controller will use to test inputs.
+ */
+
 public class MockView implements SSGUIView {
   private final Appendable log;
 
