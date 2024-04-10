@@ -6,8 +6,10 @@ import cs3500.nuplanner.model.hw05.DaysOfTheWeek;
 import cs3500.nuplanner.model.hw05.Event;
 import cs3500.nuplanner.model.hw05.NUEvent;
 import cs3500.nuplanner.model.hw05.SchedulingSystem;
-import cs3500.nuplanner.strategies.SchedulingStrategies;
 
+/**
+ * A strategy that lets the program create a scheduled event using any time available.
+ */
 public class AnyTimeStrategy implements SchedulingStrategies {
 
 
@@ -24,11 +26,6 @@ public class AnyTimeStrategy implements SchedulingStrategies {
           int endTime = (hour * 100) + minutes + convertToMilitaryTime(duration);
 
           DaysOfTheWeek endingDay = determineEndingDay(day, startTime, duration);
-
-//          System.out.println(startTime);
-//          System.out.println(endTime);
-//          System.out.println(startingDay);
-//          System.out.println(endingDay);
 
           if (!model.eventConflict(invitees.get(0), invitees, name, location, isOnline, startingDay,
                   startTime, endingDay, endTime)) {

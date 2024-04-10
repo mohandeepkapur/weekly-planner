@@ -18,6 +18,7 @@ public interface SchedulingStrategies {
    * @param duration the duration of the event
    */
   Event findTimeForScheduledEvent(SchedulingSystem model, String name,
-                                  Boolean isOnline, String location, int duration, List<String> invitees);
+                                  Boolean isOnline, String location,
+                                  int duration, List<String> invitees);
 }
 

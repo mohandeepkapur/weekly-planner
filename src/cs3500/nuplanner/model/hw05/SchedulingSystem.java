@@ -14,16 +14,16 @@ public interface SchedulingSystem extends ReadableSchedulingSystem {
   /**
    * Adds a user to the scheduling system.
    *
-   * @param user                             name of new user
-   * @throws IllegalArgumentException        if user already exists in scheduling-system
+   * @param user name of new user
+   * @throws IllegalArgumentException if user already exists in scheduling-system
    */
   void addUser(String user);
 
   /**
    * Removes a user from the scheduling system.
    *
-   * @param user                                name of user
-   * @throws IllegalArgumentException           if user does not exist in the scheduling-system
+   * @param user name of user
+   * @throws IllegalArgumentException if user does not exist in the scheduling-system
    */
   void removeUser(String user);
 
@@ -61,8 +61,8 @@ public interface SchedulingSystem extends ReadableSchedulingSystem {
    * </p>
    *
    * @param user      name of user whose schedule holds the Event
-   * @param startDay
-   * @param startTime
+   * @param startDay  the start day of an event
+   * @param startTime the start time of an event
    * @throws IllegalArgumentException if Event with above properties does not exist in Schedule
    */
   void removeEvent(String user, DaysOfTheWeek startDay, int startTime);
@@ -79,10 +79,10 @@ public interface SchedulingSystem extends ReadableSchedulingSystem {
   /**
    * Modifies an Event within Scheduling System.
    *
-   * @param user           user requesting modification
-   * @param startDay       start day of event to modify in user's schedule
-   * @param startTime      start time of event to modify in user's schedule
-   * @param modEvent       modified event
+   * @param user      user requesting modification
+   * @param startDay  start day of event to modify in user's schedule
+   * @param startTime start time of event to modify in user's schedule
+   * @param modEvent  modified event
    */
   void modifyEvent(String user, DaysOfTheWeek startDay, int startTime, Event modEvent);
 
@@ -91,19 +91,17 @@ public interface SchedulingSystem extends ReadableSchedulingSystem {
    * Event invitees that do not exist in model assumed
    * to have blank schedules, but are not actually added into model.
    *
-   * @param host                        host of Event
-   * @param invitees                    users added to Event (includes host)
-   * @param eventName                   name of Event
-   * @param location                    location of Event
-   * @param isOnline                    online/offline status of Event
-   * @param startDay                    start day of event
-   * @param startTime                   start time of Event
-   * @param endDay                      end day of Event
-   * @param endTime                     end time of Event
-   *
-   * @return                            whether event can exist within scheduling system or not
-   *
-   * @throws IllegalArgumentException   if Event cannot be constructed due to invalid information
+   * @param host      host of Event
+   * @param invitees  users added to Event (includes host)
+   * @param eventName name of Event
+   * @param location  location of Event
+   * @param isOnline  online/offline status of Event
+   * @param startDay  start day of event
+   * @param startTime start time of Event
+   * @param endDay    end day of Event
+   * @param endTime   end time of Event
+   * @return whether event can exist within scheduling system or not
+   * @throws IllegalArgumentException if Event cannot be constructed due to invalid information
    */
   boolean eventConflict(String host, List<String> invitees,
                         String eventName, String location, boolean isOnline,

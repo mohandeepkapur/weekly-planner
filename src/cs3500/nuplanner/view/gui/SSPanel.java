@@ -1,9 +1,9 @@
 package cs3500.nuplanner.view.gui;
 
+import java.awt.*;
 import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 import java.util.List;
-import java.awt.*;
 
 import javax.swing.*;
 

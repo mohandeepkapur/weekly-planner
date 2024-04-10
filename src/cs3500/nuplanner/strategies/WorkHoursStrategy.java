@@ -8,9 +8,15 @@ import cs3500.nuplanner.model.hw05.NUEvent;
 import cs3500.nuplanner.model.hw05.SchedulingSystem;
 import cs3500.nuplanner.strategies.SchedulingStrategies;
 
+/**
+ * A strategy that lets the program create a scheduled event using only work hours which are 9AM
+ * to 5PM from Monday to Friday.
+ */
+
 public class WorkHoursStrategy implements SchedulingStrategies {
   @Override
-  public Event findTimeForScheduledEvent(SchedulingSystem model, String name, Boolean isOnline, String location, int duration, List<String> invitees) {
+  public Event findTimeForScheduledEvent(SchedulingSystem model, String name, Boolean isOnline,
+                                         String location, int duration, List<String> invitees) {
 
     for (int day = 1; day <= 5; day++) {
       DaysOfTheWeek startingDay = convertIntToDay(day);

@@ -19,14 +19,7 @@ import cs3500.nuplanner.model.hw05.DaysOfTheWeek;
 import cs3500.nuplanner.model.hw05.Event;
 import cs3500.nuplanner.model.hw05.NUEvent;
 import cs3500.nuplanner.model.hw05.SchedulingSystem;
-
-import static cs3500.nuplanner.model.hw05.DaysOfTheWeek.FRIDAY;
-import static cs3500.nuplanner.model.hw05.DaysOfTheWeek.MONDAY;
-import static cs3500.nuplanner.model.hw05.DaysOfTheWeek.SATURDAY;
-import static cs3500.nuplanner.model.hw05.DaysOfTheWeek.SUNDAY;
-import static cs3500.nuplanner.model.hw05.DaysOfTheWeek.THURSDAY;
-import static cs3500.nuplanner.model.hw05.DaysOfTheWeek.TUESDAY;
-import static cs3500.nuplanner.model.hw05.DaysOfTheWeek.WEDNESDAY;
+import cs3500.nuplanner.strategies.SchedulingStrategies;
 
 /**
  * Controller that takes in XML input and manipulates model(sched. sys)-state.
@@ -47,7 +40,7 @@ public class XMLController implements SchedulingSystemController {
    * Runs scheduling system using user input.
    */
   @Override
-  public void useSchedulingSystem(SchedulingSystem model) {
+  public void useSchedulingSystem(SchedulingSystem model, SchedulingStrategies strategy) {
     throw new IllegalArgumentException("XML Controller does not run on user input... ");
   }
 
@@ -58,7 +51,7 @@ public class XMLController implements SchedulingSystemController {
    * @throws IllegalStateException       if unable to open or parse XML file
    */
   @Override
-  public void useSchedulingSystem(String pathname) {
+  public void useSchedulingSystem(String pathname, SchedulingStrategies strategy) {
     try {
       DocumentBuilder builder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
       Document xmlDoc = builder.parse(new File(pathname));

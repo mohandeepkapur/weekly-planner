@@ -7,7 +7,6 @@ import java.util.List;
 import javax.swing.*;
 
 import cs3500.nuplanner.controller.Features;
-import cs3500.nuplanner.model.hw05.ReadableEvent;
 import cs3500.nuplanner.model.hw05.ReadableSchedulingSystem;
 
 /**
@@ -25,7 +24,6 @@ public class ScheduleEventFrame extends JFrame implements ScheduleEventGUIView {
   private JList<String> availableUsersList;
 
   private final ReadableSchedulingSystem model;
-  private ReadableEvent event;
   private String scheduleFrameOpenerUser;
 
   /**
@@ -178,46 +176,6 @@ public class ScheduleEventFrame extends JFrame implements ScheduleEventGUIView {
   }
 
   @Override
-  public String startDayInput() {
-    return null;
-  }
-
-  @Override
-  public void displayStartDay(String startDay) {
-
-  }
-
-  @Override
-  public String startTimeInput() {
-    return null;
-  }
-
-  @Override
-  public void displayStartTime(String startTime) {
-
-  }
-
-  @Override
-  public String endDayInput() {
-    return null;
-  }
-
-  @Override
-  public void displayEndDay(String endDay) {
-
-  }
-
-  @Override
-  public String endTimeInput() {
-    return null;
-  }
-
-  @Override
-  public void displayEndTime(String endTime) {
-
-  }
-
-  @Override
   public void addFeatures(Features features) {
     scheduleEventButton.addActionListener(actionEvent -> {
       // areInputsBlank(); <- view check before calling features method
@@ -230,7 +188,15 @@ public class ScheduleEventFrame extends JFrame implements ScheduleEventGUIView {
         System.out.println("Creator/Host of event: " + scheduleFrameOpenerUser);
         printEventDetails();
         // print JList selections as invitees
-        System.out.println(scheduleFrameOpenerUser + " " + availableUsersList.getSelectedValuesList());
+
+        List<String> eventInvitees = new ArrayList<>(availableUsersList.getSelectedValuesList());
+
+        System.out.println(scheduleFrameOpenerUser + " "
+                + availableUsersList.getSelectedValuesList());
+        features.requestScheduleEvent(scheduleFrameOpenerUser, nameInput(),
+                locationInput(), isOnlineInput(), eventDurationTextField.getText(),
+                eventInvitees);
+        this.dispose();
       }
     });
   }
@@ -244,20 +210,13 @@ public class ScheduleEventFrame extends JFrame implements ScheduleEventGUIView {
    */
   private boolean areInputsBlank() {
     return this.nameInput().isEmpty() || this.locationInput().isEmpty() || this.isOnlineInput()
-            .isEmpty()
-            || this.startDayInput().isEmpty() || this.startTimeInput()
-            .isEmpty() || this.endDayInput().isEmpty()
-            || this.endTimeInput().isEmpty();
+            .isEmpty() || (this.eventDurationTextField.getText().isEmpty());
   }
 
   private void printEventDetails() {
     System.out.println(this.nameInput());
     System.out.println(this.locationInput());
     System.out.println(this.isOnlineInput());
-    System.out.println(this.startDayInput());
-    System.out.println(this.startTimeInput());
-    System.out.println(this.endDayInput());
-    System.out.println(this.endTimeInput());
   }
 
   @Override

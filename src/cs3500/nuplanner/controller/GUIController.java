@@ -1,6 +1,6 @@
 package cs3500.nuplanner.controller;
 
-import java.io.IOException;
+import java.util.List;
 
 import cs3500.nuplanner.model.hw05.DaysOfTheWeek;
 import cs3500.nuplanner.model.hw05.Event;
@@ -8,8 +8,7 @@ import cs3500.nuplanner.model.hw05.NUEvent;
 import cs3500.nuplanner.model.hw05.RawEventData;
 import cs3500.nuplanner.model.hw05.ReadableEvent;
 import cs3500.nuplanner.model.hw05.SchedulingSystem;
-import cs3500.nuplanner.view.SchedulingSystemView;
-import cs3500.nuplanner.view.SchedulingSystemXMLView;
+import cs3500.nuplanner.strategies.SchedulingStrategies;
 import cs3500.nuplanner.view.gui.SSGUIView;
 
 /**
@@ -20,14 +19,16 @@ public class GUIController implements SchedulingSystemController, Features {
 
   private SchedulingSystem model;
   private SSGUIView view;
+  private SchedulingStrategies strategy;
 
   /**
    * Constructs a controller.
    *
    * @param ssView main GUI controller will manipulate
    */
-  public GUIController(SSGUIView ssView) {
+  public GUIController(SSGUIView ssView, SchedulingStrategies strategy) {
     this.view = ssView;
+    this.strategy = strategy;
   }
 
   /**
@@ -46,36 +47,25 @@ public class GUIController implements SchedulingSystemController, Features {
    */
   @Override
   public void displayBlankEvent(String user) {
-    try {
-      view.displayBlankEvent();
-    } catch (IllegalArgumentException caught) {
-      this.view.displayErrorMessage("Must select user first... ");
-    }
+    view.displayBlankEvent();
   }
 
   /**
    * Request for an Event's details to be shown. Event must belong in displayed user's schedule.
    *
-   * @param user
-   * @param eventData
+   * @param user      user whose schedule to be shown
+   * @param eventData the event data of the event to be shown
    */
   @Override
   public void displayExistingEvent(String user, ReadableEvent eventData) {
     // check if given event does exist in user's schedule
-    try {
-      view.displayExistingEvent(user, eventData);
-    } catch (IllegalArgumentException caught) {
-      this.view.displayErrorMessage(caught.getMessage());
-    }
+
+    view.displayExistingEvent(user, eventData);
   }
 
   @Override
   public void displayBlankScheduleEvent(String user) {
-    try {
-      view.displayBlankScheduleEvent();
-    } catch (IllegalArgumentException caught) {
-      this.view.displayErrorMessage(caught.getMessage());
-    }
+    view.displayBlankScheduleEvent();
   }
 
   /**
@@ -86,14 +76,6 @@ public class GUIController implements SchedulingSystemController, Features {
   @Override
   public void requestXMLScheduleUpload(String pathname) {
     System.out.println(pathname);
-    try {
-      SchedulingSystemController xmlcontroller = new XMLController(this.model);
-      xmlcontroller.useSchedulingSystem(pathname);
-      this.view.refresh();
-      this.view.displayUserSchedule(this.model.allUsers().get(0));
-    } catch (IllegalStateException caught) {
-      this.view.displayErrorMessage("Unable to process XML file..");
-    }
   }
 
   /**
@@ -104,14 +86,6 @@ public class GUIController implements SchedulingSystemController, Features {
   @Override
   public void requestAllSchedulesDownload(String pathname) {
     System.out.println(pathname);
-    try {
-      SchedulingSystemView xmlview = new SchedulingSystemXMLView(this.model);
-      for (String user : this.model.allUsers()) {
-        xmlview.render(user, pathname + user + ".xml");
-      }
-    } catch (IOException e) {
-      this.view.displayErrorMessage("Cannot save XML version of schedules to given directory...");
-    }
   }
 
   /**
@@ -180,7 +154,8 @@ public class GUIController implements SchedulingSystemController, Features {
 
   private void checkIfEventInUserSchedule(String user, Event validEvent) {
 
-    ReadableEvent userEvent = this.model.eventAt(user, validEvent.startDay(), validEvent.startTime());
+    ReadableEvent userEvent = this.model.eventAt(user,
+            validEvent.startDay(), validEvent.startTime());
 
     if (!userEvent.equals(validEvent)) {
       throw new IllegalArgumentException("Given Event not in given user schedule... ");
@@ -192,8 +167,29 @@ public class GUIController implements SchedulingSystemController, Features {
    * Request to "schedule an event".
    */
   @Override
-  public void requestScheduleEvent() {
+  public void requestScheduleEvent(String user, String name, String location, String isOnline,
+                                   String duration, List<String> invitees) {
+    Event scheduledEvent;
+    try {
+      scheduledEvent = strategy.findTimeForScheduledEvent(model, name,
+              Boolean.parseBoolean(isOnline),
+              location,
+              Integer.parseInt(duration), invitees);
 
+    } catch (IllegalArgumentException caught) {
+      this.view.displayErrorMessage("Cannot create event with provided input... ");
+      return; //TODO: the error message pane doesn't seem to pop up
+    }
+
+    try {
+      model.addEvent(user, scheduledEvent.eventInvitees(),
+              scheduledEvent.name(),
+              scheduledEvent.location(), scheduledEvent.isOnline(), scheduledEvent.startDay(),
+              scheduledEvent.startTime(), scheduledEvent.endDay(), scheduledEvent.endTime());
+      this.view.displayUserSchedule(user);
+    } catch (IllegalArgumentException caught) {
+      this.view.displayErrorMessage(caught.getMessage());
+    }
   }
 
   /**
@@ -227,10 +223,11 @@ public class GUIController implements SchedulingSystemController, Features {
     checkIfEventInUserSchedule(user, validCurrEvent);
 
     try {
-      this.model.modifyEvent(user, validCurrEvent.startDay(), validCurrEvent.startTime(), validModEvent);
+      this.model.modifyEvent(user, validCurrEvent.startDay(),
+              validCurrEvent.startTime(), validModEvent);
       this.view.displayUserSchedule(user);
     } catch (IllegalArgumentException caught) {
-      this.view.displayErrorMessage("ERROR: " + caught.getMessage());
+      System.out.print("ERROR: " + caught.getMessage());
     }
   }
 
@@ -246,7 +243,7 @@ public class GUIController implements SchedulingSystemController, Features {
    * Runs scheduling system using user input.
    */
   @Override
-  public void useSchedulingSystem(SchedulingSystem model) {
+  public void useSchedulingSystem(SchedulingSystem model, SchedulingStrategies strategy) {
     this.model = model;
     view.addFeatures(this);
     view.makeVisible();
@@ -259,21 +256,22 @@ public class GUIController implements SchedulingSystemController, Features {
    * @throws IllegalStateException if unable to open or parse XML file
    */
   @Override
-  public void useSchedulingSystem(String pathname) {
+  public void useSchedulingSystem(String pathname, SchedulingStrategies strategy) {
     // empty for now
   }
 
   /**
-   * Super important private method
+   * Uses the event wrapper to get raw data to create an event.
    *
-   * @param event
-   * @return
-   * @throws IllegalArgumentException
+   * @param event the event that the data is pulled from
+   * @return returns an event
+   * @throws IllegalArgumentException if the input isn't correct or cannot be parsed
    */
   private Event parseRawEventData(RawEventData event) throws IllegalArgumentException {
 
-    if(isAnyDataWithheldBlank(event)) {
-      throw new IllegalArgumentException("Input withheld necessary details needed to create an Event... ");
+    if (isAnyDataWithheldBlank(event)) {
+      throw new IllegalArgumentException(
+              "Input withheld necessary details needed to create an Event... ");
     }
 
     try {
@@ -299,7 +297,4 @@ public class GUIController implements SchedulingSystemController, Features {
             || event.startTimeInput().isEmpty() || event.endDayInput().isEmpty()
             || event.endTimeInput().isEmpty();// || event.invitees().isEmpty();
   }
-
-
-
 }

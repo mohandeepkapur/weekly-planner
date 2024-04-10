@@ -1,12 +1,13 @@
 package cs3500.nuplanner.controller;
 
+import java.util.List;
+
 import cs3500.nuplanner.model.hw05.RawEventData;
 import cs3500.nuplanner.model.hw05.ReadableEvent;
 
 /**
  * User Requests made through GUI. Typically involves manip. model, view, or both (which is
  * controller's job).
- *
  * Unfortunately, for View to utilize this Features interface, View must do parsing of user
  * input to make sense of it, before trying to place it into an Event.
  * steps require interpreting user input and catching errors/responding to them. both
@@ -16,7 +17,8 @@ public interface Features {
 
   /**
    * Request for a new user's schedule to be shown.
-   * @param user        user whose schedule to be shown
+   *
+   * @param user user whose schedule to be shown
    */
   void displayNewSchedule(String user);
 
@@ -33,7 +35,7 @@ public interface Features {
   /**
    * Request for an Event's details to be shown. Event must belong in displayed user's schedule.
    *
-   * @param user      user requesting event's details to be shown
+   * @param user  user requesting event's details to be shown
    * @param event event object to be shown
    */
   void displayExistingEvent(String user, ReadableEvent event);
@@ -56,19 +58,20 @@ public interface Features {
   /**
    * Request to "schedule an event".
    */
-  void requestScheduleEvent();
+  void requestScheduleEvent(String user, String name, String location, String isOnline,
+                            String duration, List<String> invitees);
 
   /**
    * Request for an XML file to be uploaded.
    *
-   * @param pathname    path of XML file
+   * @param pathname path of XML file
    */
   void requestXMLScheduleUpload(String pathname);
 
   /**
    * Request for model state to be saved into multiple XML schedules.
    *
-   * @param pathname       path of XML directory
+   * @param pathname path of XML directory
    */
   void requestAllSchedulesDownload(String pathname);
 

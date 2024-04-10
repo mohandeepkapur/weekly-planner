@@ -5,6 +5,7 @@ import cs3500.nuplanner.model.hw05.NUPlannerModel;
 import cs3500.nuplanner.model.hw05.SchedulingSystem;
 import cs3500.nuplanner.strategies.AnyTimeStrategy;
 import cs3500.nuplanner.strategies.SchedulingStrategies;
+import cs3500.nuplanner.strategies.WorkHoursStrategy;
 import cs3500.nuplanner.view.gui.SSFrame;
 import cs3500.nuplanner.view.gui.SSGUIView;
 
@@ -21,22 +22,22 @@ public final class RunPlanner {
     // loading in data into model
     SchedulingSystem model = new NUPlannerModel();
     SchedulingSystemController xmlCont = new XMLController(model);
-    xmlCont.useSchedulingSystem("XMLFiles/toRead/Prof. Lucia.xml");
+    xmlCont.useSchedulingSystem("XMLFiles/toRead/Prof. Lucia.xml", getStrategy(args[0]));
 
     // launching the model with user input
     SSGUIView view = new SSFrame(model);
-    SchedulingSystemController controller = new GUIController(view);
+    SchedulingSystemController controller = new GUIController(view, getStrategy(args[0]));
+    controller.useSchedulingSystem(model, getStrategy(args[0]));
+  }
 
-    //    if (args[0].equals("anytime")) {
-    //      SchedulingStrategies anytime = new AnyTimeStrategy();
-    //    } else if (args[0].equals("workhours")) {
-    //
-    //    } else {
-    //      throw new IllegalArgumentException("Invalid arg given... ");
-    //    }
-
-    controller.useSchedulingSystem(model);
-
+  private static SchedulingStrategies getStrategy(String arg) {
+    if (arg.equals("anytime")) {
+      return new AnyTimeStrategy();
+    }
+    if (arg.equals("workhours")) {
+      return new WorkHoursStrategy();
+    }
+    throw new IllegalArgumentException("Not a game type!");
   }
 
 }

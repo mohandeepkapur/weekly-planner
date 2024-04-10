@@ -128,7 +128,7 @@ public interface EventGUIView {
   /**
    * Displays an Event that exists within Scheduling System to user.
    *
-   * @param user
+   * @param user the current user
    * @param event event to be displayed
    */
   void displayExistingEvent(String user, ReadableEvent event);

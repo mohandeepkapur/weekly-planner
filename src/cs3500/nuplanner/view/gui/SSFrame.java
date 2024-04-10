@@ -7,7 +7,6 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import javax.swing.*;
@@ -99,8 +98,10 @@ public class SSFrame extends JFrame implements SSGUIView {
     // callback details handled internally within View
     // callbacks are now program-relevant commands (no JFrame dependence externally)
     // rather than callback being a class that needs to interpret JFrame specific code
-    createEventButton.addActionListener(evt -> features.displayBlankEvent(currentUserDisplayed));
-    scheduleEventButton.addActionListener(evt -> features.displayBlankScheduleEvent(currentUserDisplayed));
+    createEventButton.addActionListener(evt ->
+            features.displayBlankEvent(currentUserDisplayed));
+    scheduleEventButton.addActionListener(evt ->
+            features.displayBlankScheduleEvent(currentUserDisplayed));
     userDropdown.addActionListener(new ActionListener() {
       @Override
       public void actionPerformed(ActionEvent actionEvent) {
@@ -224,7 +225,7 @@ public class SSFrame extends JFrame implements SSGUIView {
   /**
    * Displays an empty Event-scheduling window for a user to interact with.
    *
-   * @throws IllegalArgumentException    if a user's schedule is not currently displayed
+   * @throws IllegalArgumentException if a user's schedule is not currently displayed
    */
   @Override
   public void displayBlankScheduleEvent() {
@@ -243,8 +244,9 @@ public class SSFrame extends JFrame implements SSGUIView {
    * Displays the details of the displayed Event that current user has selected.
    * (Events available within their schedule.)
    *
-   * @param user
-   * @param event @throws IllegalArgumentException         if no user has been selected/ no schedule displayed
+   * @param user  the current user
+   * @param event @throws IllegalArgumentException if no user has been selected/ no schedule
+   *              displayed
    */
   @Override
   public void displayExistingEvent(String user, ReadableEvent event) {

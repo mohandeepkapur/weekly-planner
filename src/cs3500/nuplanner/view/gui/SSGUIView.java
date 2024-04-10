@@ -14,7 +14,7 @@ public interface SSGUIView {
    * Displays the Schedule of an existing user in the Scheduling System.
    * Schedule displayed is considered current user of system.
    *
-   * @param user              user in Scheduling System
+   * @param user user in Scheduling System
    */
   void displayUserSchedule(String user);
 
@@ -26,7 +26,7 @@ public interface SSGUIView {
   /**
    * Displays an empty Event-scheduling window for a user to interact with.
    *
-   * @throws IllegalArgumentException    if a user's schedule is not currently displayed
+   * @throws IllegalArgumentException if a user's schedule is not currently displayed
    */
   void displayBlankScheduleEvent();
 
@@ -34,8 +34,8 @@ public interface SSGUIView {
    * Displays the details of the displayed Event that current user has selected.
    * (Events available within their schedule.)
    *
-   * @param user
-   * @param event
+   * @param user  the current user
+   * @param event the event to be displayed
    * @throws IllegalArgumentException if no user has been selected/ no schedule displayed
    * @throws IllegalArgumentException something about event and schedule mismatch
    */
@@ -45,7 +45,7 @@ public interface SSGUIView {
    * Connects low-level events created by controls in GUI to high-level actions that affect rest
    * of codebase.
    *
-   * @param features              program-specific events in response to low-level events
+   * @param features program-specific events in response to low-level events
    */
   void addFeatures(Features features);
 
@@ -56,7 +56,8 @@ public interface SSGUIView {
 
   /**
    * Displays error message to User after failed request.
-   * @param errorMessage        error message
+   *
+   * @param errorMessage error message
    */
   void displayErrorMessage(String errorMessage);
 

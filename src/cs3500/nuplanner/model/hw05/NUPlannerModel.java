@@ -24,8 +24,8 @@ public class NUPlannerModel implements SchedulingSystem {
   /**
    * Adds a user to the scheduling system.
    *
-   * @param user                             name of new user
-   * @throws IllegalArgumentException        if user already exists in scheduling-system
+   * @param user name of new user
+   * @throws IllegalArgumentException if user already exists in scheduling-system
    */
   @Override
   public void addUser(String user) {
@@ -36,8 +36,8 @@ public class NUPlannerModel implements SchedulingSystem {
   /**
    * Removes a user from the scheduling system.
    *
-   * @param user                                name of user
-   * @throws IllegalArgumentException           if user does not exist in the scheduling-system
+   * @param user name of user
+   * @throws IllegalArgumentException if user does not exist in the scheduling-system
    */
   @Override
   public void removeUser(String user) {
@@ -123,9 +123,9 @@ public class NUPlannerModel implements SchedulingSystem {
   /**
    * Adds Event into its invitees' Schedules.
    *
-   * @param event                        Event to be added
-   * @throws IllegalArgumentException    if the Event conflicts with Events within
-   *                                     at least one invitee's Schedule
+   * @param event Event to be added
+   * @throws IllegalArgumentException if the Event conflicts with Events within
+   *                                  at least one invitee's Schedule
    */
   private void placeEventRelevantSchedules(Event event) {
     for (String invitee : event.eventInvitees()) {
@@ -140,8 +140,8 @@ public class NUPlannerModel implements SchedulingSystem {
    * Assumption that no Event in a Schedule shares the same start day and time.
    *
    * @param user      name of user whose schedule holds the Event
-   * @param startDay
-   * @param startTime
+   * @param startDay  the start day of the event
+   * @param startTime the start time of the event
    * @throws IllegalArgumentException if Event with above properties does not exist in Schedule
    */
   @Override
@@ -163,8 +163,8 @@ public class NUPlannerModel implements SchedulingSystem {
    * Recursive method that updates every user schedule when host is removed from an Event.
    * Event is removed from every invitee's schedule.
    *
-   * @param invitees                        current invitees in event (decreases recursively)
-   * @param copyEventToRemove               copy of Event to remove (updates recursively too)
+   * @param invitees          current invitees in event (decreases recursively)
+   * @param copyEventToRemove copy of Event to remove (updates recursively too)
    */
   private void removeEventFromEverySchedule(List<String> invitees, Event copyEventToRemove) {
     // manipulate Event object contained within Schedule
@@ -187,8 +187,8 @@ public class NUPlannerModel implements SchedulingSystem {
   /**
    * Removes an Event from a single schedule.
    *
-   * @param user                        invitee who is removing Event
-   * @param eventToRemove               Event to remove
+   * @param user          invitee who is removing Event
+   * @param eventToRemove Event to remove
    */
   private void removeEventFromSingleSchedule(String user, Event eventToRemove) {
     Schedule inviteeSchedule = this.userSchedules.get(user);
@@ -198,10 +198,10 @@ public class NUPlannerModel implements SchedulingSystem {
   /**
    * Modifies an Event within Scheduling System.
    *
-   * @param user           user requesting modification
-   * @param startDay       start day of event to modify in user's schedule
-   * @param startTime      start time of event to modify in user's schedule
-   * @param modEvent       modified event
+   * @param user      user requesting modification
+   * @param startDay  start day of event to modify in user's schedule
+   * @param startTime start time of event to modify in user's schedule
+   * @param modEvent  modified event
    */
   @Override
   public void modifyEvent(String user, DaysOfTheWeek startDay, int startTime, Event modEvent) {
@@ -253,19 +253,17 @@ public class NUPlannerModel implements SchedulingSystem {
    * Event invitees that do not exist in model assumed
    * to have blank schedules, but are not actually added into model.
    *
-   * @param host                        host of Event
-   * @param invitees                    users added to Event (includes host)
-   * @param eventName                   name of Event
-   * @param location                    location of Event
-   * @param isOnline                    online/offline status of Event
-   * @param startDay                    start day of event
-   * @param startTime                   start time of Event
-   * @param endDay                      end day of Event
-   * @param endTime                     end time of Event
-   *
-   * @return                            whether event can exist within scheduling system or not
-   *
-   * @throws IllegalArgumentException   if Event cannot be constructed due to invalid information
+   * @param host      host of Event
+   * @param invitees  users added to Event (includes host)
+   * @param eventName name of Event
+   * @param location  location of Event
+   * @param isOnline  online/offline status of Event
+   * @param startDay  start day of event
+   * @param startTime start time of Event
+   * @param endDay    end day of Event
+   * @param endTime   end time of Event
+   * @return whether event can exist within scheduling system or not
+   * @throws IllegalArgumentException if Event cannot be constructed due to invalid information
    */
   @Override
   public boolean eventConflict(String host, List<String> invitees,
@@ -296,7 +294,7 @@ public class NUPlannerModel implements SchedulingSystem {
       checkOpenSpaceRelevantSchedules(event);
       isConflict = false;
     } catch (IllegalStateException caught) {
-      isConflict =  true;
+      isConflict = true;
     }
 
     // remove event invitees that do not exist in model yet from model
@@ -311,8 +309,8 @@ public class NUPlannerModel implements SchedulingSystem {
   /**
    * Checks whether Event can be added into its invitees' Schedules.
    *
-   * @param event                     Event to be added
-   * @throws IllegalStateException    if the Event conflicts with Events within Schedule
+   * @param event Event to be added
+   * @throws IllegalStateException if the Event conflicts with Events within Schedule
    */
   private void checkOpenSpaceRelevantSchedules(Event event) {
     // for every invitee (including host)
@@ -320,7 +318,7 @@ public class NUPlannerModel implements SchedulingSystem {
       Schedule inviteeSchedule = this.userSchedules.get(invitee);
       if (inviteeSchedule.eventConflict(event)) {
         throw new IllegalStateException("Event cannot be added into scheduling system... "
-               + "scheduling conflict with at least one invitee's schedule... ");
+                + "scheduling conflict with at least one invitee's schedule... ");
       }
     }
 
@@ -329,10 +327,9 @@ public class NUPlannerModel implements SchedulingSystem {
   /**
    * Observes all the Events contained within a user's Schedule.
    *
-   * @param user                        name of user whose Schedule to return
-   * @throws IllegalArgumentException   if user does not exist in scheduling system
-   *
-   * @return                            Schedule belonging to that user
+   * @param user name of user whose Schedule to return
+   * @return Schedule belonging to that user
+   * @throws IllegalArgumentException if user does not exist in scheduling system
    */
   @Override
   public List<ReadableEvent> eventsInSchedule(String user) {
@@ -345,10 +342,9 @@ public class NUPlannerModel implements SchedulingSystem {
   /**
    * Observes a unique Event contained within a user's schedule.
    *
-   * @param user                        name of user whose Event to return
-   * @throws IllegalArgumentException   if user does not exist in scheduling system
-   *
-   * @return                            Event belonging to that user
+   * @param user name of user whose Event to return
+   * @return Event belonging to that user
+   * @throws IllegalArgumentException if user does not exist in scheduling system
    */
   @Override
   public ReadableEvent eventAt(String user, DaysOfTheWeek startDay, int startTime) {
@@ -366,8 +362,8 @@ public class NUPlannerModel implements SchedulingSystem {
   /**
    * Confirms that a user exists in the Scheduling System.
    *
-   * @param user                       user name
-   * @throws IllegalArgumentException  if user DNE in SS
+   * @param user user name
+   * @throws IllegalArgumentException if user DNE in SS
    */
   private void confirmUserExists(String user) {
     if (user == null) {
@@ -381,8 +377,8 @@ public class NUPlannerModel implements SchedulingSystem {
   /**
    * Confirms that a user does not exist within the Scheduling System.
    *
-   * @param user                              name of user
-   * @throws IllegalArgumentException         if user exists within the Scheduling System
+   * @param user name of user
+   * @throws IllegalArgumentException if user exists within the Scheduling System
    */
   private void confirmUserDoesNotExist(String user) throws IllegalArgumentException {
     if (user == null) {

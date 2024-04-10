@@ -2,9 +2,19 @@ package cs3500.nuplanner.model.hw05;
 
 // advantages of having a time interface/impl
 // in theory, if I swap out this time-impl and enforce a new kind of time, codebase should still run
+
+/**
+ * A class to represent time in a specific military time format.
+ */
 public class Time {
 
   private int militaryTime;
+
+  /**
+   * Creates the time with a specific format
+   *
+   * @param time the time passed in
+   */
 
   public Time(int time) {
 
@@ -13,6 +23,11 @@ public class Time {
     this.militaryTime = time;
   }
 
+  /**
+   * Creates a time with proper military format.
+   *
+   * @param time the time passed in
+   */
   public void setTime(int time) {
     // perform checks to make sure time is valid
     ensureProperMilitaryTime(time);

@@ -8,7 +8,6 @@ import java.util.List;
 import javax.swing.*;
 
 import cs3500.nuplanner.controller.Features;
-import cs3500.nuplanner.model.hw05.Event;
 import cs3500.nuplanner.model.hw05.RawEventData;
 import cs3500.nuplanner.model.hw05.ReadableEvent;
 import cs3500.nuplanner.model.hw05.ReadableSchedulingSystem;
@@ -24,7 +23,7 @@ import static cs3500.nuplanner.model.hw05.DaysOfTheWeek.WEDNESDAY;
 /**
  * Represents an event frame with all the associated text boxes and fields to collect data from
  * the user to be used in the model.
- *
+ * <p>
  * Way View is currently set up, will only provide NUEvents to Features!!! Impl specific View!!!!
  * Cannot have this!!! If change impl-type of Events in Model, this View will need to be edited!!!
  * Bad coupling!!!
@@ -412,7 +411,8 @@ public class EventFrame extends JFrame implements EventGUIView {
       printEventDetails();
       System.out.println("Modified Event invitees" + modInviteeList);
 
-      features.requestModifyEvent(userWhoOpenedEventFrame, createRawEventFromEvent(currEventDisp), createRawEventFromUserInput(modInviteeList));
+      features.requestModifyEvent(userWhoOpenedEventFrame, createRawEventFromEvent(currEventDisp),
+              createRawEventFromUserInput(modInviteeList));
       this.dispose();
 
     });
@@ -422,13 +422,17 @@ public class EventFrame extends JFrame implements EventGUIView {
     removeEventButton.addActionListener(actionEvent -> {
       // button doesn't care if any data removed from event-frame popup by user
       // will still remove correct event thanks to field that tracks curr Event obj displayed
-      features.requestRemoveEvent(this.userWhoOpenedEventFrame, createRawEventFromEvent(currEventDisp));
+      features.requestRemoveEvent(this.userWhoOpenedEventFrame,
+              createRawEventFromEvent(currEventDisp));
       this.dispose();
     });
   }
 
   private RawEventData createRawEventFromEvent(ReadableEvent event) {
-    return new RawEventData(event.eventInvitees(), event.name(), event.location(), String.valueOf(event.isOnline()), String.valueOf(event.startDay()), String.valueOf(event.startTime()), String.valueOf(event.endDay()), String.valueOf(event.endTime()));
+    return new RawEventData(event.eventInvitees(), event.name(), event.location(),
+            String.valueOf(event.isOnline()), String.valueOf(event.startDay()),
+            String.valueOf(event.startTime()), String.valueOf(event.endDay()),
+            String.valueOf(event.endTime()));
   }
 
   private void createEventButtonCallback(Features features) {
@@ -437,7 +441,8 @@ public class EventFrame extends JFrame implements EventGUIView {
       System.out.println("CREATING EVENT...");
       System.out.println("Creator/Host of event: " + userWhoOpenedEventFrame);
       printEventDetails();
-      System.out.println(userWhoOpenedEventFrame + " " + availableUsersList.getSelectedValuesList());
+      System.out.println(userWhoOpenedEventFrame + " "
+              + availableUsersList.getSelectedValuesList());
 
       List<String> eventInvitees = new ArrayList<>(availableUsersList.getSelectedValuesList());
 
@@ -452,14 +457,16 @@ public class EventFrame extends JFrame implements EventGUIView {
 
       //conversion of low-level data into high-level signature
       // but focus is on <<request>> evolution, not signature evolution
-      features.requestCreateEvent(userWhoOpenedEventFrame, createRawEventFromUserInput(eventInvitees));
+      features.requestCreateEvent(userWhoOpenedEventFrame,
+              createRawEventFromUserInput(eventInvitees));
       this.dispose();
     });
   }
 
 
   private RawEventData createRawEventFromUserInput(List<String> invitees) {
-    return new RawEventData(invitees, this.nameInput(), this.locationInput(), this.isOnlineInput(), this.startDayInput(),
+    return new RawEventData(invitees, this.nameInput(), this.locationInput(),
+            this.isOnlineInput(), this.startDayInput(),
             this.startTimeInput(), this.endDayInput(), this.endTimeInput());
 
   }
@@ -467,7 +474,7 @@ public class EventFrame extends JFrame implements EventGUIView {
   /**
    * Displays all Event details to user.
    *
-   * @param user
+   * @param user  the current user
    * @param event event to be displayed
    */
   @Override

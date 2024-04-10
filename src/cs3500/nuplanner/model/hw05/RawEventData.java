@@ -6,7 +6,7 @@ import java.util.List;
 /**
  * Wraps user-input data used to create an Event. Event may not be able
  * be initializeable from held data.
- *
+ * <p>
  * Point of this class is to get data. Not observe.
  */
 public class RawEventData {
@@ -14,6 +14,18 @@ public class RawEventData {
   private List<String> invitees;
   private final String eventName, location, isOnline, startDay, startTime, endDay, endTime;
 
+  /**
+   * Creates the raw event data with the strings passed in
+   *
+   * @param invitees  the invitees to an event
+   * @param eventName the event name
+   * @param location  the location of the event
+   * @param isOnline  if the event is online or not
+   * @param startDay  the start day of the event
+   * @param startTime the start time of the event
+   * @param endDay    the end day of the event
+   * @param endTime   the end time of the event
+   */
   public RawEventData(List<String> invitees,
                       String eventName, String location, String isOnline,
                       String startDay, String startTime,
