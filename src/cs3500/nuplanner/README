@@ -89,14 +89,13 @@ Created Features interface and bare-bones controller. Brief reasoning given in I
 
 CHANGES FOR HW 7:
 - Behavior of an Event slightly modified -> an Event can now
-- Codebase is right now compatible with only one representation of time: military time
-    - biggest oversight for this project (lesson learned) <- can be easily changed if had 12hrs free
+- Codebase is right now hardcoded with only one representation of time: military time
+    - biggest oversight for this project (lesson learned) <- can be easily changed if had 12hrs
     - NUEvent impl set to only work with military time
-    - SchedulingSystem impl assumes time passed in is either valid or invalid military time
-    - Schedule assumes that an Event given to it (at interface level) work with military time
+    - SchedulingSystem (model) impl assumes time passed in is either valid or invalid military time
+    - Schedule impl assumes that an Event given to it (at interface level) work with military time
     - View assumes all Events given to it (at interface level) work with military time
     - ^ first step to fixing this assumption is to decouple time rep from Event (not hard)
-    - Strategies assume military time as input
     - When we say assume, we mean that there are still checks in place to reject invalid
         military time (mainly, it is impossible to create an Event with invalid military time),
         but again, codebase can only work with military time

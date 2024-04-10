@@ -6,6 +6,7 @@ import cs3500.nuplanner.model.hw05.DaysOfTheWeek;
 import cs3500.nuplanner.model.hw05.Event;
 import cs3500.nuplanner.model.hw05.NUEvent;
 import cs3500.nuplanner.model.hw05.SchedulingSystem;
+import cs3500.nuplanner.model.hw05.Time;
 import cs3500.nuplanner.strategies.SchedulingStrategies;
 
 /**
@@ -14,61 +15,92 @@ import cs3500.nuplanner.strategies.SchedulingStrategies;
  */
 
 public class WorkHoursStrategy implements SchedulingStrategies {
+
   @Override
   public Event findTimeForScheduledEvent(SchedulingSystem model, String name, Boolean isOnline,
                                          String location, int duration, List<String> invitees) {
 
-    for (int day = 1; day <= 5; day++) {
-      DaysOfTheWeek startingDay = DaysOfTheWeek.valToDay(day);
+    // start and end times in objective values here
+    List<Integer> monWorkHours = Time.convertTimesToObjectivePair(
+            new Time(DaysOfTheWeek.MONDAY, 900),
+            new Time(DaysOfTheWeek.MONDAY, 1700));
 
-      for (int hour = 9; hour <= 17; hour++) {
-        for (int minutes = 0; minutes < 59; minutes++) {
+    List<Integer> tuesWorkHours = Time.convertTimesToObjectivePair(
+            new Time(DaysOfTheWeek.TUESDAY, 900),
+            new Time(DaysOfTheWeek.TUESDAY, 1700));
 
-          int startTime = (hour * 100) + minutes;
-          int endTime = startTime + convertToMilitaryTime(duration);
+    List<Integer> wedWorkHours = Time.convertTimesToObjectivePair(
+            new Time(DaysOfTheWeek.WEDNESDAY, 900),
+            new Time(DaysOfTheWeek.WEDNESDAY, 1700));
 
-          DaysOfTheWeek endingDay = determineEndingDay(day, startTime, duration);
+    List<Integer> thursWorkHours = Time.convertTimesToObjectivePair(
+            new Time(DaysOfTheWeek.THURSDAY, 900),
+            new Time(DaysOfTheWeek.THURSDAY, 1700));
 
-          System.out.println(startTime);
-          System.out.println(endTime);
-          System.out.println(startingDay);
-          System.out.println(endingDay);
+    List<Integer> friWorkHours = Time.convertTimesToObjectivePair(
+            new Time(DaysOfTheWeek.FRIDAY, 900),
+            new Time(DaysOfTheWeek.FRIDAY, 1700));
 
-          if (!model.eventConflict(invitees.get(0), invitees, name, location, isOnline, startingDay,
-                  startTime, endingDay, endTime)) {
-            return new NUEvent(invitees, name, location, isOnline, startingDay,
-                    startTime, endingDay, endTime);
-
-          }
-        }
-
-      } //do nothing and rerun the top For loop
-
+    try {
+      return findTimeThisDay(monWorkHours, model, name, isOnline, location, duration, invitees);
+    } catch (IllegalArgumentException caught) {
+      //do nothing
     }
+
+    try {
+      return findTimeThisDay(tuesWorkHours, model, name, isOnline, location, duration, invitees);
+    } catch (IllegalArgumentException caught) {
+      //do nothing
+    }
+
+    try {
+      return findTimeThisDay(wedWorkHours, model, name, isOnline, location, duration, invitees);
+    } catch (IllegalArgumentException caught) {
+      //do nothing
+    }
+
+    try {
+      return findTimeThisDay(thursWorkHours, model, name, isOnline, location, duration, invitees);
+    } catch (IllegalArgumentException caught) {
+      //do nothing
+    }
+
+    try {
+      return findTimeThisDay(friWorkHours, model, name, isOnline, location, duration, invitees);
+    } catch (IllegalArgumentException caught) {
+      //do nothing
+    }
+
     throw new IllegalArgumentException("Can't create event with provided parameters");
 
   }
 
-  private int convertToMilitaryTime(int duration) {
-    int minutes = duration % 60;
-    int hours = (duration / 60) * 100;
-    return hours + minutes;
-  }
+  private Event findTimeThisDay(List<Integer> workhours, SchedulingSystem model, String name,
+                               Boolean isOnline, String location,
+                               int duration, List<String> invitees) {
+    for (int objStartTime = workhours.get(0); objStartTime < workhours.get(1); objStartTime++) {
 
-  /**
-   * Returns the correct ending day, which may not be the current day.
-   *
-   * @param day       starting day of the event
-   * @param startTime starting time of the event
-   * @param duration  duration of the event
-   * @return ending day of the event
-   */
-  private DaysOfTheWeek determineEndingDay(int day, int startTime, int duration) {
-    int daysAfter = (startTime + duration) / 2400;
-    if (startTime + duration > 0) {
-      return DaysOfTheWeek.valToDay(day + daysAfter);
+      int objEndTime = objStartTime + duration;
+
+      List<Time> times = Time.convertObjectivePairToTimes(objStartTime, objEndTime);
+      Time startPoint = times.get(0);
+      Time endPoint = times.get(1);
+
+      // convert objStartTime and objEndTime into Start day, Start time, End day, End time
+
+      // then try and see if an Event with that range fits into all the invitees schedules
+      if (!model.eventConflict(invitees.get(0), invitees, name, location, isOnline,
+              startPoint.day(), startPoint.time(), endPoint.day(), endPoint.time())) {
+
+        return new NUEvent(invitees, name, location, isOnline,
+                startPoint.day(), startPoint.time(), endPoint.day(), endPoint.time());
+
+      }
+
     }
-    return DaysOfTheWeek.valToDay(day);
+
+    throw new IllegalArgumentException("Can't create event on this day");
+
   }
 
 }

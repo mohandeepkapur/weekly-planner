@@ -137,3 +137,7 @@ also, if modifyEvent making switch, would be nice for removeEvent to change for 
 
 // Event just container for attendees
 // special actions if "host" removed handled by model
+
+Biggest drawback <- not having a time-class and user-class
+would've made codebase so much more flexible
+codebase then could've easily worked with different time representations

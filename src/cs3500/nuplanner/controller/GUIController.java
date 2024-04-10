@@ -210,7 +210,7 @@ public class GUIController implements SchedulingSystemController, Features {
               Integer.parseInt(duration), invitees);
 
     } catch (IllegalArgumentException caught) {
-      this.view.displayErrorMessage("Cannot create event with provided input... ");
+      this.view.displayErrorMessage("Cannot create event with provided input... " + caught.getMessage());
       return; //TODO: the error message pane doesn't seem to pop up <- Mohan: message pops up for me
     }
 
