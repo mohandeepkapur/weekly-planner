@@ -4,7 +4,7 @@ package cs3500.nuplanner.model.hw05;
 // in theory, if I swap out this time-impl and enforce a new kind of time, codebase should still run
 
 /**
- * A class to represent time in a specific military time format.
+ * A class to represent time in military time format. time representation can change.
  */
 public class Time {
 
@@ -45,9 +45,12 @@ public class Time {
   }
 
   // very useful
-  public int convertTimeToObjValue() {
+  public int convertTimeToMinFromStart() {
     return 0;
   }
 
+  public int convertMinFromStartToTime() { return 0; }
+
+  public int convertInputToTime() { return 0; }
 
 }

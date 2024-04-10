@@ -5,10 +5,8 @@ package cs3500.nuplanner.model.hw05;
  * described within the ReadableEvent interface.
  * Event implementations would differ only due to different time representations.
  */
-
-//Should probably decouple time rep. from Event.
-//Would like anything that implements Event to be identical/have no impl-specific quirks.
-//Makes me feel comfortable hard-coding NUEvent in model and controller then.
+//Should probably decouple time rep. from Event
+//Would like anything that implements Event to be identical/have no impl-specific differences.
 public interface Event extends ReadableEvent {
 
   /**
@@ -83,21 +81,20 @@ public interface Event extends ReadableEvent {
   void updateEndTime(int endTime);
 
   /**
-   * Removes an invitee from the Event.
-   * If host of Event is removed, all other invitees of Event are removed as consequence.
+   * Removes an invitee from the Event. If host of Event is removed, all other invitees of Event
+   * are removed as consequence, creating invitee-less Event.
    *
-   * @param invitee invitee to remove
-   * @throws IllegalArgumentException if no invitees left in Event
-   * @throws IllegalArgumentException if invitee to remove is not part of Event
+   * @param invitee                     invitee to remove
+   * @throws IllegalArgumentException   if no invitees left in Event
+   * @throws IllegalArgumentException   if invitee to remove is not part of Event
    */
   void removeInvitee(String invitee); //remove user from invited user list
 
   /**
-   * Adds an invitee to the Event.
+   * Adds an invitee to the Event. First invitee added to invitee-less Event becomes host.
    *
-   * @param invitee invitee to add
-   * @throws IllegalArgumentException if invitee is already part of Event
-   * @throws IllegalArgumentException if first invitee is not host of Event
+   * @param invitee                       invitee to add
+   * @throws IllegalArgumentException     if invitee is already invited in Event
    */
   void addInvitee(String invitee);
 

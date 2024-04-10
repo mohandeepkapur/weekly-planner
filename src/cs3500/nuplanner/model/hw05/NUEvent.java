@@ -29,7 +29,6 @@ public class NUEvent implements Event {
    *
    * @throws IllegalArgumentException if any input is null
    * @throws IllegalArgumentException if times provided are not in military format
-   * @throws IllegalArgumentException if invitee list is empty (always at least one)
    */
   public NUEvent(List<String> invitees,
                  String eventName, String location, boolean isOnline,
@@ -96,9 +95,9 @@ public class NUEvent implements Event {
 
   /**
    * Observes host of Event.
-   * HW 7 REMOVE: Event host is fixed/cannot be updated.
    *
-   * @return the host of event
+   * @return                           the host of event
+   * @throws IllegalArgumentException  if Event is invitee-less, thus has no host
    */
   @Override
   public String host() {
@@ -247,9 +246,9 @@ public class NUEvent implements Event {
    * The minimum and maximum time an Event can span is enforced by implementation.
    * Desired format of military time is enforced by implementation.
    *
-   * @param startTime new start time of Event
-   * @throws IllegalArgumentException if time-span of updated Event is invalid
-   * @throws IllegalArgumentException if time provided isn't in implementation's desired format
+   * @param startTime                     new start time of Event
+   * @throws IllegalArgumentException     if time-span of updated Event is invalid
+   * @throws IllegalArgumentException      if time provided isn't in implementation's desired format
    * @implNote Event can only span from 1 minute to 6 days, 23 hours, 59 minutes
    */
   @Override
@@ -274,10 +273,11 @@ public class NUEvent implements Event {
    * The minimum and maximum time an Event can span is enforced by implementation.
    * Desired format of military time is enforced by implementation.
    *
-   * @param endTime new end time of Event
-   * @throws IllegalArgumentException if time-span of updated Event is invalid
-   * @throws IllegalArgumentException if time provided isn't in implementation's desired format
-   * @implNote Event can only span from 1 minute to 6 days, 23 hours, 59 minutes
+   * @param endTime                     new end time of Event
+   * @throws IllegalArgumentException   if time-span of updated Event is invalid
+   * @throws IllegalArgumentException   if time provided isn't in implementation's desired format
+   * @implNote                          Event can only span from 1 minute to 6 days,
+   *                                    23 hours, 59 minutes
    */
   @Override
   public void updateEndTime(int endTime) {
@@ -297,12 +297,12 @@ public class NUEvent implements Event {
   }
 
   /**
-   * Removes an invitee from the Event.
-   * If host of Event is removed, all other invitees of Event are removed as consequence.
+   * Removes an invitee from the Event. If host of Event is removed, all other invitees of Event
+   * are removed as consequence, creating invitee-less Event.
    *
-   * @param invitee invitee to remove
-   * @throws IllegalArgumentException if no invitees left in Event
-   * @throws IllegalArgumentException if invitee to remove is not part of Event
+   * @param invitee                     invitee to remove
+   * @throws IllegalArgumentException   if no invitees left in Event
+   * @throws IllegalArgumentException   if invitee to remove is not part of Event
    */
   @Override
   public void removeInvitee(String invitee) {
@@ -324,11 +324,10 @@ public class NUEvent implements Event {
   }
 
   /**
-   * Adds an invitee to the Event.
+   * Adds an invitee to the Event. First invitee added to Event with no invitees becomes host.
    *
-   * @param invitee invitee to add
-   * @throws IllegalArgumentException if invitee is already part of Event
-   * @throws IllegalArgumentException if first invitee is not host of Event
+   * @param invitee                       invitee to add
+   * @throws IllegalArgumentException     if invitee is already invited in Event
    */
   @Override
   public void addInvitee(String invitee) {
@@ -404,6 +403,13 @@ public class NUEvent implements Event {
     return Objects.hash(name, location, invitees, isOnline, startTime, startDay, endTime, endDay);
   }
 
+  /**
+   * Checks whether provided time is contained within Event.
+   *
+   * @param day     day event suppos. contains
+   * @param time    time event suppos. contains
+   * @return        whether provided time is contained within Event
+   */
   @Override
   public boolean containsTime(DaysOfTheWeek day, int time) {
     List<Integer> objValues = extractObjectiveValues();

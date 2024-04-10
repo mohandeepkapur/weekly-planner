@@ -15,11 +15,14 @@ public interface SSGUIView {
    * Schedule displayed is considered current user of system.
    *
    * @param user user in Scheduling System
+   * @throws IllegalArgumentException   if user does not exist in scheduling system
    */
   void displayUserSchedule(String user);
 
   /**
    * Displays an empty Event-creation window for a user to interact with.
+   *
+   * @throws IllegalArgumentException      if no user schedule currently displayed by view
    */
   void displayBlankEvent();
 

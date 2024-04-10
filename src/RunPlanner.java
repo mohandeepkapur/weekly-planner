@@ -21,6 +21,7 @@ public final class RunPlanner {
 
     // loading in data into model
     SchedulingSystem model = new NUPlannerModel();
+    //    INTENTIONAL OMISSION: User will upload XML file in toRead themselves
     SchedulingSystemController xmlCont = new XMLController(model);
     xmlCont.useSchedulingSystem("XMLFiles/toRead/Prof. Lucia.xml");
 

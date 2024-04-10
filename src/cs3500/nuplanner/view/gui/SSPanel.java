@@ -34,6 +34,7 @@ public class SSPanel extends JPanel {
    * Displays a new schedule panel for a user after selecting one from the list.
    *
    * @param user the user schedule  to view
+   * @throws IllegalArgumentException   if user does not exist in scheduling system
    */
   public void displayUserSchedule(String user) {
     this.userEvents = this.model.eventsInSchedule(user);

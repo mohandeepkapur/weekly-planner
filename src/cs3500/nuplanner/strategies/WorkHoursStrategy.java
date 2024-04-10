@@ -36,17 +36,17 @@ public class WorkHoursStrategy implements SchedulingStrategies {
 
           if (!model.eventConflict(invitees.get(0), invitees, name, location, isOnline, startingDay,
                   startTime, endingDay, endTime)) {
-
             return new NUEvent(invitees, name, location, isOnline, startingDay,
                     startTime, endingDay, endTime);
+
           }
         }
-
 
       } //do nothing and rerun the top For loop
 
     }
     throw new IllegalArgumentException("Can't create event with provided parameters");
+
   }
 
   private int convertToMilitaryTime(int duration) {

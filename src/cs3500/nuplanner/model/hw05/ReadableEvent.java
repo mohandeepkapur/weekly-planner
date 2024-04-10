@@ -11,9 +11,9 @@ public interface ReadableEvent {
 
   /**
    * Observes host of Event.
-   * HW 7 REMOVE: Event host is fixed/cannot be updated.
    *
-   * @return the host of event
+   * @return                           the host of event
+   * @throws IllegalArgumentException  if Event is invitee-less, thus has no host
    */
   String host();
 

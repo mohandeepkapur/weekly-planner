@@ -1,5 +1,6 @@
 package cs3500.nuplanner.controller;
 
+import java.io.IOException;
 import java.util.List;
 
 import cs3500.nuplanner.model.hw05.DaysOfTheWeek;
@@ -9,6 +10,8 @@ import cs3500.nuplanner.model.hw05.RawEventData;
 import cs3500.nuplanner.model.hw05.ReadableEvent;
 import cs3500.nuplanner.model.hw05.SchedulingSystem;
 import cs3500.nuplanner.strategies.SchedulingStrategies;
+import cs3500.nuplanner.view.SchedulingSystemView;
+import cs3500.nuplanner.view.SchedulingSystemXMLView;
 import cs3500.nuplanner.view.gui.SSGUIView;
 
 /**
@@ -34,12 +37,15 @@ public class GUIController implements SchedulingSystemController, Features {
   /**
    * Request for a new user's schedule to be shown.
    *
-   * @param user user whose schedule to be shown
+   * @param user                        user whose schedule to be shown
    */
   @Override
   public void displayNewSchedule(String user) {
-    view.displayUserSchedule(user);
-    model.allUsers(); // added to prevent handins error, model needs to be field in controller man
+    try {
+      view.displayUserSchedule(user);
+    } catch (IllegalArgumentException caught) {
+      this.view.displayErrorMessage("This user does not exist in scheduling system... schedule cannot be displayed");
+    }
   }
 
   /**
@@ -47,7 +53,11 @@ public class GUIController implements SchedulingSystemController, Features {
    */
   @Override
   public void displayBlankEvent(String user) {
-    view.displayBlankEvent();
+    try {
+      view.displayBlankEvent();
+    } catch (IllegalArgumentException caught) {
+      this.view.displayErrorMessage("Must select user first... ");
+    }
   }
 
   /**
@@ -59,13 +69,20 @@ public class GUIController implements SchedulingSystemController, Features {
   @Override
   public void displayExistingEvent(String user, ReadableEvent eventData) {
     // check if given event does exist in user's schedule
-
-    view.displayExistingEvent(user, eventData);
+    try {
+      view.displayExistingEvent(user, eventData);
+    } catch (IllegalArgumentException caught) {
+      this.view.displayErrorMessage(caught.getMessage());
+    }
   }
 
   @Override
   public void displayBlankScheduleEvent(String user) {
-    view.displayBlankScheduleEvent();
+    try {
+      view.displayBlankScheduleEvent();
+    } catch (IllegalArgumentException caught) {
+      this.view.displayErrorMessage(caught.getMessage());
+    }
   }
 
   /**
@@ -75,7 +92,14 @@ public class GUIController implements SchedulingSystemController, Features {
    */
   @Override
   public void requestXMLScheduleUpload(String pathname) {
-    System.out.println(pathname);
+    try {
+      SchedulingSystemController xmlcontroller = new XMLController(this.model);
+      xmlcontroller.useSchedulingSystem(pathname);
+      this.view.refresh();
+      this.view.displayUserSchedule(this.model.allUsers().get(0));
+    } catch (IllegalStateException caught) {
+      this.view.displayErrorMessage("Unable to process XML file..");
+    }
   }
 
   /**
@@ -86,6 +110,14 @@ public class GUIController implements SchedulingSystemController, Features {
   @Override
   public void requestAllSchedulesDownload(String pathname) {
     System.out.println(pathname);
+    try {
+      SchedulingSystemView xmlview = new SchedulingSystemXMLView(this.model);
+      for (String user : this.model.allUsers()) {
+        xmlview.render(user, pathname + user + ".xml");
+      }
+    } catch (IOException e) {
+      this.view.displayErrorMessage("Cannot save XML version of schedules to given directory...");
+    }
   }
 
   /**
@@ -117,6 +149,7 @@ public class GUIController implements SchedulingSystemController, Features {
     } catch (IllegalArgumentException caught) {
       this.view.displayErrorMessage(caught.getMessage());
     }
+
   }
 
 
@@ -178,7 +211,7 @@ public class GUIController implements SchedulingSystemController, Features {
 
     } catch (IllegalArgumentException caught) {
       this.view.displayErrorMessage("Cannot create event with provided input... ");
-      return; //TODO: the error message pane doesn't seem to pop up
+      return; //TODO: the error message pane doesn't seem to pop up <- Mohan: message pops up for me
     }
 
     try {
@@ -195,9 +228,6 @@ public class GUIController implements SchedulingSystemController, Features {
   /**
    * User request to modify an existing event based on how its manipulated event in GUI.
    */
-  // need to make it such that
-  // removal of host on user-side when pressing mod event
-  // actually performs removal
   @Override
   public void requestModifyEvent(String user, RawEventData currEvent, RawEventData modEvent) {
     // check if currEvent not in requester's schedule (View itself will never this error)
