@@ -23,7 +23,6 @@ import static cs3500.nuplanner.model.hw05.DaysOfTheWeek.WEDNESDAY;
 /**
  * Represents an event frame with all the associated text boxes and fields to collect data from
  * the user to be used in the model.
- * <p>
  * Way View is currently set up, will only provide NUEvents to Features!!! Impl specific View!!!!
  * Cannot have this!!! If change impl-type of Events in Model, this View will need to be edited!!!
  * Bad coupling!!!

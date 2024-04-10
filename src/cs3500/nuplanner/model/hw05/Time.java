@@ -11,7 +11,7 @@ public class Time {
   private int militaryTime;
 
   /**
-   * Creates the time with a specific format
+   * Creates the time with a specific military format.
    *
    * @param time the time passed in
    */
