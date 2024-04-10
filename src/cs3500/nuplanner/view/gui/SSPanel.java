@@ -139,7 +139,8 @@ public class SSPanel extends JPanel {
   }
 
   /**
-   * Extracts when events are occurring.
+   * Extracts when events are occurring, objective value is number of minutes
+   * the start point and end point of an Event is from Sunday, 0:00.
    *
    * @param event the event
    * @return when the start and end times are

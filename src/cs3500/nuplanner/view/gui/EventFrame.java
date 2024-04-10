@@ -361,8 +361,7 @@ public class EventFrame extends JFrame implements EventGUIView {
   }
 
   /**
-   * Will be removed once Features properly linked to controls in this View.
-   * Really jank scaffolding around printing stuff out/not how I would organize permanent code.
+   * Prints event details (invitees printed is left to specific callback).
    */
   private void printEventDetails() {
     System.out.println(this.nameInput());
@@ -392,8 +391,14 @@ public class EventFrame extends JFrame implements EventGUIView {
   }
 
   private void modifyEventButtonCallback(Features features) {
+
     modifyEventButton.addActionListener(actionEvent -> {
-      // if user selects a non-invitee on the screen, add that into mod event's invitee list
+      // if the user has pressed create event, and is not actually
+      // viewing the details of an event existing in the scheduling system
+      // do nothing (it wouldn't make sense to do anything)
+      if (this.currEventDisp == null) {
+        return;
+      }
 
       // update Event's invitee list based on currently selected users
       List<String> modInviteeList = this.currEventDisp.eventInvitees();
@@ -431,6 +436,13 @@ public class EventFrame extends JFrame implements EventGUIView {
 
   private void removeEventButtonCallback(Features features) {
     removeEventButton.addActionListener(actionEvent -> {
+      // if the user has pressed create event, and is not actually
+      // viewing the details of an event existing in the scheduling system
+      // do nothing (it wouldn't make sense to do anything)
+      if (this.currEventDisp == null) {
+        return;
+      }
+
       // button doesn't care if any data removed from event-frame popup by user
       // will still remove correct event thanks to field that tracks curr Event obj displayed
       features.requestRemoveEvent(this.userWhoOpenedEventFrame,

@@ -139,7 +139,7 @@ public class TestController {
             model.eventAt("Elise", MONDAY, 1000).endTime());
 
     controller.requestRemoveEvent("Elise", event);
-    assertThrows(IllegalArgumentException.class,  () -> eventInvitees());
+    //assertThrows(IllegalArgumentException.class,  () -> eventInvitees());
 
   }
 

@@ -24,7 +24,7 @@ public class ScheduleEventFrame extends JFrame implements ScheduleEventGUIView {
   private JList<String> availableUsersList;
 
   private final ReadableSchedulingSystem model;
-  private String scheduleFrameOpenerUser;
+  private String userOpenedSchedFrame;
 
   /**
    * Creates an ScheduleFrame for a user with a default size and all the associated fields.
@@ -36,7 +36,7 @@ public class ScheduleEventFrame extends JFrame implements ScheduleEventGUIView {
     super();
 
     this.model = model;
-    this.scheduleFrameOpenerUser = user;
+    this.userOpenedSchedFrame = user;
 
     setSize(500, 400);
     setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -185,15 +185,23 @@ public class ScheduleEventFrame extends JFrame implements ScheduleEventGUIView {
         printErrorMessage();
       } else {
         System.out.println("CREATING EVENT...");
-        System.out.println("Creator/Host of event: " + scheduleFrameOpenerUser);
+        System.out.println("Creator/Host of event: " + userOpenedSchedFrame);
         printEventDetails();
-        // print JList selections as invitees
 
         List<String> eventInvitees = new ArrayList<>(availableUsersList.getSelectedValuesList());
 
-        System.out.println(scheduleFrameOpenerUser + " "
+        // interpret getSelectedValues List properly to send
+        // correct create-event data
+        if (eventInvitees.contains(userOpenedSchedFrame)) {
+          eventInvitees.remove(userOpenedSchedFrame);
+          eventInvitees.add(0, userOpenedSchedFrame);
+        } else {
+          eventInvitees.add(0, userOpenedSchedFrame);
+        }
+
+        System.out.println(userOpenedSchedFrame + " "
                 + availableUsersList.getSelectedValuesList());
-        features.requestScheduleEvent(scheduleFrameOpenerUser, nameInput(),
+        features.requestScheduleEvent(userOpenedSchedFrame, nameInput(),
                 locationInput(), isOnlineInput(), eventDurationTextField.getText(),
                 eventInvitees);
         this.dispose();
