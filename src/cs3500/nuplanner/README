@@ -1,4 +1,4 @@
-Design Decisions/Codebase Overview:
+Design Decisions/Codebase Overview: (Person who has received our group, PLEASE read Changes for HW7)
 
 Within Scheduling System. the same Event object can be contained in multiple Schedules.
 Internal aliasing is what allows for Events (and thus information)
@@ -86,6 +86,23 @@ modifyEvent(new Event1, new Event2) due to perceived limitations in current mode
 This is to allow a User to change multiple aspects of an Event at once.
 
 Created Features interface and bare-bones controller. Brief reasoning given in Intro to Codebase.
+
+CHANGES FOR HW 7:
+- Behavior of an Event slightly modified -> an Event can now
+- Codebase is right now compatible with only one representation of time: military time
+    - biggest oversight for this project (lesson learned)
+    - Event impl NUEvent only works with military time, which means
+    - model functions with only military time as input
+    - in impl of View, when helper methods produce objective time they assume military time as input
+        - (objective time is essentially how many minutes have passed from Sunday 0:00 to given day,
+            given time. extremely useful to determine event conflicts and event painting)
+    - strategies assume military time as input
+    - When we say assume, we mean that there are still checks in place to reject invalid
+        military time (mainly, it is impossible to create an Event with invalid military time),
+        but again, codebase can only work with military time
+    - In future, will need to create a Time-class to make codebase more flexible and compatible with
+      any representation of Time. Due to time constraints between my partner and I, this has not
+      been accomplished before the HW7 deadline.
 
 REASONING FOR NOT IMPLEMENTING TIME CLASS AFTER TA FEEDBACK: Will be doing so after Exam 2.
 However as justification for no time class, an Event itself ensures that the time used to construct
