@@ -1,10 +1,21 @@
 package cs3500.nuplanner.view.gui;
 
-import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.swing.*;
+import java.awt.FlowLayout;
+import java.awt.BorderLayout;
+import java.awt.Dimension;
+import java.awt.Component;
+
+import javax.swing.JFrame;
+import javax.swing.JTextField;
+import javax.swing.JComboBox;
+import javax.swing.JButton;
+import javax.swing.JList;
+import javax.swing.BoxLayout;
+import javax.swing.JPanel;
+import javax.swing.JLabel;
 
 import cs3500.nuplanner.controller.Features;
 import cs3500.nuplanner.model.hw05.ReadableSchedulingSystem;

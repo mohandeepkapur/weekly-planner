@@ -44,7 +44,8 @@ public class GUIController implements SchedulingSystemController, Features {
     try {
       view.displayUserSchedule(user);
     } catch (IllegalArgumentException caught) {
-      this.view.displayErrorMessage("This user does not exist in scheduling system... schedule cannot be displayed");
+      this.view.displayErrorMessage(
+              "This user does not exist in scheduling system... schedule cannot be displayed");
     }
   }
 
@@ -210,8 +211,9 @@ public class GUIController implements SchedulingSystemController, Features {
               Integer.parseInt(duration), invitees);
 
     } catch (IllegalArgumentException caught) {
-      this.view.displayErrorMessage("Cannot create event with provided input... " + caught.getMessage());
-      return; //TODO: the error message pane doesn't seem to pop up <- Mohan: message pops up for me
+      this.view.displayErrorMessage(
+              "Cannot create event with provided input... " + caught.getMessage());
+      return;
     }
 
     try {

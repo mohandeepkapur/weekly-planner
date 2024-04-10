@@ -1,8 +1,6 @@
 package cs3500.nuplanner.view.gui;
 
-import java.util.List;
 
-import cs3500.nuplanner.controller.Features;
 import cs3500.nuplanner.model.hw05.ReadableEvent;
 
 /**
