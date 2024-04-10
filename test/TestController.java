@@ -1,23 +1,17 @@
 import org.junit.Test;
 
-import java.util.Arrays;
 import java.util.List;
 
-import cs3500.nuplanner.controller.Features;
 import cs3500.nuplanner.controller.GUIController;
-import cs3500.nuplanner.controller.SchedulingSystemController;
-import cs3500.nuplanner.controller.XMLController;
 import cs3500.nuplanner.model.hw05.Event;
 import cs3500.nuplanner.model.hw05.NUEvent;
 import cs3500.nuplanner.model.hw05.NUPlannerModel;
 import cs3500.nuplanner.model.hw05.RawEventData;
-import cs3500.nuplanner.model.hw05.ReadableEvent;
 import cs3500.nuplanner.model.hw05.SchedulingSystem;
 import cs3500.nuplanner.strategies.AnyTimeStrategy;
 import cs3500.nuplanner.view.gui.SSGUIView;
 
 import static cs3500.nuplanner.model.hw05.DaysOfTheWeek.MONDAY;
-import static cs3500.nuplanner.model.hw05.DaysOfTheWeek.TUESDAY;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertThrows;

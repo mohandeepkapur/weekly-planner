@@ -1,7 +1,6 @@
 import java.io.IOException;
 
 import cs3500.nuplanner.controller.Features;
-import cs3500.nuplanner.model.hw05.RawEventData;
 import cs3500.nuplanner.model.hw05.ReadableEvent;
 import cs3500.nuplanner.view.gui.SSGUIView;
 

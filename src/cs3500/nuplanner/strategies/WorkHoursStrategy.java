@@ -20,6 +20,14 @@ public class WorkHoursStrategy implements SchedulingStrategies {
   public Event findTimeForScheduledEvent(SchedulingSystem model, String name, Boolean isOnline,
                                          String location, int duration, List<String> invitees) {
 
+    List<Integer> maxEventTime = Time.convertTimesToObjectivePair(
+            new Time(DaysOfTheWeek.SUNDAY, 900),
+            new Time(DaysOfTheWeek.SUNDAY, 1700));
+
+    if (duration > maxEventTime.get(0) - maxEventTime.get(1)) {
+      throw new IllegalArgumentException("Can't create event with provided parameters... duration too long");
+    }
+
     // start and end times in objective values here
     List<Integer> monWorkHours = Time.convertTimesToObjectivePair(
             new Time(DaysOfTheWeek.MONDAY, 900),

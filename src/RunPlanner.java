@@ -1,9 +1,6 @@
-import java.util.Arrays;
-
 import cs3500.nuplanner.controller.GUIController;
 import cs3500.nuplanner.controller.SchedulingSystemController;
 import cs3500.nuplanner.controller.XMLController;
-import cs3500.nuplanner.model.hw05.DaysOfTheWeek;
 import cs3500.nuplanner.model.hw05.NUPlannerModel;
 import cs3500.nuplanner.model.hw05.SchedulingSystem;
 import cs3500.nuplanner.strategies.AnyTimeStrategy;

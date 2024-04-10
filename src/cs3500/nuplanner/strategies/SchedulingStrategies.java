@@ -15,7 +15,12 @@ public interface SchedulingStrategies {
    * Strategy will then decide when to schedule the event based on certain criteria.
    *
    * @param model    the model passed in
-   * @param duration the duration of the event
+   * @param duration the duration of the event IN MINUTES
+   * @param name     name of Event
+   * @param isOnline whether event is online
+   * @param location location of Event
+   * @param invitees invitees of Event
+   * @return
    */
   Event findTimeForScheduledEvent(SchedulingSystem model, String name,
                                   Boolean isOnline, String location,
