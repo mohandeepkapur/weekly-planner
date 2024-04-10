@@ -1,8 +1,4 @@
 package cs3500.nuplanner.model.hw05;
-
-// advantages of having a time interface/impl
-// in theory, if I swap out this time-impl and enforce a new kind of time, codebase should still run
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -10,8 +6,11 @@ import java.util.List;
  * A class to represent time in military time format. time representation can change.
  * Used for Strategies only as proof of concept to encapsulate an Event's (day, time)!
  *
- * Will add for fun after OOD. Need to think wisely about this class.
+ * Will add for fun after OOD. Need to think wisely about Time class.
  */
+// advantages of having a time interface/impl
+// in theory, if I swap out this time-impl and enforce a new kind of time, codebase should still run
+
 public class Time {
 
   private DaysOfTheWeek day;
@@ -22,7 +21,6 @@ public class Time {
    *
    * @param time the time passed in
    */
-
   public Time(DaysOfTheWeek day, int time) {
     // perform checks to make sure time is valid
     ensureProperMilitaryTime(time);
@@ -41,14 +39,26 @@ public class Time {
     this.militaryTime = time;
   }
 
+  /**
+   *
+   * @return
+   */
   public int time() {
     return this.militaryTime;
   }
 
+  /**
+   *
+   * @param day
+   */
   public void updateDay(DaysOfTheWeek day) {
     this.day = day;
   }
 
+  /**
+   *
+   * @return
+   */
   public DaysOfTheWeek day() {
     return this.day;
   }
@@ -58,9 +68,10 @@ public class Time {
    * Given the start-time and end-time (say, from some Event), will produce objective values
    * for start time and end time.
    *
-   * @param startTime
-   * @param endTime
-   * @return
+   * Objective values defined as how many minutes from Sunday 0000 is the given Time.
+   *
+   * startTime and endTime both important, to determine if the endTime exceeds 1 week (not obvious
+   * if only endTime given).
    */
   public static List<Integer> convertTimesToObjectivePair(Time startTime, Time endTime) {
 
@@ -88,10 +99,7 @@ public class Time {
   }
 
   /**
-   *
-   * @param startObjTime
-   * @param endObjTime
-   * @return
+   * Inverse of {@code convertTimesToObjectivePair()}
    */
   public static List<Time> convertObjectivePairToTimes(int startObjTime, int endObjTime) {
 
@@ -114,13 +122,12 @@ public class Time {
     return new ArrayList<>(List.of(startTime, endTime));
   }
 
-  /**
-   *
-   * @return
-   */
-  public int convertInputToTime() {
-    return 0;
-  }
+  //  /**
+  //   * Tries to convert random input into time representation, if possible
+  //   */
+  //  public int convertInputToTime() {
+  //    return 0;
+  //  }
 
   private void ensureProperMilitaryTime(int time) {
     if (time / 100 < 0 || time / 100 > 23 || time % 100 > 59) {

@@ -287,7 +287,7 @@ public class GUIController implements SchedulingSystemController, Features {
    */
   @Override
   public void useSchedulingSystem(String pathname) {
-    // empty for now
+    throw new IllegalArgumentException("Cannot use this signature for this impl of Controller...");
   }
 
   /**

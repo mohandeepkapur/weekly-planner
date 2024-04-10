@@ -10,7 +10,7 @@ import cs3500.nuplanner.strategies.SchedulingStrategies;
 public interface SchedulingSystemController {
 
   /**
-   * Launches a Scheduling System that can handle user input and is connected to the model.
+   * Launches a Scheduling System that can handle user input.
    */
   void useSchedulingSystem(SchedulingSystem model, SchedulingStrategies strategy);
 
