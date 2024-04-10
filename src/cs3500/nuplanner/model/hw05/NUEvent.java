@@ -193,8 +193,7 @@ public class NUEvent implements Event {
    * @param startDay new starting day of Event
    * @throws IllegalArgumentException if time-span of updated Event is invalid
    * @throws IllegalArgumentException if start day provided is null
-   * @implNote Event can only span from 1 minute to 6 days, 23 hours,
-   * 59 minutes
+   * @implNote Event can only span from 1 minute to 6 days, 23 hours, 59 minutes
    */
   @Override
   public void updateStartDay(DaysOfTheWeek startDay) {
@@ -222,8 +221,7 @@ public class NUEvent implements Event {
    * @param endDay new end day of Event
    * @throws IllegalArgumentException if time-span of updated Event is invalid
    * @throws IllegalArgumentException if end day provided is null
-   * @implNote Event can only span from 1 minute to 6 days, 23 hours,
-   * 59 minutes
+   * @implNote Event can only span from 1 minute to 6 days, 23 hours, 59 minutes
    */
   @Override
   public void updateEndDay(DaysOfTheWeek endDay) {
@@ -247,14 +245,12 @@ public class NUEvent implements Event {
   /**
    * Updates time the Event starts.
    * The minimum and maximum time an Event can span is enforced by implementation.
-   * Desired format of time is enforced by implementation.
+   * Desired format of military time is enforced by implementation.
    *
    * @param startTime new start time of Event
    * @throws IllegalArgumentException if time-span of updated Event is invalid
    * @throws IllegalArgumentException if time provided isn't in implementation's desired format
-   * @implNote Event can only span from 1 minute to 6 days, 23 hours,
-   * 59 minutes
-   * time provided must be in military format
+   * @implNote Event can only span from 1 minute to 6 days, 23 hours, 59 minutes
    */
   @Override
   public void updateStartTime(int startTime) {
@@ -276,14 +272,12 @@ public class NUEvent implements Event {
   /**
    * Updates time the Event ends.
    * The minimum and maximum time an Event can span is enforced by implementation.
-   * Desired format of time is enforced by implementation.
+   * Desired format of military time is enforced by implementation.
    *
    * @param endTime new end time of Event
    * @throws IllegalArgumentException if time-span of updated Event is invalid
    * @throws IllegalArgumentException if time provided isn't in implementation's desired format
-   * @implNote Event can only span from 1 minute to 6 days, 23 hours,
-   * 59 minutes
-   * time provided must be in military format
+   * @implNote Event can only span from 1 minute to 6 days, 23 hours, 59 minutes
    */
   @Override
   public void updateEndTime(int endTime) {
@@ -304,7 +298,6 @@ public class NUEvent implements Event {
 
   /**
    * Removes an invitee from the Event.
-   * <p>
    * If host of Event is removed, all other invitees of Event are removed as consequence.
    *
    * @param invitee invitee to remove
