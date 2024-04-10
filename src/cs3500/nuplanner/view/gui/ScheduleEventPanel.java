@@ -1,6 +1,6 @@
 package cs3500.nuplanner.view.gui;
 
-import javax.swing.*;
+import javax.swing.JPanel;
 
 /**
  * A panel used on the ScheduleEventFrame.

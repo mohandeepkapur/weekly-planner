@@ -1,15 +1,27 @@
 package cs3500.nuplanner.view.gui;
 
-import java.awt.*;
+
+import java.awt.FlowLayout;
+import java.awt.BorderLayout;
+
+import javax.swing.JFrame;
+import javax.swing.JComboBox;
+import javax.swing.JButton;
+import javax.swing.JPanel;
+import javax.swing.JMenuItem;
+import javax.swing.JMenuBar;
+import javax.swing.JMenu;
+import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
-
-import javax.swing.*;
 
 import cs3500.nuplanner.controller.Features;
 import cs3500.nuplanner.model.hw05.DaysOfTheWeek;
@@ -187,7 +199,7 @@ public class SSFrame extends JFrame implements SSGUIView {
    * Schedule displayed is considered current user of system.
    *
    * @param user user in Scheduling System
-   * @throws IllegalArgumentException   if user does not exist in scheduling system
+   * @throws IllegalArgumentException if user does not exist in scheduling system
    */
   @Override
   public void displayUserSchedule(String user) {
@@ -209,7 +221,7 @@ public class SSFrame extends JFrame implements SSGUIView {
   /**
    * Displays an empty Event-creation window for a user to interact with.
    *
-   * @throws IllegalArgumentException      if no user schedule currently displayed by view
+   * @throws IllegalArgumentException if no user schedule currently displayed by view
    */
   @Override
   public void displayBlankEvent() {

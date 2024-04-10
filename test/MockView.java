@@ -49,37 +49,14 @@ public class MockView implements SSGUIView {
     }
   }
 
-//  @Override
-//  public void requestCreateEvent(String user, RawEventData event) {
-//    try {
-//      this.log.append(user);
-//      this.log.append(event.invitees() + event.nameInput() + event.locationInput()
-//              + event.isOnlineInput() + event.startDayInput() + event.startTimeInput()
-//              + event.endDayInput() + event.endTimeInput());
-//    } catch (IOException ignored) {
-//    }
-//  }
-//
-//  @Override
-//  public void requestRemoveEvent(String user, RawEventData event) {
-//    try {
-//      this.log.append(user);
-//      this.log.append(event.invitees() + event.nameInput() + event.locationInput()
-//              + event.isOnlineInput() + event.startDayInput() + event.startTimeInput()
-//              + event.endDayInput() + event.endTimeInput());
-//    } catch (IOException ignored) {
-//    }
-//  }
-
-
   @Override
   public void addFeatures(Features features) {
-
+    //not currently used for testing
   }
 
   @Override
   public void makeVisible() {
-
+    //not currently used for testing
   }
 
   @Override
@@ -92,6 +69,6 @@ public class MockView implements SSGUIView {
 
   @Override
   public void refresh() {
-
+    //not currently used for testing
   }
 }

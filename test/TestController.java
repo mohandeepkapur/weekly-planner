@@ -7,11 +7,14 @@ import cs3500.nuplanner.model.hw05.Event;
 import cs3500.nuplanner.model.hw05.NUEvent;
 import cs3500.nuplanner.model.hw05.NUPlannerModel;
 import cs3500.nuplanner.model.hw05.RawEventData;
+import cs3500.nuplanner.model.hw05.ReadableEvent;
 import cs3500.nuplanner.model.hw05.SchedulingSystem;
 import cs3500.nuplanner.strategies.AnyTimeStrategy;
+import cs3500.nuplanner.strategies.WorkHoursStrategy;
 import cs3500.nuplanner.view.gui.SSGUIView;
 
 import static cs3500.nuplanner.model.hw05.DaysOfTheWeek.MONDAY;
+import static cs3500.nuplanner.model.hw05.DaysOfTheWeek.TUESDAY;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertThrows;
@@ -19,10 +22,6 @@ import static org.junit.Assert.assertThrows;
 /**
  * Testing the capability of the controller by looking at its inputs.
  */
-
-//TODO: Write a mock model and mock view to test the controller
-//TODO: Create integration tests so that it tests all things, such as make visible, click all
-// buttons in the program, etc.
 
 public class TestController {
 
@@ -93,17 +92,7 @@ public class TestController {
   }
 
   @Test
-  public void TestValidRequestXMLScheduleUpload() {
-    //tested in specific TestXMLFunctions test class
-  }
-
-  @Test
-  public void TestValidRequestAllSchedulesDownload() {
-    //tested in specific TestXMLFunctions test class
-  }
-
-  @Test
-  public void TestValidDRequestCreateEvent() {
+  public void TestValidDManipulatingEvents() {
     StringBuilder log = new StringBuilder();
     SSGUIView mockView = new MockView(log);
     GUIController controller = new GUIController(mockView, new AnyTimeStrategy());
@@ -116,6 +105,7 @@ public class TestController {
             "1000", "MONDAY", "1130");
 
     controller.requestCreateEvent("Elise", event);
+
     assertEquals(List.of("Elise", "Kyle"),
             model.eventAt("Elise", MONDAY, 1000).eventInvitees());
     assertEquals("Math Class",
@@ -132,40 +122,47 @@ public class TestController {
     assertEquals(1130,
             model.eventAt("Elise", MONDAY, 1000).endTime());
 
-    controller.requestRemoveEvent("Elise", event);
-    //assertThrows(IllegalArgumentException.class,  () -> eventInvitees());
+    RawEventData event2 = new RawEventData(List.of("Elise", "Kyle", "Brandon"),
+            "Volleyball",
+            "Willis Hall Volleyball Court", "false", "TUESDAY",
+            "900", "TUESDAY", "1200");
 
+    controller.requestModifyEvent("Elise", event, event2);
+
+    ReadableEvent readable2 = model.eventAt("Elise", TUESDAY, 900);
+
+    assertEquals(List.of("Elise", "Kyle", "Brandon"), readable2.eventInvitees());
+    assertEquals("Volleyball", readable2.name());
+    assertEquals("Willis Hall Volleyball Court", readable2.location());
+    assertFalse(readable2.isOnline());
+    assertEquals(TUESDAY, readable2.startDay());
+    assertEquals(900, readable2.startTime());
+    assertEquals(TUESDAY, readable2.endDay());
+    assertEquals(1200, readable2.endTime());
+
+    controller.requestRemoveEvent("Elise", event2);
+
+    assertThrows(IllegalArgumentException.class, () -> model.eventAt("Elise",
+            TUESDAY, 900));
   }
 
-//
-//  @Test
-//  public void TestValidAddFeatures() {
-//    StringBuilder log = new StringBuilder();
-//    SSGUIView mockView = new MockView(log);
-//    Features features = new GUIController(mockView, new AnyTimeStrategy());
-//
-//    mockView.addFeatures(features);
-//    assertEquals(2, 1 + 1); //placeholder
-//  }
-//
-//  @Test
-//  public void TestValidMakeVisible() {
-//    StringBuilder log = new StringBuilder();
-//    SSGUIView mockView = new MockView(log);
-//
-//    mockView.makeVisible();
-//    assertEquals(2, 1 + 1); //placeholder
-//  }
-//
-//  @Test
-//  public void TestValidDisplayErrorMessage() {
-//    StringBuilder log = new StringBuilder();
-//    SSGUIView mockView = new MockView(log);
-//
-//    mockView.displayErrorMessage("This code is wrong!");
-//    String[] logLines = log.toString().split(System.lineSeparator());
-//    assertEquals("This code is wrong!", logLines[0]);
-//  }
-//
+  @Test
+  public void TestValidDRequestScheduleEvent() {
+    StringBuilder log = new StringBuilder();
+    SSGUIView mockView = new MockView(log);
+    GUIController controller = new GUIController(mockView, new WorkHoursStrategy());
+    SchedulingSystem model = new NUPlannerModel();
+    model.addUser("Elise");
+    controller.useSchedulingSystem(model, new WorkHoursStrategy());
+
+    controller.requestScheduleEvent("Elise", "Math Class", "Ryder Hall",
+            "false", "60", List.of("Elise", "Kyle"));
+
+    System.out.println(model.eventsInSchedule("Elise").size());
+
+    ReadableEvent event = model.eventAt("Elise", MONDAY, 900);
+
+    assertEquals("Math Class", event.name());
+  }
 
 }

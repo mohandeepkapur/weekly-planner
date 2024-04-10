@@ -6,6 +6,10 @@ import cs3500.nuplanner.model.hw05.Event;
 import cs3500.nuplanner.model.hw05.ReadableEvent;
 import cs3500.nuplanner.model.hw05.SchedulingSystem;
 
+/**
+ * A mock model used for testing the controller.
+ */
+
 public class MockModel implements SchedulingSystem {
   private final Appendable log;
 
@@ -38,26 +42,30 @@ public class MockModel implements SchedulingSystem {
 
   @Override
   public void removeUser(String user) {
-
+    //not currently used for testing
   }
 
   @Override
-  public void addEvent(String user, List<String> invitees, String eventName, String location, boolean isOnline, DaysOfTheWeek startDay, int startTime, DaysOfTheWeek endDay, int endTime) {
-
+  public void addEvent(String user, List<String> invitees, String eventName,
+                       String location, boolean isOnline, DaysOfTheWeek startDay,
+                       int startTime, DaysOfTheWeek endDay, int endTime) {
+    //not currently used for testing
   }
 
   @Override
   public void removeEvent(String user, DaysOfTheWeek startDay, int startTime) {
-
+    //not currently used for testing
   }
 
   @Override
   public void modifyEvent(String user, DaysOfTheWeek startDay, int startTime, Event modEvent) {
-
+    //not currently used for testing
   }
 
   @Override
-  public boolean eventConflict(String host, List<String> invitees, String eventName, String location, boolean isOnline, DaysOfTheWeek startDay, int startTime, DaysOfTheWeek endDay, int endTime) {
+  public boolean eventConflict(String host, List<String> invitees, String eventName,
+                               String location, boolean isOnline, DaysOfTheWeek startDay,
+                               int startTime, DaysOfTheWeek endDay, int endTime) {
     return false;
   }
 }

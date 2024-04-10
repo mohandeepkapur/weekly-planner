@@ -1,4 +1,5 @@
 package cs3500.nuplanner.model.hw05;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -39,36 +40,36 @@ public class Time {
   }
 
   /**
+   * A representation of time.
    *
-   * @return
+   * @return the time in military time
    */
   public int time() {
     return this.militaryTime;
   }
 
   /**
+   * Updates the representation of day.
    *
-   * @param day
+   * @param day the day of the week
    */
   public void updateDay(DaysOfTheWeek day) {
     this.day = day;
   }
 
   /**
+   * The day of the week.
    *
-   * @return
+   * @return the day of the week
    */
   public DaysOfTheWeek day() {
     return this.day;
   }
 
-  // very useful
   /**
    * Given the start-time and end-time (say, from some Event), will produce objective values
    * for start time and end time.
-   *
    * Objective values defined as how many minutes from Sunday 0000 is the given Time.
-   *
    * startTime and endTime both important, to determine if the endTime exceeds 1 week (not obvious
    * if only endTime given).
    */
@@ -98,7 +99,7 @@ public class Time {
   }
 
   /**
-   * Inverse of {@code convertTimesToObjectivePair()}
+   * Inverse of {@code convertTimesToObjectivePair()}.
    */
   public static List<Time> convertObjectivePairToTimes(int startObjTime, int endObjTime) {
 
