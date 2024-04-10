@@ -17,10 +17,9 @@ public interface SchedulingSystemController {
   /**
    * Launches a Scheduling System by loading in an XML file of already created user schedules.
    *
-   * @param pathname                     path to XML file
-   * @throws IllegalStateException       if unable to open or parse XML file
+   * @param pathname path to XML file
+   * @throws IllegalStateException if unable to open or parse XML file
    */
-  void useSchedulingSystem(String pathname, SchedulingStrategies strategy);
-
+  void useSchedulingSystem(String pathname);
 
 }

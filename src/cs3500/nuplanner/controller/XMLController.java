@@ -47,11 +47,11 @@ public class XMLController implements SchedulingSystemController {
   /**
    * Runs scheduling system using XML file.
    *
-   * @param pathname                     path to XML file
-   * @throws IllegalStateException       if unable to open or parse XML file
+   * @param pathname path to XML file
+   * @throws IllegalStateException if unable to open or parse XML file
    */
   @Override
-  public void useSchedulingSystem(String pathname, SchedulingStrategies strategy) {
+  public void useSchedulingSystem(String pathname) {
     try {
       DocumentBuilder builder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
       Document xmlDoc = builder.parse(new File(pathname));

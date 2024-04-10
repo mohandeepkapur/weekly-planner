@@ -22,7 +22,7 @@ public final class RunPlanner {
     // loading in data into model
     SchedulingSystem model = new NUPlannerModel();
     SchedulingSystemController xmlCont = new XMLController(model);
-    xmlCont.useSchedulingSystem("XMLFiles/toRead/Prof. Lucia.xml", getStrategy(args[0]));
+    xmlCont.useSchedulingSystem("XMLFiles/toRead/Prof. Lucia.xml");
 
     // launching the model with user input
     SSGUIView view = new SSFrame(model);

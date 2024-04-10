@@ -227,7 +227,7 @@ public class GUIController implements SchedulingSystemController, Features {
               validCurrEvent.startTime(), validModEvent);
       this.view.displayUserSchedule(user);
     } catch (IllegalArgumentException caught) {
-      System.out.print("ERROR: " + caught.getMessage());
+      this.view.displayErrorMessage("ERROR: " + caught.getMessage());
     }
   }
 
@@ -256,7 +256,7 @@ public class GUIController implements SchedulingSystemController, Features {
    * @throws IllegalStateException if unable to open or parse XML file
    */
   @Override
-  public void useSchedulingSystem(String pathname, SchedulingStrategies strategy) {
+  public void useSchedulingSystem(String pathname) {
     // empty for now
   }
 

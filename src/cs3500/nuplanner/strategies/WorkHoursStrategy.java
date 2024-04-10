@@ -19,12 +19,13 @@ public class WorkHoursStrategy implements SchedulingStrategies {
                                          String location, int duration, List<String> invitees) {
 
     for (int day = 1; day <= 5; day++) {
-      DaysOfTheWeek startingDay = convertIntToDay(day);
+      DaysOfTheWeek startingDay = DaysOfTheWeek.valToDay(day);
+
       for (int hour = 9; hour <= 17; hour++) {
         for (int minutes = 0; minutes < 59; minutes++) {
 
           int startTime = (hour * 100) + minutes;
-          int endTime = (hour * 100) + minutes + convertToMilitaryTime(duration);
+          int endTime = startTime + convertToMilitaryTime(duration);
 
           DaysOfTheWeek endingDay = determineEndingDay(day, startTime, duration);
 
@@ -65,43 +66,9 @@ public class WorkHoursStrategy implements SchedulingStrategies {
   private DaysOfTheWeek determineEndingDay(int day, int startTime, int duration) {
     int daysAfter = (startTime + duration) / 2400;
     if (startTime + duration > 0) {
-      return convertIntToDay(day + daysAfter);
+      return DaysOfTheWeek.valToDay(day + daysAfter);
     }
-    return convertIntToDay(day);
+    return DaysOfTheWeek.valToDay(day);
   }
 
-  /**
-   * Converts provided int into a day of the week, if possible.
-   *
-   * @param day int to convert into day
-   * @return DaysOfTheWeek enum constant
-   * @throws IllegalArgumentException if string cannot be converted into a day
-   */
-  private DaysOfTheWeek convertIntToDay(int day) {
-
-    if (day == 0) {
-      return DaysOfTheWeek.SUNDAY;
-    }
-    if (day == 1) {
-      return DaysOfTheWeek.MONDAY;
-    }
-    if (day == 2) {
-      return DaysOfTheWeek.TUESDAY;
-    }
-    if (day == 3) {
-      return DaysOfTheWeek.WEDNESDAY;
-    }
-    if (day == 4) {
-      return DaysOfTheWeek.THURSDAY;
-    }
-    if (day == 5) {
-      return DaysOfTheWeek.FRIDAY;
-    }
-    if (day == 6) {
-      return DaysOfTheWeek.SATURDAY;
-    }
-
-    throw new IllegalArgumentException("Invalid modification request... ");
-
-  }
 }
