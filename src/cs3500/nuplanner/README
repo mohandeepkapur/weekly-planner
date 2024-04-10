@@ -1,10 +1,10 @@
-Design Decisions/Codebase Overview: (Person who has received our group, PLEASE read Changes for HW7)
+Design Decisions/Codebase Overview: (Person who has received our code, PLEASE READ Changes for HW7)
 
 Within Scheduling System. the same Event object can be contained in multiple Schedules.
 Internal aliasing is what allows for Events (and thus information)
 to be shared between different users.
 
-Two Event objects can be compared with equality if they share the same state. This is how the
+Two Event objects can be compared for equality if they share the same state. This is how the
 Scheduling System accesses a specific Event within a Schedule.
 
 A user of the System can identify a unique Event in a schedule through its start day and time.
@@ -40,7 +40,7 @@ View's implementation details. The essence of what Features does is permit the V
 state, and to manipulate model state. Changing model and view state is equivalent to the controller
 job, thus controller implements the Features interface.
 
-Some data sent over FEATURES is wrapped in RawEventData. This is the raw user input encapsulated
+Some data sent over FEATURES is wrapped in RawEventData. This is the RAW user input encapsulated
 into a class. The purpose is so the controller can take responsibility for parsing + interpreting
 user input vs the View.
 
@@ -48,8 +48,11 @@ The SSGUIView is the Main View that takes in a Readable model and is given to Co
 the user to view multiple schedules, interact with existing events, upload and download schedules,
 and create new events.
 
-An EventView is created and destroyed within the overarching SSGUIView Interface, and allows the
-user to modify and remove existing events, as well as create new events.
+EventView and ScheduleEventView are created and destroyed within the overarching SSGUIView Interface
+
+A EventView IS-A ScheduleEventView. A ScheduleEventView allows the current user to AUTOMATICALLY
+schedule an Event for specified invitees. A EventView allows the current user to MANUALLY schedule
+an Event for specified Invitees.
 
 In the EventView, the user must place information into the given text boxes and then request
 their desired action. To add multiple users to a new event, the user must select multiple users
@@ -59,37 +62,31 @@ the multiple attending users in the same box (and press modify).
 In the EventView, the host of an existing event user clicks on is highlighted green,
 while the non-host members arehighlighted blue.
 
-In the ScheduleView,
 
 Key Components (mentioned in overview, so this section kept brief):
-
 The SSView interacts with the Scheduling System to render a user's Schedule using Events,
 in either XML or text format.
-
 The SSController is to manipulate the Scheduling System with GUI input discussed above, or XMl
 input.
 
-
 Smaller Components:
-
 DaysOfTheWeek is an enum used to keep track of the days for a 2-week span planner.
-
+Time is used in only one spot. The rest of the code-base assumes it will be dealing with military
+time (military time preserved by the Event itself right now).
 
 Source organization:
-
 All components in src and test are contained within cs3500.nuplanner package.
 All components relevant to GUI are in the cs3500.nuplanner.view.gui package.
 
 
 CHANGES FOR HW 6:
-
 Added observation method to ReadableEvent to check whether a given time is contained within an
 Event's range. Observes state of Event.
 
 Planning to change modifyEvent method signature of model interface to
 modifyEvent(new Event1, new Event2) due to perceived limitations in current model design.
-This is to allow a User to change multiple aspects of an Event at once.
 
+This is to allow a User to change multiple aspects of an Event at once.
 Created Features interface and bare-bones controller. Brief reasoning given in Intro to Codebase.
 
 CHANGES FOR HW 7:
@@ -111,7 +108,7 @@ CHANGES FOR HW 7:
       for what-could-be, for all components.
 
 
-REASONING FOR NOT IMPLEMENTING TIME CLASS AFTER TA FEEDBACK: Will be doing so after Exam 2.
+REASONING FOR NOT IMPLEMENTING TIME CLASS AFTER TA FEEDBACK:
 However as justification for no time class, an Event itself ensures that the time used to construct
 it is in military time. Once an Event is instantiated, it can only represent time in military time.
 Any start-time provided by user that IS NOT MILITARY TIME will cause the relevant Event to throw an
