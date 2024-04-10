@@ -6,9 +6,12 @@ import cs3500.nuplanner.controller.Features;
 
 /**
  * Represents the actions and observations desired from the ScheduleEventGUI.
+ * The purpose of the ScheduleEventGUIView is to AUTOMATICALLY schedule an Event
+ * through a strategy
  */
 
 public interface ScheduleEventGUIView {
+  
   /**
    * Returns the name of the event.
    *

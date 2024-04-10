@@ -7,50 +7,11 @@ import cs3500.nuplanner.model.hw05.ReadableEvent;
 
 /**
  * Represents the actions and observations desired from the EventGUI.
+ * The purpose of the EventGUIView is to MANUALLY schedule an Event
+ * through creation, modification (or removal).
+ * (Makes sense to extend from Interface that does automatic scheduling.)
  */
-public interface EventGUIView {
-
-  /**
-   * Returns the name of the event.
-   *
-   * @return the name of the event
-   */
-  String nameInput();
-
-  /**
-   * Sets the name of the event.
-   *
-   * @param name the name of the event
-   */
-  void displayName(String name);
-
-  /**
-   * Returns the location of an event.
-   *
-   * @return the location of an event
-   */
-  String locationInput();
-
-  /**
-   * Sets the location of an event.
-   *
-   * @param location the location of an event
-   */
-  void displayLocation(String location);
-
-  /**
-   * Returns whether an event is online or not.
-   *
-   * @return true if online, false if not
-   */
-  String isOnlineInput();
-
-  /**
-   * Sets whether an event is online or not.
-   *
-   * @param isOnline true if online, false if not
-   */
-  void displayIsOnline(String isOnline);
+public interface EventGUIView extends ScheduleEventGUIView {
 
   /**
    * Returns the start day of an event.
@@ -107,23 +68,6 @@ public interface EventGUIView {
    * @param endTime the end time of an event
    */
   void displayEndTime(String endTime);
-
-  /**
-   * Represents the different features that are applicable to an EventFrame.
-   *
-   * @param features the feature to use
-   */
-  void addFeatures(Features features);
-
-  /**
-   * Makes the frame visible to the user.
-   */
-  void makeVisible();
-
-  /**
-   * Displays Invitees of Event.
-   */
-  void displayInvitees(List<String> invitees);
 
   /**
    * Displays an Event that exists within Scheduling System to user.
