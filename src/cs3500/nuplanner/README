@@ -111,6 +111,8 @@ CHANGES FOR HW 7:
 
 TAs:
 Testing Controller using Model and View mocks in Test class.
+Using DownloadXML in GUI will save XMLs of current model-state in XMLFiles folder.
+Use command line args to select scheduling strategy.
 
 REASONING FOR NOT IMPLEMENTING TIME CLASS AFTER TA FEEDBACK:
 However as justification for no time class, an Event itself ensures that the time used to construct

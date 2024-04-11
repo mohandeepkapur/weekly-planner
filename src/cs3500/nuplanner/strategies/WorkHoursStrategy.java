@@ -24,7 +24,7 @@ public class WorkHoursStrategy implements SchedulingStrategies {
             new Time(DaysOfTheWeek.SUNDAY, 900),
             new Time(DaysOfTheWeek.SUNDAY, 1700));
 
-    if (duration > maxEventTime.get(0) - maxEventTime.get(1)) {
+    if (duration > maxEventTime.get(1) - maxEventTime.get(0)) {
       throw new IllegalArgumentException(
               "Can't create event with provided parameters... duration too long");
     }
