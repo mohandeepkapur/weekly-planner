@@ -62,7 +62,7 @@ public class SSPanel extends JPanel {
     // painting every event in user's schedule
     for (ReadableEvent event : userEvents) {
       // objective values important
-      List<Integer> objValues = extractObjectiveValues(event);
+      List<Integer> objValues = event.extractObjectiveTimePair();
       drawEventBlock(g2d, objValues.get(0), objValues.get(1));
     }
 
@@ -142,35 +142,35 @@ public class SSPanel extends JPanel {
 
   }
 
-  /**
-   * Extracts when events are occurring, objective value is number of minutes
-   * the start point and end point of an Event is from Sunday, 0:00.
-   *
-   * @param event the event
-   * @return when the start and end times are
-   */
-  private List<Integer> extractObjectiveValues(ReadableEvent event) {
-    int sDv = event.startDay().val();
-    int sT = event.startTime();
-
-    int eDv = event.endDay().val();
-    int eT = event.endTime();
-
-    int startVal;
-    int endVal;
-
-    // event that extends into next week
-    if (eDv - sDv < 0 || (eDv - sDv == 0 && eT <= sT)) {
-      endVal = ((eDv + 7) * 60 * 24) + (eT / 100 * 60) + (eT % 100);
-    } else {
-      // event contained within first week
-      endVal = (eDv * 60 * 24) + (eT / 100 * 60) + (eT % 100);
-    }
-    // start day always within first week
-    startVal = (sDv * 60 * 24) + (sT / 100 * 60) + (sT % 100);
-
-    return new ArrayList<Integer>(List.of(startVal, endVal));
-
-  }
+  //  /**
+  //   * Extracts when events are occurring, objective value is number of minutes
+  //   * the start point and end point of an Event is from Sunday, 0:00.
+  //   *
+  //   * @param event the event
+  //   * @return when the start and end times are
+  //   */
+  //  private List<Integer> extractObjectiveValues(ReadableEvent event) {
+  //    int sDv = event.startDay().val();
+  //    int sT = event.startTime();
+  //
+  //    int eDv = event.endDay().val();
+  //    int eT = event.endTime();
+  //
+  //    int startVal;
+  //    int endVal;
+  //
+  //    // event that extends into next week
+  //    if (eDv - sDv < 0 || (eDv - sDv == 0 && eT <= sT)) {
+  //      endVal = ((eDv + 7) * 60 * 24) + (eT / 100 * 60) + (eT % 100);
+  //    } else {
+  //      // event contained within first week
+  //      endVal = (eDv * 60 * 24) + (eT / 100 * 60) + (eT % 100);
+  //    }
+  //    // start day always within first week
+  //    startVal = (sDv * 60 * 24) + (sT / 100 * 60) + (sT % 100);
+  //
+  //    return new ArrayList<Integer>(List.of(startVal, endVal));
+  //
+  //  }
 
 }

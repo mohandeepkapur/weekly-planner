@@ -1,5 +1,9 @@
 Design Decisions/Codebase Overview: (Person who has received our code, PLEASE READ Changes for HW7)
 
+EXTRA CREDIT:
+GUI is resizable. Thanks to using .getWidth() and .getHeight() rather than fixed values in View impl
+when painting grid and drawing events in a user's Schedule.
+
 Within Scheduling System. the same Event object can be contained in multiple Schedules.
 Internal aliasing is what allows for Events (and thus information)
 to be shared between different users.
@@ -60,7 +64,7 @@ in the Available Users box. To remove attending users from an existing event, th
 the multiple attending users in the same box (and press modify).
 
 In the EventView, the host of an existing event user clicks on is highlighted green,
-while the non-host members arehighlighted blue.
+while the non-host members are highlighted blue.
 
 
 Key Components (mentioned in overview, so this section kept brief):
@@ -90,23 +94,23 @@ This is to allow a User to change multiple aspects of an Event at once.
 Created Features interface and bare-bones controller. Brief reasoning given in Intro to Codebase.
 
 CHANGES FOR HW 7:
-- Behavior of an Event slightly modified -> an Event can now
-- Codebase is right now hardcoded with only one representation of time: military time
-    - biggest oversight for this project (lesson learned) <- can be easily changed if had 12hrs
-    - NUEvent impl set to only work with military time
-    - SchedulingSystem (model) impl assumes time passed in is either valid or invalid military time
-    - Schedule impl assumes that an Event given to it (at interface level) work with military time
-    - View assumes all Events given to it (at interface level) work with military time
-    - ^ first step to fixing this assumption is to decouple time rep from Event (not hard)
-    - When we say assume, we mean that there are still checks in place to reject invalid
-        military time (mainly, it is impossible to create an Event with invalid military time),
-        but again, codebase can only work with military time
-    - In future, will need to create a Time-class to make codebase more flexible and compatible with
-      any representation of Time. Due to time constraints between my partner and I, this has not
-      been accomplished before the HW7 deadline.
-    - I HAVE CREATED TIME CLASS AND USED IT INTERNALLY WITHIN STRATEGIES as proof of concept
-      for what-could-be, for all components.
+- Behavior of an Event slightly modified -> an Event can now be intialized inviteeless (thus with
+  no host) -> Event's host can change IF all invitees in Event are removed. Then first one added
+  back into Event becomes new host.
+- Scheduling System impl and other components create objects of compile-time type Event as expected,
+  but impl type NUEvent
+    - because the representation of time is coupled to an Event's impl (Time class most desireable
+      in hindsight, yes) this means that in order to change the representation of time the system
+      works with, one would need to code a new Event implementation, and then replace all instances
+      in components where NUEvent is being instantiated with the new impl. Not ideal. Time should
+      ideally be separate from Event.
+- This is why a prototype Time class has been added into the codebase, to represent military time
+    - It is used internally within our strategies as proof of concept.
+    - No where else is the Time class used
+- change modifyEvent signature to accept an entire event as modification request
 
+TAs:
+Testing Controller using Model and View mocks in Test class.
 
 REASONING FOR NOT IMPLEMENTING TIME CLASS AFTER TA FEEDBACK:
 However as justification for no time class, an Event itself ensures that the time used to construct
@@ -118,9 +122,6 @@ Summary:
 The Event implementation ITSELF ENFORCES MILITARY TIME.
 
 
-
-HW7
-- changed removeEvent and modifyEvent signatures
 
 if have time (prob won't):
 - think about the use of objective values everywhere --> always converting from military time to ov

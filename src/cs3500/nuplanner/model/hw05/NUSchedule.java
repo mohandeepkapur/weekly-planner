@@ -161,13 +161,13 @@ public class NUSchedule implements Schedule {
     checkIfEventNull(outerEvent);
 
     // 1: assign objective values to every event start day, time and end day, time
-    List<Integer> outEventObjValues = extractObjectiveValues(outerEvent);
+    List<Integer> outEventObjValues = outerEvent.extractObjectiveTimePair();
     int oStartVal = outEventObjValues.get(0);
     int oEndVal = outEventObjValues.get(1);
 
     for (Event insideEvent : events) {
 
-      List<Integer> insideEventObjValues = extractObjectiveValues(insideEvent);
+      List<Integer> insideEventObjValues = insideEvent.extractObjectiveTimePair();
       int iStartVal = insideEventObjValues.get(0);
       int iEndVal = insideEventObjValues.get(1);
 
@@ -195,37 +195,37 @@ public class NUSchedule implements Schedule {
 
   }
 
-  /**
-   * Extracts an objective value for an Event's start day/time and end day/time
-   * using 1st week Sunday 0:00 as reference.
-   * <p>
-   * Objective value is difference in minutes from reference point to current date!
-   * </p>
-   * @param event           Event
-   * @return                minutes away from Sunday 0:00 for both start and end day/time of Event
-   */
-  private List<Integer> extractObjectiveValues(Event event) {
-    int sDv = event.startDay().val();
-    int sT = event.startTime();
-
-    int eDv = event.endDay().val();
-    int eT = event.endTime();
-
-    int startVal;
-    int endVal;
-
-    // event that extends into next week
-    if (eDv - sDv < 0 || (eDv - sDv == 0 && eT <= sT)) {
-      endVal = ((eDv + 7) * 60 * 24) + (eT / 100 * 60) + (eT % 100);
-    } else {
-      // event contained within first week
-      endVal = (eDv * 60 * 24) + (eT / 100 * 60) + (eT % 100);
-    }
-    // start day always within first week
-    startVal = (sDv * 60 * 24) + (sT / 100 * 60) + (sT % 100);
-
-    return new ArrayList<Integer>(List.of(startVal, endVal));
-  }
+  //  /**
+  //   * Extracts an objective value for an Event's start day/time and end day/time
+  //   * using 1st week Sunday 0:00 as reference.
+  //   * <p>
+  //   * Objective value is difference in minutes from reference point to current date!
+  //   * </p>
+  //   * @param event           Event
+  //   * @return                minutes away from Sunday 0:00 for both start and end day/time of Event
+  //   */
+  //  private List<Integer> extractObjectiveValues(Event event) {
+  //    int sDv = event.startDay().val();
+  //    int sT = event.startTime();
+  //
+  //    int eDv = event.endDay().val();
+  //    int eT = event.endTime();
+  //
+  //    int startVal;
+  //    int endVal;
+  //
+  //    // event that extends into next week
+  //    if (eDv - sDv < 0 || (eDv - sDv == 0 && eT <= sT)) {
+  //      endVal = ((eDv + 7) * 60 * 24) + (eT / 100 * 60) + (eT % 100);
+  //    } else {
+  //      // event contained within first week
+  //      endVal = (eDv * 60 * 24) + (eT / 100 * 60) + (eT % 100);
+  //    }
+  //    // start day always within first week
+  //    startVal = (sDv * 60 * 24) + (sT / 100 * 60) + (sT % 100);
+  //
+  //    return new ArrayList<Integer>(List.of(startVal, endVal));
+  //  }
 
   /**
    * Sorts the Events within Schedule from earliest to least time. Performed everytime an Event

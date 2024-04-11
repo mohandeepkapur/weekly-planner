@@ -248,7 +248,7 @@ public class NUEvent implements Event {
    *
    * @param startTime                     new start time of Event
    * @throws IllegalArgumentException     if time-span of updated Event is invalid
-   * @throws IllegalArgumentException      if time provided isn't in implementation's desired format
+   * @throws IllegalArgumentException     if time provided isn't in implementation's desired format
    * @implNote Event can only span from 1 minute to 6 days, 23 hours, 59 minutes
    */
   @Override
@@ -412,7 +412,7 @@ public class NUEvent implements Event {
    */
   @Override
   public boolean containsTime(DaysOfTheWeek day, int time) {
-    List<Integer> objValues = extractObjectiveValues();
+    List<Integer> objValues = extractObjectiveTimePair();
     int providedDayTime = (day.val() * 60 * 24) + (time / 100 * 60) + (time % 100);
 
     //    System.out.println(objValues.get(0));
@@ -421,7 +421,18 @@ public class NUEvent implements Event {
     return providedDayTime <= objValues.get(1) && providedDayTime >= objValues.get(0);
   }
 
-  private List<Integer> extractObjectiveValues() {
+  /**
+   * Returns start day, start time as one objective value, and end day, end time as the second.
+   * Objective times are the # of minutes the start day, time past Sunday at 0am is, and the
+   * # of minutes the end day, end time past Sunday at 0am is.
+   * (Depending on whether the Event extends into the second week or not, the end day end time's
+   * objective value will be different accordingly).
+   *
+   * @return        (start day, start time) mapped to first item as objective value (unit minutes)
+   *                (end day, end time) mapped tp second item as objective value (unit minutes)
+   */
+  @Override
+  public List<Integer> extractObjectiveTimePair() {
     int sDv = this.startDay().val();
     int sT = this.startTime();
 
