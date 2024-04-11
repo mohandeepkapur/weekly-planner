@@ -12,7 +12,7 @@ import cs3500.nuplanner.view.gui.SSGUIView;
 /**
  * Class to run Scheduling System.
  */
-public final class RunPlanner {
+public final class Main {
 
   /**
    * Runs Scheduling System.

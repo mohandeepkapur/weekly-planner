@@ -201,8 +201,8 @@ public class NUSchedule implements Schedule {
   //   * <p>
   //   * Objective value is difference in minutes from reference point to current date!
   //   * </p>
-  //   * @param event           Event
-  //   * @return                minutes away from Sunday 0:00 for both start and end day/time of Event
+  //   * @param event        Event
+  //   * @return             minutes away from Sunday 0:00 for both start and end day/time of Event
   //   */
   //  private List<Integer> extractObjectiveValues(Event event) {
   //    int sDv = event.startDay().val();
