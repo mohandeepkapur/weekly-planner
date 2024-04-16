@@ -41,26 +41,36 @@ public class FeaturesAdaptor implements Features {
 
   @Override
   public void onModifyEvent(String uid, Event originalEvent, Event newEvent) {
-
+    RawEventData rawOriginalEventData = new RawEventData(originalEvent.getInvitedUsers(), originalEvent.getName(),
+            originalEvent.getPlace(), Boolean.toString(originalEvent.isOnline()), originalEvent.getStartDay().toString(),
+            originalEvent.getStartTime(), originalEvent.getEndDay().toString(), originalEvent.getEndTime());
+    RawEventData rawNewEventData = new RawEventData(newEvent.getInvitedUsers(), newEvent.getName(),
+            newEvent.getPlace(), Boolean.toString(newEvent.isOnline()), newEvent.getStartDay().toString(),
+            newEvent.getStartTime(), newEvent.getEndDay().toString(), newEvent.getEndTime());
+    delegate.requestModifyEvent(uid, rawOriginalEventData, rawNewEventData);
   }
 
   @Override
   public void onRemoveEvent(Event event) {
-
+    String host = event.getHostUser().toString();
+    RawEventData rawData = new RawEventData(event.getInvitedUsers(), event.getName(),
+            event.getPlace(), Boolean.toString(event.isOnline()), event.getStartDay().toString(),
+            event.getStartTime(), event.getEndDay().toString(), event.getEndTime());
+    delegate.requestRemoveEvent(host, rawData);
   }
 
   @Override
   public Strategy onCreateEventFrame() {
-    return null;
+    return null; //TODO: idk we don't really have this huh?
   }
 
   @Override
   public void onSwitchUser(String userId) {
-
+//TODO: idk we don't really have this huh?
   }
 
   @Override
   public void handleClick(Event e) {
-
+//TODO: idk we don't really have this huh?
   }
 }
