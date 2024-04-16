@@ -13,6 +13,11 @@ public interface IUser {
    * whenever client uploads a file of existing user's schedule.) Thus, it is public.
    */
   ISchedule mergeSchedule(NodeList eventList);
+  // mo:
+  // i don't think we can impl this
+  // <- why is User parsing XML bruh
+  // <- why not just give user a list of events instead of nodelist
+  // <- conversion should not be delegated away from XmlParser
 
   /**
    * This sets the given schedule as a user's schedule.
@@ -30,7 +35,6 @@ public interface IUser {
    * This returns the schedule of the user.
    */
   ISchedule getSchedule();
-
 
   /**
    * This removes a given event from the user's schedule.

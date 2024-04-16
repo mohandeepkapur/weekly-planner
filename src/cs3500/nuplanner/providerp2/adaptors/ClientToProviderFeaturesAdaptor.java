@@ -1,4 +1,4 @@
-package cs3500.nuplanner.providerp2.adapters;
+package cs3500.nuplanner.providerp2.adaptors;
 
 import cs3500.nuplanner.model.hw05.RawEventData;
 import cs3500.nuplanner.providerp2.controller.Features;
@@ -10,15 +10,17 @@ import cs3500.nuplanner.providerp2.strategy.Strategy;
  * the provider has to work with their view.
  */
 
-public class FeaturesAdaptor implements Features {
-  cs3500.nuplanner.controller.Features delegate;
+public class ClientToProviderFeaturesAdaptor implements Features {
+
+  private cs3500.nuplanner.controller.Features delegate;
+
 
   /**
    * Creates an adaptor to translate the view
    *
    * @param delegate our features interface
    */
-  public FeaturesAdaptor(cs3500.nuplanner.controller.Features delegate) {
+  public ClientToProviderFeaturesAdaptor(cs3500.nuplanner.controller.Features delegate) {
     this.delegate = delegate;
   }
 
@@ -36,6 +38,7 @@ public class FeaturesAdaptor implements Features {
   public void onCreateEvent(String uid, IEvent event) {
 
     // need to convert their event into our event first though
+    // convert from IEvent to Event
 
 
     RawEventData rawData = new RawEventData(event.getInvitedUsers(), event.getName(),
