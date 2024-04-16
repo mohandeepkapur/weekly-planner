@@ -1,12 +1,11 @@
-package cs3500.nuplanner.provider.strategy;
+package cs3500.nuplanner.providerp1.strategy;
 
 import java.time.LocalTime;
 import java.util.List;
 
-import nuplanner.model.Day;
-import nuplanner.model.Event;
-import nuplanner.model.MutableSystems;
-import nuplanner.model.User;
+import cs3500.nuplanner.providerp1.model.Day;
+import cs3500.nuplanner.providerp1.model.Event;
+import cs3500.nuplanner.providerp1.model.MutableSystems;
 
 /**
  * Creates the class for scheduling an event on the first possible time from Monday to Friday

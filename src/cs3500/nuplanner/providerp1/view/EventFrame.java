@@ -1,4 +1,4 @@
-package cs3500.nuplanner.provider.view;
+package cs3500.nuplanner.providerp1.view;
 
 import java.awt.*;
 import java.time.LocalTime;
@@ -9,11 +9,11 @@ import java.util.stream.Collectors;
 
 import javax.swing.*;
 
-import nuplanner.controller.Features;
-import nuplanner.model.Day;
-import nuplanner.model.Event;
-import nuplanner.model.ReadOnlySystems;
-import nuplanner.model.User;
+import cs3500.nuplanner.providerp1.model.IUser;
+import cs3500.nuplanner.providerp1.controller.Features;
+import cs3500.nuplanner.providerp1.model.Day;
+import cs3500.nuplanner.providerp1.model.Event;
+import cs3500.nuplanner.providerp1.model.ReadOnlySystems;
 
 /**
  * The class that creates the frame for the event window of NUPlanner.
@@ -250,7 +250,7 @@ public class EventFrame extends JFrame implements IView {
    */
   private void populateUsersList() {
     this.usersListModel.clear();
-    for (User user : this.model.getAllUsers().values()) {
+    for (IUser user : this.model.getAllUsers().values()) {
       this.usersListModel.addElement(user.getUid());
     }
   }

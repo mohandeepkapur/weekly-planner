@@ -1,4 +1,4 @@
-package cs3500.nuplanner.provider.model;
+package cs3500.nuplanner.providerp2.model;
 
 import org.w3c.dom.NodeList;
 
@@ -7,19 +7,20 @@ import org.w3c.dom.NodeList;
  */
 public interface IUser {
 
+
   /**
    * This merges the schedule of a user with the given list of events.
    * (This method is being called inside the XMLParser class readScheduleFromFile method
    * whenever client uploads a file of existing user's schedule.) Thus, it is public.
    */
-  Schedule mergeSchedule(NodeList eventList);
+  ISchedule mergeSchedule(NodeList eventList);
 
   /**
    * This sets the given schedule as a user's schedule.
    * (This method is called inside XMLParser class inside readScheduleFromFil method.)
    * Thus, it is public.
    */
-  void setSchedule(Schedule s);
+  void setSchedule(ISchedule s);
 
   /**
    * This returns the user ID for the purpose of other methods.
@@ -29,7 +30,7 @@ public interface IUser {
   /**
    * This returns the schedule of the user.
    */
-  Schedule getSchedule();
+  ISchedule getSchedule();
 
 
   /**

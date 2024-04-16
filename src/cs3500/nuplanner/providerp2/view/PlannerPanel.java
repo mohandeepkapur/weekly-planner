@@ -1,6 +1,20 @@
-package cs3500.nuplanner.provider.view;
+package cs3500.nuplanner.providerp2.view;
 
-import java.awt.*;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Color;
+import java.awt.Point;
+
+import javax.swing.JComboBox;
+import javax.swing.JPanel;
+
+import cs3500.nuplanner.providerp2.model.Day;
+import cs3500.nuplanner.providerp2.model.Event;
+import cs3500.nuplanner.providerp2.model.ISchedule;
+import cs3500.nuplanner.providerp2.model.IUser;
+import cs3500.nuplanner.providerp2.model.ReadOnlySystems;
+import cs3500.nuplanner.providerp2.controller.Features;
+
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.time.LocalTime;
@@ -8,15 +22,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-
-import javax.swing.*;
-
-import nuplanner.controller.Features;
-import nuplanner.model.Day;
-import nuplanner.model.Event;
-import nuplanner.model.ReadOnlySystems;
-import nuplanner.model.Schedule;
-import nuplanner.model.User;
 
 
 /**
@@ -64,10 +69,10 @@ public class PlannerPanel extends JPanel implements PlannerPanelView {
    * @param g2d the graphics parameter passed in to draw it
    */
   private void drawRed(Graphics2D g2d) {
-    Map<String, User> users = this.model.getAllUsers();
-    for (User u : users.values()) {
+    Map<String, IUser> users = this.model.getAllUsers();
+    for (IUser u : users.values()) {
       if (Objects.equals(this.users.getSelectedItem(), u.getUid())) {
-        Schedule schedule = this.model.getUserSchedule(u.getUid());
+        ISchedule schedule = this.model.getUserSchedule(u.getUid());
         List<Event> events = schedule.getAllEvents();
         for (Event e : events) {
           LocalTime start = e.getStartTime();

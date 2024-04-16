@@ -34,7 +34,9 @@ public class AnyTimeStrategy implements SchedulingStrategies {
 
         return new NUEvent(invitees, name, location, isOnline,
                 startPoint.day(), startPoint.time(), endPoint.day(), endPoint.time());
-
+        // the way to not hardcode NUEvent -> have strategy return a RawEventData
+        // aka wrapper class that contains the same fields to create an Event ->
+        // then have controller pick raweventdata apart
       }
 
     }

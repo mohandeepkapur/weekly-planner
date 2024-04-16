@@ -1,17 +1,26 @@
-package cs3500.nuplanner.provider.view;
+package cs3500.nuplanner.providerp2.view;
 
-import java.awt.*;
+import java.awt.BorderLayout;
+import java.awt.FlowLayout;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-import javax.swing.*;
+import javax.swing.JFrame;
+import javax.swing.JButton;
+import javax.swing.JMenuItem;
+import javax.swing.JComboBox;
+import javax.swing.JPanel;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JOptionPane;
+import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
-import nuplanner.controller.Features;
-import nuplanner.model.ReadOnlySystems;
-import nuplanner.model.User;
-import nuplanner.strategy.Strategy;
+import cs3500.nuplanner.providerp2.model.IUser;
+import cs3500.nuplanner.providerp2.model.ReadOnlySystems;
+import cs3500.nuplanner.providerp2.controller.Features;
+import cs3500.nuplanner.providerp2.strategy.Strategy;
 
 /**
  *  Creates the class for the schedule frame.
@@ -70,7 +79,7 @@ public class PlannerFrame extends JFrame implements IView {
   private JComboBox<String> usersList() {
     JComboBox<String> users = new JComboBox<>();
     users.addItem("<none>");
-    for (User u: this.model.getAllUsers().values()) {
+    for (IUser u: this.model.getAllUsers().values()) {
       users.addItem(u.getUid());
     }
     return users;

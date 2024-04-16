@@ -141,3 +141,31 @@ also, if modifyEvent making switch, would be nice for removeEvent to change for 
 Biggest drawback <- not having a time-class and user-class
 would've made codebase so much more flexible
 codebase then could've easily worked with different time representations
+
+/*
+purpose of adapters -> adapting
+adapters wise, what am I stuck on? like, if I have library 1 that works with type2
+and i have type1impl -> I can adapt type1impl to type2 so I can get output from library 1
+then whatever i do with that output, up to me
+
+problem: I want to make code that uses incompatible interface work with existing interface, so it can do shit
+solution: adapter design pattern
+ */
+
+GUIController -> do not want to change code
+
+want to adapt client's features w mine
+like, I want to leave my code unchanged
+
+take perspective of, what does their view need to work
+
+as of right now, there's no way for my GUIController to work with their view
+    because they don't have an overarching view interface
+
+so, I want to be able to use my GUIController as is
+    - which means I need to translate my model interface which GUIController uses, to a model interface their View understands
+    - need to translate my view interface,
+    - their features interface, I need to translate into my features
+    -
+
+

@@ -1,12 +1,12 @@
-package cs3500.nuplanner.provider.strategy;
+package cs3500.nuplanner.providerp2.strategy;
 
 import java.time.LocalTime;
 import java.util.List;
 
-import nuplanner.model.Day;
-import nuplanner.model.Event;
-import nuplanner.model.MutableSystems;
-import nuplanner.model.User;
+import cs3500.nuplanner.providerp2.model.Day;
+import cs3500.nuplanner.providerp2.model.Event;
+import cs3500.nuplanner.providerp2.model.IUser;
+import cs3500.nuplanner.providerp2.model.MutableSystems;
 
 /**
  * Creates the class for scheduling an event with a duration at any time.
@@ -21,7 +21,7 @@ public class AnyTime implements Strategy {
   @Override
   public Event createEventWithDuration(String eventName, boolean isOnline,
                                        String location, String duration,
-                                       String selectedUser, List<User> users) {
+                                       String selectedUser, List<IUser> users) {
     int duration1 = Integer.parseInt(duration);
     int hour = 0;
     int minute = 0;
@@ -33,7 +33,7 @@ public class AnyTime implements Strategy {
     }
     LocalTime endTime = LocalTime.of(endHour, duration1 % 60);
     Event possible = new Event(eventName, startDay, LocalTime.of(hour, minute),
-            endDay, endTime, isOnline, location, new User(selectedUser), users);
+            endDay, endTime, isOnline, location, getHostUser(selectedUser), users);
     while (this.model.isEventConflicting(possible)) {
       if (duration1 >= 800 && duration1 <= 1600) {
         endDay = Day.MONDAY;
@@ -61,7 +61,7 @@ public class AnyTime implements Strategy {
       }
       while (minute < 60 && hour < 24) {
         possible = new Event(eventName, startDay, LocalTime.of(hour, minute),
-                endDay, endTime, isOnline, location, new User(selectedUser), users);
+                endDay, endTime, isOnline, location, getHostUser(selectedUser), users);
         minute++;
       }
       minute = 0;
@@ -69,5 +69,9 @@ public class AnyTime implements Strategy {
       startDay = endDay;
     }
     return possible;
+  }
+
+  private IUser getHostUser(String uid) {
+    return this.model.getUser(uid);
   }
 }

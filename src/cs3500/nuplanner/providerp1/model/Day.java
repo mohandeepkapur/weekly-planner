@@ -1,4 +1,4 @@
-package cs3500.nuplanner.provider.model;
+package cs3500.nuplanner.providerp1.model;
 
 /**
  * Creates the enumeration for the seven days of the week.

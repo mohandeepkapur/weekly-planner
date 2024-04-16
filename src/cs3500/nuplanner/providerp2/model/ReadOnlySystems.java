@@ -1,4 +1,4 @@
-package cs3500.nuplanner.provider.model;
+package cs3500.nuplanner.providerp2.model;
 
 import java.util.Map;
 
@@ -13,21 +13,21 @@ public interface ReadOnlySystems {
    * Gets the map of all the users to be used in for loops.
    * @return the map of all the users
    */
-  Map<String, User> getAllUsers();
+  Map<String, IUser> getAllUsers();
 
   /**
    * Retrieves a user by their UID.
    * @param uid the unique identifier of the user
    * @return the User object corresponding to the UID, or null if no such user exists
    */
-  User getUser(String uid);
+  IUser getUser(String uid);
 
   /**
    * Gets the passed in user's schedule and displays to the client.
    * @param uid the string that represents the user
    * @return the given user's schedule
    */
-  Schedule getUserSchedule(String uid);
+  ISchedule getUserSchedule(String uid);
 
   /**
    * Checks if an event conflicts with the schedules of all invited users.

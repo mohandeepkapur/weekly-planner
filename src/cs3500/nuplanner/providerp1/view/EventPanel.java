@@ -1,8 +1,8 @@
-package cs3500.nuplanner.provider.view;
+package cs3500.nuplanner.providerp1.view;
 
 import javax.swing.*;
 
-import nuplanner.model.ReadOnlySystems;
+import cs3500.nuplanner.providerp1.model.ReadOnlySystems;
 
 /**
  * EventPanel class extends JPanel and implements EventPanelView to create a custom panel

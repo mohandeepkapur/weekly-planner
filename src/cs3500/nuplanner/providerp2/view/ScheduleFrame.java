@@ -1,18 +1,29 @@
-package cs3500.nuplanner.provider.view;
+package cs3500.nuplanner.providerp2.view;
 
-import java.awt.*;
+import java.awt.Dimension;
+import java.awt.BorderLayout;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-import javax.swing.*;
+import javax.swing.JFrame;
+import javax.swing.JTextField;
+import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JList;
+import javax.swing.DefaultListModel;
+import javax.swing.JLabel;
+import javax.swing.BoxLayout;
+import javax.swing.ListSelectionModel;
+import javax.swing.JScrollPane;
+import javax.swing.JOptionPane;
 
-import nuplanner.controller.Features;
-import nuplanner.model.Event;
-import nuplanner.model.ReadOnlySystems;
-import nuplanner.model.User;
-import nuplanner.strategy.Strategy;
+import cs3500.nuplanner.providerp2.model.Event;
+import cs3500.nuplanner.providerp2.model.IUser;
+import cs3500.nuplanner.providerp2.model.ReadOnlySystems;
+import cs3500.nuplanner.providerp2.strategy.Strategy;
+import cs3500.nuplanner.providerp2.controller.Features;
 
 /**
  * The class that creates the frame for the scheduling part of the planner.
@@ -147,7 +158,7 @@ public class ScheduleFrame extends JFrame implements IView {
    */
   private void populateUsersList() {
     this.usersListModel.clear();
-    for (User user : this.model.getAllUsers().values()) {
+    for (IUser user : this.model.getAllUsers().values()) {
       this.usersListModel.addElement(user.getUid());
     }
   }
@@ -218,27 +229,31 @@ public class ScheduleFrame extends JFrame implements IView {
     System.out.println("Location: " + this.locationField.getText() + " Is online: "
             + onlineDropdown.getSelectedItem());
     System.out.println("Duration: " + this.durationField.getText());
-    User hostUser = new User(this.selectedUser);
+    IUser hostUser = getHostUser(this.selectedUser);
     System.out.println("Host User: " + hostUser.getUid());
-    List<User> invitedUsers = this.getInvitedUsers();
+    List<IUser> invitedUsers = this.getInvitedUsers();
     String invitedUsersStr = invitedUsers.stream()
-            .map(User::getUid)
+            .map(IUser::getUid)
             .collect(Collectors.joining(", "));
 
     System.out.println("Invited Users: " + invitedUsersStr);
   }
 
-  private List<User> getInvitedUsers() {
+  private List<IUser> getInvitedUsers() {
     List<String> selectedUserIds = usersList.getSelectedValuesList();
-    List<User> invitedUsers = new ArrayList<>();
+    List<IUser> invitedUsers = new ArrayList<>();
     for (String userId : selectedUserIds) {
-      User user = model.getUser(userId);
+      IUser user = model.getUser(userId);
       if (user != null && !user.getUid().equals(selectedUser)) {
         invitedUsers.add(user);
       }
     }
 
     return invitedUsers;
+  }
+
+  private IUser getHostUser(String uid) {
+    return this.model.getUser(uid);
   }
 
   /**

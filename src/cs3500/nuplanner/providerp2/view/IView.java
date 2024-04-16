@@ -1,12 +1,11 @@
-package cs3500.nuplanner.provider.view;
+package cs3500.nuplanner.providerp2.view;
 
-import nuplanner.controller.Features;
+import cs3500.nuplanner.providerp2.controller.Features;
 
 /**
  * Creates the interface for the view of the planner.
  */
 public interface IView {
-
   /**
    * Make the view visible. This is usually called
    * after the view is constructed.

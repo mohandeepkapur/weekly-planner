@@ -1,4 +1,4 @@
-package cs3500.nuplanner.provider.model;
+package cs3500.nuplanner.providerp2.model;
 
 /**
  * Defines the contract for a mutable system within the planning application, extending the
@@ -23,13 +23,13 @@ public interface MutableSystems extends ReadOnlySystems {
    * Adds a user to the list of users.
    * @param user the user to add
    */
-  void addUser(User user);
+  void addUser(IUser user);
 
   /**
    * The user that needs to be removed from the list of users.
    * @param user the user to be removed
    */
-  void removeUser(User user);
+  void removeUser(IUser user);
 
   /**
    * Creates an event that is added to a user's schedule.

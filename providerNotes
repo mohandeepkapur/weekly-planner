@@ -1,0 +1,86 @@
+
+
+
+
+
+
+IUser:
+- Providers did not integrate IUser anywhere in their codebase
+
+- User SHOULD NOT be doing the job of parsing XML data -> I/O stuff should not be a job anywhere in the model package
+
+- Schedule class <- assuming it is hardcoded
+
+
+
+Lack of interfaces for Event, Schedule -> made one quickly for User, failed to integrate it into codebase before sending
+
+
+Event
+- hardcoded
+
+- Their Events are value classes???
+
+- they use LocalTime <- what is that
+
+
+Systems
+- instead of model returning list of Events, they return a complete schedule
+
+- they deal with Events, instead of start-day start-time
+
+- removeEvent features of removing specific invitee from Event left to modifyEvent
+
+
+Features:
+- 
+
+
+IView
+- 
+
+
+
+Will need to 
+
+
+
+Behavioral
+- providers were nice, responsive, willing to make changes
+
+
+Philosophy:
+Their View should get everything it wants -> how their view wants Events to behave (our Events behave differently), how their View wants to utilize Features, 
+
+
+They have horrible cohesion -> view is doing controller job
+
+
+Their View uses
+- Model2
+- 
+
+//SSM is Model1
+Public class Model1ToModel2 implements Model2 {
+
+private SchedulingSystemModel delegate;
+
+Public Model1ToModel2(SSM model) {
+
+this.delegate = model;
+
+}
+
+Public void createEvent(String uid, Event2 event) {
+
+// need adapter from Event1 to Event2, and vice-versa
+Adapt Event2 to Event 1
+Manipulate model using Event 1
+
+}
+
+Public void modifyEvent() {
+}
+	
+
+}

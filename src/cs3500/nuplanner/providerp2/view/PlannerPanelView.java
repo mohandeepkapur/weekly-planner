@@ -1,9 +1,9 @@
-package cs3500.nuplanner.provider.view;
+package cs3500.nuplanner.providerp2.view;
 
 import java.util.List;
 
-import nuplanner.controller.Features;
-import nuplanner.model.Event;
+import cs3500.nuplanner.providerp2.model.Event;
+import cs3500.nuplanner.providerp2.controller.Features;
 
 /**
  * Creates the interface for the schedule panel view.

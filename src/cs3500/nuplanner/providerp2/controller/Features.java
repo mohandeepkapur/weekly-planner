@@ -1,7 +1,7 @@
-package cs3500.nuplanner.provider.controller;
+package cs3500.nuplanner.providerp2.controller;
 
-import nuplanner.model.Event;
-import nuplanner.strategy.Strategy;
+import cs3500.nuplanner.providerp2.model.Event;
+import cs3500.nuplanner.providerp2.strategy.Strategy;
 
 /**
  * The features interface contains all the methods for all kinds of user actions

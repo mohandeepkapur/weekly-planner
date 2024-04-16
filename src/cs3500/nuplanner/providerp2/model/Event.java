@@ -1,4 +1,4 @@
-package cs3500.nuplanner.provider.model;
+package cs3500.nuplanner.providerp2.model;
 
 import java.time.Duration;
 import java.time.LocalTime;
@@ -13,7 +13,7 @@ import java.util.List;
  */
 
 // make read-only for the event???, value class?
-public class Event {
+public class Event implements IEvent{
   private final String eventName;
   private final Day startDay;
   private final LocalTime startTime;
@@ -21,8 +21,8 @@ public class Event {
   private final LocalTime endTime;
   private final boolean online;
   private final String place;
-  private final User hostUser;
-  private final List<User> invitedUsers;
+  private final IUser hostUser;
+  private final List<IUser> invitedUsers;
 
   /**
    * Creates the constructor that creates the event.
@@ -37,7 +37,7 @@ public class Event {
    * @param invitedUsers the list of the invited users
    */
   public Event(String name, Day startDay, LocalTime startTime, Day endDay, LocalTime endTime,
-               boolean online, String place, User hostUser, List<User> invitedUsers) {
+               boolean online, String place, IUser hostUser, List<IUser> invitedUsers) {
     if (name == null || place == null || startDay == null || endDay == null || startTime == null
             || endTime == null || hostUser == null || invitedUsers == null) {
       throw new IllegalStateException("Cannot have null arguments.");
@@ -151,14 +151,14 @@ public class Event {
   /**
    * This returns the host user of the Event.
    */
-  public User getHostUser() {
+  public IUser getHostUser() {
     return hostUser;
   }
 
   /**
    * This returns the invited users of the Event.
    */
-  public List<User> getInvitedUsers() {
+  public List<IUser> getInvitedUsers() {
     return invitedUsers;
   }
 
@@ -168,7 +168,7 @@ public class Event {
    */
   public String invites() {
     StringBuilder result = new StringBuilder();
-    for (User invite: this.getInvitedUsers()) {
+    for (IUser invite: this.getInvitedUsers()) {
       result.append("\t").append(invite.getUid()).append("\n");
     }
     return result.toString();
