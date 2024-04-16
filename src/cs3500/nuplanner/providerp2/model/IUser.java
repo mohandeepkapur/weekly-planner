@@ -7,7 +7,6 @@ import org.w3c.dom.NodeList;
  */
 public interface IUser {
 
-
   /**
    * This merges the schedule of a user with the given list of events.
    * (This method is being called inside the XMLParser class readScheduleFromFile method

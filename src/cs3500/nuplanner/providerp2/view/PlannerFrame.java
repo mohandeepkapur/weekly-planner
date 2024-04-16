@@ -102,6 +102,7 @@ public class PlannerFrame extends JFrame implements IView {
     this.repaint();
     this.panel.revalidate();
     this.panel.repaint();
+    // onCreateEvent in Features will invoke refresh() to update their view
   }
 
   /**
@@ -126,6 +127,8 @@ public class PlannerFrame extends JFrame implements IView {
     });
     this.createEvent.addActionListener(e -> {
       this.createEventFrame();
+      //mo: why would you return a strategy
+      //       and even if you did, just not use it?
       plannerController.onCreateEventFrame();
     });
     this.scheduleEvent.addActionListener(e -> {

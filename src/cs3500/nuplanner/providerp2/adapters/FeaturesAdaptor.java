@@ -1,7 +1,8 @@
-package cs3500.nuplanner.providerp2.controller;
+package cs3500.nuplanner.providerp2.adapters;
 
 import cs3500.nuplanner.model.hw05.RawEventData;
-import cs3500.nuplanner.providerp2.model.Event;
+import cs3500.nuplanner.providerp2.controller.Features;
+import cs3500.nuplanner.providerp2.model.IEvent;
 import cs3500.nuplanner.providerp2.strategy.Strategy;
 
 /**
@@ -32,7 +33,11 @@ public class FeaturesAdaptor implements Features {
   }
 
   @Override
-  public void onCreateEvent(String uid, Event event) {
+  public void onCreateEvent(String uid, IEvent event) {
+
+    // need to convert their event into our event first though
+
+
     RawEventData rawData = new RawEventData(event.getInvitedUsers(), event.getName(),
             event.getPlace(), Boolean.toString(event.isOnline()), event.getStartDay().toString(),
             event.getStartTime(), event.getEndDay().toString(), event.getEndTime());
@@ -40,7 +45,7 @@ public class FeaturesAdaptor implements Features {
   }
 
   @Override
-  public void onModifyEvent(String uid, Event originalEvent, Event newEvent) {
+  public void onModifyEvent(String uid, IEvent originalEvent, IEvent newEvent) {
     RawEventData rawOriginalEventData = new RawEventData(originalEvent.getInvitedUsers(), originalEvent.getName(),
             originalEvent.getPlace(), Boolean.toString(originalEvent.isOnline()), originalEvent.getStartDay().toString(),
             originalEvent.getStartTime(), originalEvent.getEndDay().toString(), originalEvent.getEndTime());
@@ -51,7 +56,7 @@ public class FeaturesAdaptor implements Features {
   }
 
   @Override
-  public void onRemoveEvent(Event event) {
+  public void onRemoveEvent(IEvent event) {
     String host = event.getHostUser().toString();
     RawEventData rawData = new RawEventData(event.getInvitedUsers(), event.getName(),
             event.getPlace(), Boolean.toString(event.isOnline()), event.getStartDay().toString(),
@@ -70,7 +75,7 @@ public class FeaturesAdaptor implements Features {
   }
 
   @Override
-  public void handleClick(Event e) {
+  public void handleClick(IEvent e) {
 //TODO: idk we don't really have this huh?
   }
 }

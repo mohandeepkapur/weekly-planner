@@ -1,6 +1,6 @@
 package cs3500.nuplanner.providerp2.controller;
 
-import cs3500.nuplanner.providerp2.model.Event;
+import cs3500.nuplanner.providerp2.model.IEvent;
 import cs3500.nuplanner.providerp2.strategy.Strategy;
 
 /**
@@ -25,7 +25,7 @@ public interface Features {
    * @param uid the string of the user
    * @param event the event being created
    */
-  void onCreateEvent(String uid, Event event);
+  void onCreateEvent(String uid, IEvent event);
 
   /**
    * Changes an event with the given modified event.
@@ -33,13 +33,13 @@ public interface Features {
    * @param originalEvent the event that is going to be changed
    * @param newEvent the new modified event being changed
    */
-  void onModifyEvent(String uid, Event originalEvent, Event newEvent);
+  void onModifyEvent(String uid, IEvent originalEvent, IEvent newEvent);
 
   /**
    * The method that removes an event from the model.
    * @param event the event to be removed
    */
-  void onRemoveEvent(Event event);
+  void onRemoveEvent(IEvent event);
 
   /**
    * The method that calls the create event frame.
@@ -56,5 +56,5 @@ public interface Features {
    * The method that handles when something has been clicked.
    * @param e the event created
    */
-  void handleClick(Event e);
+  void handleClick(IEvent e);
 }

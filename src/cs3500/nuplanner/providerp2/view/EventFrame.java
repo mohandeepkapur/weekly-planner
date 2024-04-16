@@ -273,8 +273,13 @@ public class EventFrame extends JFrame implements IView {
     if (this.createEventButton != null) {
       this.createEventButton.addActionListener(e -> {
         printCreateEvent();
+        // mo: they create an event in View
+        //  <- which means View parses/checks user input and throws errors if invalid <- controller job <- bad cohesion
+        //  <-
         Event event = this.getEventDetails();
         controller.onCreateEvent(this.selectedUser, event);
+        //mo: how does their view refresh itself after an event is created?
+        //    im guessing in oncreateevent impl, they hit refresh in their view
       });
     }
     if (this.removeEventButton != null) {
@@ -402,6 +407,7 @@ public class EventFrame extends JFrame implements IView {
 
   @Override
   public void refresh() {
+    // mo: why would you run this.repaint, you're not painting anything in here
     this.repaint();
     this.revalidate();
   }

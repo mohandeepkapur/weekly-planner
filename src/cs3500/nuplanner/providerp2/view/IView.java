@@ -29,4 +29,7 @@ public interface IView {
    * @param plannerController the controller that is used to update the model
    */
   void setListener(Features plannerController);
+  //mo: your features interface is NOT your listener BRUH
+  // --> lambdas are the listeners that then call features methods after low-level event occurs in View
+  // -->
 }
