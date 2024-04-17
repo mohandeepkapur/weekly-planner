@@ -1,4 +1,4 @@
-The code that the provider sent to our end had unique design choices, but we were initially troubled
+The code that the provider sent to our end had i design choices, and we were initially troubled
 by the lack of interfaces. Event, User, Schedule, and a few other implementation classes lacked an
 interface, and therefore we lacked the ability to adapt their view to our code. Another
 insight was that there was a noticeable lack of throws indicated. Either in the interfaces or
