@@ -33,6 +33,7 @@ public class ClientToProviderModelAdaptor implements ReadOnlySystems {
     this.delegate = delegate;
   }
 
+  // converting string users into IUsers( userStr to schedule )
   @Override
   public Map<String, IUser> getAllUsers() {
     List<String> delUsers = this.delegate.allUsers();

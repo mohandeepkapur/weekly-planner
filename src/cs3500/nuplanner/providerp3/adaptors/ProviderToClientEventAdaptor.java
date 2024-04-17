@@ -85,6 +85,8 @@ public class ProviderToClientEventAdaptor implements Event {
       }
     }
 
+    // can run a check here -> to see if invites does contain host
+
     return new NUEvent(listOfInvitees, name, location, isOnline,
             startDay, startTime, endDay, endTime);
   }

@@ -4,7 +4,10 @@ import cs3500.nuplanner.controller.XMLController;
 import cs3500.nuplanner.model.hw05.NUPlannerModel;
 import cs3500.nuplanner.model.hw05.SchedulingSystem;
 import cs3500.nuplanner.providerp3.adaptors.ClientToProviderEventAdaptor;
+import cs3500.nuplanner.providerp3.adaptors.ClientToProviderModelAdaptor;
 import cs3500.nuplanner.providerp3.adaptors.ProviderToClientViewAdaptor;
+import cs3500.nuplanner.providerp3.model.MutableSystems;
+import cs3500.nuplanner.providerp3.model.ReadOnlySystems;
 import cs3500.nuplanner.providerp3.view.PlannerFrame;
 import cs3500.nuplanner.strategies.AnyTimeStrategy;
 import cs3500.nuplanner.strategies.SchedulingStrategies;
@@ -22,16 +25,22 @@ public final class Main {
    */
   public static void main(String[] args) {
 
-    // loading in data into model
+
     SchedulingSystem model = new NUPlannerModel();
-    //    INTENTIONAL OMISSION: User will upload XML file in toRead themselves
+
     SchedulingSystemController xmlCont = new XMLController(model);
     xmlCont.useSchedulingSystem("XMLFiles/toRead/Prof. Lucia.xml");
 
-    // launching the model with user input
-    SSGUIView view = new SSFrame(model);
-    SchedulingSystemController controller = new GUIController(view, getStrategy(args[0]));
+
+    // loading in data into model
+    ReadOnlySystems adaptModel = new ClientToProviderModelAdaptor(model);
+
+    SSGUIView adaptView = new ProviderToClientViewAdaptor(new PlannerFrame(adaptModel));
+
+    SchedulingSystemController controller = new GUIController(adaptView, getStrategy(args[0]));
+
     controller.useSchedulingSystem(model, getStrategy(args[0]));
+
   }
 
   private static SchedulingStrategies getStrategy(String arg) {

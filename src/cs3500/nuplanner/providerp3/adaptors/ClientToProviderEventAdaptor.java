@@ -43,8 +43,8 @@ public class ClientToProviderEventAdaptor implements IEvent {
 
   private IEvent convertEventIntoIEvent(ReadableEvent event) {
 
-    LocalTime startTime = convertBetweenEventMilitaryTimeToLocalTime(event.startTime());
-    LocalTime endTime = convertBetweenEventMilitaryTimeToLocalTime(event.endTime());
+    LocalTime startTime = convertEventMilitaryTimeToLocalTime(event.startTime());
+    LocalTime endTime = convertEventMilitaryTimeToLocalTime(event.endTime());
     Day startDay = convertDaysOfTheWeekToDay(event.startDay());
     Day endDay = convertDaysOfTheWeekToDay(event.startDay());
 
@@ -53,7 +53,7 @@ public class ClientToProviderEventAdaptor implements IEvent {
       iEventUsers.add(new ClientToProviderUserAdaptor(user, model));
     }
 
-    // TODO: same host object for both host param and invitees param <- pot issue? dont see how
+    // TODO: same host object for both host param and invitees param <- assuming this is how their IEvent is formatted
     return new Event(event.name(), startDay, startTime,
             endDay, endTime, event.isOnline(),
             event.location(), iEventUsers.get(0), iEventUsers);
@@ -66,7 +66,6 @@ public class ClientToProviderEventAdaptor implements IEvent {
    * @param day our version of DaysOfTheWeek
    * @return the day for the providers version
    */
-
   private Day convertDaysOfTheWeekToDay(DaysOfTheWeek day) {
     String dayRep = day.toString().toLowerCase();
     return Day.toDay(Character.toUpperCase(dayRep.charAt(0)) + dayRep.substring(1));
@@ -78,7 +77,7 @@ public class ClientToProviderEventAdaptor implements IEvent {
    * @param militaryTime the military time from our version
    * @return local time that the provider can use
    */
-  private LocalTime convertBetweenEventMilitaryTimeToLocalTime(int militaryTime) {
+  private LocalTime convertEventMilitaryTimeToLocalTime(int militaryTime) {
     int hour = militaryTime / 100;
     int minute = militaryTime % 100;
     return LocalTime.of(hour, minute);

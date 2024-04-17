@@ -6,6 +6,8 @@
       <sourceFolder url="file://$MODULE_DIR$/src" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/test" isTestSource="true" />
       <excludeFolder url="file://$MODULE_DIR$/src/cs3500/nuplanner/model/hw05/ModifyEventCommands" />
+      <excludeFolder url="file://$MODULE_DIR$/src/cs3500/nuplanner/providerp1" />
+      <excludeFolder url="file://$MODULE_DIR$/src/cs3500/nuplanner/providerp2" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />

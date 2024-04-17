@@ -62,7 +62,7 @@ public class ProviderToClientViewAdaptor implements SSGUIView {
 
   @Override
   public void displayErrorMessage(String errorMessage) {
-    this.displayErrorMessage(errorMessage);
+    this.delegate.showErrorMessage(errorMessage);
   }
 
   @Override
