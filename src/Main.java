@@ -3,16 +3,13 @@ import cs3500.nuplanner.controller.SchedulingSystemController;
 import cs3500.nuplanner.controller.XMLController;
 import cs3500.nuplanner.model.hw05.NUPlannerModel;
 import cs3500.nuplanner.model.hw05.SchedulingSystem;
-import cs3500.nuplanner.providerp3.adaptors.ClientToProviderEventAdaptor;
-import cs3500.nuplanner.providerp3.adaptors.ClientToProviderModelAdaptor;
-import cs3500.nuplanner.providerp3.adaptors.ProviderToClientViewAdaptor;
-import cs3500.nuplanner.providerp3.model.MutableSystems;
-import cs3500.nuplanner.providerp3.model.ReadOnlySystems;
-import cs3500.nuplanner.providerp3.view.PlannerFrame;
+import cs3500.nuplanner.provider.adaptors.ClientToProviderModelAdaptor;
+import cs3500.nuplanner.provider.adaptors.ProviderToClientViewAdaptor;
+import cs3500.nuplanner.provider.model.ReadOnlySystems;
+import cs3500.nuplanner.provider.view.PlannerFrame;
 import cs3500.nuplanner.strategies.AnyTimeStrategy;
 import cs3500.nuplanner.strategies.SchedulingStrategies;
 import cs3500.nuplanner.strategies.WorkHoursStrategy;
-import cs3500.nuplanner.view.gui.SSFrame;
 import cs3500.nuplanner.view.gui.SSGUIView;
 
 /**
