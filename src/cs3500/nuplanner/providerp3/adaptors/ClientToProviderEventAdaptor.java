@@ -14,12 +14,13 @@ import cs3500.nuplanner.providerp3.model.IUser;
 
 public class ClientToProviderEventAdaptor implements IEvent {
 
-  private IEvent ievent;
-  private SchedulingSystem model;
+  private final IEvent ievent;
+  private final SchedulingSystem model;
 
   public ClientToProviderEventAdaptor(ReadableEvent event, SchedulingSystem model) {
 
     this.ievent = convertEventIntoIEvent(event);
+    this.model = model;
 
   }
 
