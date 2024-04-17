@@ -254,6 +254,10 @@ public class PlannerPanel extends JPanel implements PlannerPanelView {
   }
 
   @Override
+  // mo: why the frick did you do this. the point of features is so other components don't
+  //   bother with low-level events. yet you make a features method that is vague and low-level
+  // theres so much wrong with this code
+  // ok low level details not given out, but naming reveals lack of understanding
   public void addClickListener(Features controller) {
     this.addMouseListener(new MouseListener() {
       @Override
