@@ -10,6 +10,7 @@ import cs3500.nuplanner.model.hw05.NUEvent;
 import cs3500.nuplanner.model.hw05.RawEventData;
 import cs3500.nuplanner.model.hw05.Schedule;
 import cs3500.nuplanner.providerp3.model.Event;
+import cs3500.nuplanner.providerp3.model.IEvent;
 import cs3500.nuplanner.providerp3.model.ISchedule;
 
 public class ClientToProviderScheduleAdaptor implements ISchedule {
@@ -56,8 +57,9 @@ public class ClientToProviderScheduleAdaptor implements ISchedule {
 
   @Override
   public List<Event> getAllEvents() {
-    return null;
+//    ProviderToClientEventAdaptor adaptor = new ProviderToClientEventAdaptor(getAllEvents().get(0));
 //    return delegate.events();
+    return null; //TODO: Not sure how to do this one per say, where do you get the original copy?
   }
 
   @Override
