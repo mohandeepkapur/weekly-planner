@@ -45,7 +45,7 @@ public class ClientToProviderScheduleAdaptor implements ISchedule {
     List<IEvent> ievents = new ArrayList<>();
 
     for (ReadableEvent event : this.schedEvents) {
-      ievents.add(new ClientToProviderEventAdaptor(event));
+      ievents.add(new ClientToProviderEventAdaptor(event, model));
     }
 
     return ievents;
