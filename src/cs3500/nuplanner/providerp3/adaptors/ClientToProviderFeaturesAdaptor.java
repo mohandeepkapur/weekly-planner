@@ -117,7 +117,8 @@ public class ClientToProviderFeaturesAdaptor implements Features {
 
     Event delEvent = new ProviderToClientEventAdaptor(e);
 
-    delegate.displayExistingEvent(delEvent.host(), delEvent);
+    // TODO: would be nice to know current user displayed
+    delegate.displayExistingEvent( delEvent.host() , delEvent);
 
   }
 

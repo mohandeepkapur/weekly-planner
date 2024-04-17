@@ -9,6 +9,7 @@ import cs3500.nuplanner.providerp3.model.IEvent;
  * Creates the interface for the schedule panel view.
  */
 public interface PlannerPanelView {
+  // this is so shit
   /**
    * This is a method that handles when the panel is clicked.
    * @param controller the controller passed into the listener
