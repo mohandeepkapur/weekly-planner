@@ -40,22 +40,24 @@ public class ProviderToClientViewAdaptor implements SSGUIView {
 
   @Override
   public void addFeatures(Features features) {
-    this.delegate.setListener();
+    cs3500.nuplanner.providerp3.controller.Features features2 =
+            new ClientToProviderFeaturesAdaptor(features);
+    this.delegate.setListener(features2);
   }
 
   @Override
   public void makeVisible() {
-
+    this.delegate.makeVisible();
   }
 
   @Override
   public void displayErrorMessage(String errorMessage) {
-
+    this.displayErrorMessage(errorMessage);
   }
 
   @Override
   public void refresh() {
-
+    this.delegate.refresh();
   }
 
 }
