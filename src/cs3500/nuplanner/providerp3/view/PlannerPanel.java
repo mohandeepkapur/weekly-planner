@@ -37,7 +37,7 @@ public class PlannerPanel extends JPanel implements PlannerPanelView {
   /**
    * Makes the constructor for the planner panel.
    * @param model the model it takes in
-   * @param users the list of users in the JComboBox
+   * @param users the list of users iƒn the JComboBox
    */
   public PlannerPanel(ReadOnlySystems model, JComboBox<String> users) {
     super();
@@ -74,7 +74,7 @@ public class PlannerPanel extends JPanel implements PlannerPanelView {
     for (IUser u : users.values()) {
       if (Objects.equals(this.users.getSelectedItem(), u.getUid())) {
         ISchedule schedule = this.model.getUserSchedule(u.getUid());
-        List<Event> events = schedule.getAllEvents();
+        List<IEvent> events = schedule.getAllEvents();
         for (IEvent e : events) {
           LocalTime start = e.getStartTime();
           LocalTime end = e.getEndTime();

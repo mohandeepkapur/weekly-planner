@@ -8,62 +8,51 @@ import java.util.List;
 import cs3500.nuplanner.model.hw05.DaysOfTheWeek;
 import cs3500.nuplanner.model.hw05.NUEvent;
 import cs3500.nuplanner.model.hw05.RawEventData;
+import cs3500.nuplanner.model.hw05.ReadableEvent;
 import cs3500.nuplanner.model.hw05.Schedule;
+import cs3500.nuplanner.model.hw05.SchedulingSystem;
 import cs3500.nuplanner.providerp3.model.Event;
 import cs3500.nuplanner.providerp3.model.IEvent;
 import cs3500.nuplanner.providerp3.model.ISchedule;
 
+/**
+ * Wraps existing schedule in client-model. Adaptor does not behave like a complete ISchedule.
+ */
 public class ClientToProviderScheduleAdaptor implements ISchedule {
-  Schedule delegate;
 
-  public ClientToProviderScheduleAdaptor(Schedule delegate) {
-    this.delegate = delegate;
+  private Schedule schedule;
+  private SchedulingSystem model;
+  private List<ReadableEvent> schedEvents;
+
+  public ClientToProviderScheduleAdaptor(String user, SchedulingSystem model) {
+    this.model = model;
+    this.schedEvents = model.eventsInSchedule(user);
   }
 
   @Override
-  public void merge(Event event) {
-
-    cs3500.nuplanner.model.hw05.Event properEvent = extractUsersAndTime(event);
-
-    this.delegate.addEvent(properEvent);
+  public void merge(IEvent event) {
+    throw new IllegalArgumentException("Client-to-Prov Sched Adaptor doesn't support this feature");
   }
 
   @Override
-  public boolean isOverlapping(Event newEvent, Event... exclude) {
-
-    cs3500.nuplanner.model.hw05.Event properEvent = extractUsersAndTime(newEvent);
-
-    return this.delegate.eventConflict(properEvent);
+  public boolean isOverlapping(IEvent newEvent, IEvent... exclude) {
+    throw new IllegalArgumentException("Client-to-Prov Sched Adaptor doesn't support this feature");
   }
 
-  private cs3500.nuplanner.model.hw05.Event extractUsersAndTime(Event newEvent) {
-    int startTime = newEvent.getStartTime().getHour() * 100
-            + newEvent.getStartTime().getMinute();
-    int endTime = newEvent.getEndTime().getHour() * 100
-            + newEvent.getEndTime().getMinute();
+  @Override
+  public List<IEvent> getAllEvents() {
 
-    List<String> listOfUsers = new ArrayList<>();
+    List<IEvent> ievents = new ArrayList<>();
 
-    for (int user = 0; user < newEvent.getInvitedUsers().size(); user++) {
-      listOfUsers.add(newEvent.getInvitedUsers().get(user).getUid());
+    for (ReadableEvent event : this.schedEvents) {
+      ievents.add(new ClientToProviderEventAdaptor(event));
     }
 
-    return new NUEvent(listOfUsers,
-            newEvent.getName(),
-            newEvent.getPlace(), newEvent.isOnline(),
-            DaysOfTheWeek.stringToDay(newEvent.getStartDay().toString()), startTime,
-            DaysOfTheWeek.stringToDay(newEvent.getEndDay().toString()), endTime);
-  }
-
-  @Override
-  public List<Event> getAllEvents() {
-//    ProviderToClientEventAdaptor adaptor = new ProviderToClientEventAdaptor(getAllEvents().get(0));
-//    return delegate.events();
-    return null; //TODO: Not sure how to do this one per say, where do you get the original copy?
+    return ievents;
   }
 
   @Override
   public Document toDocument() {
-    return null;
+    throw new IllegalArgumentException("Client-to-Prov Sched Adaptor doesn't support this feature");
   }
 }

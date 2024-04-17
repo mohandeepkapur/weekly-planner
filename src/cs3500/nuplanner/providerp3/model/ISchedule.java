@@ -8,17 +8,17 @@ public interface ISchedule {
   /**
    * This method merges event inside the schedule.
    */
-  void merge(Event event);
+  void merge(IEvent event);
 
   /**
    * It checks for overlapping events; exclude self in case of modification.
    */
-  boolean isOverlapping(Event newEvent, Event... exclude);
+  boolean isOverlapping(IEvent newEvent, IEvent... exclude);
 
   /**
    * It returns the list of all events in the schedule.
    */
-  List<Event> getAllEvents();
+  List<IEvent> getAllEvents();
 
   /**
    * This method changes the schedule object to Document object.

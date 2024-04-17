@@ -36,5 +36,5 @@ public interface IUser {
   /**
    * This removes a given event from the user's schedule.
    */
-  void removeEventFromSchedule(Event event);
+  void removeEventFromSchedule(IEvent event);
 }

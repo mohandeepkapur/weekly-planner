@@ -35,6 +35,5 @@ public interface ReadableSchedulingSystem {
    */
   ReadableEvent eventAt(String user, DaysOfTheWeek startDay, int startTime);
 
-  //ReadableEvent eventAt(String user, Event eventToExtract)
 
 }

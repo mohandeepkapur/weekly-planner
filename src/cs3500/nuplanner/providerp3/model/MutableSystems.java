@@ -36,7 +36,7 @@ public interface MutableSystems extends ReadOnlySystems {
    * @param uid the string for the user id
    * @param event the event that is going to be created
    */
-  void createEvent(String uid, Event event);
+  void createEvent(String uid, IEvent event);
 
   /**
    * Changes an event with the given modified event.
@@ -44,11 +44,11 @@ public interface MutableSystems extends ReadOnlySystems {
    * @param event the event that is going to be changed
    * @param modifiedEvent the new modified event being changed
    */
-  void modifyEvent(String uid, Event event, Event modifiedEvent);
+  void modifyEvent(String uid, IEvent event, IEvent modifiedEvent);
 
   /**
    * The method that deletes an event from every user's schedule.
    * @param event the event to be deleted
    */
-  void deleteEvent(Event event);
+  void deleteEvent(IEvent event);
 }

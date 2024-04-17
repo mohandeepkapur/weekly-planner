@@ -35,5 +35,5 @@ public interface ReadOnlySystems {
    * @param event The event to check for conflicts.
    * @return true if the event conflicts with any invited user's schedule; false otherwise.
    */
-  boolean isEventConflicting(Event event);
+  boolean isEventConflicting(IEvent event);
 }

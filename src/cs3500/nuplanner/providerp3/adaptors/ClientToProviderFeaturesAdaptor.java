@@ -19,6 +19,7 @@ import cs3500.nuplanner.providerp3.strategy.Strategy;
  * the provider has to work with their view.
  */
 
+// rawEventData assumes that provided format is
 public class ClientToProviderFeaturesAdaptor implements Features {
 
   private cs3500.nuplanner.controller.Features delegate;
