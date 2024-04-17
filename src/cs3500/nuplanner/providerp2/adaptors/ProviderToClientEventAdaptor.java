@@ -70,7 +70,7 @@ public class ProviderToClientEventAdaptor implements Event {
   private IEvent buildNewIEvent(String name, Day startDay, LocalTime startTime, Day endDay, LocalTime endTime, boolean online, String place, IUser hostUser, List<IUser> invitedUsers) {
 
     //something icky has happened, and i def have the brainpower to see it
-    new cs3500.nuplanner.providerp2.model.Event(name, startDay, startTime, endDay, endTime, online, place, hostUser, invitedUsers);
+    return new cs3500.nuplanner.providerp2.model.Event(name, startDay, startTime, endDay, endTime, online, place, hostUser, invitedUsers);
 
   }
 
@@ -79,22 +79,34 @@ public class ProviderToClientEventAdaptor implements Event {
   }
 
   private Day convertDaysOfTheWeekToDay(DaysOfTheWeek day) {
-    return ;
+    String dayRep = day.toString().toLowerCase();
+    return Day.toDay(Character.toUpperCase(dayRep.charAt(0)) + dayRep.substring(1));
   }
 
-  private int convertBetweenLocalTimeToEventMilitaryTime(LocalTime localtime) {
-    // localtime -> in hours and minutes
 
-    // do not want to convert directly into military time <- diff Event impl would reject such a conversion <- bc Event holds representation of time in sys <- BAD
+  private int convertBetweenLocalTimeToEventMilitaryTime(LocalTime localtime) {
+    // do not want to convert directly into military time
+    // <- diff Event impl would reject such a conversion
+    // <- bc Event holds representation of time in sys <- BAD
     // JANK
     // Means this adaptor will only work for one client.Event impl
     return (localtime.getHour() * 100) + localtime.getMinute();
   }
 
+  private LocalTime convertBetweenEventMilitaryTimeToLocalTime(int militaryTime) {
+    int hour = militaryTime / 100;
+    int minute = militaryTime % 100;
+    return LocalTime.of(hour, minute);
+  }
+
   @Override
   public void updateName(String name) {
 
-    this.ievent = buildNewIEvent(name, this.ievent.getStartDay(), this.ievent.getStartTime(), this.ievent.getEndDay(), this.ievent.getEndTime(), this.ievent.isOnline(), this.ievent.getPlace(), this.ievent.getHostUser(), this.ievent.getInvitedUsers());
+    this.ievent = buildNewIEvent(name, this.ievent.getStartDay(),
+            this.ievent.getStartTime(), this.ievent.getEndDay(),
+            this.ievent.getEndTime(), this.ievent.isOnline(),
+            this.ievent.getPlace(), this.ievent.getHostUser(),
+            this.ievent.getInvitedUsers());
 
     setIEventToEventFields();
 
@@ -102,47 +114,158 @@ public class ProviderToClientEventAdaptor implements Event {
 
   @Override
   public void updateLocation(String location) {
-    this.ievent = buildNewIEvent(this.ievent.getName(), this.ievent.getStartDay(), this.ievent.getStartTime(), this.ievent.getEndDay(), this.ievent.getEndTime(), this.ievent.isOnline(), location, this.ievent.getHostUser(), this.ievent.getInvitedUsers());
+    this.ievent = buildNewIEvent(this.ievent.getName(), this.ievent.getStartDay(),
+            this.ievent.getStartTime(), this.ievent.getEndDay(),
+            this.ievent.getEndTime(), this.ievent.isOnline(),
+            location, this.ievent.getHostUser(),
+            this.ievent.getInvitedUsers());
+
+    setIEventToEventFields();
+
   }
 
   @Override
   public void updateIsOnline(boolean isOnline) {
-    this.ievent = buildNewIEvent(this.ievent.getName(), this.ievent.getStartDay(), this.ievent.getStartTime(), this.ievent.getEndDay(), this.ievent.getEndTime(), isOnline, this.ievent.getPlace(), this.ievent.getHostUser(), this.ievent.getInvitedUsers());
+    this.ievent = buildNewIEvent(this.ievent.getName(), this.ievent.getStartDay(),
+            this.ievent.getStartTime(), this.ievent.getEndDay(),
+            this.ievent.getEndTime(), isOnline,
+            this.ievent.getPlace(), this.ievent.getHostUser(),
+            this.ievent.getInvitedUsers());
+
+    setIEventToEventFields();
+
   }
 
   @Override
   public void updateStartDay(DaysOfTheWeek startDay) {
+    Day newStartDay = convertDaysOfTheWeekToDay(startDay);
+
+    this.ievent = buildNewIEvent(this.ievent.getName(), newStartDay,
+            this.ievent.getStartTime(), this.ievent.getEndDay(),
+            this.ievent.getEndTime(), this.ievent.isOnline(),
+            this.ievent.getPlace(), this.ievent.getHostUser(),
+            this.ievent.getInvitedUsers());
+
+    setIEventToEventFields();
 
   }
 
   @Override
   public void updateEndDay(DaysOfTheWeek endDay) {
+    Day newEndDay = convertDaysOfTheWeekToDay(startDay);
 
+    this.ievent = buildNewIEvent(this.ievent.getName(), this.ievent.getStartDay(),
+            this.ievent.getStartTime(), newEndDay,
+            this.ievent.getEndTime(), this.ievent.isOnline(),
+            this.ievent.getPlace(), this.ievent.getHostUser(),
+            this.ievent.getInvitedUsers());
 
+    setIEventToEventFields();
 
   }
 
   @Override
   public void updateStartTime(int startTime) {
+    LocalTime newStartTime = convertBetweenEventMilitaryTimeToLocalTime(startTime);
+
+    this.ievent = buildNewIEvent(this.ievent.getName(), this.ievent.getStartDay(),
+            newStartTime, this.ievent.getEndDay(),
+            this.ievent.getEndTime(), this.ievent.isOnline(),
+            this.ievent.getPlace(), this.ievent.getHostUser(),
+            this.ievent.getInvitedUsers());
+
+    setIEventToEventFields();
 
   }
 
   @Override
   public void updateEndTime(int endTime) {
+    LocalTime newEndTime = convertBetweenEventMilitaryTimeToLocalTime(endTime);
+
+    this.ievent = buildNewIEvent(this.ievent.getName(), this.ievent.getStartDay(),
+            this.ievent.getStartTime(), this.ievent.getEndDay(),
+            newEndTime, this.ievent.isOnline(),
+            this.ievent.getPlace(), this.ievent.getHostUser(),
+            this.ievent.getInvitedUsers());
+
+    setIEventToEventFields();
 
   }
 
+  /**
+   * Removes an invitee from the Event. If host of Event is removed, all other invitees of Event
+   * are removed as consequence, creating invitee-less Event.
+   *
+   * @param invitee                     invitee to remove
+   * @throws IllegalArgumentException   if no invitees left in Event
+   * @throws IllegalArgumentException   if invitee to remove is not part of Event
+   */
   @Override
   public void removeInvitee(String invitee) {
 
-    this.removeInvitee();
+    List<IUser> invitees = this.ievent.getInvitedUsers();
+
+    if (invitees.isEmpty()) {
+      throw new IllegalArgumentException("Cannot remove invitee from empty invitee list... ");
+    }
+
+    // if invitee mentioned is host of iEvent
+    if (invitee.equals(this.ievent.getHostUser().getUid())) {
+      this.ievent = buildNewIEvent(this.ievent.getName(), this.ievent.getStartDay(),
+              this.ievent.getStartTime(), this.ievent.getEndDay(),
+              this.ievent.getEndTime(), this.ievent.isOnline(),
+              this.ievent.getPlace(), this.ievent.getHostUser(),
+              new ArrayList<IUser>());
+    }
+
+    // if invitee mentioned is non-host
+    for (IUser user : invitees) {
+      if (user.getUid().equals(invitee)) {
+        invitees.remove(user);
+        this.ievent = buildNewIEvent(this.ievent.getName(), this.ievent.getStartDay(),
+                this.ievent.getStartTime(), this.ievent.getEndDay(),
+                this.ievent.getEndTime(), this.ievent.isOnline(),
+                this.ievent.getPlace(), this.ievent.getHostUser(),
+                invitees);
+        break;
+      }
+    }
+
+    // if invitee not contained within iEvent
+    throw new IllegalArgumentException("Event does not contain user to remove... ");
 
   }
 
+  /**
+   * Adds an invitee to the Event. First invitee added to invitee-less Event becomes host.
+   *
+   * @param invitee                       invitee to add
+   * @throws IllegalArgumentException     if invitee is already invited in Event
+   */
   @Override
   public void addInvitee(String invitee) {
 
+    List<IUser> invitees = this.ievent.getInvitedUsers();
 
+    for (IUser user : invitees) {
+      if (user.getUid().equals(invitee)) {
+        throw new IllegalArgumentException("Invitee already exists in schedule... ");
+      }
+    }
+
+    invitees.add()
+
+        invitees.remove(user);
+        this.ievent = buildNewIEvent(this.ievent.getName(), this.ievent.getStartDay(),
+                this.ievent.getStartTime(), this.ievent.getEndDay(),
+                this.ievent.getEndTime(), this.ievent.isOnline(),
+                this.ievent.getPlace(), this.ievent.getHostUser(),
+                invitees);
+
+    }
+
+    // if invitee not contained within iEvent
+    throw new IllegalArgumentException("Event does not contain user to remove... ");
 
   }
 

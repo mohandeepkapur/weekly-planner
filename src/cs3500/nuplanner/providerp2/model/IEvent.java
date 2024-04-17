@@ -18,6 +18,7 @@ public interface IEvent {
    * This returns whether the Event is online or not.
    */
   boolean isOnline();
+
   /**
    * This returns the start time of the Event.
    */
