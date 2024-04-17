@@ -9,8 +9,8 @@ import cs3500.nuplanner.model.hw05.DaysOfTheWeek;
 import cs3500.nuplanner.model.hw05.NUEvent;
 import cs3500.nuplanner.model.hw05.RawEventData;
 import cs3500.nuplanner.model.hw05.Schedule;
-import cs3500.nuplanner.providerp2.model.Event;
-import cs3500.nuplanner.providerp2.model.ISchedule;
+import cs3500.nuplanner.providerp3.model.Event;
+import cs3500.nuplanner.providerp3.model.ISchedule;
 
 public class ClientToProviderScheduleAdaptor implements ISchedule {
   Schedule delegate;
