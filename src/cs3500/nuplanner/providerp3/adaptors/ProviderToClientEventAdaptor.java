@@ -1,13 +1,13 @@
-package cs3500.nuplanner.providerp2.adaptors;
+package cs3500.nuplanner.providerp3.adaptors;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
 import cs3500.nuplanner.model.hw05.DaysOfTheWeek;
 import cs3500.nuplanner.model.hw05.Event;
-import cs3500.nuplanner.providerp2.model.Day;
-import cs3500.nuplanner.providerp2.model.IEvent;
-import cs3500.nuplanner.providerp2.model.IUser;
+import cs3500.nuplanner.providerp3.model.Day;
+import cs3500.nuplanner.providerp3.model.IEvent;
+import cs3500.nuplanner.providerp3.model.IUser;
 
 // there's something I'm conceptually missing rn...
 
@@ -70,7 +70,7 @@ public class ProviderToClientEventAdaptor implements Event {
   private IEvent buildNewIEvent(String name, Day startDay, LocalTime startTime, Day endDay, LocalTime endTime, boolean online, String place, IUser hostUser, List<IUser> invitedUsers) {
 
     //something icky has happened, and i def have the brainpower to see it
-    return new cs3500.nuplanner.providerp2.model.Event(name, startDay, startTime, endDay, endTime, online, place, hostUser, invitedUsers);
+    return new cs3500.nuplanner.providerp3.model.Event(name, startDay, startTime, endDay, endTime, online, place, hostUser, invitedUsers);
 
   }
 
@@ -262,7 +262,7 @@ public class ProviderToClientEventAdaptor implements Event {
                 this.ievent.getPlace(), this.ievent.getHostUser(),
                 invitees);
 
-    }
+
 
     // if invitee not contained within iEvent
     throw new IllegalArgumentException("Event does not contain user to remove... ");

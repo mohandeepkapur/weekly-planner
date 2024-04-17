@@ -1,4 +1,4 @@
-package cs3500.nuplanner.providerp2.adaptors;
+package cs3500.nuplanner.providerp3.adaptors;
 
 public class ClientToProviderUserAdaptor {
 }
