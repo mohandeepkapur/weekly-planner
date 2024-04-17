@@ -90,6 +90,9 @@ public class ClientToProviderFeaturesAdaptor implements Features {
 
   /**
    * Extracts data from an Event and turns it into RawEventData.
+   *
+   * @param event the event passed in
+   * @return the event in RawEventData form
    */
   private RawEventData extractEventData(Event event) {
 
@@ -118,7 +121,7 @@ public class ClientToProviderFeaturesAdaptor implements Features {
     Event delEvent = new ProviderToClientEventAdaptor(e);
 
     // TODO: would be nice to know current user displayed
-    delegate.displayExistingEvent( delEvent.host() , delEvent);
+    delegate.displayExistingEvent(delEvent.host(), delEvent);
 
   }
 

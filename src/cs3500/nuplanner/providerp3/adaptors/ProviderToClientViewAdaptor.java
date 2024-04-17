@@ -8,11 +8,21 @@ import cs3500.nuplanner.view.gui.SSGUIView;
 // provView manipulates its own state
 // all GUIController can do when trying to manipulate provView, is hit refresh
 // will need to
+
+/**
+ * A class that adapts the view between the provider and the user.
+ */
 public class ProviderToClientViewAdaptor implements SSGUIView {
 
   // providers don't have a MAIN view interface
   // assuming dealing w/ MAIN impl
   private IView delegate;
+
+  /**
+   * Creates the adaptor that bridges the gap between the two views.
+   *
+   * @param view the view from the provider
+   */
 
   public ProviderToClientViewAdaptor(IView view) {
     this.delegate = view;

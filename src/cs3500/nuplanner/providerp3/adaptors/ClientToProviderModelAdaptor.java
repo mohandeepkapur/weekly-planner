@@ -23,6 +23,12 @@ public class ClientToProviderModelAdaptor implements ReadOnlySystems {
 
   private SchedulingSystem delegate;
 
+  /**
+   * Creates the adapter between the different models.
+   *
+   * @param delegate our version of the scheduling system passed in
+   */
+
   public ClientToProviderModelAdaptor(SchedulingSystem delegate) {
     this.delegate = delegate;
   }
@@ -60,96 +66,4 @@ public class ClientToProviderModelAdaptor implements ReadOnlySystems {
             dEvent.endDay(), dEvent.endTime());
 
   }
-
-  //  @Override
-  //  public void uploadXMLFileToSystem(String filePath) {
-  //    // last
-  //  }
-  //
-  //  @Override
-  //  public void saveXMLFileFromSystem(String filePath) {
-  //    // last
-  //  }
-  //
-  //  @Override
-  //  public void addUser(IUser user) {
-  //    this.delegate.addUser(user.getUid());
-  //  }
-  //
-  //  @Override
-  //  public void removeUser(IUser user) {
-  //    this.delegate.removeUser(user.getUid());
-  //  }
-  //
-  //  @Override
-  //  public void createEvent(String uid, IEvent event) {
-  //    cs3500.nuplanner.model.hw05.Event dEvent = new ProviderToClientEventAdaptor(event);
-  //    this.delegate.addEvent(uid, dEvent.eventInvitees(), dEvent.name(),
-  //            dEvent.location(), dEvent.isOnline(), dEvent.startDay(),
-  //            dEvent.startTime(), dEvent.endDay(), dEvent.endTime());
-  //  }
-  //
-  //  @Override
-  //  public void modifyEvent(String uid, IEvent event, IEvent modifiedEvent) {
-  //
-  //  }
-  //
-  //  @Override
-  //  public void deleteEvent(IEvent event) {
-  //
-  //  }
-  //
-  //  @Override
-  //  public void createEvent(String uid, Event event) {
-  //    int startTime = event.getStartTime().getHour() * 100
-  //            + event.getStartTime().getMinute();
-  //    int endTime = event.getEndTime().getHour() * 100
-  //            + event.getEndTime().getMinute();
-  //
-  //    List<String> listOfUsers = new ArrayList<>();
-  //
-  //    for (int user = 0; user < event.getInvitedUsers().size(); user++) {
-  //      listOfUsers.add(event.getInvitedUsers().get(user).getUid());
-  //    }
-  //
-  //    this.delegate.addEvent(uid, listOfUsers, event.getName(), event.getPlace(),
-  //            event.isOnline(), DaysOfTheWeek.stringToDay(event.getStartDay().toString()), startTime,
-  //            DaysOfTheWeek.stringToDay(event.getEndDay().toString()), endTime);
-  //  }
-  //
-  //  @Override
-  //  public void modifyEvent(String uid, Event event, Event modifiedEvent) {
-  //    int startTime = event.getStartTime().getHour() * 100
-  //            + event.getStartTime().getMinute();
-  //
-  //    int newStartTime = modifiedEvent.getStartTime().getHour() * 100
-  //            + modifiedEvent.getStartTime().getMinute();
-  //    int newEndTime = modifiedEvent.getEndTime().getHour() * 100
-  //            + modifiedEvent.getEndTime().getMinute();
-  //
-  //    List<String> listOfUsers = new ArrayList<>();
-  //
-  //    for (int user = 0; user < modifiedEvent.getInvitedUsers().size(); user++) {
-  //      listOfUsers.add(modifiedEvent.getInvitedUsers().get(user).getUid());
-  //    }
-  //
-  //    NUEvent newModifiedEvent = new NUEvent(listOfUsers, modifiedEvent.getName(),
-  //            modifiedEvent.getPlace(), modifiedEvent.isOnline(),
-  //            DaysOfTheWeek.stringToDay(modifiedEvent.getStartDay().toString()),
-  //            newStartTime, DaysOfTheWeek.stringToDay(modifiedEvent.getEndDay().toString()),
-  //            newEndTime);
-  //
-  //    this.delegate.modifyEvent(uid, DaysOfTheWeek.stringToDay(event.getStartDay().toString()),
-  //            startTime, newModifiedEvent);
-  //  }
-  //
-  //  @Override
-  //  public void deleteEvent(Event event) {
-  //    int startTime = event.getStartTime().getHour() * 100
-  //            + event.getStartTime().getMinute();
-  //    DaysOfTheWeek startDay = DaysOfTheWeek.stringToDay(event.getStartDay().toString());
-  //
-  //    this.delegate.removeEvent(event.getHostUser().getUid(), startDay, startTime);
-  //  }
-
 }

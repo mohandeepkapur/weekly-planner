@@ -2,10 +2,8 @@ package cs3500.nuplanner.providerp3.adaptors;
 
 import org.w3c.dom.NodeList;
 
-import cs3500.nuplanner.model.hw05.NUSchedule;
 import cs3500.nuplanner.model.hw05.Schedule;
 import cs3500.nuplanner.model.hw05.SchedulingSystem;
-import cs3500.nuplanner.providerp3.model.Event;
 import cs3500.nuplanner.providerp3.model.IEvent;
 import cs3500.nuplanner.providerp3.model.ISchedule;
 import cs3500.nuplanner.providerp3.model.IUser;
@@ -18,6 +16,13 @@ public class ClientToProviderUserAdaptor implements IUser {
   private String user;
   private SchedulingSystem model;
   private Schedule schedule;
+
+  /**
+   * Creates the adaptor between the providers user and a schedule.
+   *
+   * @param user the user of the scheudule
+   * @param model our version of the model
+   */
 
   public ClientToProviderUserAdaptor(String user, SchedulingSystem model) {
     this.user = user;

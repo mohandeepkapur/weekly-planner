@@ -12,10 +12,21 @@ import cs3500.nuplanner.providerp3.model.Event;
 import cs3500.nuplanner.providerp3.model.IEvent;
 import cs3500.nuplanner.providerp3.model.IUser;
 
+/**
+ * An adaptor that converts our version of events into the providers version.
+ */
+
 public class ClientToProviderEventAdaptor implements IEvent {
 
   private final IEvent ievent;
   private final SchedulingSystem model;
+
+  /**
+   * Creates the adaptor.
+   *
+   * @param event the ReadableEvent passed in
+   * @param model our version of the model passed in
+   */
 
   public ClientToProviderEventAdaptor(ReadableEvent event, SchedulingSystem model) {
 
@@ -24,8 +35,13 @@ public class ClientToProviderEventAdaptor implements IEvent {
 
   }
 
-  // assuming host user is subset of invited users
-  // putting host user first wouldn't hurt
+  /**
+   * Converts our version of an event into the providers IEvent.
+   *
+   * @param event the event to convert
+   * @return an IEvent in the providers style
+   */
+
   private IEvent convertEventIntoIEvent(ReadableEvent event) {
 
     LocalTime startTime = convertBetweenEventMilitaryTimeToLocalTime(event.startTime());
@@ -45,11 +61,24 @@ public class ClientToProviderEventAdaptor implements IEvent {
 
   }
 
+  /**
+   * Converts our version of DaysOfTheWeek into the providers Day.
+   *
+   * @param day our version of DaysOfTheWeek
+   * @return the day for the providers version
+   */
+
   private Day convertDaysOfTheWeekToDay(DaysOfTheWeek day) {
     String dayRep = day.toString().toLowerCase();
     return Day.toDay(Character.toUpperCase(dayRep.charAt(0)) + dayRep.substring(1));
   }
 
+  /**
+   * Converts between our version of military time and the providers local time.
+   *
+   * @param militaryTime the military time from our version
+   * @return local time that the provider can use
+   */
   private LocalTime convertBetweenEventMilitaryTimeToLocalTime(int militaryTime) {
     int hour = militaryTime / 100;
     int minute = militaryTime % 100;

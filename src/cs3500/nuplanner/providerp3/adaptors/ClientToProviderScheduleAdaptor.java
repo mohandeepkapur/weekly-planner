@@ -24,6 +24,13 @@ public class ClientToProviderScheduleAdaptor implements ISchedule {
   private SchedulingSystem model;
   private List<ReadableEvent> schedEvents;
 
+  /**
+   * Creates the adaptor to bridge between the two schedules.
+   *
+   * @param user the schedule user
+   * @param model our version of the model
+   */
+
   public ClientToProviderScheduleAdaptor(String user, SchedulingSystem model) {
     this.model = model;
     this.schedEvents = model.eventsInSchedule(user);

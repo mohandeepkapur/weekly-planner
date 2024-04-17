@@ -41,6 +41,12 @@ public class ProviderToClientEventAdaptor implements Event {
   // Event needs invitees organized in a specific way
   private final Event delegate;
 
+  /**
+   * Creates the adaptor that translates between an IEvent and Event.
+   *
+   * @param ievent the IEvent to convert to an event
+   */
+
   public ProviderToClientEventAdaptor(IEvent ievent) {
     if (ievent == null) {
       throw new IllegalArgumentException("Invalid input into adaptor class... ");
