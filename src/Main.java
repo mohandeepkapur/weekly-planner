@@ -10,6 +10,7 @@ import cs3500.nuplanner.provider.view.PlannerFrame;
 import cs3500.nuplanner.strategies.AnyTimeStrategy;
 import cs3500.nuplanner.strategies.SchedulingStrategies;
 import cs3500.nuplanner.strategies.WorkHoursStrategy;
+import cs3500.nuplanner.view.gui.SSFrame;
 import cs3500.nuplanner.view.gui.SSGUIView;
 
 /**
@@ -22,22 +23,23 @@ public final class Main {
    */
   public static void main(String[] args) {
 
-
     SchedulingSystem model = new NUPlannerModel();
 
     SchedulingSystemController xmlCont = new XMLController(model);
     xmlCont.useSchedulingSystem("XMLFiles/toRead/Prof. Lucia.xml");
 
-
-    // loading in data into model
-    ReadOnlySystems adaptModel = new ClientToProviderModelAdaptor(model);
-
-    SSGUIView adaptView = new ProviderToClientViewAdaptor(new PlannerFrame(adaptModel));
-
-    SchedulingSystemController controller = new GUIController(adaptView, getStrategy(args[0]));
-
-    controller.useSchedulingSystem(model, getStrategy(args[0]));
-
+    // loading in data into model and user can pick between two views
+    if (args.length < 2 || args[1].equals("default")) {
+      SSGUIView view = new SSFrame(model);
+      SchedulingSystemController controller = new GUIController(view, getStrategy(args[0]));
+      controller.useSchedulingSystem(model, getStrategy(args[0]));
+    }
+    if (args[1].equals("provider")) {
+      ReadOnlySystems adaptModel = new ClientToProviderModelAdaptor(model);
+      SSGUIView adaptView = new ProviderToClientViewAdaptor(new PlannerFrame(adaptModel));
+      SchedulingSystemController controller = new GUIController(adaptView, getStrategy(args[0]));
+      controller.useSchedulingSystem(model, getStrategy(args[0]));
+    }
   }
 
   private static SchedulingStrategies getStrategy(String arg) {
