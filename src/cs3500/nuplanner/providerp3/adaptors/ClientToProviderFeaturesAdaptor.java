@@ -13,11 +13,8 @@ import cs3500.nuplanner.providerp3.model.IEvent;
 import cs3500.nuplanner.providerp3.strategy.Strategy;
 
 /**
- * An adaptor to adapt the features interface created personally with the features interface that
- * the provider has to work with their view.
+ * Adaptor class for provider's View ->
  */
-
-// rawEventData assumes that provided format is
 public class ClientToProviderFeaturesAdaptor implements Features {
 
   private cs3500.nuplanner.controller.Features delegate;

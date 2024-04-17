@@ -10,7 +10,7 @@ import cs3500.nuplanner.view.gui.SSGUIView;
 // will need to
 
 /**
- * A class that adapts the view between the provider and the user.
+ * Adaptor class that converts an IView into an SSGUIView.
  */
 public class ProviderToClientViewAdaptor implements SSGUIView {
 

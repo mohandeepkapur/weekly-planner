@@ -16,7 +16,8 @@ import cs3500.nuplanner.providerp3.model.IEvent;
 import cs3500.nuplanner.providerp3.model.ISchedule;
 
 /**
- * Wraps existing schedule in client-model. Adaptor does not behave like a complete ISchedule.
+ * Adaptor that converts a Schedule into an ISchedule. Full behavior of ISchedule has not been
+ * implemented.
  */
 public class ClientToProviderScheduleAdaptor implements ISchedule {
 

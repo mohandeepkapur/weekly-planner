@@ -13,9 +13,8 @@ import cs3500.nuplanner.providerp3.model.IEvent;
 import cs3500.nuplanner.providerp3.model.IUser;
 
 /**
- * An adaptor that converts our version of events into the providers version.
+ * Adaptor class that converts an Event (client interface) into an IEvent (provider interface).
  */
-
 public class ClientToProviderEventAdaptor implements IEvent {
 
   private final IEvent ievent;
