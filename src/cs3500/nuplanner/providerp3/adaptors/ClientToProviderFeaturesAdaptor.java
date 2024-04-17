@@ -8,11 +8,11 @@ import cs3500.nuplanner.model.hw05.Event;
 import cs3500.nuplanner.model.hw05.NUEvent;
 import cs3500.nuplanner.model.hw05.RawEventData;
 import cs3500.nuplanner.model.hw05.ReadableEvent;
-import cs3500.nuplanner.providerp3.controller.Features;
-import cs3500.nuplanner.providerp3.model.IEvent;
-import cs3500.nuplanner.providerp3.model.IUser;
-import cs3500.nuplanner.providerp3.strategy.AnyTime;
-import cs3500.nuplanner.providerp3.strategy.Strategy;
+import cs3500.nuplanner.providerp2.controller.Features;
+import cs3500.nuplanner.providerp2.model.IEvent;
+import cs3500.nuplanner.providerp2.model.IUser;
+import cs3500.nuplanner.providerp2.strategy.AnyTime;
+import cs3500.nuplanner.providerp2.strategy.Strategy;
 
 /**
  * An adaptor to adapt the features interface created personally with the features interface that
@@ -119,7 +119,8 @@ public class ClientToProviderFeaturesAdaptor implements Features {
 
   @Override
   public Strategy onCreateEventFrame() {
-    return delegate.displayBlankEvent();
+//    return delegate.displayBlankEvent(); //TODO: Why do they return a strategy bruh
+    return null;
   }
 
   @Override
