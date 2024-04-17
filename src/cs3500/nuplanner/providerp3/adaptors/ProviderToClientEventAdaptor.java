@@ -1,9 +1,12 @@
 package cs3500.nuplanner.providerp3.adaptors;
+
 import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.List;
 
 import cs3500.nuplanner.model.hw05.DaysOfTheWeek;
 import cs3500.nuplanner.model.hw05.Event;
+import cs3500.nuplanner.model.hw05.NUEvent;
 import cs3500.nuplanner.providerp3.model.Day;
 import cs3500.nuplanner.providerp3.model.IEvent;
 
@@ -20,50 +23,78 @@ but they've made their IEvent immutable -> which means anytime an Event-adaptor 
   which means adaptor must construct a provider.Event inside <- now adaptor is aware of impl-type of IEvent
   what is the forest from the treeees <- there is still a forest
  */
+
 /**
  * Takes in an IEvent, spits out an Event!
- *
+ * <p>
  * Since only available IEvent impl from Provider is immutable, will need to construct
  * new IEvents everytime client.Event wants to be modified.
- *
+ * <p>
  * Only available IEvent impl is named Event, which will be mentioned as provider.Event to avoid
  * confusion between client.Event interface, and provider.Event implementation of IEvent.
- *
+ * <p>
  * Usage -> to translate IEvent sent into provider Features by View
  */
 public class ProviderToClientEventAdaptor implements Event {
 
   // Event needs invitees organized in a specific way
-  private Event delegate;
+  private final Event delegate;
 
   public ProviderToClientEventAdaptor(IEvent ievent) {
-
     if (ievent == null) {
       throw new IllegalArgumentException("Invalid input into adaptor class... ");
     }
-
-    translateIEventToEvent(ievent);
-
+    this.delegate = translateIEventToEvent(ievent);
   }
 
-  private void translateIEventToEvent(IEvent ievent) {
+  /**
+   * Translates an IEvent into our version of an event.
+   *
+   * @param ievent the IEvent taken in from the provider
+   */
+
+  private Event translateIEventToEvent(IEvent ievent) {
 
     String name = ievent.getName();
     String location = ievent.getPlace();
     boolean isOnline = ievent.isOnline();
+
     // TIME CLASS
     int startTime = convertLocalTimeToEventMilitaryTime(ievent.getStartTime());
     int endTime = convertLocalTimeToEventMilitaryTime(ievent.getEndTime());
     DaysOfTheWeek startDay = convertDayToDaysOfTheWeek(ievent.getStartDay());
     DaysOfTheWeek endDay = convertDayToDaysOfTheWeek(ievent.getEndDay());
-    String host = ievent.getHostUser().getUid();
 
+    // USERS
+    ArrayList<String> listOfInvitees = new ArrayList<>();
+    String host = ievent.getHostUser().getUid();
+    listOfInvitees.add(host);
+    for (int users = 0; users < ievent.getInvitedUsers().size(); users++) {
+      if (!ievent.getInvitedUsers().get(users).getUid().equals(host)) {
+        listOfInvitees.add(ievent.getInvitedUsers().get(users).getUid());
+      }
+    }
+    return new NUEvent(listOfInvitees, name, location, isOnline,
+            startDay, startTime, endDay, endTime);
   }
+
+  /**
+   * Converts the providers Day into our version of DaysOfTheWeek.
+   *
+   * @param day the day passed in from the provider
+   * @return a matching DaysOfTheWeek
+   */
 
   private DaysOfTheWeek convertDayToDaysOfTheWeek(Day day) {
     return DaysOfTheWeek.stringToDay(day.toString().toUpperCase());
   }
 
+  /**
+   * Converts the providers version of local time into our representation of military time.
+   *
+   * @param localtime the local time from the provider
+   * @return the military time in our format
+   */
   private int convertLocalTimeToEventMilitaryTime(LocalTime localtime) {
     // do not want to convert directly into military time
     // <- diff Event impl would reject such a conversion
@@ -73,118 +104,106 @@ public class ProviderToClientEventAdaptor implements Event {
     return (localtime.getHour() * 100) + localtime.getMinute();
   }
 
-  //  private Day convertDaysOfTheWeekToDay(DaysOfTheWeek day) {
-  //    String dayRep = day.toString().toLowerCase();
-  //    return Day.toDay(Character.toUpperCase(dayRep.charAt(0)) + dayRep.substring(1));
-  //  }
-  //
-  //  private LocalTime convertBetweenEventMilitaryTimeToLocalTime(int militaryTime) {
-  //    int hour = militaryTime / 100;
-  //    int minute = militaryTime % 100;
-  //    return LocalTime.of(hour, minute);
-  //  }
-
   @Override
   public void updateName(String name) {
-
+    delegate.updateName(name);
   }
 
   @Override
   public void updateLocation(String location) {
-
+    delegate.updateLocation(location);
   }
 
   @Override
   public void updateIsOnline(boolean isOnline) {
-
+    delegate.updateIsOnline(isOnline);
   }
 
   @Override
   public void updateStartDay(DaysOfTheWeek startDay) {
-
+    delegate.updateStartDay(startDay);
   }
 
   @Override
   public void updateEndDay(DaysOfTheWeek endDay) {
-
+    delegate.updateEndDay(endDay);
   }
 
   @Override
   public void updateStartTime(int startTime) {
-
+    delegate.updateStartTime(startTime);
   }
 
   @Override
   public void updateEndTime(int endTime) {
-
+    delegate.updateEndTime(endTime);
   }
 
   @Override
   public void removeInvitee(String invitee) {
-
+    delegate.removeInvitee(invitee);
   }
 
   @Override
   public void addInvitee(String invitee) {
-
+    delegate.addInvitee(invitee);
   }
 
   @Override
   public String host() {
-    return null;
+    return delegate.host();
   }
 
   @Override
   public String name() {
-    return null;
+    return delegate.name();
   }
 
   @Override
   public String location() {
-    return null;
+    return delegate.location();
   }
 
   @Override
   public boolean isOnline() {
-    return false;
+    return delegate.isOnline();
   }
 
   @Override
   public DaysOfTheWeek startDay() {
-    return null;
+    return delegate.startDay();
   }
 
   @Override
   public DaysOfTheWeek endDay() {
-    return null;
+    return delegate.endDay();
   }
 
   @Override
   public int startTime() {
-    return 0;
+    return delegate.startTime();
   }
 
   @Override
   public int endTime() {
-    return 0;
+    return delegate.endTime();
   }
 
   @Override
   public List<String> eventInvitees() {
-    return null;
+    return delegate.eventInvitees();
   }
 
   @Override
   public boolean containsTime(DaysOfTheWeek day, int time) {
-    return false;
+    return delegate.containsTime(day, time);
   }
 
   @Override
   public List<Integer> extractObjectiveTimePair() {
-    return null;
+    return delegate.extractObjectiveTimePair();
   }
 }
-
 
 
 //public class ProviderToClientEventAdaptor implements Event {
