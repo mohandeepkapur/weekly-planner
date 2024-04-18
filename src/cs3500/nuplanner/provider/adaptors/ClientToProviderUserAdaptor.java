@@ -15,15 +15,16 @@ public class ClientToProviderUserAdaptor implements IUser {
 
   private String user;
   private SchedulingSystem model;
-  private Schedule schedule;
 
   /**
-   * Creates the adaptor between the providers user and a schedule.
+   * Creates the adaptor between client-User and provider-User.
    *
-   * @param user the user of the scheudule
-   * @param model our version of the model
+   * @param user client-user
+   * @param model client-model
+   *
+   * @implNote client-model is necessary, because provider-User has Schedule behavior.
+   *           need to compose with client-model to extract Schedule behavior for provider-User
    */
-
   public ClientToProviderUserAdaptor(String user, SchedulingSystem model) {
     this.user = user;
     this.model = model;

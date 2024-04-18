@@ -12,30 +12,33 @@ import cs3500.nuplanner.provider.model.IUser;
 import cs3500.nuplanner.provider.model.ReadOnlySystems;
 
 /**
- * Adapts client model to provider model their View expects. (read-only)
+ * Adapts client model to read-only provider-model provider-View expects. (read-only)
  */
 public class ClientToProviderModelAdaptor implements ReadOnlySystems {
 
-  private SchedulingSystem clientModel;
+  private final SchedulingSystem clientModel;
 
   /**
    * Creates the adapter between the different models.
    *
    * @param clientModel our version of the scheduling system passed in
    */
-
   public ClientToProviderModelAdaptor(SchedulingSystem clientModel) {
     this.clientModel = clientModel;
   }
 
-  // converting string users into IUsers( userStr to schedule )
   @Override
   public Map<String, IUser> getAllUsers() {
+    // save all client-model users (in client-model representation)
     List<String> delUsers = this.clientModel.allUsers();
+
     Map<String, IUser> users = new HashMap<>();
+
+    // convert client-model representation of a user into provider-model-representation
     for (String user : delUsers) {
       users.put(user, new ClientToProviderUserAdaptor(user, clientModel));
     }
+
     return users;
   }
 
@@ -52,7 +55,7 @@ public class ClientToProviderModelAdaptor implements ReadOnlySystems {
 
   @Override
   public boolean isEventConflicting(IEvent event) {
-
+    // convert IEvent into Event
     Event dEvent = new ProviderToClientEventAdaptor(event);
 
     return this.clientModel.eventConflict(dEvent.host(),
