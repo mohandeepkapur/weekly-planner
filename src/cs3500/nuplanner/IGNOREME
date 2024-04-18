@@ -1,0 +1,165 @@
+/*
+  every event needs unique and immutable identifier
+  user will of course use view to make sense of model-stuff (samegame unplayable without view)
+  issue: how can client refer to an event it wants to remove/modify?
+         client will need to provide a user-name, to access relevant schedule
+         client will need to provide X to access relevant event
+   */
+
+
+   key <-- storing refs to same event obj in multiple schedules
+
+   removeEvent(user, eventID) {
+
+    extract relevant schedule
+    extract event using eventID from rel. schedule (store in temp ref)
+
+    if (owner of event is user) then removeEvent(pass in temp ref)
+
+   }
+
+
+
+   removeEvent(Event temp) {
+    given temp
+    for all events in Events:
+        if temp == you
+            remove you from list
+   }
+
+
+   want to get all of core functionality down --> then add in IAE ISE checks
+   assume all input given into model is perfect
+
+
+
+       // or, invitees added --> whenever new user created, that user's sched is automaticaly populated with events it was invited to
+       // if even one invitee has a schedule conflict, throw an error
+       // can host remove invitee
+
+
+
+   if user wants to create an event with an invitee that does not exist... model does not allow
+   if XML wants to create event with invitee does not exist... model will load that user into the system
+
+
+   // XML specific check, if XML somehow has event where User is not first in invitees
+       if (!user.equals(invitees.get(0))) {
+         throw new IllegalArgumentException("Cannot create event on behalf of another user...  ");
+       }
+
+
+
+
+
+
+
+ int outStartDayVal = outEvent.startDay().dayValue();
+    int outEndDayVal = outEvent.endDay().dayValue();
+
+    for (Event inEvent : events) {
+
+      // check that start day/time does not intersect range of event
+      // check that end day/time does not intersect range of event
+
+      int inStartDayVal = inEvent.startDay().dayValue();
+      int inEndDayVal = inEvent.endDay().dayValue();
+
+      // if two events are on same day
+      if(outStartDayVal == inStartDayVal && outEndDayVal == inEndDayVal && outStartDayVal == outEndDayVal) {
+
+        if (outEvent.startTime() >= inEvent.startTime() && outEvent.startTime() < inEvent.endTime()) {
+          return true;
+        }
+
+        if (outEvent.endTime() > inEvent.startTime() && outEvent.endTime() <= inEvent.endTime()) {
+          return true;
+        }
+
+      }
+
+
+
+      // if both events take place within same week
+      if (outStartDayVal < outEndDayVal && inStartDayVal < inEndDayVal) {
+        // potential for conflict
+        if (outStartDayVal <= inEndDayVal) {
+
+          if (inStartDayVal < outStartDayVal && outStartDayVal < inEndDayVal) {
+            return true;
+          }
+
+          if ()
+
+        }
+
+      }
+
+    }
+
+    // important:
+    // makes sure to not give View ability to mutate Schedule and Events!!!!!!
+    // make separate interface for events --> read only interface --> extends
+
+
+
+good note:
+// view for SameGame only used model observation methods to display game-state
+  // view could've gotten 2D board (impl-specific solution) and then iterated over that
+  // regardless of how model is storing these schedules and events,
+  // view should be able to render user schedule
+
+
+  /*
+  Sys:
+  <- remove eventAt
+  <- remove eventIDsInSchedule
+
+  List<ReadableEvent> eventsInSchedule(String user); // events in order <-- given to view
+
+  void removeEvent(String user, DaysOfTheWeek startDay, int startTime);
+
+  void modifyEvent(String user, DaysOfTheWeek startDay, int startTime, String modification);
+
+  Schedule:
+  Event eventAt(int eventID); --> Event eventAt(DaysOfTheWeek startDay, int startTime);
+  List<Integer> eventIDs(); --> List<Event> events(); <-- all events within schedule
+
+  Event:
+  remove eventID() from interface
+
+  Then:
+  change tests a bit
+
+  Example:
+  Event eventToRemove = userSchedules.get(user).eventAt(eventID); --> .eventAt(startDay, startTime) --> eventAt throws error if sD, sT !found
+
+
+  Why moving away from ID system: <-- using startDay and startTime accomp same thing without weird side effects
+  ID system <-- weird thing where modifying event would create new ID
+            <-- anyone using event interface would need to use an ID system
+
+  Then:
+  finish modify event <-- clear path to victory
+
+   */
+
+  /*
+  functionality of
+   */
+
+// view --> operations and observations would want on GUI
+// for any response to user interacting w/ component --> that should be delegated to features
+
+// existence of JSwing stuff (ActionEvents, KeyEvents)  no longer revealed to Controller
+// View is better encapsulated --> JFrame stuff leaking into controller --> bad encapsulation
+//    Controller should not be aware of View implementation details
+
+// Controller is no longer listener for JFrame component events --> instead, listener is a lambda
+// that executes a high-level "feature"
+
+// instead of con. implementing generic listener method, and then deciding within that method what actions to perform
+// now, controller given a specific action to perform
+
+// command design pattern --> explicit flow to data comment --> popping up everywhere, reason
+
