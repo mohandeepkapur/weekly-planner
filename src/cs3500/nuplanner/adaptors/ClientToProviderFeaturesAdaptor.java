@@ -1,4 +1,4 @@
-package cs3500.nuplanner.provider.adaptors;
+package cs3500.nuplanner.adaptors;
 
 import cs3500.nuplanner.model.hw05.Event;
 import cs3500.nuplanner.model.hw05.RawEventData;
