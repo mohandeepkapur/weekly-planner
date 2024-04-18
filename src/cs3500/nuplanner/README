@@ -74,10 +74,11 @@ In the EventView, the user must place information into the given text boxes and 
 their desired action. To add multiple users to a new event, the user must select multiple users
 in the Available Users box. To remove attending users from an existing event, the user must select
 the multiple attending users in the same box (and press modify).
-
 In the EventView, the host of an existing event user clicks on is highlighted green,
 while the non-host members are highlighted blue.
 
+User can select which strategy to use in Main as the first argument.
+User can select which provider
 
 
 KEY COMPONENTS (mentioned in overview, so this section kept brief):
