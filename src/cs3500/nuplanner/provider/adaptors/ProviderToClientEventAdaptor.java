@@ -80,6 +80,7 @@ public class ProviderToClientEventAdaptor implements Event {
     // Ensures host of event is first in list of invitees
     listOfInvitees.add(host);
     for ( IUser user : ievent.getInvitedUsers()) {
+      // their IEvent does not include host in invitee list, so below check is useless
       if (!user.getUid().equals(host)) {
         listOfInvitees.add(user.getUid());
       }

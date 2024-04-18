@@ -11,30 +11,30 @@ import cs3500.nuplanner.provider.strategy.Strategy;
  */
 public class ClientToProviderFeaturesAdaptor implements Features {
 
-  private cs3500.nuplanner.controller.Features delegate;
+  private cs3500.nuplanner.controller.Features clientFeatures;
 
   /**
    * Creates an adaptor to translate the view
    *
-   * @param delegate our features interface
+   * @param clientFeatures our features interface
    */
-  public ClientToProviderFeaturesAdaptor(cs3500.nuplanner.controller.Features delegate) {
+  public ClientToProviderFeaturesAdaptor(cs3500.nuplanner.controller.Features clientFeatures) {
 
-    this.delegate = delegate;
+    this.clientFeatures = clientFeatures;
 
   }
 
   @Override
   public void onUploadXMLFile(String filePath) {
 
-    delegate.requestXMLScheduleUpload(filePath);
+    clientFeatures.requestXMLScheduleUpload(filePath);
 
   }
 
   @Override
   public void onSaveSchedules(String directoryPath) {
 
-    delegate.requestAllSchedulesDownload(directoryPath);
+    clientFeatures.requestAllSchedulesDownload(directoryPath);
 
   }
 
@@ -45,7 +45,7 @@ public class ClientToProviderFeaturesAdaptor implements Features {
 
     RawEventData delCreateEventRawData = extractEventData(delOrigEvent);
 
-    delegate.requestCreateEvent(uid, delCreateEventRawData);
+    clientFeatures.requestCreateEvent(uid, delCreateEventRawData);
 
   }
 
@@ -62,7 +62,7 @@ public class ClientToProviderFeaturesAdaptor implements Features {
 
     RawEventData rawNewEventData = extractEventData(delNewEvent);
 
-    delegate.requestModifyEvent(host, rawOriginalEventData, rawNewEventData);
+    clientFeatures.requestModifyEvent(host, rawOriginalEventData, rawNewEventData);
 
   }
 
@@ -75,7 +75,7 @@ public class ClientToProviderFeaturesAdaptor implements Features {
 
     RawEventData delRemoveEventRawData = extractEventData(delRemoveEvent);
 
-    delegate.requestRemoveEvent(host, delRemoveEventRawData);
+    clientFeatures.requestRemoveEvent(host, delRemoveEventRawData);
 
   }
 
@@ -102,7 +102,7 @@ public class ClientToProviderFeaturesAdaptor implements Features {
   @Override
   public void onSwitchUser(String userId) {
 
-    delegate.displayNewSchedule(userId);
+    clientFeatures.displayNewSchedule(userId);
 
   }
 
@@ -111,8 +111,8 @@ public class ClientToProviderFeaturesAdaptor implements Features {
 
     Event delEvent = new ProviderToClientEventAdaptor(e);
 
-    // TODO: would be nice to know current user displayed
-    delegate.displayExistingEvent(delEvent.host(), delEvent);
+    // given provider view methods, there's no way to display the given Event
+    clientFeatures.displayExistingEvent(delEvent.host(), delEvent);
 
   }
 

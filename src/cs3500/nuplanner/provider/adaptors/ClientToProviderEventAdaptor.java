@@ -43,20 +43,26 @@ public class ClientToProviderEventAdaptor implements IEvent {
 
   private IEvent convertEventIntoIEvent(ReadableEvent event) {
 
+    // extract IEvent time params from Event
     LocalTime startTime = convertEventMilitaryTimeToLocalTime(event.startTime());
     LocalTime endTime = convertEventMilitaryTimeToLocalTime(event.endTime());
     Day startDay = convertDaysOfTheWeekToDay(event.startDay());
     Day endDay = convertDaysOfTheWeekToDay(event.startDay());
 
-    List<IUser> iEventUsers = new ArrayList<>();
+    // extract IEvent invitee list and host (host is not considered invitee)
+    List<IUser> ieventinvitees = new ArrayList<>();
     for (String user : event.eventInvitees()) {
-      iEventUsers.add(new ClientToProviderUserAdaptor(user, model));
+      // IEvent invitee list contains host rn, need to remove
+      ieventinvitees.add(new ClientToProviderUserAdaptor(user, model));
     }
 
-    // TODO: same host object for both host param and invitees param <- assuming this is how their IEvent is formatted
+    // extract and remove host from IEvent invitee list
+    IUser ieventhost = ieventinvitees.get(0);
+    ieventinvitees.remove(0);
+
     return new Event(event.name(), startDay, startTime,
             endDay, endTime, event.isOnline(),
-            event.location(), iEventUsers.get(0), iEventUsers);
+            event.location(), ieventhost, ieventinvitees);
 
   }
 

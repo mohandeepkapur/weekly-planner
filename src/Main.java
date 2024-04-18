@@ -25,10 +25,11 @@ public final class Main {
 
     SchedulingSystem model = new NUPlannerModel();
 
+    // Providing model with Schedule
     SchedulingSystemController xmlCont = new XMLController(model);
     xmlCont.useSchedulingSystem("XMLFiles/toRead/Prof. Lucia.xml");
 
-    // loading in data into model and user can pick between two views
+    // User can choose between Provider or Default view
     if (args.length < 2 || args[1].equals("default")) {
       SSGUIView view = new SSFrame(model);
       SchedulingSystemController controller = new GUIController(view, getStrategy(args[0]));
@@ -39,9 +40,9 @@ public final class Main {
     if (args[1].equals("provider")) {
       ReadOnlySystems adaptModel = new ClientToProviderModelAdaptor(model);
       SSGUIView adaptView = new ProviderToClientViewAdaptor(new PlannerFrame(adaptModel));
+      // remove getStrategy from constructor, it is redundant, and
       SchedulingSystemController controller = new GUIController(adaptView, getStrategy(args[0]));
       controller.useSchedulingSystem(model, getStrategy(args[0]));
-
     }
 
   }

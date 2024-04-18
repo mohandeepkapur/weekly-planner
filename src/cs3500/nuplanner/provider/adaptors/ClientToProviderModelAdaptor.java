@@ -16,25 +16,25 @@ import cs3500.nuplanner.provider.model.ReadOnlySystems;
  */
 public class ClientToProviderModelAdaptor implements ReadOnlySystems {
 
-  private SchedulingSystem delegate;
+  private SchedulingSystem clientModel;
 
   /**
    * Creates the adapter between the different models.
    *
-   * @param delegate our version of the scheduling system passed in
+   * @param clientModel our version of the scheduling system passed in
    */
 
-  public ClientToProviderModelAdaptor(SchedulingSystem delegate) {
-    this.delegate = delegate;
+  public ClientToProviderModelAdaptor(SchedulingSystem clientModel) {
+    this.clientModel = clientModel;
   }
 
   // converting string users into IUsers( userStr to schedule )
   @Override
   public Map<String, IUser> getAllUsers() {
-    List<String> delUsers = this.delegate.allUsers();
+    List<String> delUsers = this.clientModel.allUsers();
     Map<String, IUser> users = new HashMap<>();
     for (String user : delUsers) {
-      users.put(user, new ClientToProviderUserAdaptor(user, delegate));
+      users.put(user, new ClientToProviderUserAdaptor(user, clientModel));
     }
     return users;
   }
@@ -42,12 +42,12 @@ public class ClientToProviderModelAdaptor implements ReadOnlySystems {
   @Override
   public IUser getUser(String uid) {
     // adaptor: takes in uid -> extracts schedule from model -> uses schedule
-    return new ClientToProviderUserAdaptor(uid, delegate);
+    return new ClientToProviderUserAdaptor(uid, clientModel);
   }
 
   @Override
   public ISchedule getUserSchedule(String uid) {
-    return new ClientToProviderScheduleAdaptor(uid, delegate);
+    return new ClientToProviderScheduleAdaptor(uid, clientModel);
   }
 
   @Override
@@ -55,7 +55,7 @@ public class ClientToProviderModelAdaptor implements ReadOnlySystems {
 
     Event dEvent = new ProviderToClientEventAdaptor(event);
 
-    return this.delegate.eventConflict(dEvent.host(),
+    return this.clientModel.eventConflict(dEvent.host(),
             dEvent.eventInvitees(), dEvent.name(),
             dEvent.location(), dEvent.isOnline(),
             dEvent.startDay(), dEvent.startTime(),

@@ -242,6 +242,9 @@ public class PlannerPanel extends JPanel implements PlannerPanelView {
   private IEvent getEvent(Point p) {
     Day startDay = this.reverseDay(p);
     LocalTime startTime = this.reverseTime(p);
+    System.out.print("bob");
+    System.out.print(startDay); //TODO: MO ADDED, REMOVE BEFORE SUBMITTING
+    System.out.println(startTime);
     for (IEvent e : this.getEvents()) {
       if (e.getStartDay().equals(startDay)
               && e.getStartTime().getMinute() <= startTime.getMinute()
@@ -263,6 +266,7 @@ public class PlannerPanel extends JPanel implements PlannerPanelView {
         PlannerPanel panel = PlannerPanel.this;
         Point clicked = e.getPoint();
         Color color = panel.getColor(clicked);
+        System.out.println(clicked); //TODO: CLIENT ADDED, REMOVE BEFORE SUBMITTING
         if (color.equals(Color.RED)) {
           IEvent event = panel.getEvent(clicked);
           controller.handleClick(event);
