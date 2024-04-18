@@ -46,7 +46,6 @@ public class ProviderToClientEventAdaptor implements Event {
    *
    * @param ievent the IEvent to convert to an event
    */
-
   public ProviderToClientEventAdaptor(IEvent ievent) {
     if (ievent == null) {
       throw new IllegalArgumentException("Invalid input into adaptor class... ");
@@ -60,7 +59,6 @@ public class ProviderToClientEventAdaptor implements Event {
    *
    * @param ievent the IEvent taken in from the provider
    */
-
   private Event translateIEventToEvent(IEvent ievent) {
 
     String name = ievent.getName();
@@ -99,7 +97,6 @@ public class ProviderToClientEventAdaptor implements Event {
    * @param day the day passed in from the provider
    * @return a matching DaysOfTheWeek
    */
-
   private DaysOfTheWeek convertDayToDaysOfTheWeek(Day day) {
     return DaysOfTheWeek.stringToDay(day.toString().toUpperCase());
   }

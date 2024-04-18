@@ -1,9 +1,9 @@
-Overall, there were many design decisions we made that helped our process and made the adaption
-struggle for our providers easier. There were no major updates made for our customers, aside from
-answering clarifying questions and providing our wrapper event class so that they could properly
-integrate our strategies. Fortunately, thanks to our decently flexible design, the process was
-straightforward and strong lesson in smart design.
 
-Our experience with providers was great, as they were super nice, responsive, and fixed many of the
-issues we presented. They also were always around to answer clarifying questions, and overall the
-experience working with them was good.
+
+We wish our representation of Time wasn't coupled to an Event.
+
+
+
+
+Our experience with our providers was positive; they were nice, responsive, and fulfilled most of our
+requests. Overall, the experience working with them was good.

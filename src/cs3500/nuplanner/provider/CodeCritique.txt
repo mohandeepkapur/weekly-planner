@@ -11,3 +11,4 @@ With regard to the rest of the code, there were many implementation specific ite
 that we lacked access to. There was a unique time class that we had no idea how to access or
 implement as it was not given, and therefore we could not convert the start and end time of an event
  to work with our model.
+

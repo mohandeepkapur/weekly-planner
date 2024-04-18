@@ -9,9 +9,25 @@ GUI is resizable. Thanks to using .getWidth() and .getHeight() rather than fixed
 when painting grid and drawing events in a user's Schedule.
 
 
+For HW 8: AVAILABLE FEATURES WITH PROVIDER VIEW
 ====================================================================================================
-=========Mohandeep Kapur=====================+=====================Brandon Lu=======================
+The following features were possible:
+1) Viewing pre-loaded schedules in our model (functionally proving success of adaptors)
+2) Creating an event and adding it to multiple user schedules, and having that change reflect
+   on their View
+3) Viewing events that spanned single days
+4) Interacting with View controls and having relevant windows pop up
+
+
+For HW 8: UNAVAILABLE FEATURES WITH PROVIDER VIEW, REASONING IN PEER REVIEW
 ====================================================================================================
+In summary, due to their design decisions and logic, we weren’t able to have the following features
+(REASONING explained in detail in Peer Review!!!!):
+1) Inability to view events that span multiple days
+2) Inability to click on event displayed in current user’s schedule, and display its details
+3) Inability to use remove/modify events via View, because of inability to access user event data
+   (above point)
+4) Inability to upload or download XML
 
 
 DESIGN DECISIONS/CODEBASE OVERVIEW:
@@ -172,4 +188,3 @@ Event is being rigidly defined/leaked in Scheduling System interface. This chang
 long because of my codebase design,
 but this refactor is being prevented due to the numerous tests written with the current
 addEvent + eventConflict method signature and time constraint.)
-
