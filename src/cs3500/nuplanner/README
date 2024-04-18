@@ -145,3 +145,7 @@ CHANGES FOR HW 8:
 providers view. If there is only one item in the args, or "default" is given in the command line,
 the program will run using the normal view. If "provider" is the second argument in the command
 line, then the program will use the alternative provider view.
+
+- Many of the features from the providers view now work, as clicking on most of the buttons pops up
+the relevant frames and different user schedules can be displayed. Actually creating, removing, or
+modifying events does not work, and neither does clicking on the schedule.

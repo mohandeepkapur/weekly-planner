@@ -1,0 +1,15 @@
+The interfaces we were given were not particularly flexible on certain aspects.
+
+The view was decently capable, but broken up into disjointed parts rather than unified under a
+single interface which made adaption challenging.
+
+Code reuse was a little challenging on our providers end, as while they fixed items as we went,
+sometimes integration into the rest of their code didn't follow and was a work in progress.
+
+The code presented was decently clean, but the Javadocs occasionally left us confused, wondering how
+they were implemented or what the proper use and other side effects were.
+
+We requested many changes from the providers. They were initially missing many of the interfaces
+needed for us to adapt their code, lacking an interface for Event, User, Schedule, and more.
+Furthermore, there were no explicit throw exceptions noted, which while not of immediate importance,
+another minor roadblock.
