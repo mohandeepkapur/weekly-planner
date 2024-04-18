@@ -12,18 +12,19 @@ pView parses and interpets user input and creates Events. controller is supposed
 
 can create new events if correct time-format given
 
+unable to add conflicting events to Scheduling System (to pView, MutSys) as expected
+    - error message displayed as expected
+
 why XML reading and writing not possible? v good reason why
     -
 
 i don't think pView supports displaying an existing Event's details?
+    - pView gives pFeatures an event-to-display, but does not provide way to display that event using interface methods?
     - there is pFeatures method that takes in IEvent produced from
       user click
     - but there is no way to manipulate pView to display that clicked on event
     - weird offset between painted events and click day/time
         - providing pView with correct details (correct IEvents)
         - so this is pView problem
-because pView cannot display an Event's details -> no way to remove an existing Event -> cannot test
-that functionality
+because pView cannot display an Event's details -> cannot test removeEvent
 
-unable to add conflicting events to Scheduling System (to pView, MutSys) as expected
-    - error message displayed as expetced

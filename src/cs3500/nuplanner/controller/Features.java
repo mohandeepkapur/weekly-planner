@@ -6,22 +6,8 @@ import cs3500.nuplanner.model.hw05.RawEventData;
 import cs3500.nuplanner.model.hw05.ReadableEvent;
 
 /**
- * User Requests made through GUI. Typically involves manip. model, view, or both (which is
+ * User Requests made through GUI. Typically, involves manipulating model, view, or both (which is
  * controller's job).
- *
- * IGNORE:
- * Unfortunately, for View to utilize this Features interface, View must do parsing of user
- * input to make sense of it, before trying to place it into an Event.
- * steps require interpreting user input and catching errors/responding to them. both
- * controller job. can use raweventdata class.
- *
- * UPDATE: I believe this was some old documentation that reflected some personal notes I had taken.
- * Past the “unfortunately”, it does not reflect the current state of our code-base accurately.
- * The View does massage user GUI input yes, but does not “make sense” of it.
- * That job was left exclusively to Features (which is synonymous with a Controller for this
- * assignment).
- * Interpreting the raw Event data sent to Features and throwing errors is exclusively the
- * Controller’s job in our code-base.
  */
 public interface Features {
 
