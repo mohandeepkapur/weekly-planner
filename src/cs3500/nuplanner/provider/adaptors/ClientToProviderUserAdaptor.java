@@ -22,8 +22,7 @@ public class ClientToProviderUserAdaptor implements IUser {
    * @param user client-user
    * @param model client-model
    *
-   * @implNote client-model is necessary, because provider-User has Schedule behavior.
-   *           need to compose with client-model to extract Schedule behavior for provider-User
+   * @implNote need to compose with client-model to extract Schedule behavior for provider-User
    */
   public ClientToProviderUserAdaptor(String user, SchedulingSystem model) {
     this.user = user;

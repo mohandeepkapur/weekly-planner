@@ -39,7 +39,7 @@ but they've made their IEvent immutable -> which means anytime an Event-adaptor 
 public class ProviderToClientEventAdaptor implements Event {
 
   // Event needs invitees organized in a specific way
-  private final Event delegate;
+  private final Event clientEvent;
 
   /**
    * Creates the adaptor that translates between an IEvent and Event.
@@ -51,7 +51,7 @@ public class ProviderToClientEventAdaptor implements Event {
     if (ievent == null) {
       throw new IllegalArgumentException("Invalid input into adaptor class... ");
     }
-    this.delegate = translateIEventToEvent(ievent);
+    this.clientEvent = translateIEventToEvent(ievent);
   }
 
   /**
@@ -120,102 +120,102 @@ public class ProviderToClientEventAdaptor implements Event {
 
   @Override
   public void updateName(String name) {
-    delegate.updateName(name);
+    clientEvent.updateName(name);
   }
 
   @Override
   public void updateLocation(String location) {
-    delegate.updateLocation(location);
+    clientEvent.updateLocation(location);
   }
 
   @Override
   public void updateIsOnline(boolean isOnline) {
-    delegate.updateIsOnline(isOnline);
+    clientEvent.updateIsOnline(isOnline);
   }
 
   @Override
   public void updateStartDay(DaysOfTheWeek startDay) {
-    delegate.updateStartDay(startDay);
+    clientEvent.updateStartDay(startDay);
   }
 
   @Override
   public void updateEndDay(DaysOfTheWeek endDay) {
-    delegate.updateEndDay(endDay);
+    clientEvent.updateEndDay(endDay);
   }
 
   @Override
   public void updateStartTime(int startTime) {
-    delegate.updateStartTime(startTime);
+    clientEvent.updateStartTime(startTime);
   }
 
   @Override
   public void updateEndTime(int endTime) {
-    delegate.updateEndTime(endTime);
+    clientEvent.updateEndTime(endTime);
   }
 
   @Override
   public void removeInvitee(String invitee) {
-    delegate.removeInvitee(invitee);
+    clientEvent.removeInvitee(invitee);
   }
 
   @Override
   public void addInvitee(String invitee) {
-    delegate.addInvitee(invitee);
+    clientEvent.addInvitee(invitee);
   }
 
   @Override
   public String host() {
-    return delegate.host();
+    return clientEvent.host();
   }
 
   @Override
   public String name() {
-    return delegate.name();
+    return clientEvent.name();
   }
 
   @Override
   public String location() {
-    return delegate.location();
+    return clientEvent.location();
   }
 
   @Override
   public boolean isOnline() {
-    return delegate.isOnline();
+    return clientEvent.isOnline();
   }
 
   @Override
   public DaysOfTheWeek startDay() {
-    return delegate.startDay();
+    return clientEvent.startDay();
   }
 
   @Override
   public DaysOfTheWeek endDay() {
-    return delegate.endDay();
+    return clientEvent.endDay();
   }
 
   @Override
   public int startTime() {
-    return delegate.startTime();
+    return clientEvent.startTime();
   }
 
   @Override
   public int endTime() {
-    return delegate.endTime();
+    return clientEvent.endTime();
   }
 
   @Override
   public List<String> eventInvitees() {
-    return delegate.eventInvitees();
+    return clientEvent.eventInvitees();
   }
 
   @Override
   public boolean containsTime(DaysOfTheWeek day, int time) {
-    return delegate.containsTime(day, time);
+    return clientEvent.containsTime(day, time);
   }
 
   @Override
   public List<Integer> extractObjectiveTimePair() {
-    return delegate.extractObjectiveTimePair();
+    return clientEvent.extractObjectiveTimePair();
   }
 }
 

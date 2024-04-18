@@ -14,7 +14,7 @@ import cs3500.nuplanner.provider.model.ISchedule;
 /**
  * Adaptor that converts a Schedule into an ISchedule. Full behavior of ISchedule has not been
  * implemented.
- * For really good reason. Our Schedule does not deal with I/O. As it shouldn't.
+ * One reason: our Schedule does not deal with I/O. As it shouldn't.
  */
 public class ClientToProviderScheduleAdaptor implements ISchedule {
 
@@ -28,7 +28,6 @@ public class ClientToProviderScheduleAdaptor implements ISchedule {
    * @param user the schedule user
    * @param model our version of the model
    */
-
   public ClientToProviderScheduleAdaptor(String user, SchedulingSystem model) {
     this.model = model;
     this.schedEvents = model.eventsInSchedule(user);
