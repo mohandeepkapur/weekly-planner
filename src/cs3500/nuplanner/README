@@ -1,13 +1,11 @@
-HW 8 CHANGES MADE FOR CUSTOMERS:
-====================================================================================================
-- None!
-
-
 HW 7 EXTRA CREDIT:
 ====================================================================================================
 GUI is resizable. Thanks to using .getWidth() and .getHeight() rather than fixed values in View impl
 when painting grid and drawing events in a user's Schedule.
 
+HW 8 CHANGES MADE FOR CUSTOMERS:
+====================================================================================================
+- None!
 
 For HW 8: AVAILABLE FEATURES WITH PROVIDER VIEW
 ====================================================================================================
@@ -21,9 +19,9 @@ The following features were possible:
 
 For HW 8: UNAVAILABLE FEATURES WITH PROVIDER VIEW, --> REASONING IN PEER REVIEW
 ====================================================================================================
-In summary, due to their design decisions and logic, we weren’t able to have the following features
+Due to their design decisions and logic, we weren't able to have the following features:
 
-(REASONING explained in detail in Peer Review!!!!):
+(REASONING explained IN DETAIL in Peer Review!!!!):
 
 1) Inability to view events that span multiple days
 2) Inability to click on event displayed in current user’s schedule, and display its details
@@ -95,15 +93,8 @@ the multiple attending users in the same box (and press modify).
 In the EventView, the host of an existing event user clicks on is highlighted green,
 while the non-host members are highlighted blue.
 
-COMMAND-LINE ARGS:
-====================================================================================================
-User can select whether to use provider or default View using first command-line argument:
-    - "default" for default View
-    - "provider" for provider View
-User can select which scheduling strategy to use  as the first argument.
-    - "workhours"
-    - "anytime"
-Use of scheduling strategy only compatible with default View!
+In order to mesh our provider's View with our codebase, we created 7 adaptors in the cs3500.
+nuplanner.adaptors package.
 
 
 KEY COMPONENTS (mentioned in overview, so this section kept brief):
@@ -125,6 +116,17 @@ SOURCE ORGANIZATION:
 ====================================================================================================
 All components in src and test are contained within cs3500.nuplanner package.
 All components relevant to GUI are in the cs3500.nuplanner.view.gui package.
+
+
+COMMAND-LINE ARGS:
+====================================================================================================
+User can select whether to use provider or default View using first command-line argument:
+    - "default" for default View
+    - "provider" for provider View
+User can select which scheduling strategy to use  as the first argument.
+    - "workhours"
+    - "anytime"
+Use of scheduling strategy only compatible with default View!
 
 
 CHANGES FOR HW 6:

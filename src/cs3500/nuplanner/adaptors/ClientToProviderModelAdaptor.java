@@ -1,4 +1,4 @@
-package cs3500.nuplanner.provider.adaptors;
+package cs3500.nuplanner.adaptors;
 
 import java.util.HashMap;
 import java.util.List;
