@@ -77,8 +77,15 @@ the multiple attending users in the same box (and press modify).
 In the EventView, the host of an existing event user clicks on is highlighted green,
 while the non-host members are highlighted blue.
 
-User can select which strategy to use in Main as the first argument.
-User can select which provider
+COMMAND-LINE ARGS:
+====================================================================================================
+User can select whether to use provider or default View using first command-line argument:
+    - "default" for default View
+    - "provider" for provider View
+User can select which scheduling strategy to use  as the first argument.
+    - "workhours"
+    - "anytime"
+Use of scheduling strategy only compatible with default View!
 
 
 KEY COMPONENTS (mentioned in overview, so this section kept brief):
@@ -136,11 +143,7 @@ CHANGES FOR HW 8:
 ====================================================================================================
 - No changes made to HW7 codebase (except for some documentation tweaks)
 - Adaptors added to connect provider-View to our (client) codebase
-
-- Many of the features from the providers view now work, as clicking on most of the buttons pops up
-the relevant frames and different user schedules can be displayed. Actually creating, removing, or
-modifying events does not work, and neither does clicking on the schedule.
-
+- pView faked out, thinks its at home huh? nope LOL. enemy territory
 
 
 FOR TAs:
