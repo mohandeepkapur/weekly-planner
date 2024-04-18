@@ -88,6 +88,7 @@ All components relevant to GUI are in the cs3500.nuplanner.view.gui package.
 
 
 CHANGES FOR HW 6:
+
 Added observation method to ReadableEvent to check whether a given time is contained within an
 Event's range. Observes state of Event.
 
@@ -98,6 +99,7 @@ This is to allow a User to change multiple aspects of an Event at once.
 Created Features interface and bare-bones controller. Brief reasoning given in Intro to Codebase.
 
 CHANGES FOR HW 7:
+
 - Behavior of an Event slightly modified -> an Event can now be intialized inviteeless (thus with
   no host) -> Event's host can change IF all invitees in Event are removed. Then first one added
   back into Event becomes new host.
@@ -141,3 +143,13 @@ Event is being rigidly defined/leaked in Scheduling System interface. This chang
 long because of my codebase design,
 but this refactor is being prevented due to the numerous tests written with the current
 addEvent + eventConflict method signature and time constraint.)
+
+CHANGES FOR HW 8:
+- Command line now supports a second argument that can select between the default view or the
+providers view. If there is only one item in the args, or "default" is given in the command line,
+the program will run using the normal view. If "provider" is the second argument in the command
+line, then the program will use the alternative provider view.
+
+- Many of the features from the providers view now work, as clicking on most of the buttons pops up
+the relevant frames and different user schedules can be displayed. Actually creating, removing, or
+modifying events does not work, and neither does clicking on the schedule.
