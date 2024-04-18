@@ -199,3 +199,19 @@ i don't think pView supports displaying an existing Event's details?
         - so this is pView problem
 because pView cannot display an Event's details -> cannot test removeEvent
 
+
+// there's something I'm conceptually missing rn...
+// Event interface should really say its coupled with military time now
+// was able to avoid mentioning this with placing objtime as Event method, but now, idts
+
+/*
+FOR TAs:
+bc providers send IEvent to features -> means their View created IEvent <- which
+should be controller's job
+this means adapter adapting their IEvent into an Event needed <- adaptor
+not aware of impl-type of IEvent yet
+but they've made their IEvent immutable -> which means anytime an Event-adaptor
+needs to be modified adaptor must construct a new IEvent
+  which means adaptor must construct a provider.Event inside <- now adaptor is
+  aware of impl-type of IEvent what is the forest from the treeees <- there is still a forest
+ */

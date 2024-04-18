@@ -25,9 +25,12 @@ public final class RunPlanner {
   public static void main(String[] args) {
 
     SchedulingSystem model = new NUPlannerModel();
+
+    // load schedule into model (not possible to use
     SchedulingSystemController xmlCont = new XMLController(model);
     xmlCont.useSchedulingSystem("XMLFiles/toRead/Prof. Lucia.xml");
 
+    // run client (our) view
     if (args[0].equals("default")) {
       SSGUIView view = new SSFrame(model);
       // TODO: remove Strategy input from controller constructor, it's redundant
@@ -35,6 +38,7 @@ public final class RunPlanner {
       controller.useSchedulingSystem(model, getStrategy(args[1]));
     }
 
+    // run provider view
     if (args[0].equals("provider")) {
       ReadOnlySystems providerModel = new ClientToProviderModelAdaptor(model);
       IView providerView = new PlannerFrame(providerModel);

@@ -11,29 +11,8 @@ import cs3500.nuplanner.provider.model.Day;
 import cs3500.nuplanner.provider.model.IEvent;
 import cs3500.nuplanner.provider.model.IUser;
 
-// there's something I'm conceptually missing rn...
-// Event interface should really say its coupled with military time now
-// was able to avoid mentioning this with placing objtime as Event method, but now, idts
-
-/*
-FOR TAs:
-bc providers send IEvent to features -> means their View created IEvent <- which
-should be controller's job
-this means adapter adapting their IEvent into an Event needed <- adaptor
-not aware of impl-type of IEvent yet
-but they've made their IEvent immutable -> which means anytime an Event-adaptor
-needs to be modified adaptor must construct a new IEvent
-  which means adaptor must construct a provider.Event inside <- now adaptor is
-  aware of impl-type of IEvent what is the forest from the treeees <- there is still a forest
- */
-
 /**
  * Takes in an IEvent, spits out an Event!
- * Since only available IEvent impl from Provider is immutable, will need to construct
- * new IEvents everytime client.Event wants to be modified.
- * Only available IEvent impl is named Event, which will be mentioned as provider.Event to avoid
- * confusion between client.Event interface, and provider.Event implementation of IEvent.
- * Usage -> to translate IEvent sent into provider Features by View
  */
 public class ProviderToClientEventAdaptor implements Event {
 

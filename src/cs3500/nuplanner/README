@@ -93,6 +93,12 @@ the multiple attending users in the same box (and press modify).
 In the EventView, the host of an existing event user clicks on is highlighted green,
 while the non-host members are highlighted blue.
 
+HW 8 Stuff:
+
+Provider View code and relevant interfaced contained within cs3500.nuplanner.provider.
+
+Any mentions to client, is us. providers, are those who provided us their view code.
+
 In order to mesh our provider's View with our codebase, we created 7 adaptors in the cs3500.
 nuplanner.adaptors package.
 
