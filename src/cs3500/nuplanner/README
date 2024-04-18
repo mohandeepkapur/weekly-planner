@@ -12,7 +12,7 @@ when painting grid and drawing events in a user's Schedule.
 For HW 8: AVAILABLE FEATURES WITH PROVIDER VIEW
 ====================================================================================================
 The following features were possible:
-1) Viewing pre-loaded schedules in our model (functionally proving success of adaptors)
+1) Viewing schedules loaded in our model on their View (functionally proving success of adaptors)
 2) Creating an event and adding it to multiple user schedules, and having that change reflect
    on their View
 3) Viewing events that spanned single days
