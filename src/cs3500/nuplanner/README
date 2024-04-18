@@ -1,9 +1,13 @@
-Design Decisions/Codebase Overview: (Person who has received our code, PLEASE READ Changes for HW7)
+Design Decisions/Codebase Overview:
+
+CHANGES MADE FOR CUSTOMERS:
+- None!
 
 EXTRA CREDIT:
 GUI is resizable. Thanks to using .getWidth() and .getHeight() rather than fixed values in View impl
 when painting grid and drawing events in a user's Schedule.
 
+OVERVIEW:
 Within Scheduling System. the same Event object can be contained in multiple Schedules.
 Internal aliasing is what allows for Events (and thus information)
 to be shared between different users.
