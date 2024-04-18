@@ -17,18 +17,22 @@ import cs3500.nuplanner.provider.model.IUser;
  */
 public class ClientToProviderEventAdaptor implements IEvent {
 
-  private final IEvent ievent;
-  private final SchedulingSystem model;
+  private final IEvent providerIEvent;
+  private final SchedulingSystem clientModel;
 
   /**
    * Constructs an Event-to-IEvent adaptor.
    *
    * @param event the ReadableEvent to convert
-   * @param model client-version of Model
+   * @param clientModel client-version of Model
    */
-  public ClientToProviderEventAdaptor(ReadableEvent event, SchedulingSystem model) {
-    this.ievent = convertEventIntoIEvent(event);
-    this.model = model;
+  public ClientToProviderEventAdaptor(ReadableEvent event, SchedulingSystem clientModel) {
+    if (event == null || clientModel == null) {
+      throw new IllegalArgumentException("Adaptor cannot be constructed will null args... ");
+    }
+
+    this.clientModel = clientModel;
+    this.providerIEvent = convertEventIntoIEvent(event);
 
   }
 
@@ -44,9 +48,9 @@ public class ClientToProviderEventAdaptor implements IEvent {
     LocalTime startTime = convertEventMilitaryTimeToLocalTime(event.startTime());
     LocalTime endTime = convertEventMilitaryTimeToLocalTime(event.endTime());
 
-    // extract IEvent day params from Event
+    // extract IEvent day params from Event //TODO: 
     Day startDay = convertDaysOfTheWeekToDay(event.startDay());
-    Day endDay = convertDaysOfTheWeekToDay(event.startDay());
+    Day endDay = convertDaysOfTheWeekToDay(event.endDay());
 
     // extract IEvent invitee list and host (host is not considered invitee)
     List<IUser> iEventInvitees = new ArrayList<>();
@@ -54,7 +58,7 @@ public class ClientToProviderEventAdaptor implements IEvent {
     for (String user : event.eventInvitees()) {
       // need to remove host of Event from IEvent invitee list
       // convert every String in Event to User in IEvent
-      iEventInvitees.add(new ClientToProviderUserAdaptor(user, model));
+      iEventInvitees.add(new ClientToProviderUserAdaptor(user, clientModel));
     }
 
     // save and remove host from IEvent invitee list
@@ -94,52 +98,52 @@ public class ClientToProviderEventAdaptor implements IEvent {
 
   @Override
   public String getName() {
-    return this.ievent.getName();
+    return this.providerIEvent.getName();
   }
 
   @Override
   public String getPlace() {
-    return this.ievent.getPlace();
+    return this.providerIEvent.getPlace();
   }
 
   @Override
   public boolean isOnline() {
-    return this.ievent.isOnline();
+    return this.providerIEvent.isOnline();
   }
 
   @Override
   public LocalTime getStartTime() {
-    return this.ievent.getStartTime();
+    return this.providerIEvent.getStartTime();
   }
 
   @Override
   public LocalTime getEndTime() {
-    return this.ievent.getEndTime();
+    return this.providerIEvent.getEndTime();
   }
 
   @Override
   public Day getStartDay() {
-    return this.ievent.getStartDay();
+    return this.providerIEvent.getStartDay();
   }
 
   @Override
   public Day getEndDay() {
-    return this.ievent.getEndDay();
+    return this.providerIEvent.getEndDay();
   }
 
   @Override
   public IUser getHostUser() {
-    return this.ievent.getHostUser();
+    return this.providerIEvent.getHostUser();
   }
 
   @Override
   public List<IUser> getInvitedUsers() {
-    return this.ievent.getInvitedUsers();
+    return this.providerIEvent.getInvitedUsers();
   }
 
   @Override
   public String invites() {
-    return this.ievent.invites();
+    return this.providerIEvent.invites();
   }
 
 }

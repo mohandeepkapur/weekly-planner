@@ -2,7 +2,6 @@ package cs3500.nuplanner.provider.adaptors;
 
 import org.w3c.dom.NodeList;
 
-import cs3500.nuplanner.model.hw05.Schedule;
 import cs3500.nuplanner.model.hw05.SchedulingSystem;
 import cs3500.nuplanner.provider.model.IEvent;
 import cs3500.nuplanner.provider.model.ISchedule;
@@ -13,20 +12,24 @@ import cs3500.nuplanner.provider.model.IUser;
  */
 public class ClientToProviderUserAdaptor implements IUser {
 
-  private String user;
-  private SchedulingSystem model;
+  private String clientUser;
+  private SchedulingSystem clientModel;
 
   /**
    * Creates the adaptor between client-User and provider-User.
    *
-   * @param user client-user
-   * @param model client-model
+   * @param clientUser client-user
+   * @param clientModel client-model
    *
    * @implNote need to compose with client-model to extract Schedule behavior for provider-User
    */
-  public ClientToProviderUserAdaptor(String user, SchedulingSystem model) {
-    this.user = user;
-    this.model = model;
+  public ClientToProviderUserAdaptor(String clientUser, SchedulingSystem clientModel) {
+    if (clientUser == null || clientModel == null) {
+      throw new IllegalArgumentException("Adaptor cannot be constructed will null args... ");
+    }
+
+    this.clientUser = clientUser;
+    this.clientModel = clientModel;
   }
 
   @Override
@@ -41,12 +44,12 @@ public class ClientToProviderUserAdaptor implements IUser {
 
   @Override
   public String getUid() {
-    return this.user;
+    return this.clientUser;
   }
 
   @Override
   public ISchedule getSchedule() {
-    return new ClientToProviderScheduleAdaptor(this.user, this.model);
+    return new ClientToProviderScheduleAdaptor(this.clientUser, this.clientModel);
   }
 
   @Override

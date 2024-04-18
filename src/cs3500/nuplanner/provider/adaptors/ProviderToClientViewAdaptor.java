@@ -16,58 +16,61 @@ public class ProviderToClientViewAdaptor implements SSGUIView {
 
   // providers don't have a MAIN view interface
   // assuming dealing w/ MAIN impl
-  private IView delegate;
+  private IView providerMainView;
 
   /**
    * Creates the adaptor that bridges the gap between the two views.
    *
    * @param view the view from the provider
    */
-
   public ProviderToClientViewAdaptor(IView view) {
-    this.delegate = view;
+    if (view == null) {
+      throw new IllegalArgumentException("Adaptor cannot be constructed will null args... ");
+    }
+
+    this.providerMainView = view;
   }
 
   @Override
   public void displayUserSchedule(String user) {
-    this.delegate.refresh();
+    this.providerMainView.refresh();
   }
 
   @Override
   public void displayBlankEvent() {
-    this.delegate.refresh();
+    this.providerMainView.refresh();
   }
 
   @Override
   public void displayBlankScheduleEvent() {
-    this.delegate.refresh();
+    this.providerMainView.refresh();
   }
 
   @Override
   public void displayExistingEvent(String user, ReadableEvent event) {
-    this.delegate.refresh();
+    this.providerMainView.refresh();
   }
 
   @Override
   public void addFeatures(Features features) {
     cs3500.nuplanner.provider.controller.Features features2 =
             new ClientToProviderFeaturesAdaptor(features);
-    this.delegate.setListener(features2);
+    this.providerMainView.setListener(features2);
   }
 
   @Override
   public void makeVisible() {
-    this.delegate.makeVisible();
+    this.providerMainView.makeVisible();
   }
 
   @Override
   public void displayErrorMessage(String errorMessage) {
-    this.delegate.showErrorMessage(errorMessage);
+    this.providerMainView.showErrorMessage(errorMessage);
   }
 
   @Override
   public void refresh() {
-    this.delegate.refresh();
+    this.providerMainView.refresh();
   }
 
 }

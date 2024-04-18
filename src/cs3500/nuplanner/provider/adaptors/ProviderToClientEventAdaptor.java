@@ -51,6 +51,7 @@ public class ProviderToClientEventAdaptor implements Event {
     if (ievent == null) {
       throw new IllegalArgumentException("Invalid input into adaptor class... ");
     }
+
     this.clientEvent = translateIEventToEvent(ievent);
   }
 

@@ -24,6 +24,10 @@ public class ClientToProviderModelAdaptor implements ReadOnlySystems {
    * @param clientModel our version of the scheduling system passed in
    */
   public ClientToProviderModelAdaptor(SchedulingSystem clientModel) {
+    if (clientModel == null) {
+      throw new IllegalArgumentException("Adaptor cannot be constructed will null args... ");
+    }
+
     this.clientModel = clientModel;
   }
 

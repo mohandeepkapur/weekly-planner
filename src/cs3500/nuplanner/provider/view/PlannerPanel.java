@@ -75,6 +75,12 @@ public class PlannerPanel extends JPanel implements PlannerPanelView {
         ISchedule schedule = this.model.getUserSchedule(u.getUid());
         List<IEvent> events = schedule.getAllEvents();
         for (IEvent e : events) {
+          System.out.println(e.getName());
+          System.out.println(e.getStartDay());
+          System.out.println(e.getStartTime());
+          System.out.println(e.getEndDay());
+          System.out.println(e.getEndTime());
+
           LocalTime start = e.getStartTime();
           LocalTime end = e.getEndTime();
           String startDay = e.getStartDay().toString();

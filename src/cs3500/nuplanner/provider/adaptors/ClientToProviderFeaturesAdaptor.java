@@ -21,6 +21,10 @@ public class ClientToProviderFeaturesAdaptor implements Features {
    * @param clientFeatures client features interface
    */
   public ClientToProviderFeaturesAdaptor(cs3500.nuplanner.controller.Features clientFeatures) {
+    if (clientFeatures == null) {
+      throw new IllegalArgumentException("Adaptor cannot be constructed will null args... ");
+    }
+
     this.clientFeatures = clientFeatures;
   }
 

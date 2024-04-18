@@ -1,13 +1,21 @@
-Design Decisions/Codebase Overview:
-
-CHANGES MADE FOR CUSTOMERS:
+HW 8 CHANGES MADE FOR CUSTOMERS:
+====================================================================================================
 - None!
 
-EXTRA CREDIT:
+
+HW 7 EXTRA CREDIT:
+====================================================================================================
 GUI is resizable. Thanks to using .getWidth() and .getHeight() rather than fixed values in View impl
 when painting grid and drawing events in a user's Schedule.
 
-OVERVIEW:
+
+====================================================================================================
+=========Mohandeep Kapur=====================+=====================Brandon Lu=======================
+====================================================================================================
+
+
+DESIGN DECISIONS/CODEBASE OVERVIEW:
+====================================================================================================
 Within Scheduling System. the same Event object can be contained in multiple Schedules.
 Internal aliasing is what allows for Events (and thus information)
 to be shared between different users.
@@ -71,24 +79,30 @@ In the EventView, the host of an existing event user clicks on is highlighted gr
 while the non-host members are highlighted blue.
 
 
-Key Components (mentioned in overview, so this section kept brief):
+
+KEY COMPONENTS (mentioned in overview, so this section kept brief):
+====================================================================================================
 The SSView interacts with the Scheduling System to render a user's Schedule using Events,
 in either XML or text format.
 The SSController is to manipulate the Scheduling System with GUI input discussed above, or XMl
 input.
 
-Smaller Components:
+
+SMALLER COMPONENTS:
+====================================================================================================
 DaysOfTheWeek is an enum used to keep track of the days for a 2-week span planner.
 Time is used in only one spot. The rest of the code-base assumes it will be dealing with military
 time (military time preserved by the Event itself right now).
 
-Source organization:
+
+SOURCE ORGANIZATION:
+====================================================================================================
 All components in src and test are contained within cs3500.nuplanner package.
 All components relevant to GUI are in the cs3500.nuplanner.view.gui package.
 
 
 CHANGES FOR HW 6:
-
+====================================================================================================
 Added observation method to ReadableEvent to check whether a given time is contained within an
 Event's range. Observes state of Event.
 
@@ -98,8 +112,9 @@ modifyEvent(new Event1, new Event2) due to perceived limitations in current mode
 This is to allow a User to change multiple aspects of an Event at once.
 Created Features interface and bare-bones controller. Brief reasoning given in Intro to Codebase.
 
-CHANGES FOR HW 7:
 
+CHANGES FOR HW 7:
+====================================================================================================
 - Behavior of an Event slightly modified -> an Event can now be intialized inviteeless (thus with
   no host) -> Event's host can change IF all invitees in Event are removed. Then first one added
   back into Event becomes new host.
@@ -115,28 +130,38 @@ CHANGES FOR HW 7:
     - No where else is the Time class used
 - change modifyEvent signature to accept an entire event as modification request
 
-TAs:
-Testing Controller using Model and View mocks in Test class.
-Using DownloadXML in GUI will save XMLs of current model-state in XMLFiles folder.
-Use command line args to select scheduling strategy.
 
-REASONING FOR NOT IMPLEMENTING TIME CLASS AFTER TA FEEDBACK:
+CHANGES FOR HW 8:
+====================================================================================================
+- No changes made to HW7 codebase (except for some documentation tweaks)
+- Adaptors added to connect provider-View to our (client) codebase
+
+- Many of the features from the providers view now work, as clicking on most of the buttons pops up
+the relevant frames and different user schedules can be displayed. Actually creating, removing, or
+modifying events does not work, and neither does clicking on the schedule.
+
+
+
+FOR TAs:
+====================================================================================================
+- Testing Controller using Model and View mocks in Test class.
+- Using DownloadXML in GUI will save XMLs of current model-state in XMLFiles folder.
+- Use command line args to select scheduling strategy, and view used:
+    - first argument:
+- Command line now supports a second argument that selects between default (client) or provider view
+- As before, first arg decides strategy (only compatible with default view)
+
+
+INITIAL REASONING FOR NOT IMPLEMENTING TIME CLASS AFTER TA FEEDBACK:
 However as justification for no time class, an Event itself ensures that the time used to construct
 it is in military time. Once an Event is instantiated, it can only represent time in military time.
 Any start-time provided by user that IS NOT MILITARY TIME will cause the relevant Event to throw an
 IllegalArgException. Any times passed between components will be extracted from existing Events
 that have proper military time, or rejected by an Event due to improper military time.
-Summary:
-The Event implementation ITSELF ENFORCES MILITARY TIME.
+Summary: The Event implementation ITSELF ENFORCES MILITARY TIME.
 
 
-
-if have time (prob won't):
-- think about the use of objective values everywhere --> always converting from military time to ov
-    - bunch of duplicate code in multiple components for that conversion
-
-
-
+====================================================================================================
 - Will be refactoring Scheduling System addEvent and eventConflict method to only accept an Event
 rather than parameters than construct an Event, because it feels like data representation of an
 Event is being rigidly defined/leaked in Scheduling System interface. This change would not take
@@ -144,12 +169,3 @@ long because of my codebase design,
 but this refactor is being prevented due to the numerous tests written with the current
 addEvent + eventConflict method signature and time constraint.)
 
-CHANGES FOR HW 8:
-- Command line now supports a second argument that can select between the default view or the
-providers view. If there is only one item in the args, or "default" is given in the command line,
-the program will run using the normal view. If "provider" is the second argument in the command
-line, then the program will use the alternative provider view.
-
-- Many of the features from the providers view now work, as clicking on most of the buttons pops up
-the relevant frames and different user schedules can be displayed. Actually creating, removing, or
-modifying events does not work, and neither does clicking on the schedule.
