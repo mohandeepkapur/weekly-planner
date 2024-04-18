@@ -1,7 +1,12 @@
 package cs3500.nuplanner.provider.model;
 
 import org.w3c.dom.Document;
+
 import java.util.List;
+
+/**
+ * Providers did not write a javadoc for this interface.
+ */
 
 public interface ISchedule {
 

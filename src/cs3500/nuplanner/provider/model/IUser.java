@@ -3,7 +3,7 @@ package cs3500.nuplanner.provider.model;
 import org.w3c.dom.NodeList;
 
 /**
- * This is the user
+ * This is the user.
  */
 public interface IUser {
 

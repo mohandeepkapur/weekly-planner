@@ -13,7 +13,7 @@ import java.util.List;
  */
 
 // make read-only for the event???, value class?
-public class Event implements IEvent{
+public class Event implements IEvent {
   private final String eventName;
   private final Day startDay;
   private final LocalTime startTime;
@@ -26,14 +26,15 @@ public class Event implements IEvent{
 
   /**
    * Creates the constructor that creates the event.
-   * @param name the name of the event
-   * @param startDay the day the event starts
-   * @param startTime the time the event starts
-   * @param endDay the day the event ends
-   * @param endTime the time the event ends
-   * @param online if the event is online or not
-   * @param place the place the event is occurring
-   * @param hostUser the user hosting the event
+   *
+   * @param name         the name of the event
+   * @param startDay     the day the event starts
+   * @param startTime    the time the event starts
+   * @param endDay       the day the event ends
+   * @param endTime      the time the event ends
+   * @param online       if the event is online or not
+   * @param place        the place the event is occurring
+   * @param hostUser     the user hosting the event
    * @param invitedUsers the list of the invited users
    */
   public Event(String name, Day startDay, LocalTime startTime, Day endDay, LocalTime endTime,
@@ -164,11 +165,12 @@ public class Event implements IEvent{
 
   /**
    * The list of the users invited to the event.
+   *
    * @return the string of the users invited to the event
    */
   public String invites() {
     StringBuilder result = new StringBuilder();
-    for (IUser invite: this.getInvitedUsers()) {
+    for (IUser invite : this.getInvitedUsers()) {
       result.append("\t").append(invite.getUid()).append("\n");
     }
     return result.toString();

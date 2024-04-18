@@ -3,6 +3,10 @@ package cs3500.nuplanner.provider.model;
 import java.time.LocalTime;
 import java.util.List;
 
+/**
+ * Providers did not write a javadoc for this interface.
+ */
+
 public interface IEvent {
   /**
    * This returns the name of the Event.
@@ -18,6 +22,7 @@ public interface IEvent {
    * This returns whether the Event is online or not.
    */
   boolean isOnline();
+
   /**
    * This returns the start time of the Event.
    */
@@ -50,6 +55,7 @@ public interface IEvent {
 
   /**
    * The list of the users invited to the event.
+   *
    * @return the string of the users invited to the event
    */
   String invites();

@@ -100,7 +100,7 @@ COMMAND-LINE ARGS:
 User can select whether to use provider or default View using first command-line argument:
     - "default" for default View
     - "provider" for provider View
-User can select which scheduling strategy to use  as the first argument.
+User can select which scheduling strategy to use as the first argument.
     - "workhours"
     - "anytime"
 Use of scheduling strategy only compatible with default View!
