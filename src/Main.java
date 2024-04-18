@@ -33,13 +33,17 @@ public final class Main {
       SSGUIView view = new SSFrame(model);
       SchedulingSystemController controller = new GUIController(view, getStrategy(args[0]));
       controller.useSchedulingSystem(model, getStrategy(args[0]));
+
     }
+
     if (args[1].equals("provider")) {
       ReadOnlySystems adaptModel = new ClientToProviderModelAdaptor(model);
       SSGUIView adaptView = new ProviderToClientViewAdaptor(new PlannerFrame(adaptModel));
       SchedulingSystemController controller = new GUIController(adaptView, getStrategy(args[0]));
       controller.useSchedulingSystem(model, getStrategy(args[0]));
+
     }
+
   }
 
   private static SchedulingStrategies getStrategy(String arg) {
