@@ -5,7 +5,7 @@ Justification for inability to provide certain planner features w/ their view:
 
 The tenets of good object oriented design are: low coupling, high cohesion, and use of abstractions.
 Our provider’s codebase displayed signs of low cohesion, a lack of abstractions,
-and other design decisions that made their code difficult to work with.
+and other design decisions that made their code a bit difficult to work with.
 
 Let’s begin with their lack of abstractions: initially, in their code-base, they had no interfaces
 for multiple classes (an Event, a User, and a Schedule). The most important step before implementing
