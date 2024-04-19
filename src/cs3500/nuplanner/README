@@ -1,11 +1,7 @@
-HW 7 EXTRA CREDIT:
-====================================================================================================
-GUI is resizable. Thanks to using .getWidth() and .getHeight() rather than fixed values in View impl
-when painting grid and drawing events in a user's Schedule.
-
 HW 8 CHANGES MADE FOR CUSTOMERS:
 ====================================================================================================
 - None!
+
 
 For HW 8: AVAILABLE FEATURES WITH PROVIDER VIEW
 ====================================================================================================
@@ -17,11 +13,11 @@ The following features were possible:
 4) Interacting with View controls and having relevant windows pop up
 
 
-For HW 8: UNAVAILABLE FEATURES WITH PROVIDER VIEW, --> REASONING IN PEER REVIEW
+For HW 8: UNAVAILABLE FEATURES GIVEN PROVIDER CODE'S DESIGN, --> REASONING IN PEER REVIEW
 ====================================================================================================
 Due to their design decisions and logic, we weren't able to have the following features:
 
-(REASONING explained IN DETAIL in Peer Review!!!!):
+(Each point has been mentioned and justified in peer review critique):
 
 1) Inability to view events that span multiple days
 2) Inability to click on event displayed in current user’s schedule, and display its details
@@ -93,15 +89,6 @@ the multiple attending users in the same box (and press modify).
 In the EventView, the host of an existing event user clicks on is highlighted green,
 while the non-host members are highlighted blue.
 
-HW 8 Stuff:
-
-Provider View code and relevant interfaced contained within cs3500.nuplanner.provider.
-
-Any mentions to client, is us. providers, are those who provided us their view code.
-
-In order to mesh our provider's View with our codebase, we created 7 adaptors in the cs3500.
-nuplanner.adaptors package.
-
 
 KEY COMPONENTS (mentioned in overview, so this section kept brief):
 ====================================================================================================
@@ -163,23 +150,37 @@ CHANGES FOR HW 7:
     - It is used internally within our strategies as proof of concept.
     - No where else is the Time class used
 - change modifyEvent signature to accept an entire event as modification request
+  HW 7 EXTRA CREDIT:
+- GUI is resizable. Thanks to using .getWidth() and .getHeight() rather than fixed values in View impl
+  when painting grid and drawing events in a user's Schedule.
 
 
 CHANGES FOR HW 8:
 ====================================================================================================
 - No changes made to HW7 codebase (except for some documentation tweaks)
 - Adaptors added to connect provider-View to our (client) codebase
-- pView faked out, thinks its at home huh? nope LOL. enemy territory
+
+- Provider-view code and relevant interfaced contained within cs3500.nuplanner.provider.
+- In order to mesh our provider's View with our codebase, we created 7 adaptors in the cs3500.nupl
+  anner.adaptors package.
+- Any mentions to client, is us. providers, are those who provided us their view code.
+
 
 
 FOR TAs:
 ====================================================================================================
 - Testing Controller using Model and View mocks in Test class.
 - Using DownloadXML in GUI will save XMLs of current model-state in XMLFiles folder.
-- Use command line args to select scheduling strategy, and view used:
-    - first argument:
-- Command line now supports a second argument that selects between default (client) or provider view
-- As before, first arg decides strategy (only compatible with default view)
+- Command line tutorial in above section
+
+
+
+
+
+
+
+
+
 
 
 INITIAL REASONING FOR NOT IMPLEMENTING TIME CLASS AFTER TA FEEDBACK:

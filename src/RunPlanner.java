@@ -24,9 +24,15 @@ public final class RunPlanner {
    */
   public static void main(String[] args) {
 
+    if (args.length == 0) {
+      throw new IllegalArgumentException("\nPlease provide two arguments to run planner:" +
+              "\n 1) 'default' for default view, 'provider' for provider view" +
+              "\n 2) 'anytime' or 'workhours' for scheduling strategy");
+    }
+
     SchedulingSystem model = new NUPlannerModel();
 
-    // load schedule into model (not possible to use
+    //load schedule into model (not possible to use their interfaces to parse XML, too incompatible)
     SchedulingSystemController xmlCont = new XMLController(model);
     xmlCont.useSchedulingSystem("XMLFiles/toRead/Prof. Lucia.xml");
 

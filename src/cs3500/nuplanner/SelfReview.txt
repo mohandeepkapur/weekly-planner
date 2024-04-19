@@ -1,8 +1,12 @@
+Self Review:
 
+Looking back on our early design decisions, we wish we didn't choose to couple our representation
+of Time wasn't coupled to an Event. Luckily, for these series of projects, that flawed decision
+hasn't posed an issue. Otherwise, I believe we stuck to good object-oriented design principles:
+no implementation-specific coupling, high cohesion for each component, client reliance on
+abstractions, good and forward-thinking interface design.
 
-We wish our representation of Time wasn't coupled to an Event.
+No updates were needed for our customers. Hopefully that is a good sign.
 
-
-
-Our experience with our providers was positive; they were nice, responsive, and fulfilled most of our
-requests. Overall, the experience working with them was good.
+Our experience with our providers was positive; they were nice, responsive, and fulfilled most of
+our requests. Overall, the experience working with them was good.

@@ -12,7 +12,8 @@ import cs3500.nuplanner.provider.model.IEvent;
 import cs3500.nuplanner.provider.model.IUser;
 
 /**
- * Takes in an IEvent, spits out an Event!
+ * Adaptor class that takes in an IEvent provider-View constructs, and
+ * spits out an Event. Used to manipulate client-model.
  */
 public class ProviderToClientEventAdaptor implements Event {
 

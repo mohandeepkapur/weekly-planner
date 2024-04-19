@@ -12,7 +12,7 @@ import cs3500.nuplanner.provider.model.ISchedule;
 
 /**
  * Adaptor that converts a Schedule into an ISchedule. Full behavior of ISchedule has not been
- * implemented. Not necessary to get pView functional, and Schedule does not deal w/ XML stuff.
+ * implemented, justified in Peer Review.
  */
 public class ClientToProviderScheduleAdaptor implements ISchedule {
 

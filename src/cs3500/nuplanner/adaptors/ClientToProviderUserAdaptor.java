@@ -8,7 +8,8 @@ import cs3500.nuplanner.provider.model.ISchedule;
 import cs3500.nuplanner.provider.model.IUser;
 
 /**
- * Wraps existing user and their schedule in client-model into an IUser.
+ * Wraps existing user and their schedule in client-model into an IUser. Certain behaviors
+ * not provided, justified in Peer Review.
  */
 public class ClientToProviderUserAdaptor implements IUser {
 
