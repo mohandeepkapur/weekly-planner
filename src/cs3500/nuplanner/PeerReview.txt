@@ -4,8 +4,8 @@ Justification for inability to provide certain planner features w/ their view:
 ====================================================================================================
 
 The tenets of good object oriented design are: low coupling, high cohesion, and use of abstractions.
-Our provider’s codebase displayed low cohesion, a lack of abstractions, and other questionable
-design decisions.
+Our provider’s codebase displayed signs of low cohesion, a lack of abstractions,
+and other design decisions that made their code difficult to work with.
 
 Let’s begin with their lack of abstractions: initially, in their code-base, they had no interfaces
 for multiple classes (an Event, a User, and a Schedule). The most important step before implementing
@@ -14,7 +14,7 @@ accomplished through interface design. Our providers ignored that step, and chos
 implementation-specific types throughout their codebase. Unfortunately, this leads to inflexible,
 stiff code. Code that relies on one specific class, rather than an interface.
 
-Their code’s inflexibility immediately reared its head. Adapting their View to work with our
+Their code’s inflexibility reared its head pretty quickly. Adapting their View to work with our
 codebase could only work if their View relied on what an Event, Schedule, and User could do, rather
 than the specific class Event, Schedule, and User. We had to ask them to refactor their code
 multiple times to create and integrate the desired interfaces. Our providers were nice,
@@ -66,6 +66,10 @@ we cannot touch their code, we weren’t able to support that feature.
 
 Their documentation needed improvement as well: our providers didn’t specify the exceptions thrown
 by any of their methods, and was quite vague sometimes (handleClick() javadoc).
+
+This review is not meant to pull our provider's code down; rather, to just provide constructive
+feedback. Their kindness and easiness to interact with over email was apparent, and we would
+love to work with other providers like them!
 
 
 In summary, due to their design decisions and logic, we weren’t able to have the following features
