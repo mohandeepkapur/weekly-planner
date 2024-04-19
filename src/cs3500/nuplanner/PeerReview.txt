@@ -76,8 +76,8 @@ In summary, due to their design decisions and logic, we weren’t able to have t
    (above point)
 4) Inability to upload or download XML
 
-The following features were possible:
-1) Viewing pre-loaded schedules in our model (functionally proving success of adaptors)
+The following features were possible with their View:
+1) Viewing preloaded schedules in our model (functionally proving success of adaptors)
 2) Creating an event and adding it to multiple user schedules, and having that change reflect
    on their View
 3) Viewing events that spanned single days
