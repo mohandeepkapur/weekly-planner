@@ -25,6 +25,8 @@ Due to their design decisions and logic, we weren't able to have the following f
    (above point)
 4) Inability to upload or download XML
 
+Command-line arg updates for JAR mentioned in command-line arg section.
+
 
 DESIGN DECISIONS/CODEBASE OVERVIEW:
 ====================================================================================================
@@ -116,10 +118,10 @@ COMMAND-LINE ARGS:
 User can select whether to use provider or default View using first command-line argument:
     - "default" for default View
     - "provider" for provider View
-User can select which scheduling strategy to use  as the first argument.
+User can select which scheduling strategy to use as the second argument. Note, strategies
+are only relevant for default View.
     - "workhours"
     - "anytime"
-Use of scheduling strategy only compatible with default View!
 
 
 CHANGES FOR HW 6:
