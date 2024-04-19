@@ -70,11 +70,11 @@ by any of their methods, and was quite vague sometimes (handleClick() javadoc).
 
 In summary, due to their design decisions and logic, we weren’t able to have the following features
 (Each point has been mentioned and justified in peer review critique):
-1) Inability to view events that span multiple days
+1) Inability to upload or download XML
 2) Inability to click on event displayed in current user’s schedule, and display its details
 3) Inability to use remove/modify events via View, because of inability to access user event data
    (above point)
-4) Inability to upload or download XML
+4) Inability to view events that span multiple days
 
 The following features were possible with their View:
 1) Viewing preloaded schedules in our model (functionally proving success of adaptors)
