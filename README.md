@@ -5,3 +5,5 @@ Provides users with the ability to create, modify, and remove events within a on
 time-span. 
 
 Application supports the upload and download of schedules in XML format. 
+
+Mohandeep Kapur + Brandon Lu
