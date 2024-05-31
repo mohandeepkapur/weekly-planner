@@ -6,4 +6,7 @@ time-span.
 
 Application supports the upload and download of schedules in XML format. 
 
+Codebase overview README within source.
+
+Authors:
 Mohandeep Kapur + Brandon Lu
