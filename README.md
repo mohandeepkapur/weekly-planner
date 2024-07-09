@@ -1,3 +1,6 @@
+
+# NU-Planner
+
 Weekly planner for multiple users.
 
 MVC paradigm, frontend utilizes Java Swing.
