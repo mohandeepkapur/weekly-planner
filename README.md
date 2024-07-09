@@ -10,7 +10,7 @@ Provides users with the ability to create, modify, and remove events within a on
 time-span. Application supports the upload and download of schedules in XML format. 
 
 Intro: 
-High-level codebase overview within src in README.
+High-level codebase overview within README in src.
 
 Authors:
 Mohandeep Kapur + Brandon Lu
