@@ -11,3 +11,5 @@ High-level codebase overview within src in README.
 
 Authors:
 Mohandeep Kapur + Brandon Lu
+
+CODE WITHIN PROVIDER PACKAGE IS NOT OURS, IT IS INCLUDED TO PRACTICE THE ADAPTOR DESIGN PATTERN.
